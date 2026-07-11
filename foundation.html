@@ -19,10 +19,13 @@
 --moss:#2A3B32;
 --fog:#C8D6D0;
 --card:#10201A;
+
 --teal:#4FD1C5;
 --mint:#7ED9A6;
 --amber:#E8B04B;
 --sky:#5FB8E0;
+--lavender:#B18AF0;
+--coral:#F2836B;
 }
 
 
@@ -37,116 +40,157 @@ body{
 background:var(--soil);
 color:var(--fog);
 font-family:'Inter',sans-serif;
-min-height:100vh;
 }
 
 
 header{
+
 max-width:720px;
 margin:auto;
 padding:25px 24px 10px;
+
 }
 
 
 .eyebrow{
+
 font-family:'JetBrains Mono',monospace;
 font-size:.72rem;
 letter-spacing:.15em;
 text-transform:uppercase;
 color:var(--teal);
+
 }
 
 
 h1{
+
 font-family:'Space Grotesk',sans-serif;
 font-size:2.4rem;
 color:white;
 margin-top:10px;
+
 }
 
 
 .hero{
+
 max-width:720px;
 margin:auto;
 padding:20px 24px;
+
 }
 
 
 .hero p{
+
 line-height:1.7;
 opacity:.85;
+
 }
 
 
 main{
+
 max-width:720px;
 margin:auto;
-padding:25px 24px 60px;
+padding:24px;
+
 }
 
 
+.section-title{
+
+font-family:'Space Grotesk',sans-serif;
+font-size:1.3rem;
+color:white;
+margin:20px 0;
+
+}
+
+
+
 .unit{
+
 background:var(--card);
 border:1px solid var(--moss);
 border-radius:15px;
-padding:22px;
-margin-bottom:18px;
+padding:20px;
+margin-bottom:16px;
+border-left:5px solid var(--accent);
 transition:.3s;
+
 }
 
 
 .unit:hover{
+
 transform:translateY(-5px);
+
 }
 
 
 .unit a{
+
 text-decoration:none;
 color:inherit;
+
 }
 
 
-.unit-number{
+.number{
+
 font-family:'JetBrains Mono',monospace;
 font-size:.7rem;
+color:var(--accent);
 margin-bottom:8px;
+
 }
 
 
 .unit h2{
+
 font-family:'Space Grotesk',sans-serif;
 color:white;
-font-size:1.2rem;
-margin-bottom:10px;
+font-size:1.15rem;
+margin-bottom:8px;
+
 }
 
 
 .unit p{
+
 line-height:1.6;
+
 }
 
 
-.u1{
-border-left:5px solid var(--teal);
-}
+.u1{--accent:var(--teal);}
+.u2{--accent:var(--mint);}
+.u3{--accent:var(--amber);}
+.u4{--accent:var(--sky);}
+.u5{--accent:var(--lavender);}
+.u6{--accent:var(--coral);}
+.u7{--accent:var(--teal);}
+.u8{--accent:var(--mint);}
 
-
-.u2{
-border-left:5px solid var(--mint);
-}
 
 
 footer{
+
 text-align:center;
 padding:40px;
 font-family:'JetBrains Mono',monospace;
 font-size:.72rem;
 color:var(--moss);
+
 }
+
 
 </style>
 
 </head>
+
 
 
 <body>
@@ -156,7 +200,7 @@ color:var(--moss);
 
 <div class="eyebrow">// foundation zone</div>
 
-<h1>🌱 Foundation</h1>
+<h1>🌱 Year 1 Foundation</h1>
 
 </header>
 
@@ -165,7 +209,7 @@ color:var(--moss);
 <section class="hero">
 
 <p>
-The roots of Computer Science. These units create the foundation needed for advanced areas such as Artificial Intelligence, Data Science, Cybersecurity and Software Engineering.
+The first stage of the Computer Science ecosystem. These units build the mathematical, programming, and computing foundations required for advanced topics such as Artificial Intelligence, Data Science, Cybersecurity, and Software Engineering.
 </p>
 
 </section>
@@ -176,12 +220,18 @@ The roots of Computer Science. These units create the foundation needed for adva
 
 
 
+<h2 class="section-title">
+Year 1 · Semester 1
+</h2>
+
+
+
 <div class="unit u1">
 
 <a href="unit-intro-cs.html">
 
-<div class="unit-number">
-01 · YEAR 1 · SEMESTER 1
+<div class="number">
+01 · COMPUTER SCIENCE
 </div>
 
 <h2>
@@ -189,7 +239,7 @@ Introduction to Computer Science
 </h2>
 
 <p>
-Explore the history of computing, hardware, software, algorithms, number systems and the fundamental ideas behind computer science.
+Introduction to computing concepts, history of computers, hardware, software, algorithms and the foundations of computer science.
 </p>
 
 </a>
@@ -203,8 +253,8 @@ Explore the history of computing, hardware, software, algorithms, number systems
 
 <a href="Unit-programming.html">
 
-<div class="unit-number">
-02 · YEAR 1 · SEMESTER 1
+<div class="number">
+02 · PROGRAMMING
 </div>
 
 <h2>
@@ -212,10 +262,124 @@ Programming
 </h2>
 
 <p>
-Learn problem solving, algorithms, programming concepts, data types, control structures, functions and software development foundations.
+Problem solving, algorithms, programming concepts, data types, control structures, functions and software development basics.
 </p>
 
 </a>
+
+</div>
+
+
+
+
+<div class="unit u3">
+
+<div class="number">
+03 · DISCRETE STRUCTURES I
+</div>
+
+<h2>
+Discrete Structures I
+</h2>
+
+<p>
+Logic, sets, relations, functions, Boolean algebra and mathematical foundations of computing.
+</p>
+
+</div>
+
+
+
+
+<div class="unit u4">
+
+<div class="number">
+04 · MATHEMATICS
+</div>
+
+<h2>
+Calculus I
+</h2>
+
+<p>
+Limits, differentiation, integration and mathematical tools used in computing.
+</p>
+
+</div>
+
+
+
+
+<div class="unit u5">
+
+<div class="number">
+05 · STATISTICS
+</div>
+
+<h2>
+Statistics and Probability I
+</h2>
+
+<p>
+Probability concepts, data analysis and statistical methods used in computer science.
+</p>
+
+</div>
+
+
+
+
+<div class="unit u6">
+
+<div class="number">
+06 · ELECTRONICS
+</div>
+
+<h2>
+Electronics
+</h2>
+
+<p>
+Basic electronic principles, components and digital systems.
+</p>
+
+</div>
+
+
+
+
+<div class="unit u7">
+
+<div class="number">
+07 · ELECTRICAL PRINCIPLES
+</div>
+
+<h2>
+Electrical Principles
+</h2>
+
+<p>
+Fundamentals of electricity, circuits and electrical systems.
+</p>
+
+</div>
+
+
+
+
+<div class="unit u8">
+
+<div class="number">
+08 · COMMUNICATION SKILLS
+</div>
+
+<h2>
+Communication Skills
+</h2>
+
+<p>
+Academic writing, presentations and professional communication for computing students.
+</p>
 
 </div>
 
@@ -227,9 +391,10 @@ Learn problem solving, algorithms, programming concepts, data types, control str
 
 <footer>
 
-🌱 CS Hub — Foundation Zone
+🌱 CS Hub — Foundation Ecosystem
 
 </footer>
+
 
 
 </body>
