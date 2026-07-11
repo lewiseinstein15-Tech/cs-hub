@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Programming | Foundation Zone</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --soil:#0B1210;
+  --moss:#2A3B32;
+  --fog:#C8D6D0;
+  --card:#10201A;
+  --teal:#4FD1C5;
+  --amber:#E8B04B;
+  --coral:#F2836B;
+  --lavender:#B18AF0;
+  --sky:#5FB8E0;
+  --mint:#7ED9A6;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
+
+html,body{
+ background:var(--soil);
+ color:var(--fog);
+ font-family:'Inter',sans-serif;
+ min-height:100%;
+}
+
+header{
+ padding:20px 24px 10px;
+ display:flex;
+ justify-content:space-between;
+ max-width:720px;
+ margin:auto;
+}
+
+.back-link{
+ font-family:'JetBrains Mono',monospace;
+ font-size:.75rem;
+ text-decoration:none;
+ color:var(--fog);
+ border:1px solid var(--moss);
+ padding:6px 12px;
+ border-radius:100px;
+}
+
+.unit-hero{
+ max-width:720px;
+ margin:auto;
+ padding:24px;
+}
+
+.eyebrow{
+ font-family:'JetBrains Mono',monospace;
+ font-size:.72rem;
+ letter-spacing:.15em;
+ text-transform:uppercase;
+ color:var(--teal);
+}
+
+h1{
+ font-family:'Space Grotesk',sans-serif;
+ font-size:clamp(1.7rem,6vw,2.4rem);
+ color:white;
+ margin-top:10px;
+}
+
+.unit-sub{
+ margin-top:10px;
+ opacity:.8;
+ line-height:1.6;
+}
+
+main{
+ max-width:720px;
+ margin:auto;
+ padding:24px 24px 60px;
+}
+
+.topic{
+ background:var(--card);
+ border:1px solid var(--moss);
+ border-left:4px solid var(--accent);
+ border-radius:14px;
+ padding:20px;
+ margin-bottom:18px;
+}
+
+.topic-eyebrow{
+ font-family:'JetBrains Mono',monospace;
+ font-size:.68rem;
+ color:var(--accent);
+ margin-bottom:6px;
+}
+
+.topic h2{
+ font-family:'Space Grotesk',sans-serif;
+ color:white;
+ font-size:1.15rem;
+ margin-bottom:10px;
+}
+
+.topic p{
+ line-height:1.6;
+ margin-bottom:10px;
+}
+
+.topic ul{
+ margin:8px 0 12px 20px;
+ line-height:1.7;
+}
+
+.t1{--accent:var(--teal);}
+.t2{--accent:var(--mint);}
+.t3{--accent:var(--amber);}
+.t4{--accent:var(--sky);}
+.t5{--accent:var(--lavender);}
+.t6{--accent:var(--coral);}
+
+.recap{
+ background:linear-gradient(135deg,rgba(79,209,197,.08),rgba(232,176,75,.08));
+ border:1px solid var(--moss);
+ border-radius:14px;
+ padding:20px;
+}
+
+footer{
+ text-align:center;
+ margin:40px;
+ font-family:'JetBrains Mono',monospace;
+ font-size:.72rem;
+ color:var(--moss);
+}
+</style>
+</head>
+
+
+<body>
+
+<header>
+
+<a href="foundation.html" class="back-link">
+← Foundation Zone
+</a>
+
+<span class="back-link">
+🌱 Yr 1 · Sem 1
+</span>
+
+</header>
+
+
+<section class="unit-hero">
+
+<div class="eyebrow">// unit notes</div>
+
+<h1>Programming</h1>
+
+<p class="unit-sub">
+The foundation of software creation. This unit introduces the thinking,
+methods, and tools used to transform ideas into working computer programs.
+</p>
+
+</section>
+
+
+<main>
+
+
+<div class="topic t1">
+
+<div class="topic-eyebrow">01 · The Beginning</div>
+
+<h2>Introduction to Programming</h2>
+
+<p>
+Programming is the process of creating a sequence of instructions that a computer can execute to perform a specific task.
+</p>
+
+<p>
+A computer cannot understand human intentions directly. A programmer converts problems and ideas into logical instructions written using programming languages.
+</p>
+
+<ul>
+<li>Programming combines logic, creativity, and problem solving.</li>
+<li>Programs are created to automate tasks and solve real-world problems.</li>
+<li>Every application, website, and artificial intelligence system begins with programming.</li>
+</ul>
+
+</div>
+
+
+<div class="topic t2">
+
+<div class="topic-eyebrow">02 · Thinking Like a Programmer</div>
+
+<h2>Problem Solving Approach</h2>
+
+<p>
+Before writing code, programmers first analyze the problem and design a solution.
+</p>
+
+<ul>
+<li>Understand the problem requirements.</li>
+<li>Identify inputs and outputs.</li>
+<li>Design a logical solution.</li>
+<li>Convert the solution into code.</li>
+<li>Test and improve the program.</li>
+</ul>
+
+<p>
+Strong programmers focus on solving problems, not just memorizing programming syntax.
+</p>
+
+</div>
+
+
+<div class="topic t3">
+
+<div class="topic-eyebrow">03 · Program Design</div>
+
+<h2>Algorithms</h2>
+
+<p>
+An algorithm is a step-by-step procedure used to solve a problem or complete a task.
+</p>
+
+<p>
+Algorithms are the foundation of programming because every program follows a logical sequence of operations.
+</p>
+
+<ul>
+<li>Algorithms must be clear.</li>
+<li>Algorithms must have defined inputs and outputs.</li>
+<li>Algorithms should be efficient and understandable.</li>
+</ul>
+
+</div>
+
+
+<div class="topic t4">
+
+<div class="topic-eyebrow">04 · Visual Planning</div>
+
+<h2>Flowcharts and Pseudocode</h2>
+
+<p>
+Before coding, programmers often represent their solutions using flowcharts and pseudocode.
+</p>
+
+<ul>
+<li><strong>Flowchart:</strong> A visual representation of program steps using symbols.</li>
+<li><strong>Pseudocode:</strong> A human-readable description of program logic.</li>
+</ul>
+
+<p>
+These tools help programmers find mistakes early and organize complex solutions.
+</p>
+
+</div><div class="topic t5">
+
+<div class="topic-eyebrow">05 · The Building Blocks</div>
+
+<h2>Variables and Data Types</h2>
+
+<p>
+Variables are named storage locations used by programs to hold data that can change while the program is running.
+</p>
+
+<p>
+Every variable has a type that determines what kind of information it can store.
+</p>
+
+<ul>
+<li><strong>Integer:</strong> Stores whole numbers such as 10, 25, or -5.</li>
+<li><strong>Float:</strong> Stores decimal values such as 3.14.</li>
+<li><strong>Character:</strong> Stores a single symbol or letter.</li>
+<li><strong>String:</strong> Stores a sequence of characters.</li>
+<li><strong>Boolean:</strong> Stores true or false values.</li>
+</ul>
+
+<p>
+Understanding data types helps computers allocate memory correctly and process information efficiently.
+</p>
+
+</div>
+
+
+<div class="topic t6">
+
+<div class="topic-eyebrow">06 · Program Operations</div>
+
+<h2>Operators and Expressions</h2>
+
+<p>
+Operators are symbols that allow programs to perform calculations, comparisons, and logical operations.
+</p>
+
+<ul>
+<li><strong>Arithmetic operators:</strong> Addition, subtraction, multiplication, division.</li>
+<li><strong>Relational operators:</strong> Used to compare values.</li>
+<li><strong>Logical operators:</strong> Used to combine conditions.</li>
+<li><strong>Assignment operators:</strong> Used to store values in variables.</li>
+</ul>
+
+<p>
+Expressions combine variables and operators to produce a result.
+</p>
+
+</div>
+
+
+<div class="topic t1">
+
+<div class="topic-eyebrow">07 · Controlling Decisions</div>
+
+<h2>Control Structures</h2>
+
+<p>
+Control structures determine the order in which instructions are executed inside a program.
+</p>
+
+<p>
+The three main types are:
+</p>
+
+<ul>
+<li>
+<strong>Sequence:</strong>
+Instructions execute one after another in order.
+</li>
+
+<li>
+<strong>Selection:</strong>
+The program makes decisions using conditions such as if and else statements.
+</li>
+
+<li>
+<strong>Iteration:</strong>
+The program repeats instructions using loops.
+</li>
+</ul>
+
+<p>
+Control structures allow programs to make decisions and perform repeated tasks efficiently.
+</p>
+
+</div>
+
+
+<div class="topic t2">
+
+<div class="topic-eyebrow">08 · Code Organization</div>
+
+<h2>Functions and Modular Programming</h2>
+
+<p>
+A function is a block of code designed to perform a specific task.
+</p>
+
+<p>
+Functions make programs easier to understand, test, and maintain.
+</p>
+
+<ul>
+<li>Reduce repeated code.</li>
+<li>Improve program organization.</li>
+<li>Make debugging easier.</li>
+<li>Allow code reuse.</li>
+</ul>
+
+<p>
+Large software systems are usually created by combining many smaller modules and functions.
+</p>
+
+</div>
+
+
+<div class="topic t3">
+
+<div class="topic-eyebrow">09 · Handling Collections</div>
+
+<h2>Arrays and Data Storage</h2>
+
+<p>
+An array is a collection of multiple values stored under one name. The values are arranged in a sequence and accessed using positions called indexes.
+</p>
+
+<ul>
+<li>Arrays store related data efficiently.</li>
+<li>They reduce the need to create many separate variables.</li>
+<li>They are important in data structures and algorithms.</li>
+</ul>
+
+<p>
+Arrays are a foundation for advanced topics such as searching, sorting, and data processing.
+</p>
+
+</div><div class="topic t4">
+
+<div class="topic-eyebrow">10 · Improving Programs</div>
+
+<h2>Debugging and Testing</h2>
+
+<p>
+Debugging is the process of finding and correcting errors in a program. Even experienced programmers make mistakes, so testing and debugging are essential parts of software development.
+</p>
+
+<p>
+Common types of programming errors include:
+</p>
+
+<ul>
+<li><strong>Syntax errors:</strong> Mistakes in the rules of a programming language that prevent a program from running.</li>
+
+<li><strong>Runtime errors:</strong> Errors that occur while the program is executing.</li>
+
+<li><strong>Logic errors:</strong> The program runs but produces incorrect results because the solution is wrong.</li>
+</ul>
+
+<p>
+Good programmers test their programs using different inputs to make sure they work correctly in different situations.
+</p>
+
+</div>
+
+
+<div class="topic t5">
+
+<div class="topic-eyebrow">11 · First Programming Language</div>
+
+<h2>Introduction to C Programming</h2>
+
+<p>
+C is a general-purpose programming language created in the early 1970s. It became one of the most influential programming languages and is still widely used in computer science education and systems programming.
+</p>
+
+<p>
+C helps students understand how computers work because it provides closer interaction with memory and hardware compared to many modern languages.
+</p>
+
+<ul>
+<li>Used in operating systems and embedded systems.</li>
+<li>Introduces important programming concepts.</li>
+<li>Provides a foundation for learning other languages.</li>
+</ul>
+
+<p>
+A basic C program contains components such as:
+</p>
+
+<ul>
+<li>Header files</li>
+<li>The main function</li>
+<li>Variables</li>
+<li>Statements and instructions</li>
+<li>Output commands</li>
+</ul>
+
+</div>
+
+
+<div class="topic t6">
+
+<div class="topic-eyebrow">12 · Professional Practice</div>
+
+<h2>Writing Good Programs</h2>
+
+<p>
+Programming is not only about making a computer execute instructions. Good programs should be understandable, reliable, and easy to maintain.
+</p>
+
+<ul>
+<li>Use meaningful names for variables and functions.</li>
+<li>Write clear and organized code.</li>
+<li>Add comments where necessary.</li>
+<li>Test programs regularly.</li>
+<li>Improve solutions through continuous learning.</li>
+</ul>
+
+</div>
+
+
+<div class="recap">
+
+<h2>📌 Quick Recap for Revision</h2>
+
+<ul>
+
+<li>
+Programming is the process of creating instructions that computers execute.
+</li>
+
+<li>
+Problem solving comes before writing code.
+</li>
+
+<li>
+Algorithms provide step-by-step solutions to problems.
+</li>
+
+<li>
+Flowcharts and pseudocode help design programs before implementation.
+</li>
+
+<li>
+Variables store data, while data types define the kind of data stored.
+</li>
+
+<li>
+Operators allow programs to perform calculations and comparisons.
+</li>
+
+<li>
+Control structures manage decisions and repetition.
+</li>
+
+<li>
+Functions help organize and reuse code.
+</li>
+
+<li>
+Arrays store collections of related data.
+</li>
+
+<li>
+Debugging removes errors and improves program reliability.
+</li>
+
+<li>
+C programming builds a strong foundation for understanding computers.
+</li>
+
+</ul>
+
+</div>
+
+
+</main>
+
+
+<footer>
+🌱 programming — foundation zone
+</footer>
+
+
+</body>
+</html>
