@@ -1,0 +1,2365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Discrete Structures I | CS Hub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+<style>
+
+:root{
+
+--soil:#0B1210;
+--moss:#2A3B32;
+--fog:#C8D6D0;
+--card:#10201A;
+
+--teal:#4FD1C5;
+--mint:#7ED9A6;
+--amber:#E8B04B;
+--sky:#5FB8E0;
+--purple:#B18AF0;
+--coral:#F2836B;
+
+}
+
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+
+body{
+
+background:var(--soil);
+color:var(--fog);
+font-family:'Inter',sans-serif;
+
+}
+
+
+
+header{
+
+max-width:750px;
+margin:auto;
+padding:25px 24px 10px;
+
+}
+
+
+
+.back-link{
+
+font-family:'JetBrains Mono',monospace;
+font-size:.75rem;
+color:var(--fog);
+text-decoration:none;
+
+border:1px solid var(--moss);
+padding:8px 14px;
+border-radius:20px;
+
+}
+
+
+
+.hero{
+
+max-width:750px;
+margin:auto;
+padding:25px 24px;
+
+}
+
+
+
+.tag{
+
+font-family:'JetBrains Mono',monospace;
+font-size:.7rem;
+letter-spacing:.15em;
+color:var(--teal);
+
+}
+
+
+
+h1{
+
+font-family:'Space Grotesk',sans-serif;
+font-size:2.5rem;
+color:white;
+margin-top:12px;
+
+}
+
+
+
+.subtitle{
+
+line-height:1.7;
+margin-top:12px;
+opacity:.85;
+
+}
+
+
+
+
+main{
+
+max-width:750px;
+margin:auto;
+padding:20px 24px 60px;
+
+}
+
+
+
+
+.topic{
+
+background:var(--card);
+
+border:1px solid var(--moss);
+border-left:5px solid var(--accent);
+
+border-radius:15px;
+
+padding:22px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.topic h2{
+
+font-family:'Space Grotesk',sans-serif;
+
+color:white;
+
+font-size:1.2rem;
+
+margin-bottom:12px;
+
+}
+
+
+
+.topic p{
+
+line-height:1.7;
+
+margin-bottom:12px;
+
+}
+
+
+
+.topic ul{
+
+margin-left:20px;
+
+line-height:1.8;
+
+}
+
+
+
+.example{
+
+background:#08100d;
+
+border-radius:12px;
+
+padding:18px;
+
+margin:15px 0;
+
+font-family:'JetBrains Mono',monospace;
+
+line-height:1.8;
+
+}
+
+
+
+.note{
+
+border:1px solid var(--moss);
+
+padding:15px;
+
+border-radius:10px;
+
+margin-top:15px;
+
+}
+
+
+
+.t1{--accent:var(--teal);}
+.t2{--accent:var(--mint);}
+.t3{--accent:var(--amber);}
+.t4{--accent:var(--sky);}
+.t5{--accent:var(--purple);}
+.t6{--accent:var(--coral);}
+
+
+
+footer{
+
+text-align:center;
+
+font-family:'JetBrains Mono',monospace;
+
+font-size:.75rem;
+
+padding:30px;
+
+color:var(--moss);
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+
+<header>
+
+<a class="back-link" href="Foundation.html">
+← Year 1 Units
+</a>
+
+</header>
+
+
+
+<section class="hero">
+
+
+<div class="tag">
+
+// YEAR 1 · SEMESTER 1 · UNIT NOTES
+
+</div>
+
+
+<h1>
+
+Discrete Structures I
+
+</h1>
+
+
+<p class="subtitle">
+
+The mathematical foundation of Computer Science. This unit develops the logical thinking required for algorithms, programming, databases, artificial intelligence and computer systems.
+
+</p>
+
+
+</section>
+
+
+
+
+<main>
+
+
+
+
+<div class="topic t1">
+
+
+<h2>
+01 · What is Discrete Mathematics?
+</h2>
+
+
+<p>
+
+Discrete mathematics is the branch of mathematics that studies objects that are separate, countable and have distinct values.
+
+</p>
+
+
+<p>
+
+The word <strong>discrete</strong> means individual or separate. Computer systems work with information represented as separate pieces such as bits, characters and numbers.
+
+</p>
+
+
+<div class="example">
+
+Discrete example:
+
+Number of students:
+
+40, 41, 42, 43
+
+
+You cannot have:
+
+40.5 students
+
+
+</div>
+
+
+<p>
+
+Discrete mathematics focuses on structures that can be analysed step by step, making it extremely important in Computer Science.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+02 · Discrete Mathematics vs Continuous Mathematics
+</h2>
+
+
+
+<p>
+
+Continuous mathematics studies values that can change smoothly and contain unlimited possible values.
+
+</p>
+
+
+<div class="example">
+
+Continuous:
+
+Temperature:
+
+25°C
+
+25.1°C
+
+25.15°C
+
+25.153°C
+
+
+</div>
+
+
+<p>
+
+Discrete mathematics deals with separate values that can be counted.
+
+</p>
+
+
+<div class="example">
+
+Discrete:
+
+Number of computers:
+
+1
+
+2
+
+3
+
+4
+
+</div>
+
+
+<div class="note">
+
+Computer systems are mainly discrete because digital devices represent information using separate states such as 0 and 1.
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+03 · Why Computer Scientists Study Discrete Mathematics
+</h2>
+
+
+
+<p>
+
+Computer Science is built on mathematical thinking. Discrete structures provide the tools used to design, analyse and improve computer systems.
+
+</p>
+
+
+<ul>
+
+<li>Algorithms use logical step-by-step processes.</li>
+
+<li>Programming uses conditions and Boolean logic.</li>
+
+<li>Databases organise information using sets and relations.</li>
+
+<li>Networks are represented using graphs.</li>
+
+<li>Artificial intelligence uses mathematical models.</li>
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t4">
+
+
+<h2>
+04 · Introduction to Mathematical Logic
+</h2>
+
+
+<p>
+
+Logic is the study of correct reasoning. In Computer Science, logic allows machines to make decisions based on rules.
+
+</p>
+
+
+<p>
+
+Programming languages use logical statements to control what a program does.
+
+</p>
+
+
+<div class="example">
+
+Example:
+
+IF password is correct
+
+THEN allow access
+
+ELSE deny access
+
+</div>
+
+
+<p>
+
+The basic building block of logic is called a <strong>proposition</strong>.
+
+</p>
+
+
+</div><!-- PART 2 START -->
+
+
+<div class="topic t5">
+
+
+<h2>
+05 · Propositions and Truth Values
+</h2>
+
+
+<p>
+
+A proposition is a statement that can be classified as either True or False, but not both.
+
+</p>
+
+
+<p>
+
+In mathematics and Computer Science, propositions are represented using letters such as P, Q and R.
+
+</p>
+
+
+<div class="example">
+
+P: Kenya is in Africa.
+
+Truth value:
+
+P = True
+
+
+Q: 10 is smaller than 3.
+
+Truth value:
+
+Q = False
+
+</div>
+
+
+<p>
+
+Questions, commands and opinions are not propositions because they cannot be assigned a definite truth value.
+
+</p>
+
+
+<div class="example">
+
+"Close the door."
+
+Not a proposition.
+
+
+"What is your name?"
+
+Not a proposition.
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t1">
+
+
+<h2>
+06 · Logical Variables
+</h2>
+
+
+<p>
+
+A logical variable represents a proposition. It stores a truth value: True (T) or False (F).
+
+</p>
+
+
+<div class="example">
+
+Let:
+
+P = "The computer is connected to the internet."
+
+
+Possible values:
+
+P = T
+
+or
+
+P = F
+
+</div>
+
+
+<p>
+
+Logical variables allow computer scientists to represent decisions mathematically.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+07 · The NOT Operator (¬)
+</h2>
+
+
+<p>
+
+The NOT operator reverses the truth value of a proposition.
+
+</p>
+
+
+<div class="example">
+
+If:
+
+P = True
+
+
+Then:
+
+¬P = False
+
+
+If:
+
+P = False
+
+
+Then:
+
+¬P = True
+
+</div>
+
+
+
+<table class="truth-table">
+
+
+<tr>
+
+<th>P</th>
+
+<th>¬P</th>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>True</td>
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+08 · The AND Operator (∧)
+</h2>
+
+
+<p>
+
+The AND operator combines two propositions. The result is True only when both propositions are True.
+
+</p>
+
+
+<div class="example">
+
+P = I have a laptop.
+
+Q = I have internet.
+
+
+P ∧ Q means:
+
+
+I have a laptop AND internet.
+
+</div>
+
+
+
+
+<table class="truth-table">
+
+
+<tr>
+
+<th>P</th>
+
+<th>Q</th>
+
+<th>P ∧ Q</th>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>True</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>False</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>True</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>False</td>
+
+<td>False</td>
+
+</tr>
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t4">
+
+
+<h2>
+09 · The OR Operator (∨)
+</h2>
+
+
+<p>
+
+The OR operator produces True if at least one proposition is True.
+
+</p>
+
+
+
+<div class="example">
+
+P = I will study Programming.
+
+Q = I will study Mathematics.
+
+
+P ∨ Q means:
+
+I will study Programming OR Mathematics.
+
+</div>
+
+
+
+
+<table class="truth-table">
+
+
+<tr>
+
+<th>P</th>
+
+<th>Q</th>
+
+<th>P ∨ Q</th>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>True</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>False</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>True</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>False</td>
+
+<td>False</td>
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t6">
+
+
+<h2>
+10 · XOR Operator (Exclusive OR)
+</h2>
+
+
+<p>
+
+XOR means "one or the other, but not both".
+
+</p>
+
+
+<p>
+
+It produces True when the two inputs are different.
+
+</p>
+
+
+
+<table class="truth-table">
+
+
+<tr>
+
+<th>P</th>
+
+<th>Q</th>
+
+<th>P XOR Q</th>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>True</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>False</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>True</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>False</td>
+
+<td>False</td>
+
+</tr>
+
+
+</table>
+
+
+
+</div><!-- PART 3 START -->
+
+
+<div class="topic t1">
+
+
+<h2>
+11 · Implication Operator (→)
+</h2>
+
+
+<p>
+
+An implication is a logical statement that shows a condition and a result.
+
+</p>
+
+
+<p>
+
+It is written as:
+
+</p>
+
+
+<div class="example">
+
+P → Q
+
+
+Meaning:
+
+
+"If P is true, then Q must happen."
+
+</div>
+
+
+
+<p>
+
+Example:
+
+</p>
+
+
+<div class="example">
+
+P = I study hard.
+
+Q = I pass my exam.
+
+
+P → Q
+
+
+If I study hard, then I pass my exam.
+
+</div>
+
+
+
+<table class="truth-table">
+
+
+<tr>
+<th>P</th>
+<th>Q</th>
+<th>P → Q</th>
+</tr>
+
+
+<tr>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+
+
+<tr>
+<td>True</td>
+<td>False</td>
+<td>False</td>
+</tr>
+
+
+<tr>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+</tr>
+
+
+<tr>
+<td>False</td>
+<td>False</td>
+<td>True</td>
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+12 · Biconditional Operator (↔)
+</h2>
+
+
+<p>
+
+A biconditional means that two statements are true together or false together.
+
+</p>
+
+
+<div class="example">
+
+P ↔ Q
+
+
+Means:
+
+
+"P if and only if Q."
+
+</div>
+
+
+<p>
+
+Example:
+
+</p>
+
+
+<div class="example">
+
+A number is even
+
+if and only if
+
+it can be divided by 2 without a remainder.
+
+</div>
+
+
+
+
+<table class="truth-table">
+
+
+<tr>
+
+<th>P</th>
+
+<th>Q</th>
+
+<th>P ↔ Q</th>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>True</td>
+
+<td>True</td>
+
+</tr>
+
+
+<tr>
+
+<td>True</td>
+
+<td>False</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>True</td>
+
+<td>False</td>
+
+</tr>
+
+
+<tr>
+
+<td>False</td>
+
+<td>False</td>
+
+<td>True</td>
+
+</tr>
+
+
+</table>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+13 · Logical Equivalence
+</h2>
+
+
+<p>
+
+Two logical expressions are equivalent if they always produce the same truth value.
+
+</p>
+
+
+<p>
+
+The symbol used is:
+
+</p>
+
+
+<div class="example">
+
+P ≡ Q
+
+</div>
+
+
+<p>
+
+Example:
+
+</p>
+
+
+<div class="example">
+
+¬(P ∧ Q) ≡ ¬P ∨ ¬Q
+
+</div>
+
+
+<p>
+
+This is one of De Morgan's Laws.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t4">
+
+
+<h2>
+14 · Tautology, Contradiction and Contingency
+</h2>
+
+
+<h3>Tautology</h3>
+
+
+<p>
+
+A tautology is a statement that is always True.
+
+</p>
+
+
+<div class="example">
+
+P ∨ ¬P
+
+
+A statement is either true or its opposite is true.
+
+</div>
+
+
+
+
+<h3>Contradiction</h3>
+
+
+<p>
+
+A contradiction is a statement that is always False.
+
+</p>
+
+
+<div class="example">
+
+P ∧ ¬P
+
+
+A statement cannot be both true and false.
+
+</div>
+
+
+
+
+<h3>Contingency</h3>
+
+
+<p>
+
+A contingency is a statement that can be True or False depending on the situation.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t5">
+
+
+<h2>
+15 · Important Laws of Logic
+</h2>
+
+
+<p>
+
+Logical laws help simplify complex expressions.
+
+</p>
+
+
+
+<div class="example">
+
+
+Identity Laws:
+
+P ∧ True = P
+
+
+P ∨ False = P
+
+
+
+Domination Laws:
+
+P ∨ True = True
+
+
+P ∧ False = False
+
+
+
+Double Negation:
+
+¬(¬P) = P
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t6">
+
+
+<h2>
+16 · De Morgan's Laws
+</h2>
+
+
+<p>
+
+De Morgan's Laws describe how NOT changes when applied to combined statements.
+
+</p>
+
+
+<div class="example">
+
+
+First Law:
+
+
+¬(P ∧ Q) = ¬P ∨ ¬Q
+
+
+
+Second Law:
+
+
+¬(P ∨ Q) = ¬P ∧ ¬Q
+
+
+
+</div>
+
+
+<p>
+
+These laws are very important in programming, digital circuits and Boolean algebra.
+
+</p>
+
+
+</div><!-- PART 4 START -->
+
+
+<div class="topic t1">
+
+
+<h2>
+17 · Introduction to Sets
+</h2>
+
+
+<p>
+
+A set is a well-defined collection of objects called elements or members.
+
+</p>
+
+
+<p>
+
+Sets are represented using curly brackets { }.
+
+</p>
+
+
+
+<div class="example">
+
+
+A = {2,4,6,8}
+
+
+The elements of set A are:
+
+2, 4, 6 and 8
+
+
+</div>
+
+
+<p>
+
+If an object belongs to a set, we use the symbol:
+
+</p>
+
+
+<div class="example">
+
+∈ means "is an element of"
+
+
+Example:
+
+
+4 ∈ A
+
+
+</div>
+
+
+<p>
+
+If an object does not belong to a set, we use:
+
+</p>
+
+
+<div class="example">
+
+∉ means "is not an element of"
+
+
+Example:
+
+
+5 ∉ A
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+18 · Ways of Representing Sets
+</h2>
+
+
+<p>
+
+Sets can be represented in different ways.
+
+</p>
+
+
+<h3>
+1. Roster Method
+</h3>
+
+
+<p>
+
+Elements are listed inside brackets.
+
+</p>
+
+
+<div class="example">
+
+A = {1,2,3,4,5}
+
+</div>
+
+
+
+<h3>
+2. Set Builder Method
+</h3>
+
+
+<p>
+
+A set is described using a rule.
+
+</p>
+
+
+<div class="example">
+
+
+A = {x | x is an even number less than 10}
+
+
+Meaning:
+
+
+A contains all even numbers below 10.
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+19 · Types of Sets
+</h2>
+
+
+<h3>
+Empty Set
+</h3>
+
+
+<p>
+
+A set containing no elements.
+
+</p>
+
+
+<div class="example">
+
+A = { }
+
+or
+
+A = ∅
+
+</div>
+
+
+
+<h3>
+Finite Set
+</h3>
+
+
+<p>
+
+A set with a limited number of elements.
+
+</p>
+
+
+<div class="example">
+
+B = {1,2,3,4}
+
+</div>
+
+
+
+<h3>
+Infinite Set
+</h3>
+
+
+<p>
+
+A set that continues forever.
+
+</p>
+
+
+<div class="example">
+
+N = {1,2,3,4,5,...}
+
+</div>
+
+
+
+<h3>
+Universal Set
+</h3>
+
+
+<p>
+
+The universal set contains all objects being considered in a problem.
+
+</p>
+
+
+<div class="example">
+
+U = {1,2,3,4,5,6,7,8}
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="topic t4">
+
+
+<h2>
+20 · Subsets
+</h2>
+
+
+<p>
+
+A set A is a subset of set B if every element in A is also contained in B.
+
+</p>
+
+
+<p>
+
+The symbol used is:
+
+</p>
+
+
+<div class="example">
+
+A ⊆ B
+
+</div>
+
+
+
+<div class="example">
+
+A = {1,2}
+
+
+B = {1,2,3,4}
+
+
+Therefore:
+
+
+A ⊆ B
+
+</div>
+
+
+<p>
+
+Every element of A appears in B.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t5">
+
+
+<h2>
+21 · Power Sets
+</h2>
+
+
+<p>
+
+The power set is the collection of all possible subsets of a set.
+
+</p>
+
+
+
+<div class="example">
+
+
+A = {1,2}
+
+
+Subsets:
+
+
+∅
+
+{1}
+
+{2}
+
+{1,2}
+
+
+
+Power Set:
+
+
+P(A) = {∅,{1},{2},{1,2}}
+
+
+</div>
+
+
+<p>
+
+If a set contains n elements, the number of subsets is:
+
+</p>
+
+
+<div class="example">
+
+Number of subsets = 2ⁿ
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t6">
+
+
+<h2>
+22 · Set Operations
+</h2>
+
+
+<p>
+
+Set operations allow us to combine and compare sets.
+
+</p>
+
+
+
+<h3>
+Union ( ∪ )
+</h3>
+
+
+<p>
+
+Union contains every element from both sets without repetition.
+
+</p>
+
+
+
+<div class="example">
+
+
+A = {1,2,3}
+
+
+B = {3,4,5}
+
+
+
+A ∪ B = {1,2,3,4,5}
+
+
+</div>
+
+
+
+
+<h3>
+Intersection ( ∩ )
+</h3>
+
+
+<p>
+
+Intersection contains only elements that appear in both sets.
+
+</p>
+
+
+<div class="example">
+
+
+A = {1,2,3}
+
+
+B = {3,4,5}
+
+
+
+A ∩ B = {3}
+
+
+</div>
+
+
+
+</div><!-- PART 5 START -->
+
+
+<div class="topic t1">
+
+
+<h2>
+23 · Venn Diagram Applications
+</h2>
+
+
+<p>
+Venn diagrams help us understand relationships between different sets. They are commonly used in databases, probability and classification problems.
+</p>
+
+
+<div class="venn">
+
+<div class="circle circle-a">
+A
+</div>
+
+<div class="circle circle-b">
+B
+</div>
+
+</div>
+
+
+<div class="example">
+
+Example:
+
+A = {1,2,3,4}
+
+B = {3,4,5,6}
+
+
+Common elements:
+
+A ∩ B = {3,4}
+
+
+Elements in both sets:
+
+A ∪ B = {1,2,3,4,5,6}
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+24 · Difference of Sets
+</h2>
+
+
+<p>
+The difference between sets shows elements that exist in one set but not in another.
+</p>
+
+
+<div class="example">
+
+A = {1,2,3,4}
+
+B = {3,4,5,6}
+
+
+A - B = {1,2}
+
+
+B - A = {5,6}
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+25 · Complement of a Set
+</h2>
+
+
+<p>
+The complement of a set contains all elements in the universal set that are not part of that set.
+</p>
+
+
+<div class="example">
+
+Universal Set:
+
+U = {1,2,3,4,5,6}
+
+
+A = {1,2,3}
+
+
+A' = {4,5,6}
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t4">
+
+
+<h2>
+26 · Relations
+</h2>
+
+
+<p>
+A relation describes how elements from one set are connected to elements of another set.
+</p>
+
+
+<div class="example">
+
+Set A:
+
+{1,2,3}
+
+
+Set B:
+
+{a,b,c}
+
+
+Relation:
+
+{(1,a),(2,b),(3,c)}
+
+</div>
+
+
+<p>
+Relations are important in databases because they show connections between different pieces of information.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t5">
+
+
+<h2>
+27 · Functions
+</h2>
+
+
+<p>
+A function is a relation where every input has exactly one output.
+</p>
+
+
+<div class="example">
+
+f(x)=2x
+
+
+When x = 4:
+
+
+f(4)=2(4)
+
+
+f(4)=8
+
+</div>
+
+
+
+<div class="mapping">
+
+<div>
+
+Input<br>
+1<br>
+2<br>
+3
+
+</div>
+
+
+<div>
+
+↓<br>
+↓<br>
+↓
+
+</div>
+
+
+<div>
+
+Output<br>
+2<br>
+4<br>
+6
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t6">
+
+
+<h2>
+28 · Boolean Algebra
+</h2>
+
+
+<p>
+Boolean algebra is the mathematics used by digital computers. It works using two values:
+</p>
+
+
+<ul>
+
+<li>1 = True / ON</li>
+
+<li>0 = False / OFF</li>
+
+</ul>
+
+
+
+<div class="example">
+
+AND:
+
+1 AND 1 = 1
+
+
+OR:
+
+1 OR 0 = 1
+
+
+NOT:
+
+NOT 1 = 0
+
+</div>
+
+
+<p>
+Boolean algebra is the foundation of processors, memory and digital circuits.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t1">
+
+
+<h2>
+29 · Number Systems
+</h2>
+
+
+<p>
+Computers use different number systems to store and process information.
+</p>
+
+
+<ul>
+
+<li>Decimal — Base 10</li>
+
+<li>Binary — Base 2</li>
+
+<li>Octal — Base 8</li>
+
+<li>Hexadecimal — Base 16</li>
+
+</ul>
+
+
+
+<div class="example">
+
+Convert:
+
+(1011)₂
+
+
+= (1×2³)+(0×2²)+(1×2¹)+(1×2⁰)
+
+
+= 8+0+2+1
+
+
+= 11₁₀
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t2">
+
+
+<h2>
+30 · Graph Theory
+</h2>
+
+
+<p>
+Graph theory studies networks made of vertices and edges.
+</p>
+
+
+<ul>
+
+<li>Vertex = a point/node</li>
+
+<li>Edge = connection between nodes</li>
+
+</ul>
+
+
+
+<div class="example">
+
+      A
+
+     / \
+
+    B---C
+
+
+</div>
+
+
+<p>
+Applications include:
+</p>
+
+
+<ul>
+
+<li>Computer networks</li>
+
+<li>Navigation systems</li>
+
+<li>Social networks</li>
+
+<li>Artificial intelligence</li>
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="topic t3">
+
+
+<h2>
+📌 Final Revision Summary
+</h2>
+
+
+<ul>
+
+<li>Discrete mathematics provides the foundation of Computer Science.</li>
+
+<li>Logic allows computers to make decisions.</li>
+
+<li>Sets organise information.</li>
+
+<li>Relations describe connections.</li>
+
+<li>Functions map inputs to outputs.</li>
+
+<li>Boolean algebra controls digital systems.</li>
+
+<li>Number systems explain computer representation.</li>
+
+<li>Graphs model networks.</li>
+
+</ul>
+
+
+</div>
+
+
+</main>
+
+
+<footer>
+
+🌱 Discrete Structures I — CS Hub
+
+</footer>
+
+
+</body>
+
+</html>
