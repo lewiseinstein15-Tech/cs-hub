@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -24,6 +25,7 @@
 --sky:#5FB8E0;
 }
 
+
 *{
 margin:0;
 padding:0;
@@ -35,28 +37,30 @@ body{
 background:var(--soil);
 color:var(--fog);
 font-family:'Inter',sans-serif;
+min-height:100vh;
 }
 
 
 header{
 max-width:720px;
 margin:auto;
-padding:25px 24px;
+padding:25px 24px 10px;
 }
 
 
 .eyebrow{
 font-family:'JetBrains Mono',monospace;
-font-size:.75rem;
-color:var(--teal);
+font-size:.72rem;
 letter-spacing:.15em;
+text-transform:uppercase;
+color:var(--teal);
 }
 
 
 h1{
 font-family:'Space Grotesk',sans-serif;
-color:white;
 font-size:2.4rem;
+color:white;
 margin-top:10px;
 }
 
@@ -68,26 +72,25 @@ padding:20px 24px;
 }
 
 
-.description{
+.hero p{
 line-height:1.7;
 opacity:.85;
-margin-top:12px;
 }
 
 
 main{
 max-width:720px;
 margin:auto;
-padding:24px;
+padding:25px 24px 60px;
 }
 
 
 .unit{
 background:var(--card);
 border:1px solid var(--moss);
-border-radius:16px;
+border-radius:15px;
 padding:22px;
-margin-bottom:20px;
+margin-bottom:18px;
 transition:.3s;
 }
 
@@ -99,7 +102,7 @@ transform:translateY(-5px);
 
 .unit a{
 text-decoration:none;
-color:white;
+color:inherit;
 }
 
 
@@ -112,13 +115,14 @@ margin-bottom:8px;
 
 .unit h2{
 font-family:'Space Grotesk',sans-serif;
+color:white;
+font-size:1.2rem;
 margin-bottom:10px;
 }
 
 
 .unit p{
 line-height:1.6;
-color:var(--fog);
 }
 
 
@@ -134,12 +138,11 @@ border-left:5px solid var(--mint);
 
 footer{
 text-align:center;
-font-family:'JetBrains Mono',monospace;
-font-size:.75rem;
 padding:40px;
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
 color:var(--moss);
 }
-
 
 </style>
 
@@ -161,8 +164,8 @@ color:var(--moss);
 
 <section class="hero">
 
-<p class="description">
-The roots of Computer Science. These units build the fundamental knowledge required before moving into advanced areas like Artificial Intelligence, Data Science, Cybersecurity and Software Engineering.
+<p>
+The roots of Computer Science. These units create the foundation needed for advanced areas such as Artificial Intelligence, Data Science, Cybersecurity and Software Engineering.
 </p>
 
 </section>
@@ -175,10 +178,10 @@ The roots of Computer Science. These units build the fundamental knowledge requi
 
 <div class="unit u1">
 
-<a href="Unit-intro-cs.html">
+<a href="unit-intro-cs.html">
 
 <div class="unit-number">
-01 · YEAR 1 SEM 1
+01 · YEAR 1 · SEMESTER 1
 </div>
 
 <h2>
@@ -186,7 +189,7 @@ Introduction to Computer Science
 </h2>
 
 <p>
-Understanding computers, computation, history, hardware, software, algorithms and the foundations of the computing world.
+Explore the history of computing, hardware, software, algorithms, number systems and the fundamental ideas behind computer science.
 </p>
 
 </a>
@@ -201,7 +204,7 @@ Understanding computers, computation, history, hardware, software, algorithms an
 <a href="Unit-programming.html">
 
 <div class="unit-number">
-02 · YEAR 1 SEM 1
+02 · YEAR 1 · SEMESTER 1
 </div>
 
 <h2>
@@ -209,7 +212,7 @@ Programming
 </h2>
 
 <p>
-Learning how to transform ideas into computer programs through problem solving, algorithms, programming concepts and code.
+Learn problem solving, algorithms, programming concepts, data types, control structures, functions and software development foundations.
 </p>
 
 </a>
@@ -230,4 +233,5 @@ Learning how to transform ideas into computer programs through problem solving, 
 
 
 </body>
+
 </html>
