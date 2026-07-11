@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Computer Science | Foundation Zone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #0B1210;
+    --moss: #2A3B32;
+    --fog: #C8D6D0;
+    --card: #10201A;
+    --teal: #4FD1C5;
+    --amber: #E8B04B;
+    --coral: #F2836B;
+    --lavender: #B18AF0;
+    --sky: #5FB8E0;
+    --mint: #7ED9A6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--soil);
+    color: var(--fog);
+    font-family: 'Inter', sans-serif;
+    min-height: 100%;
+  }
+  a { color: inherit; }
+  header {
+    padding: 20px 24px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--fog);
+    border: 1px solid var(--moss);
+    padding: 6px 12px;
+    border-radius: 100px;
+  }
+  .unit-hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 24px 6px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 6vw, 2.4rem);
+    color: #fff;
+    line-height: 1.15;
+  }
+  .unit-sub {
+    margin-top: 10px;
+    color: var(--fog);
+    opacity: 0.8;
+    font-size: 0.95rem;
+    max-width: 560px;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 24px 60px;
+  }
+  .topic {
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--moss);
+    border-left: 4px solid var(--accent);
+    padding: 20px 20px 18px;
+    margin-bottom: 18px;
+  }
+  .topic-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .topic h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .topic p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--fog);
+  }
+  .topic p:last-child { margin-bottom: 0; }
+  .topic strong { color: #fff; }
+  .topic ul {
+    margin: 8px 0 12px 20px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .topic li { margin-bottom: 6px; }
+  .t1 { --accent: var(--teal); }
+  .t2 { --accent: var(--mint); }
+  .t3 { --accent: var(--amber); }
+  .t4 { --accent: var(--sky); }
+  .t5 { --accent: var(--lavender); }
+  .t6 { --accent: var(--coral); }
+  .t7 { --accent: var(--teal); }
+  .t8 { --accent: var(--amber); }
+  .recap {
+    background: linear-gradient(135deg, rgba(79,209,197,0.08), rgba(232,176,75,0.08));
+    border: 1px solid var(--moss);
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 26px;
+  }
+  .recap h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  .recap ul { margin-left: 20px; font-size: 0.9rem; line-height: 1.7; }
+  footer {
+    max-width: 720px;
+    margin: 20px auto 50px;
+    padding: 0 24px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--moss);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="foundation.html" class="back-link">← Foundation Zone</a>
+  <span class="back-link">🌱 Yr 1 · Sem 1</span>
+</header>
+
+<section class="unit-hero">
+  <div class="eyebrow">// unit notes</div>
+  <h1>Introduction to Computer Science</h1>
+  <p class="unit-sub">The unit that hands you the vocabulary and mental model for everything else in this ecosystem. Read it like a story: computers evolving, ideas branching, and you finding where you fit in.</p>
+</section>
+
+<main>
+
+  <div class="topic t1">
+    <div class="topic-eyebrow">01 · The Big Idea</div>
+    <h2>What is Computer Science?</h2>
+    <p>Computer Science is the study of <strong>computation</strong> — how information is represented, processed, stored, and transmitted, and how we design step-by-step instructions (algorithms) to make machines solve problems for us.</p>
+    <p>It's less about "using computers" and more about the thinking behind them: how do you break a messy real-world problem into logical steps a machine can follow reliably, every time?</p>
+  </div>
+
+  <div class="topic t2">
+    <div class="topic-eyebrow">02 · Why It Matters</div>
+    <h2>Why Study Computer Science?</h2>
+    <p>Nearly every modern industry — banking, agriculture, healthcare, government, entertainment — now runs on software. Understanding computation means you can automate the tedious, analyze the complex, and build tools other people rely on.</p>
+    <p>In the Kenyan context specifically: mobile money systems, e-government portals, agri-tech platforms, and telecom infrastructure are all built and maintained by computer scientists — this is a field with direct, visible impact.</p>
+  </div>
+
+  <div class="topic t3">
+    <div class="topic-eyebrow">03 · History</div>
+    <h2>Generations of Computers</h2>
+    <p>Computing hardware evolved in five broad waves — each one smaller, faster, and more accessible than the last:</p>
+    <ul>
+      <li><strong>1st Gen (1940s–50s):</strong> Vacuum tubes. Room-sized machines like ENIAC — huge power draw, huge heat.</li>
+      <li><strong>2nd Gen (1950s–60s):</strong> Transistors replaced vacuum tubes — smaller, faster, more reliable.</li>
+      <li><strong>3rd Gen (1960s–70s):</strong> Integrated circuits (ICs) packed multiple transistors onto one chip.</li>
+      <li><strong>4th Gen (1970s–present):</strong> Microprocessors — an entire CPU on a single chip. This is the era of the personal computer.</li>
+      <li><strong>5th Gen (present–future):</strong> AI-driven computing, parallel processing, and machine learning at the core of how systems are designed.</li>
+    </ul>
+  </div>
+
+  <div class="topic t4">
+    <div class="topic-eyebrow">04 · Foundations</div>
+    <h2>Hardware vs. Software</h2>
+    <p><strong>Hardware</strong> is everything you can physically touch: the CPU, RAM, storage drives, keyboard, screen. It's the "body" of the computer.</p>
+    <p><strong>Software</strong> is the instructions telling that hardware what to do — the "mind." It splits into two types:</p>
+    <ul>
+      <li><strong>System software</strong> — operating systems (Windows, Linux, Android) that manage the hardware itself.</li>
+      <li><strong>Application software</strong> — the programs you actually use: browsers, word processors, games, mobile apps.</li>
+    </ul>
+  </div>
+
+  <div class="topic t5">
+    <div class="topic-eyebrow">05 · The Language Underneath</div>
+    <h2>Number Systems</h2>
+    <p>At the lowest level, computers only understand two states: on and off — represented as <strong>binary</strong> (base 2: 0s and 1s). Every photo, song, and keystroke is ultimately just patterns of 0s and 1s.</p>
+    <p>Because binary gets long and hard to read, computer scientists also work with:</p>
+    <ul>
+      <li><strong>Decimal</strong> (base 10) — the numbers you use daily.</li>
+      <li><strong>Octal</strong> (base 8) — occasionally used in older systems.</li>
+      <li><strong>Hexadecimal</strong> (base 16) — used constantly in programming to represent binary data compactly (e.g. colour codes, memory addresses).</li>
+    </ul>
+    <p>You'll practice converting between these systems — it's a skill that shows up again in Discrete Structures and Computer Organization.</p>
+  </div>
+
+  <div class="topic t6">
+    <div class="topic-eyebrow">06 · Where You're Headed</div>
+    <h2>Branches & Career Paths</h2>
+    <p>Computer Science branches into specialized areas — and this hub's later zones map directly onto them:</p>
+    <ul>
+      <li><strong>Software Engineering</strong> — designing and building large-scale applications.</li>
+      <li><strong>Artificial Intelligence & Machine Learning</strong> — systems that learn patterns from data.</li>
+      <li><strong>Databases</strong> — organizing and retrieving information at scale.</li>
+      <li><strong>Networks & Cybersecurity</strong> — connecting systems, and protecting them.</li>
+      <li><strong>Human-Computer Interaction</strong> — designing how people actually use technology.</li>
+    </ul>
+    <p>Career-wise, this feeds into roles like Software Engineer, Data Scientist, Cybersecurity Analyst, Cloud Engineer, and Systems Administrator — all covered later in this hub's Career Map.</p>
+  </div>
+
+  <div class="topic t7">
+    <div class="topic-eyebrow">07 · The Core Skill</div>
+    <h2>Problem Solving & Algorithms</h2>
+    <p>An <strong>algorithm</strong> is simply a precise, ordered set of steps to solve a problem — like a recipe. Before you write a single line of code, computer scientists are trained to:</p>
+    <ul>
+      <li>Understand the problem clearly (inputs, outputs, constraints).</li>
+      <li>Break it into smaller sub-problems.</li>
+      <li>Design a step-by-step solution (often as pseudocode or a flowchart).</li>
+      <li>Only then translate that solution into a programming language.</li>
+    </ul>
+    <p>This "think before you code" habit is what separates strong programmers from those who just memorize syntax — and it's exactly what Programming I builds on next.</p>
+  </div>
+
+  <div class="topic t8">
+    <div class="topic-eyebrow">08 · Clearing Up Confusion</div>
+    <h2>CS vs. IT vs. Software Engineering</h2>
+    <p>These terms get used interchangeably, but they're distinct:</p>
+    <ul>
+      <li><strong>Computer Science</strong> — the theory of computation: algorithms, data structures, why things work.</li>
+      <li><strong>Information Technology (IT)</strong> — deploying, maintaining, and supporting computer systems and networks in an organization.</li>
+      <li><strong>Software Engineering</strong> — applying engineering discipline (planning, testing, teamwork) to build large, reliable software systems.</li>
+    </ul>
+    <p>A CS degree gives you the theoretical foundation that all three of these careers draw from.</p>
+  </div>
+
+  <div class="recap">
+    <h2>📌 Quick Recap for Revision</h2>
+    <ul>
+      <li>CS = the study of computation and problem-solving via algorithms.</li>
+      <li>5 generations of computers: vacuum tubes → transistors → ICs → microprocessors → AI-era computing.</li>
+      <li>Hardware = physical; Software = system vs. application.</li>
+      <li>Number systems: binary, decimal, octal, hexadecimal.</li>
+      <li>Branches: software engineering, AI/ML, databases, networks, HCI.</li>
+      <li>Algorithms = precise steps to solve a problem — think before you code.</li>
+      <li>CS ≠ IT ≠ Software Engineering — related but distinct.</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>🌱 introduction to computer science — foundation zone</footer>
+
+</body>
+</html>
