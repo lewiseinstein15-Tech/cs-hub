@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundation Zone — Year 1 | CS Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #0B1210;
+    --moss: #2A3B32;
+    --teal: #4FD1C5;
+    --amber: #E8B04B;
+    --fog: #C8D6D0;
+    --card: #10201A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--soil);
+    color: var(--fog);
+    font-family: 'Inter', sans-serif;
+    min-height: 100%;
+  }
+  a { color: inherit; }
+
+  header {
+    padding: 20px 24px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--fog);
+    border: 1px solid var(--moss);
+    padding: 6px 12px;
+    border-radius: 100px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .back-link:hover { border-color: var(--teal); color: var(--teal); }
+
+  .zone-hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 24px 8px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    color: #fff;
+  }
+  .zone-sub {
+    margin-top: 10px;
+    max-width: 520px;
+    color: var(--fog);
+    opacity: 0.85;
+    font-size: 0.95rem;
+  }
+
+  .semester {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 24px;
+  }
+  .semester-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--moss);
+  }
+
+  .unit {
+    background: var(--card);
+    border: 1px solid var(--moss);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .unit-header {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .unit-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #fff;
+  }
+  .unit-icon {
+    color: var(--teal);
+    font-size: 0.9rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .unit.open .unit-icon { transform: rotate(45deg); }
+
+  .unit-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 18px;
+    font-size: 0.9rem;
+    color: var(--fog);
+    opacity: 0.9;
+    border-top: 0px solid var(--moss);
+  }
+  .unit.open .unit-body {
+    max-height: 300px;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--moss);
+    padding-top: 12px;
+  }
+  .unit-body p { margin-bottom: 8px; }
+  .unit-body .placeholder {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--moss);
+  }
+
+  footer {
+    max-width: 720px;
+    margin: 30px auto 60px;
+    padding: 0 24px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--moss);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .unit-body, .unit-icon { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="back-link">← Hub</a>
+  <span class="back-link">🌱 Year 1</span>
+</header>
+
+<section class="zone-hero">
+  <div class="eyebrow">// foundation zone</div>
+  <h1>Year 1 — Building the Roots</h1>
+  <p class="zone-sub">Every ecosystem starts underground. These are the units where the fundamentals take hold — logic, math, and your first lines of code. Tap a unit to open its notes.</p>
+</section>
+
+<div class="semester">
+  <div class="semester-title">Semester 1</div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Introduction to Computer Science</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — this unit covers the history, scope, and foundations of computing.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Programming I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — intro to programming logic, syntax, and problem solving.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Computer Essentials</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — hardware, software, and everyday computer literacy.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Discrete Structures I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — sets, logic, relations, and proof techniques.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Calculus I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — limits, derivatives, and their applications.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Statistics and Probability I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — descriptive statistics and foundational probability.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Communication Skills</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — academic writing, presentation, and professional communication.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Electronics</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — basic electronic components and circuits.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Electrical Principles</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — circuit theory and electrical fundamentals.</p>
+    </div>
+  </div>
+</div>
+
+<div class="semester">
+  <div class="semester-title">Semester 2</div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Programming II</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — building on Programming I with more advanced constructs.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Discrete Structures II</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — graph theory, combinatorics, and further logic.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Data Structures and Algorithms I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — arrays, lists, stacks, queues, and complexity basics.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Database Systems I</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — relational databases, ER modeling, and SQL basics.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Computer Organization and Architecture</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — how hardware components work together at a system level.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Object-Oriented Programming</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — classes, objects, inheritance, and polymorphism.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Web Design and Development</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — HTML, CSS, and the basics of building for the web.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Linear Algebra</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — vectors, matrices, and linear transformations.</p>
+    </div>
+  </div>
+
+  <div class="unit">
+    <div class="unit-header" onclick="toggleUnit(this)">
+      <span class="unit-name">Operating Systems Fundamentals</span>
+      <span class="unit-icon">+</span>
+    </div>
+    <div class="unit-body">
+      <p class="placeholder">Notes coming soon — processes, memory management, and OS basics.</p>
+    </div>
+  </div>
+</div>
+
+<footer>🌱 foundation zone — kibabii university computer science</footer>
+
+<script>
+function toggleUnit(headerEl) {
+  const unit = headerEl.parentElement;
+  const wasOpen = unit.classList.contains('open');
+  document.querySelectorAll('.unit.open').forEach(u => {
+    if (u !== unit) {
+      u.classList.remove('open');
+      u.querySelector('.unit-icon').textContent = '+';
+    }
+  });
+  unit.classList.toggle('open');
+  headerEl.querySelector('.unit-icon').textContent = wasOpen ? '+' : '×';
+}
+</script>
+
+</body>
+</html>
