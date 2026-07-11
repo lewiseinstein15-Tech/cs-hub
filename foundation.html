@@ -6,11 +6,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Foundation Zone | CS Hub</title>
+<title>Year 1 | CS Hub</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
 
 <style>
 
@@ -24,7 +23,7 @@
 --mint:#7ED9A6;
 --amber:#E8B04B;
 --sky:#5FB8E0;
---lavender:#B18AF0;
+--purple:#B18AF0;
 --coral:#F2836B;
 }
 
@@ -44,70 +43,50 @@ font-family:'Inter',sans-serif;
 
 
 header{
-
 max-width:720px;
 margin:auto;
-padding:25px 24px 10px;
-
+padding:25px 24px;
 }
 
 
-.eyebrow{
-
+.tag{
 font-family:'JetBrains Mono',monospace;
 font-size:.72rem;
-letter-spacing:.15em;
-text-transform:uppercase;
 color:var(--teal);
-
+letter-spacing:.15em;
 }
 
 
 h1{
-
 font-family:'Space Grotesk',sans-serif;
 font-size:2.4rem;
 color:white;
 margin-top:10px;
-
-}
-
-
-.hero{
-
-max-width:720px;
-margin:auto;
-padding:20px 24px;
-
-}
-
-
-.hero p{
-
-line-height:1.7;
-opacity:.85;
-
 }
 
 
 main{
-
 max-width:720px;
 margin:auto;
 padding:24px;
-
 }
 
 
-.section-title{
+.intro{
+line-height:1.7;
+margin-bottom:25px;
+opacity:.85;
+}
+
+
+.semester{
 
 font-family:'Space Grotesk',sans-serif;
 font-size:1.3rem;
 color:white;
-margin:20px 0;
+margin-bottom:15px;
 
 }
-
 
 
 .unit{
@@ -124,17 +103,13 @@ transition:.3s;
 
 
 .unit:hover{
-
 transform:translateY(-5px);
-
 }
 
 
 .unit a{
-
 text-decoration:none;
 color:inherit;
-
 }
 
 
@@ -153,14 +128,6 @@ margin-bottom:8px;
 font-family:'Space Grotesk',sans-serif;
 color:white;
 font-size:1.15rem;
-margin-bottom:8px;
-
-}
-
-
-.unit p{
-
-line-height:1.6;
 
 }
 
@@ -169,11 +136,10 @@ line-height:1.6;
 .u2{--accent:var(--mint);}
 .u3{--accent:var(--amber);}
 .u4{--accent:var(--sky);}
-.u5{--accent:var(--lavender);}
+.u5{--accent:var(--purple);}
 .u6{--accent:var(--coral);}
 .u7{--accent:var(--teal);}
 .u8{--accent:var(--mint);}
-
 
 
 footer{
@@ -181,16 +147,14 @@ footer{
 text-align:center;
 padding:40px;
 font-family:'JetBrains Mono',monospace;
-font-size:.72rem;
+font-size:.7rem;
 color:var(--moss);
 
 }
 
-
 </style>
 
 </head>
-
 
 
 <body>
@@ -198,30 +162,25 @@ color:var(--moss);
 
 <header>
 
-<div class="eyebrow">// foundation zone</div>
+<div class="tag">// year 1 ecosystem</div>
 
-<h1>🌱 Year 1 Foundation</h1>
+<h1>🌱 First Year</h1>
 
 </header>
-
-
-
-<section class="hero">
-
-<p>
-The first stage of the Computer Science ecosystem. These units build the mathematical, programming, and computing foundations required for advanced topics such as Artificial Intelligence, Data Science, Cybersecurity, and Software Engineering.
-</p>
-
-</section>
 
 
 
 <main>
 
 
+<p class="intro">
+The first year foundation units. Select a unit to enter its complete notes and learning ecosystem.
+</p>
 
-<h2 class="section-title">
-Year 1 · Semester 1
+
+
+<h2 class="semester">
+Semester 1 Units
 </h2>
 
 
@@ -230,22 +189,13 @@ Year 1 · Semester 1
 
 <a href="unit-intro-cs.html">
 
-<div class="number">
-01 · COMPUTER SCIENCE
-</div>
+<div class="number">01</div>
 
-<h2>
-Introduction to Computer Science
-</h2>
-
-<p>
-Introduction to computing concepts, history of computers, hardware, software, algorithms and the foundations of computer science.
-</p>
+<h2>Introduction to Computer Science</h2>
 
 </a>
 
 </div>
-
 
 
 
@@ -253,17 +203,9 @@ Introduction to computing concepts, history of computers, hardware, software, al
 
 <a href="Unit-programming.html">
 
-<div class="number">
-02 · PROGRAMMING
-</div>
+<div class="number">02</div>
 
-<h2>
-Programming
-</h2>
-
-<p>
-Problem solving, algorithms, programming concepts, data types, control structures, functions and software development basics.
-</p>
+<h2>Programming</h2>
 
 </a>
 
@@ -271,115 +213,85 @@ Problem solving, algorithms, programming concepts, data types, control structure
 
 
 
-
 <div class="unit u3">
 
-<div class="number">
-03 · DISCRETE STRUCTURES I
-</div>
+<a href="Unit-discrete-structures.html">
 
-<h2>
-Discrete Structures I
-</h2>
+<div class="number">03</div>
 
-<p>
-Logic, sets, relations, functions, Boolean algebra and mathematical foundations of computing.
-</p>
+<h2>Discrete Structures I</h2>
+
+</a>
 
 </div>
-
 
 
 
 <div class="unit u4">
 
-<div class="number">
-04 · MATHEMATICS
-</div>
+<a href="Unit-calculus.html">
 
-<h2>
-Calculus I
-</h2>
+<div class="number">04</div>
 
-<p>
-Limits, differentiation, integration and mathematical tools used in computing.
-</p>
+<h2>Calculus I</h2>
+
+</a>
 
 </div>
-
 
 
 
 <div class="unit u5">
 
-<div class="number">
-05 · STATISTICS
-</div>
+<a href="Unit-statistics.html">
 
-<h2>
-Statistics and Probability I
-</h2>
+<div class="number">05</div>
 
-<p>
-Probability concepts, data analysis and statistical methods used in computer science.
-</p>
+<h2>Statistics and Probability I</h2>
+
+</a>
 
 </div>
-
 
 
 
 <div class="unit u6">
 
-<div class="number">
-06 · ELECTRONICS
-</div>
+<a href="Unit-electronics.html">
 
-<h2>
-Electronics
-</h2>
+<div class="number">06</div>
 
-<p>
-Basic electronic principles, components and digital systems.
-</p>
+<h2>Electronics</h2>
+
+</a>
 
 </div>
-
 
 
 
 <div class="unit u7">
 
-<div class="number">
-07 · ELECTRICAL PRINCIPLES
-</div>
+<a href="Unit-electrical-principles.html">
 
-<h2>
-Electrical Principles
-</h2>
+<div class="number">07</div>
 
-<p>
-Fundamentals of electricity, circuits and electrical systems.
-</p>
+<h2>Electrical Principles</h2>
+
+</a>
 
 </div>
-
 
 
 
 <div class="unit u8">
 
-<div class="number">
-08 · COMMUNICATION SKILLS
-</div>
+<a href="Unit-communication-skills.html">
 
-<h2>
-Communication Skills
-</h2>
+<div class="number">08</div>
 
-<p>
-Academic writing, presentations and professional communication for computing students.
-</p>
+<h2>Communication Skills</h2>
+
+</a>
 
 </div>
 
@@ -391,10 +303,9 @@ Academic writing, presentations and professional communication for computing stu
 
 <footer>
 
-🌱 CS Hub — Foundation Ecosystem
+🌱 CS Hub — Year 1 Ecosystem
 
 </footer>
-
 
 
 </body>
