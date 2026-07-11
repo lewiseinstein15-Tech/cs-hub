@@ -1,205 +1,1503 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS Hub — Computer Science Ecosystem</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<title>CS Hub | Computer Science Ecosystem</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
 <style>
-  :root {
-    --soil: #0B1210;
-    --moss: #2A3B32;
-    --teal: #4FD1C5;
-    --amber: #E8B04B;
-    --fog: #C8D6D0;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
-    background: var(--soil);
-    color: var(--fog);
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    height: 100%;
-  }
-  canvas#network {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-  }
-  .hero {
-    position: relative;
-    z-index: 1;
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 18px;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.2s;
-  }
-  h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: clamp(2.2rem, 8vw, 4.5rem);
-    line-height: 1.05;
-    color: #fff;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.5s;
-  }
-  h1 span {
-    color: var(--teal);
-  }
-  .sub {
-    max-width: 540px;
-    margin-top: 20px;
-    font-size: 1rem;
-    color: var(--fog);
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 0.9s;
-  }
-  .zones {
-    display: flex;
-    gap: 14px;
-    margin-top: 42px;
-    flex-wrap: wrap;
-    justify-content: center;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.3s;
-  }
-  .zone-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.05em;
-    padding: 8px 14px;
-    border: 1px solid var(--moss);
-    border-radius: 100px;
-    color: var(--fog);
-    transition: border-color 0.3s, color 0.3s;
-  }
-  .zone-tag:hover {
-    border-color: var(--teal);
-    color: var(--teal);
-  }
-  .scroll-hint {
-    position: absolute;
-    bottom: 28px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--moss);
-    opacity: 0;
-    animation: fadeIn 1s ease forwards 1.8s;
-  }
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; opacity: 1 !important; }
-  }
+
+:root{
+
+--soil:#07100D;
+--forest:#10201A;
+--moss:#2A3B32;
+--fog:#C8D6D0;
+
+--teal:#4FD1C5;
+--green:#7ED9A6;
+--amber:#E8B04B;
+--purple:#B18AF0;
+
+}
+
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+
+
+body{
+
+background:var(--soil);
+color:var(--fog);
+font-family:'Inter',sans-serif;
+overflow-x:hidden;
+
+}
+
+
+
+/* animated ecosystem background */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:500px;
+height:500px;
+
+background:radial-gradient(circle,
+rgba(79,209,197,0.15),
+transparent 70%);
+
+top:-150px;
+left:-150px;
+
+animation:float 8s infinite alternate;
+
+z-index:-1;
+
+}
+
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+width:400px;
+height:400px;
+
+background:radial-gradient(circle,
+rgba(126,217,166,0.12),
+transparent 70%);
+
+bottom:-100px;
+right:-100px;
+
+animation:float 10s infinite alternate-reverse;
+
+z-index:-1;
+
+}
+
+
+
+@keyframes float{
+
+from{
+
+transform:translateY(0px);
+
+}
+
+
+to{
+
+transform:translateY(80px);
+
+}
+
+}
+
+
+
+
+header{
+
+max-width:900px;
+margin:auto;
+
+padding:25px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+.logo{
+
+font-family:'Space Grotesk';
+
+font-size:1.5rem;
+
+color:white;
+
+}
+
+
+
+.logo span{
+
+color:var(--teal);
+
+}
+
+
+
+.menu{
+
+font-family:'JetBrains Mono';
+
+font-size:.8rem;
+
+color:var(--fog);
+
+}
+
+
+
+
+
+.hero{
+
+max-width:900px;
+
+margin:auto;
+
+padding:80px 25px;
+
+text-align:center;
+
+}
+
+
+
+
+.tag{
+
+font-family:'JetBrains Mono';
+
+letter-spacing:.2em;
+
+font-size:.75rem;
+
+color:var(--teal);
+
+}
+
+
+
+
+h1{
+
+font-family:'Space Grotesk';
+
+font-size:clamp(2.5rem,8vw,4.5rem);
+
+color:white;
+
+margin:20px 0;
+
+line-height:1.1;
+
+}
+
+
+
+h1 span{
+
+color:var(--teal);
+
+}
+
+
+
+
+.hero p{
+
+max-width:650px;
+
+margin:auto;
+
+font-size:1.1rem;
+
+line-height:1.7;
+
+opacity:.85;
+
+}
+
+
+
+
+.buttons{
+
+margin-top:35px;
+
+display:flex;
+
+justify-content:center;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+
+.btn{
+
+padding:14px 28px;
+
+border-radius:30px;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+
+
+.primary{
+
+background:var(--teal);
+
+color:#07100D;
+
+}
+
+
+
+.secondary{
+
+border:1px solid var(--moss);
+
+color:white;
+
+}
+
+
+
+.btn:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+
 </style>
+
+
 </head>
+
+
+
 <body>
 
-<canvas id="network"></canvas>
+
+
+<header>
+
+
+<div class="logo">
+
+CS<span>Hub</span> 🌱
+
+</div>
+
+
+<div class="menu">
+
+COMPUTER SCIENCE ECOSYSTEM
+
+</div>
+
+
+</header>
+
+
+
+
 
 <section class="hero">
-  <div class="eyebrow">// a living computer science ecosystem</div>
-  <h1>Grow through <span>Computer Science</span><br>one zone at a time</h1>
-  <p class="sub">From first-year foundations to final-year research — explore units, projects, and career paths the way knowledge actually spreads: connected, branching, alive.</p>
-  <div class="zones">
-    <a href="foundation.html" class="zone-tag" style="text-decoration:none;">🌱 Foundation — Yr 1</a>
-    <span class="zone-tag">🌿 Growth — Yr 2</span>
-    <span class="zone-tag">🌳 Advanced — Yr 3</span>
-    <span class="zone-tag">🌲 Expert — Yr 4</span>
-  </div>
-  <div class="scroll-hint">↓ scroll to explore the network</div>
+
+
+<div class="tag">
+
+// BUILD · LEARN · CREATE
+
+</div>
+
+
+
+<h1>
+
+Your Computer Science
+
+<span>Ecosystem</span>
+
+</h1>
+
+
+
+<p>
+
+A complete learning universe where computer science knowledge grows from mathematical foundations into artificial intelligence, software engineering, cybersecurity and innovation.
+
+</p>
+
+
+
+<div class="buttons">
+
+
+<a href="Foundation.html" class="btn primary">
+
+Start Learning 🚀
+
+</a>
+
+
+<a href="#ecosystem" class="btn secondary">
+
+Explore Ecosystem 🌳
+
+</a>
+
+
+</div>
+
+
+</section><!-- PART 2 START -->
+
+
+<section id="ecosystem" class="ecosystem">
+
+
+<h2>
+🌳 Computer Science Learning Ecosystem
+</h2>
+
+
+<p>
+
+Every great computer scientist grows from strong foundations. Follow the ecosystem from roots to innovation.
+
+</p>
+
+
+
+<div class="tree">
+
+
+
+<div class="level roots">
+
+
+<h3>
+🌱 Roots · Foundations
+</h3>
+
+
+<p>
+
+Mathematics • Logic • Programming Fundamentals • Computer Essentials
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="branches">
+
+
+
+<a href="Foundation.html" class="zone year1">
+
+
+<h3>
+🌱 Year 1
+</h3>
+
+
+<h4>
+Foundation Zone
+</h4>
+
+
+<p>
+
+Build the basic language of Computer Science.
+
+</p>
+
+
+</a>
+
+
+
+
+
+
+<div class="zone year2">
+
+
+<h3>
+🌿 Year 2
+</h3>
+
+
+<h4>
+Core Computing Zone
+</h4>
+
+
+<p>
+
+Algorithms, databases, operating systems and deeper programming.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="zone year3">
+
+
+<h3>
+🌳 Year 3
+</h3>
+
+
+<h4>
+Specialization Zone
+</h4>
+
+
+<p>
+
+Artificial Intelligence, Data Science, Cybersecurity and advanced systems.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="zone year4">
+
+
+<h3>
+🌲 Year 4
+</h3>
+
+
+<h4>
+Innovation & Research Zone
+</h4>
+
+
+<p>
+
+Projects, research, industry skills and final year development.
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
 </section>
 
-<script>
-const canvas = document.getElementById('network');
-const ctx = canvas.getContext('2d');
-let w, h, nodes = [];
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function resize() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
 
-const NODE_COUNT = window.innerWidth < 600 ? 32 : 55;
-const MAX_DIST = window.innerWidth < 600 ? 110 : 150;
 
-for (let i = 0; i < NODE_COUNT; i++) {
-  nodes.push({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    vx: (Math.random() - 0.5) * 0.25,
-    vy: (Math.random() - 0.5) * 0.25,
-    r: Math.random() * 1.5 + 0.8,
-    pulse: Math.random() * Math.PI * 2
-  });
+
+<style>
+
+
+.ecosystem{
+
+max-width:950px;
+
+margin:auto;
+
+padding:60px 25px;
+
+text-align:center;
+
 }
 
-function draw() {
-  ctx.clearRect(0, 0, w, h);
 
-  // connections
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const a = nodes[i], b = nodes[j];
-      const dx = a.x - b.x, dy = a.y - b.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < MAX_DIST) {
-        const opacity = (1 - dist / MAX_DIST) * 0.35;
-        ctx.strokeStyle = `rgba(79, 209, 197, ${opacity})`;
-        ctx.lineWidth = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
-      }
-    }
-  }
 
-  // nodes
-  for (const n of nodes) {
-    n.pulse += 0.02;
-    const glow = 0.5 + Math.sin(n.pulse) * 0.3;
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, n.r * 1.8, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(232, 176, 75, ${glow * 0.15})`;
-    ctx.fill();
+.ecosystem h2{
 
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(79, 209, 197, ${glow})`;
-    ctx.fill();
+font-family:'Space Grotesk';
 
-    if (!reduceMotion) {
-      n.x += n.vx;
-      n.y += n.vy;
-      if (n.x < 0 || n.x > w) n.vx *= -1;
-      if (n.y < 0 || n.y > h) n.vy *= -1;
-    }
-  }
+font-size:2rem;
 
-  requestAnimationFrame(draw);
+color:white;
+
+margin-bottom:15px;
+
 }
-draw();
-</script>
+
+
+
+.ecosystem>p{
+
+line-height:1.7;
+
+opacity:.8;
+
+margin-bottom:40px;
+
+}
+
+
+
+.tree{
+
+display:flex;
+
+flex-direction:column;
+
+gap:30px;
+
+}
+
+
+
+.level,
+.zone{
+
+
+background:var(--forest);
+
+border:1px solid var(--moss);
+
+border-radius:20px;
+
+padding:25px;
+
+transition:.3s;
+
+}
+
+
+
+.level h3,
+.zone h3{
+
+font-family:'Space Grotesk';
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+
+
+.zone h4{
+
+color:var(--teal);
+
+margin-bottom:12px;
+
+}
+
+
+
+.zone p{
+
+line-height:1.6;
+
+}
+
+
+
+.branches{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+}
+
+
+
+.zone{
+
+text-decoration:none;
+
+color:var(--fog);
+
+}
+
+
+
+.zone:hover{
+
+transform:translateY(-8px);
+
+border-color:var(--teal);
+
+}
+
+
+
+.year1{
+
+border-left:5px solid var(--teal);
+
+}
+
+
+
+.year2{
+
+border-left:5px solid var(--green);
+
+}
+
+
+
+.year3{
+
+border-left:5px solid var(--purple);
+
+}
+
+
+
+.year4{
+
+border-left:5px solid var(--amber);
+
+}
+
+
+
+</style><!-- PART 3 START -->
+
+
+<section class="career">
+
+
+<h2>
+🧭 Computer Science Career Map
+</h2>
+
+
+<p>
+
+Computer Science opens different paths. Grow your skills and choose your branch.
+
+</p>
+
+
+
+<div class="career-grid">
+
+
+
+<div class="career-card">
+
+<h3>
+🤖 AI Engineer
+</h3>
+
+<p>
+
+Build intelligent systems using machine learning, deep learning and data.
+
+</p>
+
+</div>
+
+
+
+
+<div class="career-card">
+
+<h3>
+💻 Software Engineer
+</h3>
+
+<p>
+
+Design and create applications, platforms and software systems.
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="career-card">
+
+<h3>
+📊 Data Scientist
+</h3>
+
+<p>
+
+Transform data into insights using statistics, programming and AI.
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="career-card">
+
+<h3>
+🔐 Cybersecurity Specialist
+</h3>
+
+<p>
+
+Protect systems, networks and information from attacks.
+
+</p>
+
+</div>
+
+
+
+
+
+<div class="career-card">
+
+<h3>
+☁️ Cloud Engineer
+</h3>
+
+<p>
+
+Build and manage modern internet infrastructure.
+
+</p>
+
+</div>
+
+
+
+
+<div class="career-card">
+
+<h3>
+🌐 Network Engineer
+</h3>
+
+<p>
+
+Design communication systems that connect the world.
+
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="lab">
+
+
+<h2>
+🧪 CS Laboratory
+</h2>
+
+
+<p>
+
+A place where knowledge becomes real projects.
+
+</p>
+
+
+
+
+<div class="lab-grid">
+
+
+
+<div class="project">
+
+
+<h3>
+🌱 Beginner Level
+</h3>
+
+
+<ul>
+
+<li>Calculator Application</li>
+
+<li>Personal Portfolio Website</li>
+
+<li>Simple Games</li>
+
+<li>Programming Challenges</li>
+
+</ul>
+
+
+</div>
+
+
+
+
+
+<div class="project">
+
+
+<h3>
+🌿 Intermediate Level
+</h3>
+
+
+<ul>
+
+<li>Mobile Applications</li>
+
+<li>Database Systems</li>
+
+<li>Web Applications</li>
+
+<li>API Development</li>
+
+</ul>
+
+
+</div>
+
+
+
+
+
+<div class="project">
+
+
+<h3>
+🌳 Advanced Level
+</h3>
+
+
+<ul>
+
+<li>AI Assistants</li>
+
+<li>Machine Learning Models</li>
+
+<li>Cybersecurity Tools</li>
+
+<li>Research Projects</li>
+
+</ul>
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<style>
+
+
+.career,
+.lab{
+
+max-width:950px;
+
+margin:auto;
+
+padding:60px 25px;
+
+text-align:center;
+
+}
+
+
+
+.career h2,
+.lab h2{
+
+font-family:'Space Grotesk';
+
+font-size:2rem;
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+
+
+.career>p,
+.lab>p{
+
+opacity:.8;
+
+margin-bottom:35px;
+
+}
+
+
+
+.career-grid,
+.lab-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+gap:20px;
+
+}
+
+
+
+.career-card,
+.project{
+
+
+background:var(--forest);
+
+border:1px solid var(--moss);
+
+border-radius:18px;
+
+padding:25px;
+
+text-align:left;
+
+transition:.3s;
+
+}
+
+
+
+.career-card:hover,
+.project:hover{
+
+transform:translateY(-8px);
+
+border-color:var(--teal);
+
+}
+
+
+
+.career-card h3,
+.project h3{
+
+color:white;
+
+margin-bottom:12px;
+
+font-family:'Space Grotesk';
+
+}
+
+
+
+.career-card p{
+
+line-height:1.6;
+
+}
+
+
+
+.project ul{
+
+margin-left:20px;
+
+line-height:1.8;
+
+}
+
+
+</style><!-- PART 4 START -->
+
+
+<section class="dashboard">
+
+
+<h2>
+📊 Your Learning Journey
+</h2>
+
+
+<p>
+
+Track your growth as you move through the Computer Science ecosystem.
+
+</p>
+
+
+
+<div class="progress-box">
+
+
+
+<div class="progress-card">
+
+<h3>
+Discrete Structures I
+</h3>
+
+
+<div class="bar">
+
+<div class="fill one"></div>
+
+</div>
+
+
+<span>
+Foundation Mathematics
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="progress-card">
+
+<h3>
+Programming I
+</h3>
+
+
+<div class="bar">
+
+<div class="fill two"></div>
+
+</div>
+
+
+<span>
+Building Coding Skills
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="progress-card">
+
+<h3>
+Artificial Intelligence Path
+</h3>
+
+
+<div class="bar">
+
+<div class="fill three"></div>
+
+</div>
+
+
+<span>
+Future Specialization
+</span>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<section class="featured">
+
+
+<div class="featured-card">
+
+
+<h2>
+🔥 Currently Learning
+</h2>
+
+
+<h3>
+Discrete Structures I
+</h3>
+
+
+<p>
+
+The mathematical foundation behind algorithms, logic, databases and computer systems.
+
+</p>
+
+
+<a href="Unit-discrete-structures.html">
+
+Continue Learning →
+
+</a>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<footer>
+
+
+<h3>
+CS Hub 🌱
+</h3>
+
+
+<p>
+
+Built as a growing Computer Science ecosystem.
+
+</p>
+
+
+<p>
+
+Learn • Build • Innovate
+
+</p>
+
+
+</footer>
+
+
+
+
+
+
+
+<style>
+
+
+.dashboard,
+.featured{
+
+max-width:950px;
+
+margin:auto;
+
+padding:60px 25px;
+
+text-align:center;
+
+}
+
+
+
+.dashboard h2,
+.featured h2{
+
+font-family:'Space Grotesk';
+
+color:white;
+
+font-size:2rem;
+
+margin-bottom:15px;
+
+}
+
+
+
+.dashboard>p{
+
+opacity:.8;
+
+margin-bottom:35px;
+
+}
+
+
+
+
+.progress-box{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+gap:20px;
+
+}
+
+
+
+.progress-card{
+
+
+background:var(--forest);
+
+border:1px solid var(--moss);
+
+padding:25px;
+
+border-radius:18px;
+
+text-align:left;
+
+}
+
+
+
+.progress-card h3{
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+
+
+.progress-card span{
+
+font-size:.85rem;
+
+opacity:.7;
+
+}
+
+
+
+.bar{
+
+height:10px;
+
+background:var(--moss);
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin-bottom:12px;
+
+}
+
+
+
+.fill{
+
+height:100%;
+
+background:var(--teal);
+
+border-radius:20px;
+
+}
+
+
+
+.one{
+
+width:70%;
+
+}
+
+
+
+.two{
+
+width:40%;
+
+}
+
+
+
+.three{
+
+width:15%;
+
+}
+
+
+
+
+
+.featured-card{
+
+background:var(--forest);
+
+border:1px solid var(--moss);
+
+border-radius:25px;
+
+padding:35px;
+
+}
+
+
+
+.featured-card h3{
+
+font-family:'Space Grotesk';
+
+font-size:1.8rem;
+
+color:white;
+
+margin:15px;
+
+}
+
+
+
+.featured-card p{
+
+line-height:1.7;
+
+margin-bottom:25px;
+
+}
+
+
+
+.featured-card a{
+
+color:var(--teal);
+
+text-decoration:none;
+
+font-weight:bold;
+
+}
+
+
+
+
+
+footer{
+
+text-align:center;
+
+padding:50px 25px;
+
+color:var(--fog);
+
+font-family:'JetBrains Mono';
+
+border-top:1px solid var(--moss);
+
+}
+
+
+
+footer h3{
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+
+
+</style>
+
+
+
+
 
 </body>
+
 </html>
