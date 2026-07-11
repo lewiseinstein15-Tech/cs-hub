@@ -23,7 +23,6 @@
     min-height: 100%;
   }
   a { color: inherit; }
-
   header {
     padding: 20px 24px 10px;
     display: flex;
@@ -43,7 +42,6 @@
     transition: border-color 0.2s, color 0.2s;
   }
   .back-link:hover { border-color: var(--teal); color: var(--teal); }
-
   .zone-hero {
     max-width: 720px;
     margin: 0 auto;
@@ -70,7 +68,6 @@
     opacity: 0.85;
     font-size: 0.95rem;
   }
-
   .semester {
     max-width: 720px;
     margin: 0 auto;
@@ -86,7 +83,6 @@
     padding-bottom: 8px;
     border-bottom: 1px solid var(--moss);
   }
-
   .unit {
     background: var(--card);
     border: 1px solid var(--moss);
@@ -115,8 +111,9 @@
     flex-shrink: 0;
     margin-left: 12px;
   }
+  a .unit:hover { border-color: var(--teal); }
+  a .unit:hover .unit-icon { transform: translateX(3px); }
   .unit.open .unit-icon { transform: rotate(45deg); }
-
   .unit-body {
     max-height: 0;
     overflow: hidden;
@@ -139,7 +136,6 @@
     font-size: 0.78rem;
     color: var(--moss);
   }
-
   footer {
     max-width: 720px;
     margin: 30px auto 60px;
@@ -149,7 +145,6 @@
     font-size: 0.72rem;
     color: var(--moss);
   }
-
   @media (prefers-reduced-motion: reduce) {
     .unit-body, .unit-icon { transition: none; }
   }
@@ -171,36 +166,14 @@
 <div class="semester">
   <div class="semester-title">Semester 1</div>
 
-  <div class="unit">
-    <div class="unit-header" onclick="toggleUnit(this)">
-      <span class="unit-name">Introduction to Computer Science</span>
-      <span class="unit-icon">+</span>
+  <a href="unit-intro-cs.html" style="text-decoration:none;">
+    <div class="unit">
+      <div class="unit-header">
+        <span class="unit-name">Introduction to Computer Science</span>
+        <span class="unit-icon">→</span>
+      </div>
     </div>
-    <div class="unit-body">
-      <p><strong>What is Computer Science?</strong><br>
-      The study of computers and computational systems — how they process, store, and transmit information, and how we design algorithms and software to solve problems.</p>
-
-      <p><strong>Generations of Computers</strong></p>
-      <p>1st Gen (1940s–50s): Vacuum tubes, huge machines like ENIAC.<br>
-      2nd Gen (1950s–60s): Transistors — smaller, faster, less heat.<br>
-      3rd Gen (1960s–70s): Integrated circuits (ICs) — multiple transistors on one chip.<br>
-      4th Gen (1970s–present): Microprocessors — the CPU on a single chip.<br>
-      5th Gen (present–future): AI-driven computing, parallel processing.</p>
-
-      <p><strong>Hardware vs. Software</strong><br>
-      Hardware = physical components (CPU, RAM, storage, input/output devices).<br>
-      Software = instructions that tell hardware what to do. Split into <em>system software</em> (e.g. operating systems) and <em>application software</em> (e.g. word processors, browsers).</p>
-
-      <p><strong>Number Systems (foundation for later units)</strong><br>
-      Computers work in <em>binary</em> (base 2: 0s and 1s). You'll also meet decimal (base 10), octal (base 8), and hexadecimal (base 16) — used to represent binary data more compactly.</p>
-
-      <p><strong>Branches of Computer Science</strong><br>
-      Software engineering, artificial intelligence, databases, networks, cybersecurity, human-computer interaction, and more — this hub's later zones map directly onto these branches.</p>
-
-      <p><strong>Why it matters</strong><br>
-      This unit sets the vocabulary and mental model you'll rely on in every unit that follows — especially Computer Essentials, Programming I, and Computer Organization.</p>
-    </div>
-  </div>
+  </a>
 
   <div class="unit">
     <div class="unit-header" onclick="toggleUnit(this)">
