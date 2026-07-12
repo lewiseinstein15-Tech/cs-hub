@@ -3,164 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS Hub Login</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:linear-gradient(135deg,#0f172a,#1e293b,#2563eb);
-}
-
-.login-box{
-    background:white;
-    width:350px;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
-
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    color:#2563eb;
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:#2563eb;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-button:hover{
-    background:#1d4ed8;
-}
-
-#message{
-    margin-top:15px;
-    text-align:center;
-    color:red;
-}
-</style>
+<title>CS HUB OS</title>
 </head>
 
 <body>
 
-<div class="login-box">
-<h1>CS Hub</h1>
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
 
-<input
-type="email"
-id="email"
-placeholder="Email">
+<pre id="logo">
+ ██████╗███████╗    ██╗  ██╗██╗   ██╗██████╗
+██╔════╝██╔════╝    ██║  ██║██║   ██║██╔══██╗
+██║     ███████╗    ███████║██║   ██║██████╔╝
+██║     ╚════██║    ██╔══██║██║   ██║██╔══██╗
+╚██████╗███████║    ██║  ██║╚██████╔╝██████╔╝
+ ╚═════╝╚══════╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝
 
-<input
-type="password"
-id="password"
-placeholder="Password">
+       COMPUTER SCIENCE HUB
+            Build 1.0.0
+</pre>
 
-<button id="loginBtn">
-Login
-</button>
+<div id="boot-messages">
 
-<p id="message"></p>
+<p>Initializing System...</p>
+
+<p>Loading Programming Engine...</p>
+
+<p>Loading Artificial Intelligence...</p>
+
+<p>Loading Data Structures...</p>
+
+<p>Loading Networking...</p>
+
+<p>Loading Database Systems...</p>
+
+<p>Loading Cyber Security...</p>
+
+<p>Loading Firebase Authentication...</p>
 
 </div>
 
-<script type="module">
+<div id="progress-container">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+<div id="progress-bar"></div>
 
-import {
-getAuth,
-signInWithEmailAndPassword
-}
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+</div>
 
-const firebaseConfig = {
+<p id="progress-text">0%</p>
 
-apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+<p id="system-ready">
+SYSTEM READY
+</p>
 
-authDomain: "cs-hub-7c97b.firebaseapp.com",
+</div>
 
-projectId: "cs-hub-7c97b",
+<!-- CODE BACKGROUND (EMPTY FOR NOW) -->
+<div id="code-background"></div>
 
-storageBucket: "cs-hub-7c97b.firebasestorage.app",
-
-messagingSenderId: "76338162904",
-
-appId: "1:76338162904:web:3be60e1952d49c8fb63bad",
-
-measurementId: "G-134D1YEWVV"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const loginBtn = document.getElementById("loginBtn");
-
-const message = document.getElementById("message");
-
-loginBtn.addEventListener("click", async()=>{
-
-const email=document.getElementById("email").value;
-
-const password=document.getElementById("password").value;
-
-try{
-
-await signInWithEmailAndPassword(auth,email,password);
-
-message.style.color="green";
-
-message.innerHTML="Login Successful...";
-
-setTimeout(()=>{
-
-window.location.href="index.html";
-
-},1000);
-
-}
-
-catch(error){
-
-message.style.color="red";
-
-message.innerHTML=error.message;
-
-}
-
-});
-
-</script>
+<!-- LOGIN SCREEN (EMPTY FOR NOW) -->
+<div id="login-screen"></div>
 
 </body>
 </html>
