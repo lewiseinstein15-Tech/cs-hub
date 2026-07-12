@@ -1,12 +1,329 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>CS HUB Notes</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+
+<style>
+
+:root{
+--bg:#050816;
+--blue:#3B82F6;
+--cyan:#06B6D4;
+}
+
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+
+body{
+
+background:var(--bg);
+color:white;
+font-family:Inter,sans-serif;
+min-height:100vh;
+
+}
+
+
+
+
+.background{
+
+position:fixed;
+inset:0;
+z-index:-1;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 35%),
+radial-gradient(circle at 80% 80%,rgba(6,182,212,.2),transparent 35%);
+
+}
+
+
+
+header{
+
+padding:20px 25px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+border-bottom:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+.logo{
+
+font-family:Orbitron,sans-serif;
+
+font-size:22px;
+
+background:linear-gradient(90deg,#3B82F6,#06B6D4);
+
+-webkit-background-clip:text;
+
+color:transparent;
+
+}
+
+
+
+.back{
+
+color:white;
+
+text-decoration:none;
+
+font-size:14px;
+
+}
+
+
+
+.container{
+
+padding:30px;
+
+}
+
+
+
+.title{
+
+font-family:Orbitron,sans-serif;
+
+font-size:25px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.subtitle{
+
+color:rgba(255,255,255,.6);
+
+margin-bottom:30px;
+
+}
+
+
+
+
+
+.years{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+gap:20px;
+
+}
+
+
+
+
+.year-card{
+
+padding:25px;
+
+border-radius:20px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+text-align:center;
+
+transition:.3s;
+
+cursor:pointer;
+
+}
+
+
+
+.year-card:hover{
+
+transform:translateY(-8px);
+
+border-color:#06B6D4;
+
+box-shadow:0 0 25px rgba(6,182,212,.3);
+
+}
+
+
+
+.icon{
+
+font-size:40px;
+
+margin-bottom:15px;
+
+}
+
+
+
+h2{
+
+font-size:18px;
+
+}
+
+
+</style>
+
 </head>
 
+
 <body>
-<h1>CS HUB Notes</h1>
-<p>Notes system loading...</p>
+
+
+<div class="background"></div>
+
+
+
+<header>
+
+<div class="logo">
+CS HUB NOTES
+</div>
+
+
+<a class="back" href="dashboard.html">
+← Dashboard
+</a>
+
+
+</header>
+
+
+
+
+<div class="container">
+
+
+<div class="title">
+Computer Science Notes 📚
+</div>
+
+
+<div class="subtitle">
+Choose your academic year
+</div>
+
+
+
+
+<div class="years">
+
+
+
+<a href="year1.html" style="text-decoration:none;color:white;">
+
+<div class="year-card">
+
+<div class="icon">
+🧑‍💻
+</div>
+
+<h2>
+Year 1
+</h2>
+
+</div>
+
+</a>
+
+
+
+
+
+<a href="year2.html" style="text-decoration:none;color:white;">
+
+<div class="year-card">
+
+<div class="icon">
+💻
+</div>
+
+<h2>
+Year 2
+</h2>
+
+</div>
+
+</a>
+
+
+
+
+
+<a href="year3.html" style="text-decoration:none;color:white;">
+
+<div class="year-card">
+
+<div class="icon">
+🤖
+</div>
+
+<h2>
+Year 3
+</h2>
+
+</div>
+
+</a>
+
+
+
+
+
+<a href="year4.html" style="text-decoration:none;color:white;">
+
+<div class="year-card">
+
+<div class="icon">
+🚀
+</div>
+
+<h2>
+Year 4
+</h2>
+
+</div>
+
+</a>
+
+
+
+
+</div>
+
+
+</div>
+
+
+
 </body>
 
 </html>
