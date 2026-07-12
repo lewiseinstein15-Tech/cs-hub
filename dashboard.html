@@ -1,169 +1,523 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS HUB - Student Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>CS HUB OS - Student Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 
 <style>
+
 :root{
-    --bg:#050816;
-    --card:#111827;
-    --primary:#3B82F6;
-    --secondary:#06B6D4;
-    --text:#ffffff;
-    --dim:rgba(255,255,255,.6);
+--bg:#050816;
+--primary:#3B82F6;
+--cyan:#06B6D4;
+--purple:#8B5CF6;
+--green:#22C55E;
+--text:white;
+--dim:rgba(255,255,255,.6);
 }
+
 
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Inter,sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,sans-serif;
 }
+
 
 body{
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
+
+min-height:100vh;
+background:#050816;
+color:white;
+overflow-x:hidden;
+
 }
+
+
+/* Animated background */
+
+.background{
+
+position:fixed;
+inset:0;
+z-index:-2;
+background:
+radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 30%),
+radial-gradient(circle at 80% 80%,rgba(6,182,212,.2),transparent 30%),
+#050816;
+
+}
+
+
+/* moving code words */
+
+.code{
+
+position:fixed;
+color:rgba(6,182,212,.18);
+font-family:"JetBrains Mono",monospace;
+font-size:14px;
+animation:move 18s linear infinite;
+
+}
+
+
+@keyframes move{
+
+from{
+transform:translateY(110vh);
+}
+
+to{
+transform:translateY(-20vh);
+}
+
+}
+
+
+/* Header */
+
 
 header{
-    padding:25px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid rgba(255,255,255,.1);
+
+height:80px;
+padding:20px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+border-bottom:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(15px);
+
 }
+
+
 
 .logo{
-    font-size:25px;
-    font-weight:800;
-    background:linear-gradient(90deg,var(--primary),var(--secondary));
-    -webkit-background-clip:text;
-    color:transparent;
+
+font-family:"JetBrains Mono",monospace;
+font-size:25px;
+font-weight:800;
+
+background:linear-gradient(90deg,var(--primary),var(--cyan));
+
+-webkit-background-clip:text;
+color:transparent;
+
 }
+
+
+
+.header-right{
+
+display:flex;
+align-items:center;
+gap:15px;
+
+}
+
+
+
+.profile-circle{
+
+width:45px;
+height:45px;
+
+border-radius:50%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:linear-gradient(135deg,var(--primary),var(--cyan));
+
+font-size:20px;
+font-weight:800;
+
+color:white;
+text-decoration:none;
+
+}
+
+
 
 .logout{
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:10px;
-    cursor:pointer;
+
+background:#ef4444;
+border:none;
+color:white;
+
+padding:10px 18px;
+border-radius:12px;
+
+cursor:pointer;
+
 }
+
+
+
+/* Main */
 
 .container{
-    padding:25px;
+
+padding:30px;
+
 }
+
+
 
 .welcome{
-    background:linear-gradient(135deg,#1d4ed8,#0891b2);
-    padding:25px;
-    border-radius:20px;
-    margin-bottom:25px;
+
+padding:25px;
+
+border-radius:25px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(20px);
+
 }
 
-.welcome h1{
-    font-size:28px;
+
+
+#welcomeText{
+
+font-size:28px;
+font-weight:800;
+
+line-height:1.5;
+
 }
 
-.welcome p{
-    margin-top:10px;
-    opacity:.85;
+
+
+.system-text{
+
+margin-top:15px;
+
+font-family:"JetBrains Mono",monospace;
+
+color:var(--cyan);
+
+height:25px;
+
 }
+
+
+
+/* CS Mascot */
+
+.mascot{
+
+margin:30px auto;
+
+max-width:500px;
+
+padding:25px;
+
+text-align:center;
+
+border-radius:25px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(20px);
+
+animation:floating 4s ease-in-out infinite;
+
+}
+
+
+
+@keyframes floating{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-12px);
+}
+
+}
+
+
+
+.robot{
+
+font-size:70px;
+
+}
+
+
+
+.mascot h2{
+
+margin-top:10px;
+
+font-size:22px;
+
+}
+
+
+
+.mascot p{
+
+color:var(--dim);
+
+margin-top:8px;
+
+}
+
+
+
+
+/* Cards */
 
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+margin-top:30px;
+
 }
+
 
 
 .card{
-    background:var(--card);
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,.1);
-    cursor:pointer;
-    transition:.3s;
+
+padding:25px;
+
+border-radius:22px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+backdrop-filter:blur(15px);
+
+cursor:pointer;
+
+transition:.3s;
+
 }
+
 
 
 .card:hover{
-    transform:translateY(-5px);
-    border-color:var(--secondary);
+
+transform:translateY(-8px);
+
+border-color:var(--cyan);
+
+box-shadow:0 0 30px rgba(6,182,212,.2);
+
 }
 
 
-.icon{
-    font-size:35px;
-    margin-bottom:15px;
+
+.card .icon{
+
+font-size:40px;
+
+margin-bottom:15px;
+
 }
+
 
 
 .card h2{
-    font-size:20px;
-    margin-bottom:8px;
+
+font-size:20px;
+
+margin-bottom:10px;
+
 }
+
 
 
 .card p{
-    color:var(--dim);
-    font-size:14px;
+
+color:var(--dim);
+
+font-size:14px;
+
 }
+
 
 
 a{
-    text-decoration:none;
-    color:white;
+
+text-decoration:none;
+
+color:white;
+
 }
+
+
+
+
+/* AI status bar */
+
+
+.status{
+
+margin-top:30px;
+
+padding:18px;
+
+border-radius:18px;
+
+background:rgba(34,197,94,.1);
+
+border:1px solid rgba(34,197,94,.3);
+
+font-family:"JetBrains Mono",monospace;
+
+color:#22C55E;
+
+}
+
 
 
 footer{
-    text-align:center;
-    padding:30px;
-    color:var(--dim);
+
+text-align:center;
+
+padding:30px;
+
+color:var(--dim);
+
 }
+
+
 
 </style>
 
 </head>
 
+
 <body>
+
+
+<div class="background"></div>
+
+
+<!-- Moving CS words -->
+
+<div class="code" style="left:10%;animation-delay:0s">
+Artificial Intelligence<br>
+Machine Learning<br>
+Python
+</div>
+
+
+<div class="code" style="left:40%;animation-delay:5s">
+Algorithms<br>
+Data Structures<br>
+Cyber Security
+</div>
+
+
+<div class="code" style="left:75%;animation-delay:9s">
+Cloud Computing<br>
+Database Systems<br>
+Networking
+</div>
+
 
 
 <header>
 
+
 <div class="logo">
-CS HUB
+CS HUB OS
 </div>
+
+
+
+<div class="header-right">
+
+
+<a href="profile.html" class="profile-circle" id="profileCircle">
+L
+</a>
+
 
 <button class="logout" onclick="logout()">
 Logout
 </button>
 
+
+</div>
+
+
 </header>
+
 
 
 
 <div class="container">
 
 
+
 <div class="welcome">
+
 
 <h1 id="welcomeText">
 Loading...
 </h1>
 
-<p>
-Your Computer Science learning ecosystem
-</p>
+
+<div class="system-text" id="systemText">
+
+SYSTEM INITIALIZING...
 
 </div>
+
+
+</div>
+
+
+
+
+<div class="mascot">
+
+
+<div class="robot">
+🤖
+</div>
+
+
+<h2>
+CS HUB AI Companion
+</h2>
+
+
+<p>
+Your Computer Science learning partner is online.
+</p>
+
+
+</div>
+
 
 
 
@@ -171,34 +525,46 @@ Your Computer Science learning ecosystem
 
 
 <a href="notes.html">
+
 <div class="card">
 
-<div class="icon">📚</div>
+<div class="icon">
+📚
+</div>
 
-<h2>Notes</h2>
+<h2>
+Notes
+</h2>
 
 <p>
-Access Computer Science notes from Year 1 to Year 4.
+Access Year 1 - Year 4 Computer Science notes.
 </p>
 
 </div>
+
 </a>
 
 
 
 
 <a href="ai-assistant.html">
+
 <div class="card">
 
-<div class="icon">🤖</div>
+<div class="icon">
+🤖
+</div>
 
-<h2>AI Assistant</h2>
+<h2>
+AI Assistant
+</h2>
 
 <p>
-Ask questions and get help learning Computer Science.
+Ask questions and get CS guidance.
 </p>
 
 </div>
+
 </a>
 
 
@@ -206,17 +572,23 @@ Ask questions and get help learning Computer Science.
 
 
 <a href="units.html">
+
 <div class="card">
 
-<div class="icon">🎓</div>
+<div class="icon">
+🎓
+</div>
 
-<h2>Units</h2>
+<h2>
+Units
+</h2>
 
 <p>
-Explore all CS units from first year to fourth year.
+Explore all Computer Science units.
 </p>
 
 </div>
+
 </a>
 
 
@@ -224,77 +596,73 @@ Explore all CS units from first year to fourth year.
 
 
 <a href="labs.html">
+
 <div class="card">
 
-<div class="icon">💻</div>
+<div class="icon">
+💻
+</div>
 
-<h2>Labs</h2>
+<h2>
+Labs
+</h2>
 
 <p>
-Practice programming and technical skills.
+Practice coding and experiments.
 </p>
 
 </div>
-</a>
 
+</a>
 
 
 
 
 <a href="projects.html">
+
 <div class="card">
 
-<div class="icon">🚀</div>
+<div class="icon">
+🚀
+</div>
 
-<h2>Projects</h2>
+<h2>
+Projects
+</h2>
 
 <p>
-Build and manage Computer Science projects.
+Build software and AI projects.
 </p>
 
 </div>
+
 </a>
 
 
-
-
-
-<a href="profile.html">
-<div class="card">
-
-<div class="icon">👤</div>
-
-<h2>Profile</h2>
-
-<p>
-View your account information.
-</p>
-
 </div>
-</a>
 
 
 
+<div class="status" id="status">
+
+✓ CS HUB SYSTEM READY
 
 </div>
 
 
 </div>
+
 
 
 <footer>
+
 CS HUB OS © 2026
-</footer>
 
-
-
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+</footer><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 
 <script>
-
 
 const firebaseConfig = {
 
@@ -316,32 +684,64 @@ appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
 firebase.initializeApp(firebaseConfig);
 
 
-const auth=firebase.auth();
+const auth = firebase.auth();
+
+
+
+const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+
 
 
 
 auth.onAuthStateChanged((user)=>{
 
 
-if(user){
+if(!user){
+
+window.location.href="index.html";
+
+return;
+
+}
 
 
-let name=user.email.split("@")[0];
+
+let email = user.email;
 
 
-let hour=new Date().getHours();
+let username = email
+.split("@")[0]
+.replace(/[0-9]/g,"");
+
+
+
+username =
+username.charAt(0).toUpperCase()
++
+username.slice(1);
+
+
+
+let isAdmin =
+email.toLowerCase()
+===
+ADMIN_EMAIL.toLowerCase();
+
+
+
+let time = new Date().getHours();
 
 
 let greeting;
 
 
-if(hour<12){
+if(time < 12){
 
 greeting="Good Morning";
 
 }
 
-else if(hour<18){
+else if(time < 18){
 
 greeting="Good Afternoon";
 
@@ -354,34 +754,160 @@ greeting="Good Evening";
 }
 
 
-document.getElementById("welcomeText").innerHTML=
-
-`${greeting} ${name} 👋<br>Welcome back to CS HUB`;
 
 
+let message;
+
+
+if(isAdmin){
+
+message =
+`${greeting} Admin ${username} 👋\nWelcome back to CS HUB`;
 
 }
 
 else{
 
 
-window.location.href="index.html";
+message =
+`${greeting} ${username} 👋\nWelcome back to CS HUB`;
+
+}
+
+
+
+typeWriter(message);
+
+
+
+document.getElementById("profileCircle")
+.textContent =
+username.charAt(0);
+
+
+
+});
+
+
+
+
+
+/* Typing effect */
+
+
+function typeWriter(text){
+
+
+let i=0;
+
+
+let element =
+document.getElementById("welcomeText");
+
+
+element.innerHTML="";
+
+
+
+function typing(){
+
+
+if(i < text.length){
+
+
+
+if(text[i]=="\n"){
+
+element.innerHTML+="<br>";
+
+}
+
+else{
+
+element.innerHTML+=text[i];
+
+}
+
+
+
+i++;
+
+
+setTimeout(typing,35);
 
 
 }
 
 
-});
+}
+
+
+
+typing();
+
+
+}
+
+
+
+
+
+/* Moving system messages */
+
+
+const systemMessages=[
+
+"Loading Computer Science Modules...",
+
+"AI Assistant Online...",
+
+"Database Connected...",
+
+"Learning Ecosystem Ready ✓"
+
+];
+
+
+let x=0;
+
+
+setInterval(()=>{
+
+
+document.getElementById("systemText")
+.textContent =
+systemMessages[x];
+
+
+x++;
+
+
+if(x>=systemMessages.length){
+
+x=0;
+
+}
+
+
+},3000);
+
+
 
 
 
 function logout(){
 
-firebase.auth().signOut().then(()=>{
+
+firebase.auth()
+.signOut()
+.then(()=>{
+
 
 window.location.href="index.html";
 
+
 });
+
 
 }
 
@@ -390,4 +916,5 @@ window.location.href="index.html";
 
 
 </body>
+
 </html>
