@@ -1,740 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CS HUB OS | Computer Science Hub</title>
+<title>CS HUB OS</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
 
 <style>
 
 :root{
-    --bg:#050816;
-    --primary:#3B82F6;
-    --cyan:#06B6D4;
-    --purple:#8B5CF6;
-    --green:#22C55E;
-    --white:#ffffff;
-    --dim:rgba(255,255,255,.65);
+--bg:#050816;
+--blue:#3B82F6;
+--cyan:#06B6D4;
+--purple:#8B5CF6;
+--green:#22C55E;
+--white:#ffffff;
+--glass:rgba(255,255,255,.05);
+--border:rgba(255,255,255,.12);
 }
-
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
-
 
 body{
-
-    min-height:100vh;
-    background:var(--bg);
-    color:white;
-    font-family:'Inter',sans-serif;
-    overflow-x:hidden;
-
-}
-
-
-/* Background */
-
-.glow{
-
-position:fixed;
-inset:0;
-z-index:-1;
-
-background:
-
-radial-gradient(circle at 15% 20%,rgba(59,130,246,.25),transparent 35%),
-radial-gradient(circle at 85% 80%,rgba(6,182,212,.22),transparent 35%),
-radial-gradient(circle at 50% 50%,rgba(139,92,246,.18),transparent 40%);
-
-}
-
-
-
-.code{
-
-position:fixed;
-inset:0;
-font-family:'JetBrains Mono',monospace;
-color:rgba(59,130,246,.18);
-font-size:14px;
+height:100vh;
 overflow:hidden;
-z-index:-1;
-
+background:var(--bg);
+color:white;
+font-family:Inter,sans-serif;
 }
 
 
+/* Background glow */
 
-.container{
-
-width:min(1100px,90%);
-margin:auto;
-
+.background{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 40%),
+radial-gradient(circle at 80% 80%,rgba(6,182,212,.25),transparent 40%),
+radial-gradient(circle at 50% 50%,rgba(139,92,246,.15),transparent 50%);
 }
 
 
+/* Code rain */
 
-/* Navigation */
+#codeRain{
+position:fixed;
+inset:0;
+overflow:hidden;
+opacity:.25;
+font-family:"JetBrains Mono";
+color:#3B82F6;
+}
 
 
-nav{
+/* Boot screen */
 
+#boot{
+position:fixed;
+inset:0;
+z-index:10;
 display:flex;
-justify-content:space-between;
 align-items:center;
-padding:25px 0;
+justify-content:center;
+background:#050816;
+}
+
+
+.boot-box{
+
+width:380px;
+padding:35px;
+border-radius:25px;
+background:var(--glass);
+border:1px solid var(--border);
+backdrop-filter:blur(20px);
+text-align:center;
 
 }
 
 
 .logo{
 
-font-family:'JetBrains Mono',monospace;
-font-size:26px;
+font-family:"JetBrains Mono";
+font-size:35px;
 font-weight:800;
+letter-spacing:4px;
 
-background:linear-gradient(90deg,var(--primary),var(--cyan));
-
+background:linear-gradient(90deg,var(--blue),var(--cyan));
 -webkit-background-clip:text;
 color:transparent;
 
 }
 
 
-.nav-btn{
+.boot-text{
 
-text-decoration:none;
-color:white;
-padding:12px 25px;
+margin-top:20px;
+font-size:13px;
+color:rgba(255,255,255,.6);
+font-family:"JetBrains Mono";
+
+}
+
+
+.loading{
+
+height:6px;
+background:rgba(255,255,255,.1);
+border-radius:10px;
+margin-top:25px;
+overflow:hidden;
+
+}
+
+
+.loading span{
+
+display:block;
+height:100%;
+width:0%;
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+animation:load 4s forwards;
+
+}
+
+
+@keyframes load{
+
+to{
+width:100%;
+}
+
+}
+
+
+/* Login area */
+
+#app{
+
+display:none;
+height:100vh;
+align-items:center;
+justify-content:center;
+padding:20px;
+
+}
+
+
+.card{
+
+width:400px;
+padding:35px;
+border-radius:25px;
+
+background:var(--glass);
+border:1px solid var(--border);
+
+backdrop-filter:blur(25px);
+
+box-shadow:
+0 0 50px rgba(59,130,246,.15);
+
+}
+
+
+.brand{
+
+text-align:center;
+margin-bottom:30px;
+
+}
+
+
+.brand h1{
+
+font-family:"JetBrains Mono";
+font-size:28px;
+
+background:linear-gradient(90deg,var(--blue),var(--cyan));
+-webkit-background-clip:text;
+color:transparent;
+
+}
+
+
+.brand p{
+
+font-size:12px;
+color:rgba(255,255,255,.5);
+margin-top:8px;
+
+}
+
+
+input{
+
+width:100%;
+padding:14px;
+margin-bottom:15px;
 
 border-radius:12px;
 
-background:linear-gradient(90deg,var(--primary),var(--cyan));
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.15);
 
-font-weight:700;
-
-box-shadow:0 0 25px rgba(6,182,212,.4);
-
-}
-
-
-
-/* Hero */
-
-
-.hero{
-
-text-align:center;
-padding:80px 0;
+color:white;
+outline:none;
 
 }
 
 
-.hero h1{
+button{
 
-font-size:clamp(40px,7vw,75px);
+width:100%;
+padding:14px;
 
-font-weight:800;
+border:none;
+border-radius:12px;
 
-}
-
-
-.hero h1 span{
-
-background:linear-gradient(90deg,var(--primary),var(--cyan),var(--purple));
-
--webkit-background-clip:text;
-color:transparent;
-
-}
-
-
-
-.hero p{
-
-margin:25px auto;
-
-max-width:650px;
-
-color:var(--dim);
-
-font-size:18px;
-
-line-height:1.7;
-
-}
-
-
-
-.enter{
-
-display:inline-block;
-
-margin-top:25px;
-
-padding:18px 45px;
-
-border-radius:15px;
-
-background:linear-gradient(90deg,var(--primary),var(--cyan));
+background:linear-gradient(90deg,var(--blue),var(--cyan));
 
 color:white;
 
-font-weight:800;
-
-text-decoration:none;
-
-font-size:18px;
-
-box-shadow:0 15px 40px rgba(59,130,246,.4);
-
-transition:.3s;
+font-weight:700;
+cursor:pointer;
 
 }
 
 
-.enter:hover{
+button:hover{
 
-transform:translateY(-5px);
+transform:translateY(-2px);
 
 }
 
 
+.link{
+
+text-align:center;
+margin-top:20px;
+font-size:13px;
+color:var(--cyan);
+cursor:pointer;
+
+}
+
+
+.hidden{
+
+display:none;
+
+}
 
 </style>
 
 </head>
 
-
 <body>
 
+<div class="background"></div>
 
-<div class="glow"></div>
-
-
-<div class="code">
-
-01001011 01000101 01011001<br>
-CLASS ComputerScience { }<br>
-AI.initialize();<br>
-DATABASE.connect();<br>
-SYSTEM.loading...
-
-</div>
+<div id="codeRain"></div>
 
 
-<div class="container">
+<div id="boot">
 
-
-<nav>
+<div class="boot-box">
 
 <div class="logo">
 CS HUB OS
 </div>
 
-
-<a class="nav-btn" href="login.html">
-LOGIN
-</a>
-
-
-</nav>
+<div class="boot-text" id="bootText">
+Initializing Computer Science Ecosystem...
+</div>
 
 
+<div class="loading">
+<span></span>
+</div>
 
-<section class="hero">
+</div>
 
+</div>
+
+
+<div id="app">
+
+
+<div class="card">
+
+<div class="brand">
 
 <h1>
-
-Welcome To
-
-<span>
-Computer Science Hub
-</span>
-
+CS HUB
 </h1>
 
-
 <p>
-
-A complete Computer Science learning ecosystem.
-Access university notes, programming resources,
-AI tools, projects and your personal learning dashboard.
-
+Computer Science Learning Ecosystem
 </p>
 
+</div><div id="loginSection">
 
-<a href="login.html" class="enter">
+<input id="loginEmail" type="email" placeholder="Email">
 
-ENTER CS HUB OS
-
-</a>
-
-
-</section><section class="system">
+<input id="loginPassword" type="password" placeholder="Password">
 
 
-<h2>
-Learning Ecosystem
-</h2>
+<button onclick="loginUser()">
+LOGIN
+</button>
 
 
-<p>
-Explore the complete Computer Science journey from first year to final year.
-</p>
+<div class="link" onclick="showRegister()">
+Don't have an account? Create Account
+</div>
 
 
-
-<div class="cards">
-
-
-<div class="card">
-
-<h3>
-🎓 Student Dashboard
-</h3>
-
-<p>
-Access your units, notes, assignments, progress tracking and learning resources.
-</p>
-
-<a href="student-dashboard.html">
-Open Student Portal →
-</a>
+<div class="link" onclick="resetPassword()">
+Forgot Password?
+</div>
 
 </div>
 
 
 
-<div class="card">
+<div id="registerSection" class="hidden">
 
-<h3>
-⚡ Admin Dashboard
-</h3>
 
-<p>
-Manage users, upload notes, organize units and control the CS HUB ecosystem.
-</p>
+<input id="registerName" type="text" placeholder="Full Name">
 
-<a href="admin-dashboard.html">
-Open Admin Portal →
-</a>
 
+<input id="registerEmail" type="email" placeholder="Email">
+
+
+<input id="registerPassword" type="password" placeholder="Password">
+
+
+<button onclick="createAccount()">
+CREATE ACCOUNT
+</button>
+
+
+<div class="link" onclick="showLogin()">
+Already have an account? Login
 </div>
-
-
-
-</div>
-
-
-</section>
-
-
-
-
-<section class="years">
-
-
-<h2>
-Computer Science Degree Path
-</h2>
-
-
-
-<div class="year-grid">
-
-
-
-<div class="year">
-
-<h3>
-YEAR 1
-</h3>
-
-<p>
-Programming<br>
-Discrete Structures<br>
-Calculus<br>
-Computer Essentials<br>
-Electronics
-</p>
-
-<a href="year1.html">
-Explore →
-</a>
-
-</div>
-
-
-
-
-<div class="year">
-
-<h3>
-YEAR 2
-</h3>
-
-<p>
-Data Structures<br>
-Algorithms<br>
-Database Systems<br>
-Computer Architecture
-</p>
-
-<a href="year2.html">
-Explore →
-</a>
-
-</div>
-
-
-
-
-
-<div class="year">
-
-<h3>
-YEAR 3
-</h3>
-
-<p>
-Artificial Intelligence<br>
-Operating Systems<br>
-Networks<br>
-Software Engineering
-</p>
-
-
-<a href="year3.html">
-Explore →
-</a>
 
 
 </div>
 
 
-
-
-
-<div class="year">
-
-<h3>
-YEAR 4
-</h3>
-
-
-<p>
-Machine Learning<br>
-Advanced Computing<br>
-Research Project<br>
-Specialization
-</p>
-
-
-<a href="year4.html">
-Explore →
-</a>
-
+</div>
 
 </div>
 
 
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-
-</section>
-
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 
-
-<section class="features">
-
-
-<h2>
-CS HUB OS Features
-</h2>
+<script>
 
 
+const firebaseConfig = {
 
-<div class="feature-list">
+apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
 
+authDomain: "cs-hub-7c97b.firebaseapp.com",
 
-<div>
-🚀 Programming Labs
-<br>
-Practice coding and build projects.
-</div>
+projectId: "cs-hub-7c97b",
 
+storageBucket: "cs-hub-7c97b.firebasestorage.app",
 
-<div>
-🤖 Artificial Intelligence
-<br>
-Learn AI and Machine Learning.
-</div>
+messagingSenderId: "76338162904",
 
+appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
 
-<div>
-🌐 Technology Library
-<br>
-Access notes and resources.
-</div>
+};
 
 
-<div>
-🔐 Secure Accounts
-<br>
-Personal student and admin environments.
-</div>
+firebase.initializeApp(firebaseConfig);
+
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
 
 
 
-</div>
+const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
 
-</section><style>
+
+setTimeout(()=>{
+
+document.getElementById("boot").style.display="none";
+
+document.getElementById("app").style.display="flex";
+
+},4000);
 
 
-.system,
-.years,
-.features{
 
-padding:70px 0;
-text-align:center;
+function showRegister(){
+
+document.getElementById("loginSection").classList.add("hidden");
+
+document.getElementById("registerSection").classList.remove("hidden");
 
 }
 
 
 
-.system h2,
-.years h2,
-.features h2{
+function showLogin(){
 
-font-size:35px;
-margin-bottom:15px;
+document.getElementById("registerSection").classList.add("hidden");
 
-}
-
-
-
-.system p,
-.years p{
-
-color:var(--dim);
+document.getElementById("loginSection").classList.remove("hidden");
 
 }
 
 
 
+async function createAccount(){
 
-.cards{
 
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+const name=document.getElementById("registerName").value;
 
-gap:25px;
+const email=document.getElementById("registerEmail").value;
 
-margin-top:40px;
+const password=document.getElementById("registerPassword").value;
+
+
+if(!name || !email || !password){
+
+alert("Fill all fields");
+
+return;
+
+}
+
+
+try{
+
+
+const userCredential = await auth.createUserWithEmailAndPassword(email,password);
+
+
+await db.collection("users").doc(userCredential.user.uid).set({
+
+name:name,
+
+email:email,
+
+role:"student"
+
+});
+
+
+alert("Account created successfully");
+
+showLogin();
+
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+
+}async function loginUser(){
+
+const email=document.getElementById("loginEmail").value;
+
+const password=document.getElementById("loginPassword").value;
+
+
+if(!email || !password){
+
+alert("Enter email and password");
+
+return;
+
+}
+
+
+try{
+
+
+const result = await auth.signInWithEmailAndPassword(email,password);
+
+
+const user = result.user;
+
+
+const username = user.email.split("@")[0];
+
+
+if(user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
+
+
+localStorage.setItem("role","admin");
+
+localStorage.setItem("name","Lewis");
+
+
+window.location.href="admin-dashboard.html";
+
+
+}else{
+
+
+localStorage.setItem("role","student");
+
+localStorage.setItem("name",username);
+
+
+window.location.href="dashboard.html";
+
 
 }
 
 
 
-.card,
-.year{
+}catch(error){
 
-background:rgba(255,255,255,.05);
-
-border:1px solid rgba(255,255,255,.12);
-
-border-radius:20px;
-
-padding:30px;
-
-backdrop-filter:blur(15px);
-
-transition:.3s;
-
-}
-
-
-
-.card:hover,
-.year:hover{
-
-transform:translateY(-8px);
-
-border-color:var(--cyan);
-
-box-shadow:0 20px 40px rgba(6,182,212,.15);
-
-}
-
-
-
-.card h3,
-.year h3{
-
-font-size:24px;
-margin-bottom:15px;
-
-}
-
-
-
-.card p{
-
-color:var(--dim);
-
-line-height:1.6;
-
-margin-bottom:20px;
-
-}
-
-
-
-.card a,
-.year a{
-
-display:inline-block;
-
-margin-top:15px;
-
-color:var(--cyan);
-
-text-decoration:none;
-
-font-weight:700;
-
-}
-
-
-
-
-.year-grid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-margin-top:40px;
-
-}
-
-
-
-.year p{
-
-line-height:2;
-
-margin-top:15px;
-
-}
-
-
-
-
-.feature-list{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-margin-top:35px;
-
-}
-
-
-
-.feature-list div{
-
-padding:25px;
-
-background:rgba(255,255,255,.04);
-
-border-radius:15px;
-
-border:1px solid rgba(255,255,255,.1);
-
-color:white;
-
-line-height:1.7;
-
-}
-
-
-
-
-footer{
-
-text-align:center;
-
-padding:35px;
-
-color:rgba(255,255,255,.5);
-
-font-family:'JetBrains Mono',monospace;
-
-}
-
-
-
-@media(max-width:600px){
-
-.hero{
-
-padding:50px 0;
-
-}
-
-
-nav{
-
-flex-direction:column;
-
-gap:20px;
+alert("Login failed: "+error.message);
 
 }
 
 
 }
 
-</style>
+
+
+function resetPassword(){
+
+
+const email=document.getElementById("loginEmail").value;
+
+
+if(!email){
+
+alert("Enter your email first");
+
+return;
+
+}
+
+
+auth.sendPasswordResetEmail(email)
+
+.then(()=>{
+
+alert("Password reset email sent");
+
+})
+
+.catch(error=>{
+
+alert(error.message);
+
+});
+
+
+}
 
 
 
-<footer>
-
-<p>
-© 2026 Lewis Einstein Computer Science Hub
-</p>
-
-<p>
-Building the future of Computer Science learning.
-</p>
-
-</footer>
 
 
+/* Code rain animation */
 
-</div>
+
+const rain=document.getElementById("codeRain");
+
+
+let chars="01{}[]<>;/AIpythonCS";
+
+
+for(let i=0;i<40;i++){
+
+
+let column=document.createElement("div");
+
+
+column.style.position="absolute";
+
+column.style.left=Math.random()*100+"%";
+
+column.style.top="-200px";
+
+column.style.fontSize="14px";
+
+
+column.innerHTML=Array(30)
+
+.fill(0)
+
+.map(()=>chars[Math.floor(Math.random()*chars.length)])
+
+.join("<br>");
+
+
+column.style.animation=`fall ${5+Math.random()*8}s linear infinite`;
+
+
+rain.appendChild(column);
+
+
+}
+
+
+
+const style=document.createElement("style");
+
+
+style.innerHTML=`
+
+@keyframes fall{
+
+from{
+
+transform:translateY(-200px);
+
+}
+
+
+to{
+
+transform:translateY(120vh);
+
+}
+
+
+}
+
+`;
+
+
+document.head.appendChild(style);
+
+
+</script>
 
 
 </body>
