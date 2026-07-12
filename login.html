@@ -2,92 +2,562 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CS HUB OS</title>
-</head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CS HUB OS — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050816;
+    --primary:#3B82F6;
+    --secondary:#06B6D4;
+    --purple:#8B5CF6;
+    --success:#22C55E;
+    --text:#FFFFFF;
+    --text-dim:rgba(255,255,255,0.55);
+    --glass:rgba(255,255,255,0.04);
+    --glass-border:rgba(255,255,255,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    width:100%;height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow:hidden;
+  }
+  ::selection{background:var(--primary);color:#fff;}
 
+  .glow-field{
+    position:fixed;inset:0;z-index:0;
+    background:
+      radial-gradient(ellipse 700px 500px at 15% 20%, rgba(59,130,246,0.18), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 85% 80%, rgba(6,182,212,0.16), transparent 60%),
+      radial-gradient(ellipse 500px 400px at 50% 100%, rgba(139,92,246,0.12), transparent 60%);
+    pointer-events:none;
+  }
+
+  #boot{
+    position:fixed;inset:0;z-index:100;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--bg);
+    transition:opacity 0.8s ease, filter 0.8s ease;
+  }
+  #boot.hidden{opacity:0;filter:blur(20px);pointer-events:none;}
+  .boot-panel{
+    width:min(440px,88vw);
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:20px;
+    backdrop-filter:blur(20px);
+    padding:36px 32px;
+    box-shadow:0 0 60px rgba(59,130,246,0.15), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    text-align:center;
+    animation:floatIn 0.9s ease both;
+  }
+  @keyframes floatIn{from{opacity:0;transform:translateY(18px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .boot-logo{
+    font-family:'JetBrains Mono',monospace;
+    font-size:clamp(26px,6vw,34px);
+    font-weight:700;
+    letter-spacing:4px;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(59,130,246,0.4);
+    animation:pulseGlow 2.4s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(59,130,246,0.35));}50%{filter:drop-shadow(0 0 18px rgba(6,182,212,0.55));}}
+  .boot-sub{margin-top:8px;color:var(--text-dim);font-size:13px;letter-spacing:2px;text-transform:uppercase;}
+  .boot-build{margin-top:2px;color:rgba(255,255,255,0.3);font-size:11px;font-family:'JetBrains Mono',monospace;}
+
+  .boot-log{
+    margin-top:26px;height:150px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;text-align:left;
+    color:var(--text-dim);
+    overflow:hidden;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .boot-log .line{
+    opacity:0;transform:translateX(-6px);
+    animation:lineIn 0.45s ease forwards;
+    display:flex;align-items:center;gap:8px;
+  }
+  .boot-log .line::before{content:'▸';color:var(--secondary);}
+  .boot-log .line.done{color:rgba(255,255,255,0.8);}
+  .boot-log .line.done::before{content:'✓';color:var(--success);}
+  @keyframes lineIn{to{opacity:1;transform:translateX(0);}}
+
+  .boot-bar-track{
+    margin-top:22px;height:6px;border-radius:6px;
+    background:rgba(255,255,255,0.07);overflow:hidden;
+  }
+  .boot-bar-fill{
+    height:100%;width:0%;border-radius:6px;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    box-shadow:0 0 14px rgba(6,182,212,0.6);
+    transition:width 0.35s ease;
+  }
+  .boot-pct{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);}
+  .boot-ready{
+    margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;
+    letter-spacing:3px;color:var(--success);opacity:0;
+    text-shadow:0 0 12px rgba(34,197,94,0.6);
+  }
+  .boot-ready.show{animation:readyIn 0.6s ease forwards;}
+  @keyframes readyIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+
+  #codeRain{
+    position:fixed;inset:0;z-index:1;
+    overflow:hidden;
+    -webkit-mask-image:radial-gradient(ellipse 90% 80% at 50% 45%, black 40%, transparent 85%);
+    mask-image:radial-gradient(ellipse 90% 80% at 50% 45%, black 40%, transparent 85%);
+  }
+  .code-col{
+    position:absolute;top:-40%;
+    font-family:'JetBrains Mono',monospace;
+    white-space:pre;
+    color:rgba(59,130,246,0.35);
+    font-size:12px;line-height:1.5;
+    text-shadow:0 0 8px rgba(59,130,246,0.25);
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+  }
+  @keyframes fall{from{transform:translateY(0);}to{transform:translateY(180vh);}}
+
+  #loginScene{
+    position:fixed;inset:0;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    opacity:0;
+    transition:opacity 0.9s ease;
+  }
+  #loginScene.show{opacity:1;}
+
+  .card{
+    position:relative;
+    width:min(400px,100%);
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:22px;
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.03) inset, 0 20px 60px rgba(0,0,0,0.5), 0 0 80px rgba(59,130,246,0.10);
+    padding:38px 30px 30px;
+    animation:cardIn 0.8s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+  .brand{text-align:center;margin-bottom:28px;}
+  .brand .mark{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;letter-spacing:3px;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand .tag{margin-top:6px;font-size:12px;color:var(--text-dim);letter-spacing:1px;}
+
+  .field{margin-bottom:18px;position:relative;}
+  .field label{
+    display:block;font-size:12px;color:var(--text-dim);
+    margin-bottom:7px;letter-spacing:0.5px;font-weight:500;
+  }
+  .field input{
+    width:100%;padding:13px 14px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:12px;
+    color:var(--text);font-size:14.5px;font-family:'Inter',sans-serif;
+    outline:none;transition:border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .field input:focus{
+    border-color:var(--primary);
+    background:rgba(59,130,246,0.06);
+    box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+  }
+  .field.pw{display:flex;flex-direction:column;}
+  .pw-wrap{position:relative;}
+  .pw-toggle{
+    position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    background:none;border:none;color:var(--text-dim);cursor:pointer;
+    font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;
+    padding:4px 6px;transition:color 0.2s ease;
+  }
+  .pw-toggle:hover{color:var(--secondary);}
+
+  .row-between{
+    display:flex;align-items:center;justify-content:space-between;
+    margin:4px 0 22px;font-size:12.5px;
+  }
+  .remember{display:flex;align-items:center;gap:7px;color:var(--text-dim);cursor:pointer;user-select:none;}
+  .remember input{accent-color:var(--primary);width:14px;height:14px;cursor:pointer;}
+  .forgot{color:var(--secondary);text-decoration:none;transition:opacity 0.2s ease;}
+  .forgot:hover{opacity:0.75;text-decoration:underline;}
+
+  .btn-login{
+    position:relative;overflow:hidden;
+    width:100%;padding:14px;border:none;border-radius:12px;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    color:#fff;font-size:14.5px;font-weight:700;letter-spacing:0.5px;
+    cursor:pointer;font-family:'Inter',sans-serif;
+    box-shadow:0 8px 24px rgba(59,130,246,0.35);
+    transition:transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .btn-login:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(6,182,212,0.4);}
+  .btn-login:active{transform:translateY(0);}
+  .ripple{
+    position:absolute;border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    transform:scale(0);animation:rippleAnim 0.6s ease-out;
+    pointer-events:none;
+  }
+  @keyframes rippleAnim{to{transform:scale(3.2);opacity:0;}}
+
+  .err-msg{
+    display:none;margin-top:14px;padding:10px 12px;
+    background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.3);
+    border-radius:10px;color:#FCA5A5;font-size:12.5px;text-align:center;
+  }
+  .err-msg.show{display:block;animation:lineIn 0.3s ease;}
+
+  .divider{margin:22px 0;text-align:center;position:relative;color:rgba(255,255,255,0.25);font-size:11px;letter-spacing:1px;}
+  .divider::before,.divider::after{
+    content:'';position:absolute;top:50%;width:38%;height:1px;background:rgba(255,255,255,0.09);
+  }
+  .divider::before{left:0;}.divider::after{right:0;}
+
+  .signup-hint{text-align:center;font-size:12.5px;color:var(--text-dim);}
+  .signup-hint a{color:var(--secondary);text-decoration:none;font-weight:600;}
+  .signup-hint a:hover{text-decoration:underline;}
+
+  #success{
+    position:fixed;inset:0;z-index:50;
+    display:none;align-items:center;justify-content:center;
+    background:rgba(5,8,22,0.85);backdrop-filter:blur(10px);
+  }
+  #success.show{display:flex;animation:lineIn 0.4s ease;}
+  .success-panel{text-align:center;}
+  .success-check{
+    width:64px;height:64px;margin:0 auto 18px;
+    border-radius:50%;border:2px solid var(--success);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 30px rgba(34,197,94,0.5);
+    animation:popIn 0.5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes popIn{from{transform:scale(0.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .success-check svg{width:28px;height:28px;}
+  .success-title{font-size:18px;font-weight:700;color:var(--success);letter-spacing:0.5px;}
+  .success-name{margin-top:10px;font-size:22px;font-weight:800;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .success-sub{margin-top:12px;font-size:13px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+  .success-bar-track{
+    margin:22px auto 0;width:220px;height:5px;border-radius:6px;
+    background:rgba(255,255,255,0.08);overflow:hidden;
+  }
+  .success-bar-fill{
+    height:100%;width:0%;border-radius:6px;
+    background:linear-gradient(90deg,var(--success),var(--secondary));
+    animation:fillBar 1.6s ease forwards;
+  }
+  @keyframes fillBar{to{width:100%;}}
+
+  @media (max-width:420px){
+    .card{padding:30px 22px 24px;border-radius:18px;}
+    .boot-panel{padding:28px 22px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
 <body>
 
-<!-- =========================
-     BOOT SCREEN
-========================= -->
-<div id="boot-screen">
+<div class="glow-field"></div>
+<div id="codeRain"></div>
 
-<pre id="logo">
- ██████╗███████╗    ██╗  ██╗██╗   ██╗██████╗
-██╔════╝██╔════╝    ██║  ██║██║   ██║██╔══██╗
-██║     ███████╗    ███████║██║   ██║██████╔╝
-██║     ╚════██║    ██╔══██║██║   ██║██╔══██╗
-╚██████╗███████║    ██║  ██║╚██████╔╝██████╔╝
- ╚═════╝╚══════╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝
-
-          COMPUTER SCIENCE HUB
-               Build 1.0.0
-</pre>
-
-<div id="boot-messages">
-
-<p id="line1">Initializing System...</p>
-
-<p id="line2">Loading Programming Engine...</p>
-
-<p id="line3">Loading Artificial Intelligence...</p>
-
-<p id="line4">Loading Data Structures...</p>
-
-<p id="line5">Loading Networking...</p>
-
-<p id="line6">Loading Database Systems...</p>
-
-<p id="line7">Loading Cyber Security...</p>
-
-<p id="line8">Loading Firebase Authentication...</p>
-
+<div id="boot">
+  <div class="boot-panel">
+    <div class="boot-logo">CS HUB OS</div>
+    <div class="boot-sub">Computer Science Hub</div>
+    <div class="boot-build">Build 1.0.0</div>
+    <div class="boot-log" id="bootLog"></div>
+    <div class="boot-bar-track"><div class="boot-bar-fill" id="bootBar"></div></div>
+    <div class="boot-pct" id="bootPct">0%</div>
+    <div class="boot-ready" id="bootReady">SYSTEM READY</div>
+  </div>
 </div>
 
-<div id="progress-container">
+<div id="loginScene">
+  <div class="card">
+    <div class="brand">
+      <div class="mark">CS HUB</div>
+      <div class="tag">Kibabii University · CS Division</div>
+    </div>
 
-<div id="progress-bar"></div>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@kibu.ac.ke" autocomplete="email" required>
+      </div>
 
+      <div class="field pw">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" class="pw-toggle" id="pwToggle">SHOW</button>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <label class="remember"><input type="checkbox" id="remember"> Remember me</label>
+        <a href="#" class="forgot" id="forgotLink">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-login" id="loginBtn">Log In</button>
+      <div class="err-msg" id="errMsg"></div>
+    </form>
+
+    <div class="divider">CS HUB</div>
+    <div class="signup-hint">New here? <a href="#" id="signupLink">Create an account</a></div>
+  </div>
 </div>
 
-<p id="progress-text">0%</p>
-
-<p id="system-ready">
-SYSTEM READY
-</p>
-
+<div id="success">
+  <div class="success-panel">
+    <div class="success-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <div class="success-title">AUTHENTICATION SUCCESSFUL</div>
+    <div class="success-name" id="successName">Welcome back</div>
+    <div class="success-sub" id="successSub">Initializing environment...</div>
+    <div class="success-bar-track"><div class="success-bar-fill"></div></div>
+  </div>
 </div>
 
-<!-- =========================
-     CODE BACKGROUND
-========================= -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+  authDomain: "cs-hub-7c97b.firebaseapp.com",
+  projectId: "cs-hub-7c97b",
+  storageBucket: "cs-hub-7c97b.firebasestorage.app",
+  messagingSenderId: "76338162904",
+  appId: "1:76338162904:web:3be60e1952d49c8fb63bad",
+  measurementId: "G-134D1YEWVV"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 
-<div id="code-background">
+const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
-<!-- Part 5 will generate moving code here -->
+const bootMessages = [
+  "Initializing System...",
+  "Loading Programming Engine...",
+  "Loading Artificial Intelligence...",
+  "Loading Data Structures...",
+  "Loading Networking...",
+  "Loading Database Systems...",
+  "Loading Cyber Security...",
+  "Loading Firebase Authentication..."
+];
+const bootProgress = [0, 5, 18, 35, 57, 72, 91, 100];
 
-</div>
+const bootLog = document.getElementById('bootLog');
+const bootBar = document.getElementById('bootBar');
+const bootPct = document.getElementById('bootPct');
+const bootReady = document.getElementById('bootReady');
+const bootScreen = document.getElementById('boot');
+const loginScene = document.getElementById('loginScene');
 
-<!-- =========================
-     LOGIN SCREEN
-========================= -->
+function runBoot(i = 0) {
+  if (i >= bootMessages.length) {
+    bootBar.style.width = "100%";
+    bootPct.textContent = "100%";
+    setTimeout(() => {
+      bootReady.classList.add('show');
+      setTimeout(() => {
+        bootScreen.classList.add('hidden');
+        loginScene.classList.add('show');
+        setTimeout(() => bootScreen.remove(), 900);
+      }, 700);
+    }, 250);
+    return;
+  }
+  const line = document.createElement('div');
+  line.className = 'line';
+  line.style.animationDelay = '0s';
+  line.textContent = bootMessages[i];
+  bootLog.appendChild(line);
 
-<div id="login-screen">
+  const pct = bootProgress[i + 1] ?? bootProgress[i];
+  bootBar.style.width = pct + "%";
+  bootPct.textContent = pct + "%";
 
-<!-- Part 4 will build the premium login UI here -->
+  setTimeout(() => {
+    line.classList.add('done');
+    while (bootLog.children.length > 5) bootLog.removeChild(bootLog.firstChild);
+    runBoot(i + 1);
+  }, 430);
+}
+runBoot();
 
-</div>
+const snippets = [
+  `int main(){\n  printf("Hello");\n  return 0;\n}`,
+  `class Node {\npublic:\n  int val;\n  Node* next;\n};`,
+  `def fib(n):\n    if n < 2: return n\n    return fib(n-1)+fib(n-2)`,
+  `public class Main {\n  public static void main(String[] a){\n    System.out.println("Hi");\n  }\n}`,
+  `const sum = (a,b) => a + b;\nconsole.log(sum(2,3));`,
+  `interface User {\n  id: number;\n  name: string;\n}`,
+  `<div class="card">\n  <h1>CS HUB</h1>\n</div>`,
+  `.card{\n  backdrop-filter: blur(20px);\n  border-radius: 16px;\n}`,
+  `SELECT name, unit_code\nFROM students\nJOIN units USING(unit_id);`,
+  `fn main() {\n    let x = 5;\n    println!("{}", x);\n}`,
+  `func main() {\n    fmt.Println("Hello, Go")\n}`,
+  `#!/bin/bash\nfor f in *.txt; do\n  echo "$f"\ndone`,
+  `while stack:\n    node = stack.pop()\n    visit(node)`,
+  `SELECT * FROM units\nWHERE semester = 1;`,
+  `struct TreeNode {\n  int val;\n  TreeNode *left, *right;\n};`
+];
 
-<!-- =========================
-     WELCOME SCREEN
-========================= -->
+const rainContainer = document.getElementById('codeRain');
+const COLUMN_COUNT = window.innerWidth < 600 ? 7 : 13;
 
-<div id="welcome-screen">
+function spawnColumn(i) {
+  const col = document.createElement('div');
+  col.className = 'code-col';
+  col.textContent = snippets[Math.floor(Math.random() * snippets.length)];
+  const leftPct = (i / COLUMN_COUNT) * 100 + (Math.random() * 4 - 2);
+  const duration = 14 + Math.random() * 14;
+  const delay = Math.random() * -duration;
+  const opacity = 0.15 + Math.random() * 0.3;
+  const hueShift = Math.random() > 0.5 ? 'rgba(6,182,212,' : 'rgba(59,130,246,';
+  col.style.left = leftPct + "%";
+  col.style.animationDuration = duration + "s";
+  col.style.animationDelay = delay + "s";
+  col.style.color = hueShift + opacity + ")";
+  rainContainer.appendChild(col);
 
-<!-- Part 9 will build the welcome animation here -->
+  setInterval(() => {
+    col.textContent = snippets[Math.floor(Math.random() * snippets.length)];
+  }, 6000 + Math.random() * 6000);
+}
+for (let i = 0; i < COLUMN_COUNT; i++) spawnColumn(i);
 
-</div>
+const pwInput = document.getElementById('password');
+const pwToggle = document.getElementById('pwToggle');
+pwToggle.addEventListener('click', () => {
+  const isPw = pwInput.type === 'password';
+  pwInput.type = isPw ? 'text' : 'password';
+  pwToggle.textContent = isPw ? 'HIDE' : 'SHOW';
+});
 
+const loginBtn = document.getElementById('loginBtn');
+loginBtn.addEventListener('click', function (e) {
+  const rect = this.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  const size = Math.max(rect.width, rect.height);
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  this.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 650);
+});
+
+const form = document.getElementById('loginForm');
+const errMsg = document.getElementById('errMsg');
+const successOverlay = document.getElementById('success');
+const successName = document.getElementById('successName');
+const successSub = document.getElementById('successSub');
+
+function showError(text) {
+  errMsg.textContent = text;
+  errMsg.classList.add('show');
+}
+function clearError() {
+  errMsg.classList.remove('show');
+}
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  clearError();
+
+  const email = document.getElementById('email').value.trim();
+  const password = pwInput.value;
+  const remember = document.getElementById('remember').checked;
+
+  if (!email || !password) {
+    showError('Please enter both email and password.');
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Authenticating...';
+
+  const persistence = remember
+    ? firebase.auth.Auth.Persistence.LOCAL
+    : firebase.auth.Auth.Persistence.SESSION;
+
+  auth.setPersistence(persistence)
+    .then(() => auth.signInWithEmailAndPassword(email, password))
+    .then((cred) => {
+      const user = cred.user;
+      const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+      const displayName = user.displayName || (isAdmin ? "Lewis" : user.email.split('@')[0]);
+
+      if (isAdmin) {
+        successName.innerHTML = `Welcome back,<br>Admin ${displayName}`;
+        successSub.textContent = "Initializing Admin Environment...";
+      } else {
+        successName.innerHTML = `Welcome,<br>${displayName}`;
+        successSub.textContent = "Preparing your learning workspace...";
+      }
+
+      successOverlay.classList.add('show');
+
+      setTimeout(() => {
+        window.location.href = isAdmin ? "admin-dashboard.html" : "dashboard.html";
+      }, 1900);
+    })
+    .catch((err) => {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Log In';
+      showError(friendlyError(err.code));
+    });
+});
+
+function friendlyError(code) {
+  switch (code) {
+    case 'auth/invalid-email': return 'That email address looks invalid.';
+    case 'auth/user-not-found': return 'No account found with that email.';
+    case 'auth/wrong-password': return 'Incorrect password. Try again.';
+    case 'auth/too-many-requests': return 'Too many attempts. Please wait and try again.';
+    case 'auth/network-request-failed': return 'Network error. Check your connection.';
+    default: return 'Login failed. Please check your details and try again.';
+  }
+}
+
+document.getElementById('forgotLink').addEventListener('click', function (e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  if (!email) {
+    showError('Enter your email above first, then tap "Forgot password?".');
+    return;
+  }
+  auth.sendPasswordResetEmail(email)
+    .then(() => showError('Password reset email sent — check your inbox.'))
+    .catch((err) => showError(friendlyError(err.code)));
+});
+
+document.getElementById('signupLink').addEventListener('click', function (e) {
+  e.preventDefault();
+  window.location.href = "signup.html";
+});
+</script>
 </body>
 </html>
