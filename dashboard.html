@@ -2,202 +2,392 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CS HUB — Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS HUB - Student Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root{
+:root{
     --bg:#050816;
+    --card:#111827;
     --primary:#3B82F6;
     --secondary:#06B6D4;
-    --purple:#8B5CF6;
-    --success:#22C55E;
-    --text:#FFFFFF;
-    --text-dim:rgba(255,255,255,0.55);
-    --glass:rgba(255,255,255,0.04);
-    --glass-border:rgba(255,255,255,0.10);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{
-    min-height:100%;
+    --text:#ffffff;
+    --dim:rgba(255,255,255,.6);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Inter,sans-serif;
+}
+
+body{
     background:var(--bg);
     color:var(--text);
-    font-family:'Inter',sans-serif;
-  }
-  body{
-    background:
-      radial-gradient(ellipse 700px 500px at 15% 10%, rgba(59,130,246,0.14), transparent 60%),
-      radial-gradient(ellipse 600px 500px at 90% 90%, rgba(6,182,212,0.12), transparent 60%),
-      var(--bg);
     min-height:100vh;
-  }
+}
 
-  #gate{
-    position:fixed;inset:0;z-index:200;
-    background:var(--bg);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'JetBrains Mono',monospace;color:var(--text-dim);font-size:13px;letter-spacing:1px;
-    transition:opacity 0.5s ease;
-  }
-  #gate.hidden{opacity:0;pointer-events:none;}
+header{
+    padding:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
 
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px 22px;
-    background:rgba(255,255,255,0.03);
-    border-bottom:1px solid var(--glass-border);
-    backdrop-filter:blur(14px);
-    position:sticky;top:0;z-index:10;
-  }
-  .brand{
-    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;letter-spacing:2px;
+.logo{
+    font-size:25px;
+    font-weight:800;
     background:linear-gradient(90deg,var(--primary),var(--secondary));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .userchip{display:flex;align-items:center;gap:10px;}
-  .userchip .name{font-size:12.5px;color:var(--text-dim);text-align:right;line-height:1.3;}
-  .userchip .name b{color:var(--text);display:block;font-size:13.5px;}
-  .logout-btn{
-    background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;
-    padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;
-    font-family:'Inter',sans-serif;transition:background 0.2s ease;
-  }
-  .logout-btn:hover{background:rgba(239,68,68,0.18);}
+    -webkit-background-clip:text;
+    color:transparent;
+}
 
-  .hero{padding:34px 22px 6px;max-width:960px;margin:0 auto;}
-  .hero .eyebrow{font-size:12px;letter-spacing:2px;color:var(--secondary);font-family:'JetBrains Mono',monospace;text-transform:uppercase;}
-  .hero h1{margin-top:8px;font-size:clamp(22px,5vw,30px);font-weight:800;}
-  .hero p{margin-top:8px;color:var(--text-dim);font-size:14px;max-width:520px;}
-  .hero .signature-line{
-    margin-top:10px;color:var(--secondary);font-size:12.5px;font-style:italic;
-    font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;
-  }
+.logout{
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+}
 
-  .grid{
-    max-width:960px;margin:26px auto 60px;padding:0 22px;
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;
-  }
-  .tile{
-    background:var(--glass);border:1px solid var(--glass-border);border-radius:18px;
-    padding:22px 20px;backdrop-filter:blur(16px);
-    text-decoration:none;color:var(--text);
-    transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    display:flex;flex-direction:column;gap:10px;min-height:150px;
-  }
-  .tile:hover{transform:translateY(-3px);border-color:rgba(59,130,246,0.4);box-shadow:0 12px 30px rgba(59,130,246,0.15);}
-  .tile .icon{
-    width:38px;height:38px;border-radius:10px;
-    display:flex;align-items:center;justify-content:center;font-size:18px;
-    background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(6,182,212,0.2));
-    border:1px solid rgba(255,255,255,0.08);
-  }
-  .tile h3{font-size:16px;font-weight:700;}
-  .tile p{font-size:12.5px;color:var(--text-dim);line-height:1.5;flex:1;}
-  .tile .go{font-size:12px;color:var(--secondary);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
+.container{
+    padding:25px;
+}
 
-  .footer-note{
-    max-width:960px;margin:0 auto 40px;padding:0 22px;
-    color:rgba(255,255,255,0.3);font-size:11.5px;font-family:'JetBrains Mono',monospace;
-  }
+.welcome{
+    background:linear-gradient(135deg,#1d4ed8,#0891b2);
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:25px;
+}
 
-  @media (prefers-reduced-motion: reduce){*{transition-duration:0.01ms !important;}}
+.welcome h1{
+    font-size:28px;
+}
+
+.welcome p{
+    margin-top:10px;
+    opacity:.85;
+}
+
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+
+.card{
+    background:var(--card);
+    padding:25px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.1);
+    cursor:pointer;
+    transition:.3s;
+}
+
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:var(--secondary);
+}
+
+
+.icon{
+    font-size:35px;
+    margin-bottom:15px;
+}
+
+
+.card h2{
+    font-size:20px;
+    margin-bottom:8px;
+}
+
+
+.card p{
+    color:var(--dim);
+    font-size:14px;
+}
+
+
+a{
+    text-decoration:none;
+    color:white;
+}
+
+
+footer{
+    text-align:center;
+    padding:30px;
+    color:var(--dim);
+}
+
 </style>
+
 </head>
+
 <body>
 
-<div id="gate">CHECKING SESSION...</div>
 
-<div class="topbar">
-  <div class="brand">CS HUB</div>
-  <div class="userchip">
-    <div class="name"><b id="userName">Student</b><span id="userEmail"></span></div>
-    <button class="logout-btn" id="logoutBtn">Log out</button>
-  </div>
+<header>
+
+<div class="logo">
+CS HUB
 </div>
 
-<div class="hero">
-  <div class="eyebrow">Kibabii University · CS Division</div>
-  <h1 id="welcomeText">Welcome back</h1>
-  <p class="signature-line">Built one late night at a time — for every CS student who needs a place that just works.</p>
-  <p>Your learning workspace — notes, blog posts, curated resources, and tools built by and for CS students at Kibabii University.</p>
+<button class="logout" onclick="logout()">
+Logout
+</button>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="welcome">
+
+<h1 id="welcomeText">
+Loading...
+</h1>
+
+<p>
+Your Computer Science learning ecosystem
+</p>
+
 </div>
+
+
 
 <div class="grid">
-  <a class="tile" href="notes/index.html">
-    <div class="icon">📘</div>
-    <h3>Notes</h3>
-    <p>Unit notes organized by year and semester, covering the full BSc CS curriculum.</p>
-    <div class="go">Open notes →</div>
-  </a>
 
-  <a class="tile" href="blog/index.html">
-    <div class="icon">📝</div>
-    <h3>Blog</h3>
-    <p>Write-ups, tutorials, and project stories from students in the CS Hub community.</p>
-    <div class="go">Read the blog →</div>
-  </a>
 
-  <a class="tile" href="resources/index.html">
-    <div class="icon">📚</div>
-    <h3>Resources</h3>
-    <p>Reference material, past papers, and external reading curated for each unit.</p>
-    <div class="go">Browse resources →</div>
-  </a>
+<a href="notes.html">
+<div class="card">
 
-  <a class="tile" href="tools/index.html">
-    <div class="icon">🛠️</div>
-    <h3>Tools</h3>
-    <p>Small utilities and mini web apps built by students to make CS work easier.</p>
-    <div class="go">Open tools →</div>
-  </a>
+<div class="icon">📚</div>
+
+<h2>Notes</h2>
+
+<p>
+Access Computer Science notes from Year 1 to Year 4.
+</p>
+
+</div>
+</a>
+
+
+
+
+<a href="ai-assistant.html">
+<div class="card">
+
+<div class="icon">🤖</div>
+
+<h2>AI Assistant</h2>
+
+<p>
+Ask questions and get help learning Computer Science.
+</p>
+
+</div>
+</a>
+
+
+
+
+
+<a href="units.html">
+<div class="card">
+
+<div class="icon">🎓</div>
+
+<h2>Units</h2>
+
+<p>
+Explore all CS units from first year to fourth year.
+</p>
+
+</div>
+</a>
+
+
+
+
+
+<a href="labs.html">
+<div class="card">
+
+<div class="icon">💻</div>
+
+<h2>Labs</h2>
+
+<p>
+Practice programming and technical skills.
+</p>
+
+</div>
+</a>
+
+
+
+
+
+<a href="projects.html">
+<div class="card">
+
+<div class="icon">🚀</div>
+
+<h2>Projects</h2>
+
+<p>
+Build and manage Computer Science projects.
+</p>
+
+</div>
+</a>
+
+
+
+
+
+<a href="profile.html">
+<div class="card">
+
+<div class="icon">👤</div>
+
+<h2>Profile</h2>
+
+<p>
+View your account information.
+</p>
+
+</div>
+</a>
+
+
+
+
 </div>
 
-<div class="footer-note">CS HUB · Built by CS students, for CS students.</div>
+
+</div>
+
+
+<footer>
+CS HUB OS © 2026
+</footer>
+
+
+
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+
 <script>
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-  authDomain: "cs-hub-7c97b.firebaseapp.com",
-  projectId: "cs-hub-7c97b",
-  storageBucket: "cs-hub-7c97b.firebasestorage.app",
-  messagingSenderId: "76338162904",
-  appId: "1:76338162904:web:3be60e1952d49c8fb63bad",
-  measurementId: "G-134D1YEWVV"
+
+apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+
+authDomain: "cs-hub-7c97b.firebaseapp.com",
+
+projectId: "cs-hub-7c97b",
+
+storageBucket: "cs-hub-7c97b.firebasestorage.app",
+
+messagingSenderId: "76338162904",
+
+appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+
 };
+
+
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 
-const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
-const gate = document.getElementById('gate');
 
-auth.onAuthStateChanged((user) => {
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
+const auth=firebase.auth();
 
-  if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-    window.location.href = "admin-dashboard.html";
-    return;
-  }
 
-  const displayName = user.displayName || user.email.split('@')[0];
-  document.getElementById('userName').textContent = displayName;
-  document.getElementById('userEmail').textContent = user.email;
-  document.getElementById('welcomeText').textContent = "Welcome, " + displayName;
 
-  gate.classList.add('hidden');
-  setTimeout(() => gate.remove(), 500);
+auth.onAuthStateChanged((user)=>{
+
+
+if(user){
+
+
+let name=user.email.split("@")[0];
+
+
+let hour=new Date().getHours();
+
+
+let greeting;
+
+
+if(hour<12){
+
+greeting="Good Morning";
+
+}
+
+else if(hour<18){
+
+greeting="Good Afternoon";
+
+}
+
+else{
+
+greeting="Good Evening";
+
+}
+
+
+document.getElementById("welcomeText").innerHTML=
+
+`${greeting} ${name} 👋<br>Welcome back to CS HUB`;
+
+
+
+}
+
+else{
+
+
+window.location.href="index.html";
+
+
+}
+
+
 });
 
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  auth.signOut().then(() => {
-    window.location.href = "login.html";
-  });
+
+
+function logout(){
+
+firebase.auth().signOut().then(()=>{
+
+window.location.href="index.html";
+
 });
+
+}
+
+
 </script>
+
+
 </body>
 </html>
