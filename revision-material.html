@@ -5,34 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Materials - CS HUB</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: auto; }
-        /* Admin Panel starts hidden */
-        #adminControls { background: #1a1a1a; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: none; }
-        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; }
-        button { background: #3B82F6; color: white; font-weight: bold; cursor: pointer; }
-        .item-link { display: block; padding: 12px; background: white; margin: 5px 0; border-radius: 8px; border-left: 5px solid #3B82F6; text-decoration: none; color: #333; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Courier New', Courier, monospace; color: white; }
+        
+        /* Matrix Canvas Background */
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: 0; }
+        
+        .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 20px; background: rgba(0, 0, 0, 0.7); min-height: 100vh; }
+        h1 { color: #0F0; text-align: center; border-bottom: 1px solid #0F0; padding-bottom: 10px; }
+        section { margin-bottom: 25px; }
+        h2 { color: #fff; background: #111; padding: 10px; border-left: 4px solid #0F0; font-size: 18px; }
+        .item-link { display: block; padding: 12px; background: rgba(0, 255, 0, 0.1); margin: 8px 0; text-decoration: none; color: #0F0; border: 1px solid #0F0; transition: 0.3s; }
+        .item-link:hover { background: #0F0; color: #000; }
     </style>
 </head>
 <body>
 
+<canvas id="matrixCanvas"></canvas>
+
 <div class="container">
-    <h1>Revision Materials</h1>
-
-    <!-- This section will only show for you -->
-    <section id="adminControls">
-        <h3>Admin Update Panel</h3>
-        <input type="text" id="titleInput" placeholder="Material Title">
-        <input type="text" id="linkInput" placeholder="Paste Google Drive/YouTube Link">
-        <select id="category">
-            <option value="books">Books & Guides</option>
-            <option value="youtube">YouTube Tutorials</option>
-            <option value="lectures">Lecture Videos</option>
-            <option value="exams">Exams & CATs</option>
-        </select>
-        <button onclick="saveMaterial()">Add Material</button>
-    </section>
-
+    <h1>CS HUB - Materials</h1>
     <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
     <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
     <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
@@ -41,8 +32,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
@@ -50,37 +40,34 @@
         databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
         projectId: "cs-hub-7c97b",
         storageBucket: "cs-hub-7c97b.appspot.com",
-        messagingSenderId: "76338162904",
         appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // RECOGNITION LOGIC
-    onAuthStateChanged(auth, (user) => {
-        const adminPanel = document.getElementById('adminControls');
-        // Check if user exists AND if email matches your admin email
-        if (user && user.email === "lewiseinstein5@gmail.com") {
-            adminPanel.style.display = "block";
-        } else {
-            adminPanel.style.display = "none";
+    // Matrix Background Animation
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const fontSize = 14; const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#0F0'; ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
         }
-    });
+    }
+    setInterval(drawMatrix, 33);
 
-    window.saveMaterial = () => {
-        const title = document.getElementById('titleInput').value;
-        const url = document.getElementById('linkInput').value;
-        const cat = document.getElementById('category').value;
-        
-        if(!title || !url) return alert("Please enter both a title and a link.");
-        
-        push(ref(db, 'materials/' + cat), { title, url })
-            .then(() => alert("Added successfully!"))
-            .catch((e) => alert("Error: " + e.message));
-    };
-
+    // Load Data for Students
     ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
         onValue(ref(db, 'materials/' + cat), (snapshot) => {
             const listDiv = document.querySelector(`#${cat} .list`);
