@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS HUB - Settings</title>
+    <!-- Use your same styles as the dashboard for consistency -->
+    <style>
+        :root { --bg: #030611; --card-bg: rgba(10, 15, 36, 0.7); --white: #ffffff; --blue: #3B82F6; --border: rgba(255, 255, 255, 0.08); }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; padding: 40px; }
+        .settings-card { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 18px; max-width: 600px; margin: auto; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: #aaa; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border-radius: 8px; background: #060919; border: 1px solid var(--border); color: white; }
+        .btn-save { background: var(--blue); border: none; padding: 12px 24px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="settings-card">
+    <h2>System Settings</h2>
+    <div class="input-group">
+        <label>Maintenance Mode (Public site disabled?)</label>
+        <input type="checkbox" id="maintenanceToggle">
+    </div>
+    <div class="input-group">
+        <label>Admin Notification Email</label>
+        <input type="email" id="adminEmail" placeholder="email@example.com">
+    </div>
+    <div class="input-group">
+        <label>Global Site Announcement</label>
+        <input type="text" id="siteAnnouncement" placeholder="e.g. Server maintenance on Sunday...">
+    </div>
+    <button class="btn-save" onclick="saveSettings()">Save Configuration</button>
+    <button onclick="window.location.href='admin-dashboard.html'" style="margin-top:10px; background:none; border:none; color:gray; cursor:pointer;">&larr; Back to Dashboard</button>
+</div>
+
+<!-- Firebase Scripts -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+    // ... Initialize Firebase with your existing config ...
+    const db = firebase.firestore();
+
+    // Load current settings on page load
+    db.collection("config").doc("global").get().then(doc => {
+        if(doc.exists) {
+            const data = doc.data();
+            document.getElementById('maintenanceToggle').checked = data.maintenance;
+            document.getElementById('adminEmail').value = data.email || "";
+            document.getElementById('siteAnnouncement').value = data.announcement || "";
+        }
+    });
+
+    function saveSettings() {
+        db.collection("config").doc("global").set({
+            maintenance: document.getElementById('maintenanceToggle').checked,
+            email: document.getElementById('adminEmail').value,
+            announcement: document.getElementById('siteAnnouncement').value
+        }).then(() => alert("Settings saved!"));
+    }
+</script>
+</body>
+</html>
