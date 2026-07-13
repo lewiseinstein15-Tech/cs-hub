@@ -5,29 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Materials - CS HUB</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        body { font-family: sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
         .container { max-width: 600px; margin: 0 auto; }
         
-        /* Admin Panel Styling */
+        /* Admin Panel - Set to display: block to test if it shows */
         #adminControls { 
-            background: #1a1a1a; 
+            background: #e74c3c; /* Red color to see it clearly */
             color: white; 
-            display: none; /* Hidden by default */
+            display: block; 
             padding: 25px; 
             border-radius: 15px; 
             margin-bottom: 30px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
-        /* Form Inputs */
         input, select, button { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; box-sizing: border-box; font-size: 16px; }
-        button { background: #3B82F6; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #2563EB; }
-        .btn-yt { background: #E1306C; }
+        button { background: #3B82F6; color: white; font-weight: bold; cursor: pointer; }
         
-        /* Content Sections */
         section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        h2 { color: #1a73e8; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: #1a73e8; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; }
         .item-link { display: block; padding: 12px; background: #f8f9fa; margin: 8px 0; text-decoration: none; color: #333; border-radius: 8px; border-left: 5px solid #3B82F6; }
     </style>
 </head>
@@ -38,7 +33,7 @@
 
     <!-- Admin Panel -->
     <section id="adminControls">
-        <h3 style="margin-top: 0; color: #3B82F6;">Admin Update Panel</h3>
+        <h3>Admin Update Panel (Test Mode)</h3>
         <input type="text" id="titleInput" placeholder="Material Title">
         <input type="text" id="linkInput" placeholder="Paste URL/Link Here">
         <select id="category">
@@ -48,10 +43,8 @@
             <option value="exams">Exams & CATs</option>
         </select>
         <button onclick="saveMaterial()">Update Material</button>
-        <button class="btn-yt" onclick="window.open('https://youtube.com', '_blank')">Open YouTube to Copy Link</button>
     </section>
 
-    <!-- Sections -->
     <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
     <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
     <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
@@ -60,7 +53,6 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
     const firebaseConfig = {
@@ -74,29 +66,20 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // This checks for the user as soon as the page loads
-    onAuthStateChanged(auth, (user) => {
-        if (user && user.email === "lewiseinstein5@gmail.com") {
-            document.getElementById('adminControls').style.display = "block";
-        }
-    });
-
-    // Update function
     window.saveMaterial = () => {
         const title = document.getElementById('titleInput').value;
         const url = document.getElementById('linkInput').value;
         const cat = document.getElementById('category').value;
         
-        if(!title || !url) return alert("Please enter both a title and a link.");
+        if(!title || !url) return alert("Please enter title and link.");
         
-        push(ref(db, 'materials/' + cat), { title, url });
-        alert("Section updated successfully!");
+        push(ref(db, 'materials/' + cat), { title, url })
+            .then(() => alert("Updated!"))
+            .catch((e) => alert("Error: " + e));
     };
 
-    // Load data
     ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
         onValue(ref(db, 'materials/' + cat), (snapshot) => {
             const listDiv = document.querySelector(`#${cat} .list`);
