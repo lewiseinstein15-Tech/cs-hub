@@ -3,8 +3,8 @@
     --bg-color: #0a0a1a;
     --card-bg: #1a1a2e;
     --sidebar-bg: #1a1a2e;
-    --primary-color: #8a2be2; /* BlueViolet */
-    --secondary-color: #00bcd4; /* Cyan */
+    --primary-color: #8a2be2;
+    --secondary-color: #00bcd4;
     --text-color: #e0e0e0;
     --light-text-color: #b0b0b0;
     --border-color: #33334f;
@@ -46,7 +46,6 @@ a:hover {
     min-height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: var(--sidebar-bg);
@@ -138,7 +137,6 @@ a:hover {
     color: var(--light-text-color);
 }
 
-/* Main Content */
 .main-content {
     margin-left: 250px;
     flex-grow: 1;
@@ -146,7 +144,6 @@ a:hover {
     transition: margin-left 0.3s ease-in-out;
 }
 
-/* Navbar */
 .navbar {
     background-color: var(--card-bg);
     padding: 15px 20px;
@@ -210,7 +207,6 @@ a:hover {
     margin-right: 5px;
 }
 
-/* Dashboard Overview */
 .dashboard-overview h1 {
     margin-bottom: 20px;
     color: var(--text-color);
@@ -363,7 +359,6 @@ a:hover {
     margin-right: 5px;
 }
 
-/* Manage Content */
 .manage-content-grid h2 {
     margin-bottom: 20px;
     color: var(--text-color);
@@ -417,7 +412,6 @@ a:hover {
     margin-left: 5px;
 }
 
-/* Bottom Section */
 .bottom-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -493,6 +487,7 @@ a:hover {
 .recent-activity .activity-dot.modified { background-color: var(--modified-color); }
 .recent-activity .activity-dot.new-user { background-color: var(--new-user-color); }
 .recent-activity .activity-dot.system { background-color: var(--system-color); }
+.recent-activity .activity-dot.deleted { background-color: var(--danger-color); }
 
 .recent-activity p {
     flex-grow: 1;
@@ -516,7 +511,6 @@ a:hover {
     flex-shrink: 0;
 }
 
-/* Mobile Navigation */
 .mobile-nav {
     display: none;
     position: fixed;
@@ -549,7 +543,6 @@ a:hover {
     margin-bottom: 5px;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
     .sidebar {
         width: 200px;
