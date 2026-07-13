@@ -1,943 +1,551 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CS HUB OS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-
-<style>
-
-:root{
---bg:#050816;
---blue:#3B82F6;
---cyan:#06B6D4;
---purple:#8B5CF6;
---green:#22C55E;
---white:#ffffff;
---dim:rgba(255,255,255,.6);
-}
-
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-
-body{
-
-min-height:100vh;
-background:var(--bg);
-color:white;
-font-family:'Inter',sans-serif;
-overflow-x:hidden;
-
-}
-
-
-
-/* background */
-
-.background{
-
-position:fixed;
-inset:0;
-z-index:-2;
-
-background:
-radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 35%),
-radial-gradient(circle at 80% 70%,rgba(6,182,212,.2),transparent 35%),
-#050816;
-
-}
-
-
-
-/* moving CS words */
-
-
-.code{
-
-position:fixed;
-
-font-family:'JetBrains Mono',monospace;
-
-font-size:13px;
-
-line-height:2;
-
-color:rgba(6,182,212,.2);
-
-animation:moveWords 18s linear infinite;
-
-z-index:-1;
-
-}
-
-
-
-@keyframes moveWords{
-
-from{
-transform:translateY(120vh);
-}
-
-to{
-transform:translateY(-30vh);
-}
-
-}
-
-
-
-
-/* header */
-
-
-header{
-
-height:75px;
-
-padding:15px 25px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-backdrop-filter:blur(15px);
-
-}
-
-
-
-.logo{
-
-font-family:'JetBrains Mono',monospace;
-
-font-size:22px;
-
-font-weight:800;
-
-letter-spacing:2px;
-
-background:linear-gradient(90deg,var(--blue),var(--cyan));
-
--webkit-background-clip:text;
-
-color:transparent;
-
-}
-
-
-
-.header-right{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-
-
-.profile-circle{
-
-width:42px;
-
-height:42px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:linear-gradient(135deg,var(--blue),var(--cyan));
-
-font-weight:800;
-
-font-size:18px;
-
-color:white;
-
-text-decoration:none;
-
-}
-
-
-
-.logout{
-
-border:none;
-
-background:#ef4444;
-
-color:white;
-
-padding:9px 15px;
-
-border-radius:10px;
-
-cursor:pointer;
-
-}
-
-
-
-
-
-/* main */
-
-
-.container{
-
-padding:25px;
-
-}
-
-
-
-/* welcome no box */
-
-
-.welcome{
-
-padding:10px 5px;
-
-}
-
-
-#welcomeText{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:18px;
-
-font-weight:600;
-
-letter-spacing:1px;
-
-line-height:1.7;
-
-text-shadow:0 0 12px rgba(6,182,212,.5);
-
-}
-
-
-
-.system-text{
-
-font-family:'JetBrains Mono',monospace;
-
-font-size:12px;
-
-margin-top:8px;
-
-color:var(--cyan);
-
-}
-/* mascot */
-
-
-.mascot{
-
-margin:25px auto;
-
-text-align:center;
-
-padding:20px;
-
-max-width:420px;
-
-}
-
-
-.robot{
-
-font-size:55px;
-
-animation:float 4s ease-in-out infinite;
-
-}
-
-
-
-@keyframes float{
-
-0%,100%{
-transform:translateY(0);
-}
-
-50%{
-transform:translateY(-10px);
-}
-
-}
-
-
-
-.mascot h2{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:17px;
-
-margin-top:10px;
-
-}
-
-
-
-.mascot p{
-
-font-size:13px;
-
-color:var(--dim);
-
-margin-top:6px;
-
-}
-
-
-
-
-
-/* cards */
-
-
-.grid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-
-gap:15px;
-
-margin-top:25px;
-
-}
-
-
-
-.card{
-
-padding:18px;
-
-border-radius:18px;
-
-background:rgba(255,255,255,.05);
-
-border:1px solid rgba(255,255,255,.1);
-
-backdrop-filter:blur(15px);
-
-transition:.3s;
-
-}
-
-
-
-.card:hover{
-
-transform:translateY(-5px);
-
-border-color:var(--cyan);
-
-}
-
-
-
-.card .icon{
-
-font-size:30px;
-
-margin-bottom:10px;
-
-}
-
-
-
-.card h2{
-
-font-size:16px;
-
-margin-bottom:6px;
-
-}
-
-
-
-.card p{
-
-font-size:12px;
-
-color:var(--dim);
-
-}
-
-
-
-
-
-.status{
-
-margin-top:25px;
-
-padding:15px;
-
-border-radius:15px;
-
-background:rgba(34,197,94,.1);
-
-border:1px solid rgba(34,197,94,.3);
-
-font-family:'JetBrains Mono',monospace;
-
-font-size:13px;
-
-color:var(--green);
-
-}
-
-
-
-footer{
-
-text-align:center;
-
-padding:25px;
-
-font-size:12px;
-
-color:var(--dim);
-
-}
-
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS HUB OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050816;
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, .6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* background */
+        .background {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, .25), transparent 35%),
+                        radial-gradient(circle at 80% 70%, rgba(6, 182, 212, .2), transparent 35%),
+                        #050816;
+        }
+
+        /* moving CS words */
+        .code {
+            position: fixed;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            color: rgba(6, 182, 212, .2);
+            animation: moveWords 18s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes moveWords {
+            from { transform: translateY(120vh); }
+            to { transform: translateY(-30vh); }
+        }
+
+        /* header */
+        header {
+            height: 75px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--blue), var(--cyan));
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logout {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* main */
+        .container {
+            padding: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* welcome no box */
+        .welcome {
+            padding: 10px 5px;
+        }
+
+        #welcomeText {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            line-height: 1.7;
+            text-shadow: 0 0 12px rgba(6, 182, 212, .5);
+        }
+
+        .system-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            margin-top: 8px;
+            color: var(--cyan);
+        }
+
+        /* mascot */
+        .mascot {
+            margin: 25px auto;
+            text-align: center;
+            padding: 20px;
+            max-width: 420px;
+        }
+
+        .robot {
+            font-size: 55px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mascot h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 17px;
+            margin-top: 10px;
+        }
+
+        .mascot p {
+            font-size: 13px;
+            color: var(--dim);
+            margin-top: 6px;
+        }
+
+        /* grid styles */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card {
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .1);
+            backdrop-filter: blur(15px);
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan);
+        }
+
+        .card .icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 12px;
+            color: var(--dim);
+        }
+
+        /* Stats & Panels sections */
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
+
+        .activity-panel {
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            color: var(--dim);
+            font-size: 11px;
+        }
+
+        .status {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(34, 197, 94, .1);
+            border: 1px solid rgba(34, 197, 94, .3);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 12px;
+            color: var(--dim);
+        }
+    </style>
 </head>
-
-
 <body>
 
-
-<div class="background"></div>
-
-
-
-<div class="code" style="left:10%;animation-delay:0s">
-AI<br>
-Python<br>
-Machine Learning<br>
-Algorithms
-</div>
-
-
-<div class="code" style="left:45%;animation-delay:5s">
-Data Structures<br>
-Cyber Security<br>
-Networking<br>
-Cloud
-</div>
-
-
-<div class="code" style="left:75%;animation-delay:8s">
-Database<br>
-Programming<br>
-Software Engineering<br>
-Computing
-</div>
-
-
-
-
-
-<header>
-
-
-<div class="logo">
-CS HUB OS
-</div>
-
-
-
-<div class="header-right">
-
-
-<a href="profile.html" class="profile-circle" id="profileCircle">
-L
-</a>
-
-
-<button class="logout" onclick="logout()">
-Logout
-</button>
-
-
-</div>
-
-
-</header>
-
-
-
-
-
-<div class="container">
-
-
-
-<div class="welcome">
-
-<div id="welcomeText">
-Loading...
-</div>
-
-
-<div class="system-text" id="systemText">
-SYSTEM INITIALIZING...
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="mascot">
-
-
-<div class="robot">
-🤖
-</div>
-
-
-<h2>
-CS HUB AI Companion
-</h2>
-
-
-<p>
-Your Computer Science learning system is online.
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="grid">
-
-
-
-<a href="notes.html">
-
-<div class="card">
-
-<div class="icon">
-📚
-</div>
-
-<h2>
-Notes
-</h2>
-
-<p>
-Computer Science notes Year 1-4
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a href="ai-system.html">
-
-<div class="card">
-
-<div class="icon">
-🤖
-</div>
-
-<h2>
-AI System
-</h2>
-
-<p>
-Intelligent CS learning system
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a href="units.html">
-
-<div class="card">
-
-<div class="icon">
-🎓
-</div>
-
-<h2>
-Units
-</h2>
-
-<p>
-Explore all CS units
-</p>
-
-</div>
-
-</a>
-
-
-
-
-<a href="labs.html">
-
-<div class="card">
-
-<div class="icon">
-💻
-</div>
-
-<h2>
-Labs
-</h2>
-
-<p>
-Coding practice
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a href="projects.html">
-
-<div class="card">
-
-<div class="icon">
-🚀
-</div>
-
-<h2>
-Projects
-</h2>
-
-<p>
-Build technology
-</p>
-
-</div>
-
-</a>
-
-
-
-</div>
-
-
-
-<div class="status" id="status">
-
-✓ CS HUB SYSTEM READY
-
-</div>
-
-
-</div>
-
-
-
-<footer>
-
-CS HUB OS © 2026
-
-</footer><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
-
-<script>
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-
-authDomain: "cs-hub-7c97b.firebaseapp.com",
-
-projectId: "cs-hub-7c97b",
-
-storageBucket: "cs-hub-7c97b.firebasestorage.app",
-
-messagingSenderId: "76338162904",
-
-appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-
-};
-
-
-
-firebase.initializeApp(firebaseConfig);
-
-
-const auth = firebase.auth();
-
-
-const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
-
-
-
-
-
-auth.onAuthStateChanged((user)=>{
-
-
-if(!user){
-
-window.location.href="index.html";
-
-return;
-
-}
-
-
-
-let email = user.email;
-
-
-
-let username = email
-.split("@")[0]
-.replace(/[0-9]/g,"");
-
-
-
-username =
-username.charAt(0).toUpperCase()
-+
-username.slice(1);
-
-
-
-
-let isAdmin =
-email.toLowerCase()
-===
-ADMIN_EMAIL.toLowerCase();
-
-
-
-
-let hour = new Date().getHours();
-
-
-let greeting;
-
-
-if(hour < 12){
-
-greeting="Good Morning";
-
-}
-
-else if(hour < 18){
-
-greeting="Good Afternoon";
-
-}
-
-else{
-
-greeting="Good Evening";
-
-}
-
-
-
-
-let message;
-
-
-
-if(isAdmin){
-
-message =
-`${greeting} Admin ${username} 👋\nWelcome back to CS HUB`;
-
-}
-
-else{
-
-message =
-`${greeting} ${username} 👋\nWelcome back to CS HUB`;
-
-}
-
-
-
-
-typeWriter(message);
-
-
-
-
-document.getElementById("profileCircle")
-.textContent =
-username.charAt(0).toUpperCase();
-
-
-
-});
-
-
-
-
-
-
-function typeWriter(text){
-
-
-let i=0;
-
-
-let element =
-document.getElementById("welcomeText");
-
-
-element.innerHTML="";
-
-
-
-function write(){
-
-
-if(i < text.length){
-
-
-if(text[i]==="\n"){
-
-element.innerHTML+="<br>";
-
-}
-
-else{
-
-element.innerHTML+=text[i];
-
-}
-
-
-i++;
-
-
-setTimeout(write,35);
-
-
-}
-
-
-}
-
-
-write();
-
-
-}
-
-
-
-
-
-
-const messages=[
-
-"AI SYSTEM ONLINE...",
-"LOADING KNOWLEDGE ENGINE...",
-"DATABASE CONNECTED...",
-"CS HUB READY ✓"
-
-];
-
-
-let index=0;
-
-
-
-setInterval(()=>{
-
-
-document.getElementById("systemText")
-.textContent =
-messages[index];
-
-
-
-index++;
-
-
-if(index>=messages.length){
-
-index=0;
-
-}
-
-
-},3000);
-
-
-
-
-
-
-function logout(){
-
-
-firebase.auth()
-.signOut()
-.then(()=>{
-
-window.location.href="index.html";
-
-});
-
-
-}
-
-
-</script>
-
-
+    <div class="background"></div>
+
+    <div class="code" style="left:10%;animation-delay:0s">
+        AI<br>Python<br>Machine Learning<br>Algorithms
+    </div>
+    <div class="code" style="left:45%;animation-delay:5s">
+        Data Structures<br>Cyber Security<br>Networking<br>Cloud
+    </div>
+    <div class="code" style="left:75%;animation-delay:8s">
+        Database<br>Programming<br>Software Engineering<br>Computing
+    </div>
+
+    <header>
+        <div class="logo">CS HUB OS</div>
+        <div class="header-right">
+            <a href="profile.html" class="profile-circle" id="profileCircle">L</a>
+            <button class="logout" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome">
+            <div id="welcomeText">Loading...</div>
+            <div class="system-text" id="systemText">SYSTEM INITIALIZING...</div>
+        </div>
+
+        <div class="mascot">
+            <div class="robot">🤖</div>
+            <h2>CS HUB AI Companion</h2>
+            <p>Your Computer Science learning system is online.</p>
+        </div>
+
+        <!-- Real-Time Stats Display -->
+        <div class="panel-title">System Metrics</div>
+        <div class="grid" style="margin-top: 0;">
+            <div class="card">
+                <div class="icon">👥</div>
+                <h2>Users</h2>
+                <p id="statUsers">Loading...</p>
+            </div>
+            <div class="card">
+                <div class="icon">📄</div>
+                <h2>Notes</h2>
+                <p id="statNotes">Loading...</p>
+            </div>
+            <div class="card">
+                <div class="icon">📚</div>
+                <h2>Units</h2>
+                <p id="statUnits">Loading...</p>
+            </div>
+            <div class="card">
+                <div class="icon">🟢</div>
+                <h2>Status</h2>
+                <p id="statStatus">Online</p>
+            </div>
+        </div>
+
+        <!-- System Core Navigation Map -->
+        <div class="panel-title">Navigation Hub</div>
+        <div class="grid" style="margin-top: 0;">
+            <a href="notes.html">
+                <div class="card">
+                    <div class="icon">📚</div>
+                    <h2>Notes</h2>
+                    <p>Computer Science notes Year 1-4</p>
+                </div>
+            </a>
+            <a href="ai-system.html">
+                <div class="card">
+                    <div class="icon">🤖</div>
+                    <h2>AI System</h2>
+                    <p>Intelligent CS learning system</p>
+                </div>
+            </a>
+            <a href="units.html">
+                <div class="card">
+                    <div class="icon">🎓</div>
+                    <h2>Units</h2>
+                    <p>Explore all CS units</p>
+                </div>
+            </a>
+            <a href="labs.html">
+                <div class="card">
+                    <div class="icon">💻</div>
+                    <h2>Labs</h2>
+                    <p>Coding practice</p>
+                </div>
+            </a>
+            <a href="projects.html">
+                <div class="card">
+                    <div class="icon">🚀</div>
+                    <h2>Projects</h2>
+                    <p>Build technology</p>
+                </div>
+            </a>
+            <a href="revision.html">
+                <div class="card">
+                    <div class="icon">📝</div>
+                    <h2>Revision</h2>
+                    <p>Revision Materials</p>
+                </div>
+            </a>
+            <a href="settings.html">
+                <div class="card">
+                    <div class="icon">⚙️</div>
+                    <h2>Settings</h2>
+                    <p>System Configuration</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Live Activity Log Monitoring -->
+        <div class="panel-title">Real-Time Activity Log</div>
+        <div class="activity-panel" id="activityPanel">
+            <div class="activity-item">System logs initializing...</div>
+        </div>
+
+        <div class="status" id="status">✓ CS HUB SYSTEM READY</div>
+    </div>
+
+    <footer>CS HUB OS © 2026</footer>
+
+    <!-- Firebase SDK Dependencies -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // --- 1. FIREBASE CONFIGURATION & INITIALIZATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+
+        // --- 2. AUTHENTICATION & USER MANAGEMENT ---
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            let email = user.email;
+            let username = email.split("@")[0].replace(/[0-9]/g, "");
+            username = username.charAt(0).toUpperCase() + username.slice(1);
+            let isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            // Handle Greeting
+            let hour = new Date().getHours();
+            let greeting = (hour < 12) ? "Good Morning" : (hour < 18) ? "Good Afternoon" : "Good Evening";
+            let message = isAdmin ? `${greeting} Admin ${username} 👋\nWelcome back to CS HUB` : `${greeting} ${username} 👋\nWelcome back to CS HUB`;
+
+            typeWriter(message);
+            document.getElementById("profileCircle").textContent = username.charAt(0).toUpperCase();
+
+            // Initialize Real-time Streams once authenticated
+            initRealTimeStats();
+            initRealTimeActivity();
+        });
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            }).catch(err => console.error("Logout Error:", err));
+        }
+
+        // --- 3. UI ANIMATION SCHEDULERS ---
+        function typeWriter(text) {
+            let i = 0;
+            let element = document.getElementById("welcomeText");
+            element.innerHTML = "";
+
+            function write() {
+                if (i < text.length) {
+                    element.innerHTML += (text[i] === "\n") ? "<br>" : text[i];
+                    i++;
+                    setTimeout(write, 35);
+                }
+            }
+            write();
+        }
+
+        const systemMessages = [
+            "AI SYSTEM ONLINE...",
+            "LOADING KNOWLEDGE ENGINE...",
+            "DATABASE CONNECTED...",
+            "CS HUB READY ✓"
+        ];
+        let messageIdx = 0;
+        setInterval(() => {
+            document.getElementById("systemText").textContent = systemMessages[messageIdx];
+            messageIdx = (messageIdx + 1) % systemMessages.length;
+        }, 3000);
+
+        // --- 4. REAL-TIME DATA STREAM SYNCHRONIZERS ---
+        function initRealTimeStats() {
+            // Live Users Count
+            db.collection("users").onSnapshot((snapshot) => {
+                document.getElementById("statUsers").textContent = `${snapshot.size} Active`;
+            }, err => console.error("Error reading live user metrics:", err));
+
+            // Live Notes Count
+            db.collection("notes").onSnapshot((snapshot) => {
+                document.getElementById("statNotes").textContent = `${snapshot.size} Documents`;
+            }, err => console.error("Error reading live notes data:", err));
+
+            // Live Units Count
+            db.collection("units").onSnapshot((snapshot) => {
+                document.getElementById("statUnits").textContent = `${snapshot.size} Syllabus Units`;
+            }, err => console.error("Error reading live unit configurations:", err));
+
+            // Live Infrastructure Status Verification
+            db.collection("system_status").doc("current").onSnapshot((doc) => {
+                if (doc.exists && doc.data().status) {
+                    document.getElementById("statStatus").textContent = doc.data().status;
+                } else {
+                    document.getElementById("statStatus").textContent = "Operational";
+                }
+            }, () => {
+                document.getElementById("statStatus").textContent = "Operational";
+            });
+        }
+
+        function initRealTimeActivity() {
+            db.collection("activity_logs")
+              .orderBy("timestamp", "desc")
+              .limit(8)
+              .onSnapshot((snapshot) => {
+                  const panel = document.getElementById("activityPanel");
+                  if (snapshot.empty) {
+                      panel.innerHTML = '<div class="activity-item">No records found. Everything quiet.</div>';
+                      return;
+                  }
+                  
+                  panel.innerHTML = "";
+                  snapshot.forEach((doc) => {
+                      const data = doc.data();
+                      const timeString = data.timestamp ? formatRelativeTime(data.timestamp.toDate()) : "Just now";
+                      
+                      const item = document.createElement("div");
+                      item.className = "activity-item";
+                      item.innerHTML = `<span>${escapeHTML(data.text)}</span><span class="activity-time">${timeString}</span>`;
+                      panel.appendChild(item);
+                  });
+              }, err => {
+                  console.error("Activity stream failure:", err);
+                  document.getElementById("activityPanel").innerHTML = '<div class="activity-item" style="color:#ef4444;">Error streaming activities.</div>';
+              });
+        }
+
+        // --- 5. HELPER UTILITIES ---
+        function formatRelativeTime(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return interval === 1 ? "1 year ago" : `${interval} years ago`;
+            interval = Math.floor(seconds / 2592000);
+            if (interval >= 1) return interval === 1 ? "1 month ago" : `${interval} months ago`;
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return interval === 1 ? "1 day ago" : `${interval} days ago`;
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
+            return seconds < 10 ? "Just now" : `${Math.floor(seconds)} seconds ago`;
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
 </body>
-
 </html>
