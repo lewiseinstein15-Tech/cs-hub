@@ -3,244 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS HUB - Admin Units Control Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- CORE SCRIPT DEPENDENCIES REQUIRED BY BROWSER -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
+    <title>CS HUB - Diagnostic Build</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #030611;
-            --sidebar-bg: #060919;
-            --card-bg: rgba(10, 15, 36, 0.7);
-            --border: rgba(255, 255, 255, 0.08);
-            --blue: #3B82F6;
-            --cyan: #06B6D4;
-            --green: #22C55E;
-            --red: #EF4444;
-            --white: #ffffff;
-            --dim: rgba(255, 255, 255, 0.5);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
-
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 25px 20px; flex-shrink: 0; }
-        .sidebar-brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; }
-        .sidebar-brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--blue); display: block; margin-top: 2px; }
-        
-        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 35px; }
-        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-item a:hover, .nav-item.active a { color: var(--white); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
-
-        .workspace { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
-        .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background-color: rgba(6, 9, 25, 0.3); backdrop-filter: blur(15px); }
-        .page-title { font-family: 'Orbitron', sans-serif; font-size: 18px; letter-spacing: 1px; }
-        
-        .btn-add { background: var(--blue); color: var(--white); border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: background 0.2s; }
-        .btn-add:hover { background: #2563EB; }
-        .content-area { padding: 30px; overflow-y: auto; flex-grow: 1; }
-
-        .units-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .unit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-        .unit-code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--cyan); font-weight: bold; margin-bottom: 8px; }
-        .unit-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
-        .unit-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 20px; }
-        .unit-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; }
-        .unit-year { font-size: 11px; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; color: var(--dim); }
-        .btn-delete { background: transparent; border: none; color: var(--red); font-size: 13px; cursor: pointer; font-weight: 600; }
-
-        .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
-        .modal.open { opacity: 1; pointer-events: auto; }
-        .modal-content { background: #090d22; border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 450px; padding: 30px; }
-        .modal-header { font-family: 'Orbitron', sans-serif; font-size: 16px; margin-bottom: 20px; color: var(--cyan); }
-        
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: white; font-family: inherit; font-size: 14px; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); }
-        
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn-cancel { background: transparent; border: 1px solid var(--border); color: white; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--dim); font-size: 14px; }
-        
-        #errorLog { display: none; background: var(--red); color: white; padding: 12px 20px; position: fixed; bottom: 15px; right: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; }
+        body { background-color: #030611; color: white; font-family: 'Inter', sans-serif; padding: 40px; text-align: center; }
+        .card { background: rgba(10, 15, 36, 0.7); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 12px; max-width: 500px; margin: 40px auto; }
+        h1 { font-family: 'Orbitron', sans-serif; color: #06B6D4; }
+        .btn { background: #3B82F6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div>
-            <div class="sidebar-brand">
-                <h1>CS HUB</h1>
-                <span>ADMIN PANEL</span>
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
-                <li class="nav-item"><a href="notes.html">📚 Notes Management</a></li>
-                <li class="nav-item active"><a href="admin-units.html">🎓 Units Control</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                <li class="nav-item"><a href="revision.html">📝 Revision Materials</a></li>
-                <li class="nav-item"><a href="settings.html">⚙️ Settings</a></li>
-            </ul>
-        </div>
-    </aside>
+    <h1>CS HUB DIAGNOSTIC MODE</h1>
+    <p>If you can see this screen, your HTML rendering engine works perfectly.</p>
 
-    <main class="workspace">
-        <header class="topbar">
-            <h2 class="page-title">Admin Units Control Architecture</h2>
-            <button class="btn-add" onclick="toggleModal(true)">＋ Add New Unit</button>
-        </header>
-
-        <div class="content-area">
-            <div class="units-grid" id="unitsGrid">
-                <div class="empty-state">Connecting to data cluster channel...</div>
-            </div>
+    <div class="card">
+        <h3>Local Units Registry (Bypass Mode)</h3>
+        <p style="color: #6b7280; margin: 10px 0;">Firebase connection temporarily paused for stability test.</p>
+        <div id="testGrid" style="text-align: left; margin-top: 20px;">
+            <!-- Content loaded via safe script -->
         </div>
-    </main>
-
-    <div class="modal" id="unitModal">
-        <div class="modal-content">
-            <div class="modal-header">Register Architecture Unit</div>
-            <form id="unitForm" onsubmit="saveUnit(event)">
-                <div class="form-group">
-                    <label>Unit Code</label>
-                    <input type="text" id="unitCode" placeholder="e.g. CSC1110" required>
-                </div>
-                <div class="form-group">
-                    <label>Unit Title</label>
-                    <input type="text" id="unitTitle" placeholder="e.g. Introduction to Computer Systems" required>
-                </div>
-                <div class="form-group">
-                    <label>Curriculum Year Tier</label>
-                    <select id="unitYear">
-                        <option value="Year 1">Year 1</option>
-                        <option value="Year 2">Year 2</option>
-                        <option value="Year 3">Year 3</option>
-                        <option value="Year 4">Year 4</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Syllabus Architectural Description</label>
-                    <textarea id="unitDesc" rows="4" placeholder="Brief system overview..." required></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="toggleModal(false)">Cancel</button>
-                    <button type="submit" class="btn-add">Save Unit</button>
-                </div>
-            </form>
-        </div>
+        <button class="btn" onclick="alert('System UI is responsive!')">Test Button Interaction</button>
     </div>
 
-    <!-- Live Diagnostics Log Element -->
-    <div id="errorLog"></div>
-
     <script>
-        // System Config Block
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-            authDomain: "cs-hub-7c97b.firebaseapp.com",
-            projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.firebasestorage.app",
-            messagingSenderId: "76338162904",
-            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-        };
-
-        // Initialize safely
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.firestore();
-
-        // Safety Trigger: Execute logic only when DOM components are fully functional
+        // Completely offline safe rendering execution
         document.addEventListener("DOMContentLoaded", () => {
-            initLiveSync();
-        });
-
-        function showDebug(msg) {
-            const logger = document.getElementById("errorLog");
-            if(logger) { logger.style.display = "block"; logger.innerText = msg; }
-        }
-
-        function toggleModal(open) {
-            const modal = document.getElementById("unitModal");
-            if (open) { modal.classList.add("open"); } 
-            else { modal.classList.remove("open"); document.getElementById("unitForm").reset(); }
-        }
-
-        function initLiveSync() {
-            db.collection("units").onSnapshot((snap) => {
-                const grid = document.getElementById("unitsGrid");
-                if(!grid) return;
-
-                if (snap.empty) {
-                    grid.innerHTML = `
-                        <div class="empty-state">
-                            <p style="margin-bottom:15px;">No cloud data structures registered yet.</p>
-                            <p style="font-size:12px; color:var(--blue)">Click 'Add New Unit' above to register your local Year 1 files into Firebase.</p>
-                        </div>`;
-                    return;
-                }
-
-                grid.innerHTML = "";
-                snap.forEach((doc) => {
-                    const data = doc.data();
-                    const card = document.createElement("div");
-                    card.className = "unit-card";
-                    card.innerHTML = `
-                        <div>
-                            <div class="unit-code">${escapeHTML(data.code)}</div>
-                            <div class="unit-title">${escapeHTML(data.title)}</div>
-                            <div class="unit-desc">${escapeHTML(data.desc)}</div>
-                        </div>
-                        <div class="unit-footer">
-                            <span class="unit-year">${escapeHTML(data.year || 'Year 1')}</span>
-                            <button class="btn-delete" onclick="deleteUnit('${doc.id}', '${escapeHTML(data.code)}')">Delete</button>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            }, err => {
-                showDebug("Firestore Node Failure: " + err.message);
-            });
-        }
-
-        function saveUnit(e) {
-            e.preventDefault();
-            const code = document.getElementById("unitCode").value.trim();
-            const title = document.getElementById("unitTitle").value.trim();
-            const year = document.getElementById("unitYear").value;
-            const desc = document.getElementById("unitDesc").value.trim();
-
-            db.collection("units").add({
-                code: code,
-                title: title,
-                year: year,
-                desc: desc,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                return db.collection("activity_logs").add({
-                    text: `Added unit layout: ${code}`,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            })
-            .then(() => toggleModal(false))
-            .catch(err => showDebug("Write Blocked: " + err.message));
-        }
-
-        function deleteUnit(id, code) {
-            if (confirm(`Delete unit: ${code}?`)) {
-                db.collection("units").doc(id).delete()
-                .catch(err => showDebug("Delete failed: " + err.message));
+            const grid = document.getElementById("testGrid");
+            if(grid) {
+                grid.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px; margin-bottom: 8px;">
+                        <strong>📚 Discrete Structures</strong> (Unit-discrete-structures.html)
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 6px;">
+                        <strong>💻 Programming Basics</strong> (Unit-programming.html)
+                    </div>
+                `;
             }
-        }
-
-        function escapeHTML(str) {
-            if (!str) return '';
-            return str.replace(/[&<>'"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[m]));
-        }
+        });
     </script>
 </body>
 </html>
