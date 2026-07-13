@@ -7,409 +7,696 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CS HUB | Admin Dashboard</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-:root{
-
---bg:#050816;
-
---panel:#0d1225;
-
---panel2:#111935;
-
---border:rgba(255,255,255,.08);
-
---cyan:#31d7ff;
-
---green:#4cff9a;
-
---purple:#9b5cff;
-
---yellow:#ffbf3c;
-
---red:#ff5c7a;
-
---text:#ffffff;
-
---muted:#aab5d6;
-
-}
-
-body{
-
-font-family:Inter,sans-serif;
-
-background:var(--bg);
-
-color:var(--text);
-
-overflow-x:hidden;
-
-}
-
-body::before{
-
-content:"";
-
-position:fixed;
-
-inset:0;
-
-background:
-
-radial-gradient(circle at 20% 20%,rgba(49,215,255,.12),transparent 28%),
-
-radial-gradient(circle at 80% 15%,rgba(155,92,255,.10),transparent 24%),
-
-radial-gradient(circle at 60% 80%,rgba(76,255,154,.06),transparent 30%);
-
-z-index:-2;
-
-animation:bgmove 15s ease-in-out infinite;
-
-}
-
-@keyframes bgmove{
-
-0%,100%{
-
-transform:translateY(0);
-
-}
-
-50%{
-
-transform:translateY(-30px);
-
-}
-
-}
-
-.layout{
-
-display:flex;
-
-min-height:100vh;
-
-}
-
-.sidebar{
-
-width:270px;
-
-background:#08101f;
-
-border-right:1px solid var(--border);
-
-padding:30px 20px;
-
-position:fixed;
-
-top:0;
-
-bottom:0;
-
-left:0;
-
-overflow:auto;
-
-}
-
-.logo{
-
-font-family:Orbitron,sans-serif;
-
-font-size:42px;
-
-font-weight:700;
-
-line-height:1.05;
-
-color:var(--cyan);
-
-}
-
-.logo span{
-
-display:block;
-
-color:var(--purple);
-
-}
-
-.adminlabel{
-
-margin-top:12px;
-
-font-family:JetBrains Mono,monospace;
-
-font-size:13px;
-
-letter-spacing:3px;
-
-color:var(--cyan);
-
-}
-
-.menu{
-
-margin-top:40px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-}
-
-.menu a{
-
-text-decoration:none;
-
-color:var(--muted);
-
-padding:14px 18px;
-
-border-radius:14px;
-
-border:1px solid transparent;
-
-transition:.3s;
-
-font-weight:500;
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-}
-
-.menu a:hover{
-
-background:rgba(49,215,255,.08);
-
-color:white;
-
-border-color:rgba(49,215,255,.35);
-
-transform:translateX(5px);
-
-}
-
-.menu a.active{
-
-background:rgba(49,215,255,.12);
-
-border-color:rgba(49,215,255,.45);
-
-color:white;
-
-box-shadow:0 0 20px rgba(49,215,255,.18);
-
-}
-
-.main{
-
-margin-left:270px;
-
-width:100%;
-
-padding:28px;
-
-}
-
-.topbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-gap:20px;
-
-flex-wrap:wrap;
-
-}
-
-.user{
-
-display:flex;
-
-align-items:center;
-
-gap:14px;
-
-}
-
-.avatar{
-
-width:50px;
-
-height:50px;
-
-border-radius:50%;
-
-background:linear-gradient(135deg,var(--cyan),var(--purple));
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-weight:bold;
-
-}
-
-.username{
-
-font-size:22px;
-
-font-weight:700;
-
-}
-
-.email{
-
-font-size:14px;
-
-color:var(--muted);
-
-}
-
-.logout{
-
-padding:12px 20px;
-
-border:1px solid rgba(255,92,122,.45);
-
-border-radius:14px;
-
-color:#ff9db0;
-
-text-decoration:none;
-
-transition:.3s;
-
-}
-
-.logout:hover{
-
-background:rgba(255,92,122,.15);
-
-}<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard | CS Hub</title>
+<title>Admin Environment | CS Hub</title>
 
 <link rel="stylesheet" href="assets/css/admin.css">
 
 </head>
 
+
 <body>
 
-<div class="admin-container">
 
-<header class="admin-header">
+<div class="dashboard-container">
 
-<div>
-<h1>Admin Environment</h1>
+
+<aside class="sidebar">
+
+
+<div class="logo">
+
+<h2>CS HUB</h2>
+
+<p>Admin Environment</p>
+
+</div>
+
+
+<nav>
+
+<a href="#">🏠 Dashboard</a>
+
+<a href="#">📚 Units</a>
+
+<a href="#">📝 Notes</a>
+
+<a href="#">👨‍🎓 Students</a>
+
+<a href="#">🤖 AI Assistant</a>
+
+<a href="#">⚙️ Settings</a>
+
+</nav>
+
+
+</aside>
+
+
+
+<main class="main-dashboard">
+
+
+<header class="welcome-section">
+
+
+<div class="welcome-text">
+
+
+<h1>
+Admin Environment
+</h1>
+
 
 <h2>
-Welcome back, <span id="adminName">Admin Lewis</span>
+Welcome back,
+<span>
+Admin Lewis
+</span>
 </h2>
 
-<p class="typing">
+
+<p class="typing-text">
 "Building the future of Computer Science, one idea at a time..."
 </p>
 
+
 </div>
 
 
-<button class="logout">
-Logout
-</button>
-
-</header>
+<div class="profile-box">
 
 
+<div class="profile-circle">
+L
+</div>
 
-<section class="dashboard-grid">
+
+<div>
+
+<h3>
+Admin Lewis
+</h3>
+
+<p>
+Administrator
+</p>
 
 
-<div class="admin-card">
-<h3>📚 Manage Units</h3>
-<p>Add, edit and organize Computer Science units from Year 1 to Year 4.</p>
-<button>Open</button>
+</div>
+
+
+</div>
+
+
+</header><!-- Dashboard Statistics -->
+
+<section class="stats-section">
+
+
+<div class="stat-card">
+
+<div class="icon">
+📚
+</div>
+
+
+<div>
+
+<h3>
+Total Units
+</h3>
+
+<h2>
+48
+</h2>
+
+<p>
+Year 1 - Year 4
+</p>
+
+
+</div>
+
 </div>
 
 
 
-<div class="admin-card">
-<h3>📝 Notes Management</h3>
-<p>Create and update professor-style notes, diagrams and explanations.</p>
-<button>Open</button>
+
+
+<div class="stat-card">
+
+<div class="icon">
+📝
+</div>
+
+
+<div>
+
+<h3>
+Notes Library
+</h3>
+
+<h2>
+240+
+</h2>
+
+<p>
+Learning materials
+</p>
+
+
+</div>
+
 </div>
 
 
 
-<div class="admin-card">
-<h3>👥 Users</h3>
-<p>Manage students, accounts and permissions.</p>
-<button>Open</button>
+
+
+<div class="stat-card">
+
+<div class="icon">
+👨‍🎓
+</div>
+
+
+<div>
+
+<h3>
+Students
+</h3>
+
+<h2>
+1000+
+</h2>
+
+<p>
+Active learners
+</p>
+
+
+</div>
+
 </div>
 
 
 
-<div class="admin-card">
-<h3>🤖 AI Assistant</h3>
-<p>Control AI learning features inside CS Hub.</p>
-<button>Open</button>
+
+
+<div class="stat-card">
+
+<div class="icon">
+🤖
 </div>
 
 
+<div>
 
-<div class="admin-card">
-<h3>📊 Analytics</h3>
-<p>View activity, visitors and learning progress.</p>
-<button>Open</button>
+<h3>
+AI System
+</h3>
+
+<h2>
+ONLINE
+</h2>
+
+<p>
+Assistant active
+</p>
+
+
 </div>
 
-
-
-<div class="admin-card">
-<h3>⚙️ Settings</h3>
-<p>Configure your ecosystem settings.</p>
-<button>Open</button>
 </div>
 
 
 </section>
 
 
+
+
+
+<!-- Main Control Panels -->
+
+
+<section class="control-panels">
+
+
+<div class="panel">
+
+
+<h2>
+📚 Unit Management
+</h2>
+
+
+<p>
+Manage Computer Science units from first year to fourth year.
+</p>
+
+
+<button>
+Manage Units
+</button>
+
+
 </div>
 
 
+
+
+
+<div class="panel">
+
+
+<h2>
+📝 Notes Management
+</h2>
+
+
+<p>
+Create, edit and organize detailed learning notes.
+</p>
+
+
+<button>
+Manage Notes
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+🤖 AI Assistant
+</h2>
+
+
+<p>
+Control AI learning tools inside CS Hub.
+</p>
+
+
+<button>
+Open Assistant
+</button>
+
+
+</div><div class="panel">
+
+
+<h2>
+📊 Analytics Center
+</h2>
+
+
+<p>
+Monitor students, visitors, learning progress and system activity.
+</p>
+
+
+<button>
+View Analytics
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- Learning Ecosystem -->
+
+
+<section class="ecosystem">
+
+
+<div class="ecosystem-header">
+
+<h2>
+Computer Science Ecosystem
+</h2>
+
+
+<p>
+Your complete university learning environment.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="ecosystem-grid">
+
+
+<div class="ecosystem-card">
+
+
+<h3>
+🌐 Years
+</h3>
+
+
+<p>
+Year 1 - Year 4 Computer Science programs.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="ecosystem-card">
+
+
+<h3>
+💻 Programming Hub
+</h3>
+
+
+<p>
+Programming languages, projects and tutorials.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="ecosystem-card">
+
+
+<h3>
+🧠 AI Laboratory
+</h3>
+
+
+<p>
+Artificial Intelligence and Machine Learning resources.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="ecosystem-card">
+
+
+<h3>
+☁️ Cloud Center
+</h3>
+
+
+<p>
+Cloud computing and deployment resources.
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- Recent Activity -->
+
+
+<section class="activity-panel">
+
+
+<h2>
+Recent Activity
+</h2>
+
+
+<div class="activity-item">
+
+<span>
+✔
+</span>
+
+<p>
+Discrete Structures notes updated.
+</p>
+
+
+</div>
+
+
+
+
+<div class="activity-item">
+
+<span>
+✔
+</span>
+
+<p>
+Programming unit materials added.
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="activity-item">
+
+<span>
+✔
+</span>
+
+<p>
+New student account created.
+</p>
+
+
+</div></section>
+
+
+
+
+
+<!-- Quick Actions -->
+
+
+<section class="quick-actions">
+
+
+<h2>
+Quick Actions
+</h2>
+
+
+
+<div class="action-grid">
+
+
+<button class="action-card">
+
+➕
+<br>
+
+Add New Unit
+
+</button>
+
+
+
+
+<button class="action-card">
+
+📄
+<br>
+
+Upload Notes
+
+</button>
+
+
+
+
+<button class="action-card">
+
+👥
+<br>
+
+Manage Users
+
+</button>
+
+
+
+
+<button class="action-card">
+
+⚙️
+<br>
+
+System Settings
+
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- System Status -->
+
+
+<section class="system-status">
+
+
+<h2>
+System Status
+</h2>
+
+
+
+<div class="status-box">
+
+
+<div>
+
+<h3>
+Database
+</h3>
+
+<p>
+Connected
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<h3>
+Server
+</h3>
+
+<p>
+Running
+</p>
+
+</div>
+
+
+
+
+
+<div>
+
+<h3>
+Security
+</h3>
+
+<p>
+Protected
+</p>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- Footer -->
+
+
+<footer class="admin-footer">
+
+
+<p>
+© 2026 CS Hub | Admin Environment
+</p>
+
+
+</footer></main>
+
+
+</div>
+
+
+
+
+
+<!-- Dashboard Scripts -->
+
+
+<script>
+
+
+// Dynamic welcome message
+
+const adminName = "Admin Lewis";
+
+
+document.querySelector(".welcome-text h2 span").textContent = adminName;
+
+
+
+
+// Simple dashboard loading effect
+
+window.addEventListener("load",()=>{
+
+
+document.body.classList.add("loaded");
+
+
+});
+
+
+
+</script></script>
+
+
 </body>
+
 </html>
