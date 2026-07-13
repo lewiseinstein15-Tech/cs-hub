@@ -6,7 +6,7 @@
     <title>CS HUB - Admin Units Control Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- LOAD SCRIPT DEPENDENCIES FIRST -->
+    <!-- CORE SCRIPT DEPENDENCIES REQUIRED BY BROWSER -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -25,327 +25,70 @@
             --dim: rgba(255, 255, 255, 0.5);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-        }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 25px 20px; flex-shrink: 0; }
+        .sidebar-brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; }
+        .sidebar-brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--blue); display: block; margin-top: 2px; }
+        
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 35px; }
+        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; transition: all 0.2s ease; }
+        .nav-item a:hover, .nav-item.active a { color: var(--white); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
 
-        /* Sidebar Component Layout */
-        .sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 25px 20px;
-            flex-shrink: 0;
-        }
+        .workspace { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
+        .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background-color: rgba(6, 9, 25, 0.3); backdrop-filter: blur(15px); }
+        .page-title { font-family: 'Orbitron', sans-serif; font-size: 18px; letter-spacing: 1px; }
+        
+        .btn-add { background: var(--blue); color: var(--white); border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: background 0.2s; }
+        .btn-add:hover { background: #2563EB; }
+        .content-area { padding: 30px; overflow-y: auto; flex-grow: 1; }
 
-        .sidebar-brand h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--blue), var(--cyan));
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+        .units-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .unit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .unit-code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--cyan); font-weight: bold; margin-bottom: 8px; }
+        .unit-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+        .unit-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 20px; }
+        .unit-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; }
+        .unit-year { font-size: 11px; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; color: var(--dim); }
+        .btn-delete { background: transparent; border: none; color: var(--red); font-size: 13px; cursor: pointer; font-weight: 600; }
 
-        .sidebar-brand span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: var(--blue);
-            display: block;
-            margin-top: 2px;
-        }
-
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 35px;
-        }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            color: var(--dim);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item a:hover, .nav-item.active a {
-            color: var(--white);
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        /* Workspace Structure */
-        .workspace {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-
-        .topbar {
-            height: 75px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-            background-color: rgba(6, 9, 25, 0.3);
-            backdrop-filter: blur(15px);
-        }
-
-        .page-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-
-        .btn-add {
-            background: var(--blue);
-            color: var(--white);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-add:hover {
-            background: #2563EB;
-        }
-
-        .content-area {
-            padding: 30px;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-
-        /* Units Grid Display */
-        .units-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .unit-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        .unit-code {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--cyan);
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .unit-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .unit-desc {
-            font-size: 12px;
-            color: var(--dim);
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .unit-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 12px;
-        }
-
-        .unit-year {
-            font-size: 11px;
-            background: rgba(255,255,255,0.05);
-            padding: 3px 8px;
-            border-radius: 6px;
-            color: var(--dim);
-        }
-
-        .btn-delete {
-            background: transparent;
-            border: none;
-            color: var(--red);
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Modal Overlay & Styling */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-        }
-
-        .modal.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background: #090d22;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 450px;
-            padding: 30px;
-        }
-
-        .modal-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: var(--cyan);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--dim);
-            margin-bottom: 6px;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            color: white;
-            font-family: inherit;
-            font-size: 14px;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--blue);
-        }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        .btn-cancel {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--dim);
-            font-size: 14px;
-        }
-
-        /* On-Screen Hardware Debug Banner */
-        #debugErrorBanner {
-            display: none;
-            background: var(--red);
-            color: white;
-            padding: 15px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            border-top: 2px solid white;
-        }
+        .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
+        .modal.open { opacity: 1; pointer-events: auto; }
+        .modal-content { background: #090d22; border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 450px; padding: 30px; }
+        .modal-header { font-family: 'Orbitron', sans-serif; font-size: 16px; margin-bottom: 20px; color: var(--cyan); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: white; font-family: inherit; font-size: 14px; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); }
+        
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+        .btn-cancel { background: transparent; border: 1px solid var(--border); color: white; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--dim); font-size: 14px; }
+        
+        #errorLog { display: none; background: var(--red); color: white; padding: 12px 20px; position: fixed; bottom: 15px; right: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR INTERFACE -->
     <aside class="sidebar">
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
                 <span>ADMIN PANEL</span>
             </div>
-            
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="admin-dashboard.html">📊 Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a href="notes.html">📚 Notes Management</a>
-                </li>
-                <li class="nav-item active">
-                    <a href="admin-units.html">🎓 Units Control</a>
-                </li>
-                <li class="nav-item">
-                    <a href="ai-system.html">🤖 AI System</a>
-                </li>
-                <li class="nav-item">
-                    <a href="revision.html">📝 Revision Materials</a>
-                </li>
-                <li class="nav-item">
-                    <a href="settings.html">⚙️ Settings</a>
-                </li>
+                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item"><a href="notes.html">📚 Notes Management</a></li>
+                <li class="nav-item active"><a href="admin-units.html">🎓 Units Control</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                <li class="nav-item"><a href="revision.html">📝 Revision Materials</a></li>
+                <li class="nav-item"><a href="settings.html">⚙️ Settings</a></li>
             </ul>
         </div>
     </aside>
 
-    <!-- WORKSPACE WINDOW -->
     <main class="workspace">
         <header class="topbar">
             <h2 class="page-title">Admin Units Control Architecture</h2>
@@ -354,12 +97,11 @@
 
         <div class="content-area">
             <div class="units-grid" id="unitsGrid">
-                <div class="empty-state">Connecting to units stream configuration node...</div>
+                <div class="empty-state">Connecting to data cluster channel...</div>
             </div>
         </div>
     </main>
 
-    <!-- MODAL FORM INTERFACE -->
     <div class="modal" id="unitModal">
         <div class="modal-content">
             <div class="modal-header">Register Architecture Unit</div>
@@ -387,27 +129,17 @@
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" onclick="toggleModal(false)">Cancel</button>
-                    <button type="submit" class="btn-add">Save Architecture Node</button>
+                    <button type="submit" class="btn-add">Save Unit</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Crash Catcher Debug Output Element -->
-    <div id="debugErrorBanner"></div>
+    <!-- Live Diagnostics Log Element -->
+    <div id="errorLog"></div>
 
     <script>
-        // Catch initialization and compilation crashes immediately
-        window.onerror = function(msg, url, line) {
-            const banner = document.getElementById("debugErrorBanner");
-            if(banner) {
-                banner.style.display = "block";
-                banner.innerText = "CRITICAL JS ERROR: " + msg + " on line " + line;
-            }
-            return false;
-        };
-
-        // --- Firebase Configuration Configuration ---
+        // System Config Block
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -417,35 +149,37 @@
             appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
 
-        // Safely Initialize App & Database reference hooks
-        let db;
-        try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.firestore();
-        } catch (e) {
-            document.getElementById("debugErrorBanner").style.display = "block";
-            document.getElementById("debugErrorBanner").innerText = "Firebase Connection Crash: " + e.message;
+        // Initialize safely
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.firestore();
+
+        // Safety Trigger: Execute logic only when DOM components are fully functional
+        document.addEventListener("DOMContentLoaded", () => {
+            initLiveSync();
+        });
+
+        function showDebug(msg) {
+            const logger = document.getElementById("errorLog");
+            if(logger) { logger.style.display = "block"; logger.innerText = msg; }
         }
 
-        // UI Modal Window Visbility Rules
         function toggleModal(open) {
             const modal = document.getElementById("unitModal");
-            if (open) {
-                modal.classList.add("open");
-            } else {
-                modal.classList.remove("open");
-                document.getElementById("unitForm").reset();
-            }
+            if (open) { modal.classList.add("open"); } 
+            else { modal.classList.remove("open"); document.getElementById("unitForm").reset(); }
         }
 
-        // Live Synchronizer Listener
-        if(db) {
+        function initLiveSync() {
             db.collection("units").onSnapshot((snap) => {
                 const grid = document.getElementById("unitsGrid");
+                if(!grid) return;
+
                 if (snap.empty) {
-                    grid.innerHTML = '<div class="empty-state">No structural units mapped in database cluster.</div>';
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <p style="margin-bottom:15px;">No cloud data structures registered yet.</p>
+                            <p style="font-size:12px; color:var(--blue)">Click 'Add New Unit' above to register your local Year 1 files into Firebase.</p>
+                        </div>`;
                     return;
                 }
 
@@ -468,21 +202,16 @@
                     grid.appendChild(card);
                 });
             }, err => {
-                console.error(err);
-                document.getElementById("unitsGrid").innerHTML = `<div class="empty-state" style="color:var(--red)">Sync failed: ${err.message}. Check database permissions rule node.</div>`;
+                showDebug("Firestore Node Failure: " + err.message);
             });
         }
 
-        // Data Entry Operations
         function saveUnit(e) {
             e.preventDefault();
-            
             const code = document.getElementById("unitCode").value.trim();
             const title = document.getElementById("unitTitle").value.trim();
             const year = document.getElementById("unitYear").value;
             const desc = document.getElementById("unitDesc").value.trim();
-
-            if(!db) return;
 
             db.collection("units").add({
                 code: code,
@@ -493,37 +222,24 @@
             })
             .then(() => {
                 return db.collection("activity_logs").add({
-                    text: `Added new core unit configuration: ${code}`,
+                    text: `Added unit layout: ${code}`,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             })
-            .then(() => {
-                toggleModal(false);
-            })
-            .catch(err => {
-                alert("Operation failed: " + err.message);
-            });
+            .then(() => toggleModal(false))
+            .catch(err => showDebug("Write Blocked: " + err.message));
         }
 
         function deleteUnit(id, code) {
-            if (!db) return;
-            if (confirm(`Confirm deletion of unit configuration mapping: ${code}?`)) {
+            if (confirm(`Delete unit: ${code}?`)) {
                 db.collection("units").doc(id).delete()
-                .then(() => {
-                    return db.collection("activity_logs").add({
-                        text: `Deleted curriculum unit configuration: ${code}`,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                })
-                .catch(err => alert("Deletion failed: " + err.message));
+                .catch(err => showDebug("Delete failed: " + err.message));
             }
         }
 
         function escapeHTML(str) {
             if (!str) return '';
-            return str.replace(/[&<>'"]/g, m => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-            }[m] || m));
+            return str.replace(/[&<>'"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[m]));
         }
     </script>
 </body>
