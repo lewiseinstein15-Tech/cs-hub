@@ -1,151 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS HUB Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Hub — Admin Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+  :root{
+    --bg:#060a12; --panel:#0d1420; --panel2:#0a0f19; --border:#1b2536;
+    --cyan:#22d3ee; --blue:#3b82f6; --green:#22c55e; --purple:#a855f7;
+    --orange:#f59e0b; --red:#ef4444; --text:#e8ecf3; --muted:#7d8aa3;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; display:flex; min-height:100vh; overflow-x:hidden; }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .sidebar{ width:230px; min-width:230px; background:var(--panel2); border-right:1px solid var(--border); padding:20px 16px; display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; transition:transform 0.25s ease; overflow-y:auto; }
+  .logo{font-size:22px; font-weight:800; color:var(--cyan); line-height:1.1;}
+  .logo span{color:var(--purple);}
+  .logo-sub{font-size:10px; letter-spacing:0.1em; color:var(--muted); margin-top:2px; margin-bottom:22px;}
+  .nav-item{ display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:8px; font-size:13.5px; color:var(--muted); margin-bottom:4px; cursor:pointer; border:1px solid transparent; background:none; width:100%; text-align:left; font-family:inherit; }
+  .nav-item.active{ background:rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.35); color:var(--text); }
+  .nav-item:hover{ color:var(--text); }
+  .nav-spacer{flex:1;}
+  .admin-card{ border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; margin-top:10px; }
+  .admin-avatar{ width:42px; height:42px; border-radius:50%; background:rgba(168,85,247,0.15); color:var(--purple); display:flex; align-items:center; justify-content:center; font-weight:700; margin:0 auto 8px; }
+  .admin-name{font-size:13px; font-weight:600;}
+  .admin-badge{ font-size:9.5px; color:var(--purple); background:rgba(168,85,247,0.12); display:inline-block; padding:2px 8px; border-radius:5px; margin-top:6px; letter-spacing:0.05em; }
+  .copyright{font-size:10.5px; color:#4b5871; margin-top:16px; text-align:center;}
+  .overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:90; }
+  .overlay.show{display:block;}
+  .main{ flex:1; padding:22px 28px; max-width:1020px; margin-left:230px; width:100%; }
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:10px;}
+  .menu-btn{ display:none; background:var(--panel); border:1px solid var(--border); color:var(--text); font-size:18px; width:38px; height:38px; border-radius:8px; cursor:pointer; }
+  .user-info{display:flex; align-items:center; gap:10px;}
+  .user-info .name{font-size:13.5px; font-weight:600;}
+  .user-info .email{font-size:11.5px; color:var(--muted);}
+  .logout{ border:1px solid rgba(239,68,68,0.4); color:var(--red); font-size:12.5px; padding:7px 14px; border-radius:7px; background:none; cursor:pointer; }
+  .hero{ border:1px solid rgba(34,211,238,0.3); border-radius:12px; padding:22px; margin-bottom:18px; background:linear-gradient(135deg, rgba(34,211,238,0.04), transparent); }
+  .hero-tag{color:var(--cyan); font-size:12px; margin-bottom:10px;}
+  .hero h1{font-size:26px; font-weight:700; margin-bottom:10px;}
+  .hero p{font-size:13px; color:#8fd6a8; line-height:1.6; margin-bottom:6px;}
+  .hero p.sub{color:var(--muted);}
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px;}
+  .stat-card{ background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px; cursor:pointer; }
+  .stat-top{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .stat-icon{ width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .stat-num{font-size:20px; font-weight:700;}
+  .stat-label{font-size:10.5px; color:var(--muted); letter-spacing:0.03em;}
+  .stat-link{font-size:11.5px; font-weight:600; margin-top:6px;}
+  .status-dot{width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block; margin-right:5px;}
+  .section-card{ background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px; margin-bottom:16px; }
+  .section-title{font-size:12px; color:var(--muted); letter-spacing:0.05em; margin-bottom:14px;}
+  .content-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .content-item{ border:1px solid var(--border); border-radius:10px; padding:16px; background:var(--panel2); cursor:pointer; }
+  .content-icon{ width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; margin-bottom:10px; }
+  .content-title{font-weight:600; font-size:14px; margin-bottom:5px;}
+  .content-desc{font-size:11.5px; color:var(--muted); line-height:1.5; margin-bottom:8px; min-height:48px;}
+  .content-link{font-size:12px; font-weight:600;}
+  .bottom-grid{display:grid; grid-template-columns:1fr 1.4fr; gap:16px;}
+  .quick-action{ display:flex; align-items:center; gap:10px; padding:11px 4px; font-size:13px; border-bottom:1px solid var(--border); cursor:pointer; background:none; border-left:none; border-right:none; border-top:none; color:var(--text); width:100%; text-align:left; font-family:inherit; }
+  .quick-action:last-child{border-bottom:none;}
+  .qa-arrow{margin-left:auto; color:var(--muted);}
+  .activity-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .view-all{font-size:11.5px; color:var(--cyan); border:1px solid rgba(34,211,238,0.3); padding:4px 10px; border-radius:6px; background:none; cursor:pointer;}
+  .activity-row{display:flex; gap:12px; padding:11px 0; border-bottom:1px solid var(--border);}
+  .activity-row:last-child{border-bottom:none;}
+  .a-dot{width:8px; height:8px; border-radius:50%; margin-top:5px; flex-shrink:0;}
+  .a-title{font-size:13px; font-weight:600;}
+  .a-sub{font-size:11px; color:var(--muted); margin-top:2px;}
+  .a-badge{font-size:9.5px; font-weight:700; padding:3px 8px; border-radius:5px; margin-left:auto; height:fit-content; letter-spacing:0.03em; white-space:nowrap;}
+  .placeholder-box{ border:1px dashed var(--border); border-radius:10px; padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
+  .page-section{ display:none; }
+  .page-section.active{ display:block; }
+  .form-row{ margin-bottom:14px; }
+  .form-row label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .form-row input, .form-row select{
+    width:100%; padding:11px 12px; background:var(--panel2); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-size:13.5px; font-family:'Inter',sans-serif;
+  }
+  .form-row input:focus, .form-row select:focus{ outline:none; border-color:var(--cyan); }
+  .btn-primary{
+    background:linear-gradient(90deg,var(--blue),var(--cyan)); border:none; color:#fff;
+    font-weight:700; padding:11px 20px; border-radius:8px; font-size:13.5px; cursor:pointer;
+  }
+  .list-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 0; border-bottom:1px solid var(--border); gap:10px;
+  }
+  .list-row:last-child{border-bottom:none;}
+  .list-title{font-size:13.5px; font-weight:600;}
+  .list-sub{font-size:11.5px; color:var(--muted); margin-top:2px;}
+  .btn-delete{
+    background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); color:var(--red);
+    font-size:11.5px; padding:6px 12px; border-radius:6px; cursor:pointer; white-space:nowrap;
+  }
+  .loading-text{ color:var(--muted); font-size:12.5px; text-align:center; padding:14px; }
+  @media (max-width: 900px){ .content-grid{ grid-template-columns:repeat(2,1fr); } .stats{ grid-template-columns:repeat(2,1fr); } .bottom-grid{ grid-template-columns:1fr; } }
+  @media (max-width: 720px){ .sidebar{ transform:translateX(-100%); } .sidebar.open{ transform:translateX(0); } .main{ margin-left:0; padding:16px; } .menu-btn{ display:block; } .hero h1{ font-size:20px; } .hero p{ font-size:12px; } }
+  @media (max-width: 480px){ .content-grid{ grid-template-columns:1fr; } .stats{ grid-template-columns:1fr 1fr; } .user-info .email{ display:none; } }
+</style>
 </head>
 <body>
-    <div class="container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">CS HUB</div>
-                <div class="admin-panel-text">ADMIN PANEL</div>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="admin-dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="notes.html"><i class="fas fa-book"></i> Notes Management</a></li>
-                    <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
-                    <li><a href="ai-system.html"><i class="fas fa-robot"></i> AI System</a></li>
-                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
-                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a href="file-manager.html"><i class="fas fa-folder"></i> File Manager</a></li>
-                    <li><a href="backup-restore.html"><i class="fas fa-undo"></i> Backup & Restore</a></li>
-                    <li><a href="logs.html"><i class="fas fa-file-alt"></i> Logs</a></li>
-                </ul>
-            </nav>
-            <div class="admin-profile">
-                <div class="avatar">AL</div>
-                <div class="details">
-                    <div class="name">Admin Lewis</div>
-                    <div class="role">SUPER ADMIN</div>
-                </div>
-            </div>
-        </aside>
-        <main class="main-content">
-            <header class="navbar">
-                <div class="menu-toggle"><i class="fas fa-bars"></i></div>
-                <div class="header-title">CS HUB</div>
-                <div class="user-info">
-                    <div class="user-details">
-                        <span class="user-name">Admin Lewis</span>
-                        <span class="user-email">lewiseinstein15@gmail.com</span>
-                    </div>
-                    <a href="login.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </header>
-            <section class="dashboard-overview">
-                <div class="welcome-card">
-                    <div class="welcome-text">
-                        <p class="env-tag">[>_ ADMIN ENVIRONMENT</p>
-                        <h1 id="welcome-message">Welcome back, Admin Lewis<span class="cursor">|</span></h1>
-                        <p class="quote">Every screen here was reasoned through, not templated - this is the control room you designed it to be.</p>
-                        <p>Manage content across CS Hub -- notes, blog posts, resources, and tools -- and keep an eye on how the site is structured.</p>
-                    </div>
-                    <div class="welcome-image">
-                        <img src="https://img.icons8.com/fluency/240/cube.png" alt="Decorative Cube" style="width: 150px;">
-                    </div>
-                </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-book"></i></div>
-                        <div class="stat-value">86</div>
-                        <div class="stat-label">TOTAL UNITS</div>
-                        <a href="units.html" class="view-all">View all <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
-                        <div class="stat-value">37</div>
-                        <div class="stat-label">NOTES PUBLISHED</div>
-                        <a href="notes.html" class="view-all">View all <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="stat-value">124</div>
-                        <div class="stat-label">REGISTERED USERS</div>
-                        <a href="users.html" class="view-all">View all <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="stat-card live-status">
-                        <div class="stat-icon"><i class="fas fa-signal"></i></div>
-                        <div class="stat-label">LIVE</div>
-                        <div class="stat-value">SITE STATUS</div>
-                        <div class="status-indicator"><span class="dot"></span> Everything is good</div>
-                    </div>
-                </div>
+<div class="overlay" id="overlay"></div>
 
-                <div class="manage-content-grid">
-                    <h2 style="grid-column: 1/-1; margin-bottom: 10px;">MANAGE CONTENT</h2>
-                    <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-book"></i></div>
-                        <h3>Notes</h3>
-                        <p>Review and add unit notes across all four years of the BSC CS curriculum.</p>
-                        <a href="notes.html" class="manage-link">Manage notes <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-users"></i></div>
-                        <h3>Users</h3>
-                        <p>View, manage and moderate all registered users.</p>
-                        <a href="users.html" class="manage-link">Manage users <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-robot"></i></div>
-                        <h3>AI System</h3>
-                        <p>Configure AI assistant, generate drafts and manage responses.</p>
-                        <a href="ai-system.html" class="manage-link">Open AI panel <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                        <h3>Analytics</h3>
-                        <p>Track visits, popular content and site performance.</p>
-                        <a href="analytics.html" class="manage-link">View analytics <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-cog"></i></div>
-                        <h3>Settings</h3>
-                        <p>Customize site settings, appearance and system preferences.</p>
-                        <a href="settings.html" class="manage-link">Open settings <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
+<div class="sidebar" id="sidebar">
+  <div class="logo mono">CS<br><span>HUB</span></div>
+  <div class="logo-sub mono">ADMIN PANEL</div>
+  <button class="nav-item active" data-target="dashboard">🏠 Dashboard</button>
+  <button class="nav-item" data-target="notes">📄 Notes Management</button>
+  <button class="nav-item" data-target="users">👥 Users</button>
+  <button class="nav-item" data-target="ai-system">🤖 AI System</button>
+  <button class="nav-item" data-target="revision">📚 Revision Materials</button>
+  <button class="nav-item" data-target="analytics">📊 Analytics</button>
+  <button class="nav-item" data-target="settings">⚙️ Settings</button>
+  <button class="nav-item" data-target="files">🗂️ File Manager</button>
+  <button class="nav-item" data-target="backup">☁️ Backup & Restore</button>
+  <button class="nav-item" data-target="logs">📋 Logs</button>
+  <div class="nav-spacer"></div>
+  <div class="admin-card">
+    <div class="admin-avatar mono">AL</div>
+    <div class="admin-name">Admin Lewis</div>
+    <div class="admin-badge mono">SUPER ADMIN</div>
+  </div>
+  <div class="copyright">© 2025 CS Hub<br>All rights reserved.</div>
+</div>
 
-                <div class="bottom-section">
-                    <div class="quick-actions">
-                        <h2>QUICK ACTIONS</h2>
-                        <ul>
-                            <li><a href="#" data-quick-action="addNote"><i class="fas fa-plus-circle"></i> Add New Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#" data-quick-action="editNote"><i class="fas fa-edit"></i> Edit Existing Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#" data-quick-action="deleteNote"><i class="fas fa-trash-alt"></i> Delete Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#" data-quick-action="publish"><i class="fas fa-upload"></i> Publish Changes <i class="fas fa-arrow-right"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="recent-activity">
-                        <h2>RECENT ACTIVITY <a href="#" class="view-all-activity">View all <i class="fas fa-arrow-right"></i></a></h2>
-                        <ul id="activityList"></ul>
-                    </div>
-                </div>
-            </section>
-            <footer class="mobile-nav">
-                <a href="admin-dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="notes.html"><i class="fas fa-book"></i> Notes</a>
-                <a href="users.html"><i class="fas fa-users"></i> Users</a>
-                <a href="ai-system.html"><i class="fas fa-robot"></i> AI</a>
-                <a href="#" id="moreToggle"><i class="fas fa-ellipsis-h"></i> More</a>
-            </footer>
-        </main>
+<div class="main">
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <div class="user-info">
+      🛡️
+      <div>
+        <div class="name">Admin Lewis</div>
+        <div class="email">lewiseinstein15@gmail.com</div>
+      </div>
     </div>
-    <script src="script.js"></script>
+    <div class="nav-spacer"></div>
+    <button class="logout">Logout ⏻</button>
+  </div>
+
+  <section class="page-section active" id="dashboard">
+    <div class="hero">
+      <div class="hero-tag mono">[&gt;_ ADMIN ENVIRONMENT</div>
+      <h1><span id="typedText"></span><span class="mono" id="cursor">|</span></h1>
+      <p>Every screen here was reasoned through, not templated — this is the control room you designed it to be.</p>
+      <p class="sub">Manage content across CS Hub — notes, revision materials, resources, and tools — and keep an eye on how the site is structured.</p>
+    </div>
+    <div class="stats">
+      <div class="stat-card" data-target="notes"><div class="stat-top"><div class="stat-icon" style="background:rgba(59,130,246,0.15); color:var(--blue);">📘</div><div><div class="stat-num" id="statUnits">—</div><div class="stat-label">TOTAL UNITS</div></div></div><div class="stat-link" style="color:var(--blue);">View all →</div></div>
+      <div class="stat-card" data-target="notes"><div class="stat-top"><div class="stat-icon" style="background:rgba(34,197,94,0.15); color:var(--green);">📄</div><div><div class="stat-num" id="statNotes">—</div><div class="stat-label">NOTES PUBLISHED</div></div></div><div class="stat-link" style="color:var(--green);">View all →</div></div>
+      <div class="stat-card" data-target="users"><div class="stat-top"><div class="stat-icon" style="background:rgba(168,85,247,0.15); color:var(--purple);">👥</div><div><div class="stat-num" id="statUsers">—</div><div class="stat-label">REGISTERED USERS</div></div></div><div class="stat-link" style="color:var(--purple);">View all →</div></div>
+      <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:rgba(245,158,11,0.15); color:var(--orange);">📶</div><div><div class="stat-num">LIVE</div><div class="stat-label">SITE STATUS</div></div></div><div class="stat-link" style="color:var(--green);"><span class="status-dot"></span>Everything is good</div></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title mono">MANAGE CONTENT</div>
+      <div class="content-grid">
+        <div class="content-item" data-target="notes"><div class="content-icon" style="background:rgba(59,130,246,0.15); color:var(--blue);">📘</div><div class="content-title">Notes</div><div class="content-desc">Review and add unit notes across all four years of the BSc CS curriculum.</div><div class="content-link" style="color:var(--blue);">Manage notes →</div></div>
+        <div class="content-item" data-target="users"><div class="content-icon" style="background:rgba(34,197,94,0.15); color:var(--green);">👥</div><div class="content-title">Users</div><div class="content-desc">View, manage and moderate all registered users.</div><div class="content-link" style="color:var(--green);">Manage users →</div></div>
+        <div class="content-item" data-target="ai-system"><div class="content-icon" style="background:rgba(168,85,247,0.15); color:var(--purple);">🤖</div><div class="content-title">AI System</div><div class="content-desc">Configure AI assistant, generate drafts and manage responses.</div><div class="content-link" style="color:var(--purple);">Open AI panel →</div></div>
+        <div class="content-item" data-target="revision"><div class="content-icon" style="background:rgba(245,158,11,0.15); color:var(--orange);">📚</div><div class="content-title">Revision Materials</div><div class="content-desc">Manage revision books, YouTube learning links, past exams and CATs for every unit.</div><div class="content-link" style="color:var(--orange);">Manage materials →</div></div>
+        <div class="content-item" data-target="analytics"><div class="content-icon" style="background:rgba(34,211,238,0.15); color:var(--cyan);">📊</div><div class="content-title">Analytics</div><div class="content-desc">Track visits, popular content and site performance.</div><div class="content-link" style="color:var(--cyan);">View analytics →</div></div>
+        <div class="content-item" data-target="settings"><div class="content-icon" style="background:rgba(125,138,163,0.15); color:var(--muted);">⚙️</div><div class="content-title">Settings</div><div class="content-desc">Customize site settings, appearance and system preferences.</div><div class="content-link" style="color:var(--green);">Open settings →</div></div>
+      </div>
+    </div>
+    <div class="bottom-grid">
+      <div class="section-card">
+        <div class="section-title mono">QUICK ACTIONS</div>
+        <button class="quick-action" data-target="notes">➕ Add New Note <span class="qa-arrow">→</span></button>
+        <button class="quick-action" data-target="notes">✏️ Edit Existing Note <span class="qa-arrow">→</span></button>
+        <button class="quick-action" data-target="notes">🗑️ Delete Note <span class="qa-arrow">→</span></button>
+        <button class="quick-action" data-target="notes">📤 Publish Changes <span class="qa-arrow">→</span></button>
+      </div>
+      <div class="section-card">
+        <div class="activity-header"><div class="section-title mono" style="margin:0;">RECENT ACTIVITY</div><button class="view-all" data-target="logs">View all →</button></div>
+        <div id="activityList"><div class="loading-text">Loading real activity…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section" id="notes">
+    <div class="section-card">
+      <div class="section-title mono">ADD NEW NOTE</div>
+      <form id="addNoteForm">
+        <div class="form-row"><label>Title</label><input type="text" id="noteTitle" placeholder="e.g. Data Structures Notes" required></div>
+        <div class="form-row"><label>Unit Code</label><input type="text" id="noteUnitCode" placeholder="e.g. CSC1200" required></div>
+        <div class="form-row"><label>Link (HTML file / URL)</label><input type="text" id="noteLink" placeholder="e.g. Unit-programming.html" required></div>
+        <div class="form-row">
+          <label>Year / Semester</label>
+          <select id="noteYearSem" required>
+            <option value="">Select year & semester</option>
+            <option>Year 1 - Semester 1</option>
+            <option>Year 1 - Semester 2</option>
+            <option>Year 2 - Semester 1</option>
+            <option>Year 2 - Semester 2</option>
+            <option>Year 3 - Semester 1</option>
+            <option>Year 3 - Semester 2</option>
+            <option>Year 4 - Semester 1</option>
+            <option>Year 4 - Semester 2</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Add Note</button>
+      </form>
+    </div>
+    <div class="section-card">
+      <div class="section-title mono">ALL NOTES</div>
+      <div id="notesList"><div class="loading-text">Loading real notes…</div></div>
+    </div>
+  </section>
+
+  <section class="page-section" id="users">
+    <div class="section-card">
+      <div class="section-title mono">REGISTERED USERS</div>
+      <div id="usersList"><div class="loading-text">Loading real users…</div></div>
+    </div>
+  </section>
+
+  <section class="page-section" id="ai-system"><div class="section-card"><div class="section-title mono">AI SYSTEM</div><div class="placeholder-box">This is where you'll configure the AI assistant, generate drafts and manage its responses.</div></div></section>
+  <section class="page-section" id="revision"><div class="section-card"><div class="section-title mono">REVISION MATERIALS</div><div class="placeholder-box">This is where you'll manage revision books, YouTube learning links, past exams and CATs for every unit.</div></div></section>
+  <section class="page-section" id="analytics"><div class="section-card"><div class="section-title mono">ANALYTICS</div><div class="placeholder-box">This is where you'll track visits, popular content and overall site performance.</div></div></section>
+  <section class="page-section" id="settings"><div class="section-card"><div class="section-title mono">SETTINGS</div><div class="placeholder-box">This is where you'll customize site settings, appearance and system preferences.</div></div></section>
+  <section class="page-section" id="files"><div class="section-card"><div class="section-title mono">FILE MANAGER</div><div class="placeholder-box">File manager tools go here.</div></div></section>
+  <section class="page-section" id="backup"><div class="section-card"><div class="section-title mono">BACKUP & RESTORE</div><div class="placeholder-box">Backup and restore tools go here.</div></div></section>
+  <section class="page-section" id="logs">
+    <div class="section-card">
+      <div class="section-title mono">FULL ACTIVITY LOG</div>
+      <div id="fullActivityList"><div class="loading-text">Loading real activity…</div></div>
+    </div>
+  </section>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // ---------- TYPEWRITER (runs first, independent of Firebase) ----------
+  const typedTextEl = document.getElementById('typedText');
+  const cursorEl = document.getElementById('cursor');
+  const fullText = "Welcome back, Admin Lewis";
+  let charIndex = 0;
+  function typeWriter(){
+    if(charIndex < fullText.length){
+      typedTextEl.textContent += fullText.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeWriter, 45);
+    }
+  }
+  typeWriter();
+  setInterval(() => { cursorEl.style.opacity = cursorEl.style.opacity === '0' ? '1' : '0'; }, 500);
+
+  // ---------- FIREBASE (wrapped so it can't break anything above) ----------
+  let db;
+  try {
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+      authDomain: "cs-hub-7c97b.firebaseapp.com",
+      projectId: "cs-hub-7c97b",
+      storageBucket: "cs-hub-7c97b.firebasestorage.app",
+      messagingSenderId: "76338162904",
+      appId: "1:76338162904:web:3be60e1952d49c8fb63bad",
+      measurementId: "G-134D1YEWVV"
+    };
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+  } catch(err) {
+    console.error("Firebase failed to load:", err);
+  }
+</script>
+<script>
+
+  // ---------- NAVIGATION ----------
+  const navItems = document.querySelectorAll('.nav-item, .content-item, .quick-action, .stat-card, .view-all');
+  const sections = document.querySelectorAll('.page-section');
+  const sidebarNavItems = document.querySelectorAll('.nav-item');
+  function showSection(target){
+    sections.forEach(s => s.classList.toggle('active', s.id === target));
+    sidebarNavItems.forEach(n => n.classList.toggle('active', n.dataset.target === target));
+    window.scrollTo({top:0, behavior:'smooth'});
+    closeSidebar();
+  }
+  navItems.forEach(item => { item.addEventListener('click', () => { const target = item.dataset.target; if(target){ showSection(target); } }); });
+  const sidebar = document.getElementById('sidebar');
+  const menuBtn = document.getElementById('menuBtn');
+  const overlay = document.getElementById('overlay');
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  menuBtn.addEventListener('click', () => { sidebar.classList.contains('open') ? closeSidebar() : openSidebar(); });
+  overlay.addEventListener('click', closeSidebar);
+
+  // ---------- TIME AGO HELPER ----------
+  function timeAgo(timestamp){
+    if(!timestamp) return "just now";
+    const seconds = Math.floor((Date.now() - timestamp.toDate().getTime()) / 1000);
+    if(seconds < 60) return "just now";
+    const minutes = Math.floor(seconds/60);
+    if(minutes < 60) return minutes + " minute" + (minutes>1?"s":"") + " ago";
+    const hours = Math.floor(minutes/60);
+    if(hours < 24) return hours + " hour" + (hours>1?"s":"") + " ago";
+    const days = Math.floor(hours/24);
+    return days + " day" + (days>1?"s":"") + " ago";
+  }
+
+  const ACTION_COLORS = { added:"var(--blue)", deleted:"var(--purple)", updated:"var(--orange)" };
+  const ACTION_LABELS = { added:"ADDED", deleted:"DELETED", updated:"UPDATED" };
+
+  function renderActivityRow(data){
+    const color = ACTION_COLORS[data.action] || "var(--blue)";
+    const label = ACTION_LABELS[data.action] || "ACTIVITY";
+    return `<div class="activity-row">
+      <div class="a-dot" style="background:${color};"></div>
+      <div>
+        <div class="a-title">${escapeHtml(data.title)} — ${escapeHtml(data.unitCode||'')}</div>
+        <div class="a-sub mono">${timeAgo(data.timestamp)}</div>
+      </div>
+      <div class="a-badge" style="background:${color}22; color:${color};">${label}</div>
+    </div>`;
+  }
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  // ---------- LOAD STATS ----------
+  function loadStats(){
+    if(!db) return;
+    db.collection("Users").get().then(snap => {
+      document.getElementById('statUsers').textContent = snap.size;
+    }).catch(() => { document.getElementById('statUsers').textContent = "0"; });
+
+    db.collection("notes").get().then(snap => {
+      document.getElementById('statNotes').textContent = snap.size;
+      const unitCodes = new Set();
+      snap.forEach(doc => { const d = doc.data(); if(d.unitCode) unitCodes.add(d.unitCode.trim().toUpperCase()); });
+      document.getElementById('statUnits').textContent = unitCodes.size;
+    }).catch(() => {
+      document.getElementById('statNotes').textContent = "0";
+      document.getElementById('statUnits').textContent = "0";
+    });
+  }
+
+  // ---------- LOAD RECENT ACTIVITY ----------
+  function loadActivity(){
+    if(!db) return;
+    db.collection("activity").orderBy("timestamp","desc").limit(5).get().then(snap => {
+      const el = document.getElementById('activityList');
+      if(snap.empty){ el.innerHTML = '<div class="loading-text">No activity yet — add a note to see it appear here.</div>'; return; }
+      el.innerHTML = snap.docs.map(doc => renderActivityRow(doc.data())).join('');
+    }).catch(() => { document.getElementById('activityList').innerHTML = '<div class="loading-text">Could not load activity.</div>'; });
+
+    db.collection("activity").orderBy("timestamp","desc").limit(30).get().then(snap => {
+      const el = document.getElementById('fullActivityList');
+      if(snap.empty){ el.innerHTML = '<div class="loading-text">No activity logged yet.</div>'; return; }
+      el.innerHTML = snap.docs.map(doc => renderActivityRow(doc.data())).join('');
+    }).catch(() => { document.getElementById('fullActivityList').innerHTML = '<div class="loading-text">Could not load activity.</div>'; });
+  }
+
+  // ---------- LOAD NOTES LIST ----------
+  function loadNotesList(){
+    if(!db) return;
+    db.collection("notes").orderBy("createdAt","desc").get().then(snap => {
+      const el = document.getElementById('notesList');
+      if(snap.empty){ el.innerHTML = '<div class="loading-text">No notes published yet.</div>'; return; }
+      el.innerHTML = snap.docs.map(doc => {
+        const d = doc.data();
+        return `<div class="list-row">
+          <div>
+            <div class="list-title">${escapeHtml(d.title)}</div>
+            <div class="list-sub">${escapeHtml(d.unitCode)} · ${escapeHtml(d.yearSem||'')} · <a href="${escapeHtml(d.link)}" style="color:var(--cyan);" target="_blank">${escapeHtml(d.link)}</a></div>
+          </div>
+          <button class="btn-delete" onclick="deleteNote('${doc.id}','${escapeHtml(d.title)}','${escapeHtml(d.unitCode)}')">Delete</button>
+        </div>`;
+      }).join('');
+    }).catch(() => { document.getElementById('notesList').innerHTML = '<div class="loading-text">Could not load notes.</div>'; });
+  }
+
+  // ---------- LOAD USERS LIST ----------
+  function loadUsersList(){
+    if(!db) return;
+    db.collection("Users").get().then(snap => {
+      const el = document.getElementById('usersList');
+      if(snap.empty){ el.innerHTML = '<div class="loading-text">No registered users.</div>'; return; }
+      el.innerHTML = snap.docs.map(doc => {
+        const d = doc.data();
+        return `<div class="list-row">
+          <div>
+            <div class="list-title">${escapeHtml(d.Name || d.name || d.email || 'Unnamed user')}</div>
+            <div class="list-sub">${escapeHtml(d.Email || d.email || '')} · ${escapeHtml(d.Role || d.role || 'student')}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }).catch(() => { document.getElementById('usersList').innerHTML = '<div class="loading-text">Could not load users.</div>'; });
+  }
+
+  // ---------- ADD NOTE ----------
+  document.getElementById('addNoteForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!db){ alert("Firebase isn't connected in this preview."); return; }
+    const title = document.getElementById('noteTitle').value.trim();
+    const unitCode = document.getElementById('noteUnitCode').value.trim().toUpperCase();
+    const link = document.getElementById('noteLink').value.trim();
+    const yearSem = document.getElementById('noteYearSem').value;
+
+    db.collection("notes").add({
+      title, unitCode, link, yearSem,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      return db.collection("activity").add({
+        action: "added", title, unitCode,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }).then(() => {
+      document.getElementById('addNoteForm').reset();
+      loadStats(); loadActivity(); loadNotesList();
+    }).catch(err => alert("Error adding note: " + err.message));
+  });
+
+  // ---------- DELETE NOTE ----------
+  function deleteNote(id, title, unitCode){
+    if(!db){ alert("Firebase isn't connected in this preview."); return; }
+    if(!confirm('Delete "' + title + '"? This cannot be undone.')) return;
+    db.collection("notes").doc(id).delete().then(() => {
+      return db.collection("activity").add({
+        action: "deleted", title, unitCode,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }).then(() => {
+      loadStats(); loadActivity(); loadNotesList();
+    }).catch(err => alert("Error deleting note: " + err.message));
+  }
+
+  // ---------- INIT ----------
+  loadStats();
+  loadActivity();
+  loadNotesList();
+  loadUsersList();
+</script>
 </body>
 </html>
