@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Materials - CS HUB</title>
     <style>
-        /* Mobile-friendly layout */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .container { max-width: 500px; margin: 0 auto; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; }
         
-        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { color: #1a73e8; font-size: 1.2rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        /* Admin Panel Styling */
+        #adminControls { 
+            background: #1a1a1a; 
+            color: white; 
+            display: none; /* Hidden by default */
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
         
-        /* Admin Panel Styles */
-        #adminControls { background: #202124; color: white; display: none; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
-        input, select, button { width: 100%; padding: 14px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 1rem; }
-        button { background: #1a73e8; color: white; font-weight: bold; cursor: pointer; }
-        .btn-yt { background: #d93025; }
+        /* Form Inputs */
+        input, select, button { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; box-sizing: border-box; font-size: 16px; }
+        button { background: #3B82F6; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #2563EB; }
+        .btn-yt { background: #E1306C; }
         
-        /* Links */
-        .item-link { display: block; padding: 12px; background: #f8f9fa; margin: 8px 0; text-decoration: none; color: #333; border-radius: 8px; border-left: 4px solid #1a73e8; }
+        /* Content Sections */
+        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; margin-top: 0; }
+        .item-link { display: block; padding: 12px; background: #f8f9fa; margin: 8px 0; text-decoration: none; color: #333; border-radius: 8px; border-left: 5px solid #3B82F6; }
     </style>
 </head>
 <body>
@@ -27,22 +36,22 @@
 <div class="container">
     <h1>Revision Materials</h1>
 
-    <!-- Admin Update Panel -->
+    <!-- Admin Panel -->
     <section id="adminControls">
-        <h3 style="margin-top:0;">Admin Update Panel</h3>
+        <h3 style="margin-top: 0; color: #3B82F6;">Admin Update Panel</h3>
         <input type="text" id="titleInput" placeholder="Material Title">
-        <input type="text" id="linkInput" placeholder="Paste URL Here">
+        <input type="text" id="linkInput" placeholder="Paste URL/Link Here">
         <select id="category">
             <option value="books">Books & Guides</option>
             <option value="youtube">YouTube Tutorials</option>
             <option value="lectures">Lecture Videos</option>
             <option value="exams">Exams & CATs</option>
         </select>
-        <button onclick="saveMaterial()">Update Section</button>
+        <button onclick="saveMaterial()">Update Material</button>
         <button class="btn-yt" onclick="window.open('https://youtube.com', '_blank')">Open YouTube to Copy Link</button>
     </section>
 
-    <!-- Content Sections -->
+    <!-- Sections -->
     <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
     <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
     <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
@@ -65,26 +74,29 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
     const auth = getAuth(app);
+    const db = getDatabase(app);
 
-    // Show Admin Panel for you
+    // This checks for the user as soon as the page loads
     onAuthStateChanged(auth, (user) => {
         if (user && user.email === "lewiseinstein5@gmail.com") {
             document.getElementById('adminControls').style.display = "block";
         }
     });
 
+    // Update function
     window.saveMaterial = () => {
         const title = document.getElementById('titleInput').value;
         const url = document.getElementById('linkInput').value;
         const cat = document.getElementById('category').value;
-        if(!title || !url) return alert("Please fill all fields");
+        
+        if(!title || !url) return alert("Please enter both a title and a link.");
+        
         push(ref(db, 'materials/' + cat), { title, url });
         alert("Section updated successfully!");
     };
 
-    // Load data dynamically
+    // Load data
     ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
         onValue(ref(db, 'materials/' + cat), (snapshot) => {
             const listDiv = document.querySelector(`#${cat} .list`);
