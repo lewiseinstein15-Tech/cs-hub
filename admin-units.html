@@ -124,14 +124,12 @@
     <div id="crashBanner"></div>
 
     <script>
-        // Global Error Tracker
         window.onerror = function(m, u, l) {
             const b = document.getElementById("crashBanner");
             if(b) { b.style.display = "block"; b.innerText = "Fatal: " + m + " Line: " + l; }
             return false;
         };
 
-        // Firebase Setup Block
         const config = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -144,14 +142,12 @@
         if (!firebase.apps.length) { firebase.initializeApp(config); }
         const firestoreDB = firebase.firestore();
 
-        // Control View Modal Rules
         function viewModal(show) {
             const el = document.getElementById("inputModal");
             if(show) el.classList.add("show");
             else { el.classList.remove("show"); document.getElementById("unitForm").reset(); }
         }
 
-        // Live Database Query System
         firestoreDB.collection("units").onSnapshot((snap) => {
             const target = document.getElementById("mainGrid");
             if(!target) return;
@@ -182,7 +178,6 @@
             document.getElementById("mainGrid").innerHTML = `<div class="status-msg" style="color:var(--red)">Sync Interrupted: ${err.message}</div>`;
         });
 
-        // Write Operations Setup
         function addData(e) {
             e.preventDefault();
             firestoreDB.collection("units").add({
@@ -196,7 +191,6 @@
             .catch(err => alert("Data blocked: " + err.message));
         }
 
-        // Delete Operations Setup
         function removeNode(id) {
             if(confirm("Confirm deletion of this dataset mapping?")) {
                 firestoreDB.collection("units").doc(id).delete()
