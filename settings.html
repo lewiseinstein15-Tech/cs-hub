@@ -38,7 +38,6 @@
     <a href="admin-dashboard.html" style="display:block; text-align:center; margin-top:15px; color:var(--dim); font-size:12px;">&larr; Back to Dashboard</a>
 </div>
 
-<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -57,7 +56,7 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    // 1. Initial Load: Get existing settings
+    // Load Data
     db.collection("config").doc("global").get().then(doc => {
         if(doc.exists) {
             const data = doc.data();
@@ -67,13 +66,13 @@
         }
     });
 
-    // 2. The Save Function
     async function saveSettings() {
         const btn = document.getElementById('saveBtn');
+        // Check auth status directly
         const user = auth.currentUser;
 
         if (!user) {
-            alert("You must be logged in as Admin to save settings.");
+            alert("Auth Check: Please make sure you are logged in.");
             return;
         }
 
@@ -86,11 +85,10 @@
                 email: document.getElementById('adminEmail').value,
                 announcement: document.getElementById('siteAnnouncement').value,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }, { merge: true }); // Use merge to prevent overwriting other fields
             alert("Settings saved successfully!");
         } catch (error) {
-            console.error("Save Error:", error);
-            alert("Save failed: " + error.message);
+            alert("Error Detail: " + error.message);
         } finally {
             btn.disabled = false;
             btn.textContent = "Save Configuration";
