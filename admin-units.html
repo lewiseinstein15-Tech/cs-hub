@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS HUB - Admin Units Control Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>CS HUB - Admin Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
-    <!-- FIREBASE COMPAT LIBRARIES -->
+    <!-- CORE FIREBASE SCRIPTS -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -14,129 +14,125 @@
     <style>
         :root {
             --bg: #030611;
-            --sidebar-bg: #060919;
-            --card-bg: rgba(10, 15, 36, 0.7);
+            --sidebar: #060919;
+            --card: rgba(10, 15, 36, 0.7);
             --border: rgba(255, 255, 255, 0.08);
             --blue: #3B82F6;
             --cyan: #06B6D4;
-            --green: #22C55E;
             --red: #EF4444;
-            --white: #ffffff;
+            --text: #ffffff;
             --dim: rgba(255, 255, 255, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
 
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; padding: 25px 20px; flex-shrink: 0; }
-        .sidebar-brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; }
-        .sidebar-brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--blue); display: block; margin-top: 2px; }
-        
-        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 35px; }
-        .nav-item a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; transition: all 0.2s ease; }
-        .nav-item a:hover, .nav-item.active a { color: var(--white); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
+        /* Sidebar UI */
+        .sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px 20px; display: flex; flex-direction: column; }
+        .brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; letter-spacing: 1px; }
+        .brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); display: block; margin-top: 2px; }
+        .menu { list-style: none; margin-top: 40px; display: flex; flex-direction: column; gap: 8px; }
+        .menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; border-radius: 8px; }
+        .menu .active a, .menu a:hover { color: var(--text); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
 
-        .workspace { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
-        .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background-color: rgba(6, 9, 25, 0.3); backdrop-filter: blur(15px); }
-        .page-title { font-family: 'Orbitron', sans-serif; font-size: 18px; letter-spacing: 1px; }
-        
-        .btn-add { background: var(--blue); color: var(--white); border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: background 0.2s; }
-        .btn-add:hover { background: #2563EB; }
-        .content-area { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        /* Workspace Main Panel */
+        .main-panel { flex-grow: 1; display: flex; flex-direction: column; }
+        .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background: rgba(6, 9, 25, 0.3); backdrop-filter: blur(10px); }
+        .topbar h2 { font-family: 'Orbitron', sans-serif; font-size: 18px; }
+        .btn-action { background: var(--blue); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .btn-action:hover { background: #2563EB; }
 
-        .units-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .unit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-        .unit-code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--cyan); font-weight: bold; margin-bottom: 8px; }
-        .unit-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
-        .unit-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 20px; }
-        .unit-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; }
-        .unit-year { font-size: 11px; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; color: var(--dim); }
-        .btn-delete { background: transparent; border: none; color: var(--red); font-size: 13px; cursor: pointer; font-weight: 600; }
+        /* Content Grid */
+        .content { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-code { font-family: 'JetBrains Mono', monospace; color: var(--cyan); font-size: 12px; font-weight: bold; margin-bottom: 6px; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .card-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 15px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; font-size: 11px; }
+        .btn-del { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: 600; }
+        .status-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--dim); font-size: 14px; }
 
-        .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1000; }
-        .modal.open { opacity: 1; pointer-events: auto; }
-        .modal-content { background: #090d22; border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 450px; padding: 30px; }
-        .modal-header { font-family: 'Orbitron', sans-serif; font-size: 16px; margin-bottom: 20px; color: var(--cyan); }
-        
+        /* Form Modal Window */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal.show { display: flex; }
+        .modal-box { background: #090d22; border: 1px solid var(--border); padding: 30px; border-radius: 16px; width: 100%; max-width: 420px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 6px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: white; font-family: inherit; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; color: #fff; border-radius: 6px; font-family: inherit; }
+        .modal-btns { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .btn-close { background: transparent; border: 1px solid var(--border); color: #fff; padding: 10px 15px; border-radius: 6px; cursor: pointer; }
         
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn-cancel { background: transparent; border: 1px solid var(--border); color: white; padding: 10px 18px; border-radius: 8px; cursor: pointer; }
-        .empty-state { grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--dim); font-size: 14px; }
-        #errorLog { display: none; background: var(--red); color: white; padding: 12px 20px; position: fixed; bottom: 15px; right: 15px; font-family: 'JetBrains Mono', monospace; font-size: 12px; border-radius: 8px; z-index: 10000; }
+        #crashBanner { display: none; background: var(--red); color: white; padding: 12px; position: fixed; bottom: 0; left: 0; right: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center; z-index: 99999; }
     </style>
 </head>
 <body>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-        <div>
-            <div class="sidebar-brand">
-                <h1>CS HUB</h1>
-                <span>ADMIN PANEL</span>
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
-                <li class="nav-item"><a href="notes.html">📚 Notes Management</a></li>
-                <li class="nav-item active"><a href="admin-units.html">🎓 Units Control</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                <li class="nav-item"><a href="revision.html">📝 Revision Materials</a></li>
-                <li class="nav-item"><a href="settings.html">⚙️ Settings</a></li>
-            </ul>
+        <div class="brand">
+            <h1>CS HUB</h1>
+            <span>ADMIN SYSTEM</span>
         </div>
+        <ul class="menu">
+            <li><a href="admin-dashboard.html">📊 Dashboard</a></li>
+            <li><a href="notes.html">📚 Notes Control</a></li>
+            <li class="active"><a href="admin-units.html">🎓 Units Engine</a></li>
+            <li><a href="ai-system.html">🤖 AI Console</a></li>
+            <li><a href="revision.html">📝 Revision Repo</a></li>
+        </ul>
     </aside>
 
-    <main class="workspace">
+    <!-- MAIN PANEL -->
+    <main class="main-panel">
         <header class="topbar">
-            <h2 class="page-title">Admin Units Control Architecture</h2>
-            <button class="btn-add" onclick="toggleModal(true)">＋ Add New Unit</button>
+            <h2>Units Control Node</h2>
+            <button class="btn-action" onclick="viewModal(true)">＋ Register Unit</button>
         </header>
-
-        <div class="content-area">
-            <div class="units-grid" id="unitsGrid">
-                <div class="empty-state">Connecting to data cluster channel...</div>
+        <div class="content">
+            <div class="grid" id="mainGrid">
+                <div class="status-msg">Opening secure pipeline link...</div>
             </div>
         </div>
     </main>
 
-    <div class="modal" id="unitModal">
-        <div class="modal-content">
-            <div class="modal-header">Register Architecture Unit</div>
-            <form id="unitForm" onsubmit="saveUnit(event)">
-                <div class="form-group">
-                    <label>Unit Code</label>
-                    <input type="text" id="unitCode" placeholder="e.g. CSC1110" required>
-                </div>
-                <div class="form-group">
-                    <label>Unit Title</label>
-                    <input type="text" id="unitTitle" placeholder="e.g. Introduction to Computer Systems" required>
-                </div>
-                <div class="form-group">
-                    <label>Curriculum Year Tier</label>
-                    <select id="unitYear">
+    <!-- ENTRY MODAL -->
+    <div class="modal" id="inputModal">
+        <div class="modal-box">
+            <h3 style="margin-bottom:15px; font-family:'Orbitron'; color:var(--cyan)">Map Architecture Unit</h3>
+            <form id="unitForm" onsubmit="addData(event)">
+                <div class="form-group"><label>Unit Code</label><input type="text" id="inCode" placeholder="e.g. CSC1110" required></div>
+                <div class="form-group"><label>Unit Title</label><input type="text" id="inTitle" placeholder="e.g. Discrete Structures" required></div>
+                <div class="form-group"><label>Year Tier</label>
+                    <select id="inYear">
                         <option value="Year 1">Year 1</option>
                         <option value="Year 2">Year 2</option>
                         <option value="Year 3">Year 3</option>
                         <option value="Year 4">Year 4</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Syllabus Architectural Description</label>
-                    <textarea id="unitDesc" rows="4" placeholder="Brief system overview..." required></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="toggleModal(false)">Cancel</button>
-                    <button type="submit" class="btn-add">Save Unit</button>
+                <div class="form-group"><label>Architecture Description</label><textarea id="inDesc" rows="3" required></textarea></div>
+                <div class="modal-btns">
+                    <button type="button" class="btn-close" onclick="viewModal(false)">Cancel</button>
+                    <button type="submit" class="btn-action">Save Node</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="errorLog"></div>
+    <!-- RUNTIME ERROR ELEMENT -->
+    <div id="crashBanner"></div>
 
     <script>
-        const firebaseConfig = {
+        // Global Error Tracker
+        window.onerror = function(m, u, l) {
+            const b = document.getElementById("crashBanner");
+            if(b) { b.style.display = "block"; b.innerText = "Fatal: " + m + " Line: " + l; }
+            return false;
+        };
+
+        // Firebase Setup Block
+        const config = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
             projectId: "cs-hub-7c97b",
@@ -145,89 +141,72 @@
             appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
 
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.firestore();
+        if (!firebase.apps.length) { firebase.initializeApp(config); }
+        const firestoreDB = firebase.firestore();
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initLiveSync();
+        // Control View Modal Rules
+        function viewModal(show) {
+            const el = document.getElementById("inputModal");
+            if(show) el.classList.add("show");
+            else { el.classList.remove("show"); document.getElementById("unitForm").reset(); }
+        }
+
+        // Live Database Query System
+        firestoreDB.collection("units").onSnapshot((snap) => {
+            const target = document.getElementById("mainGrid");
+            if(!target) return;
+
+            if (snap.empty) {
+                target.innerHTML = '<div class="status-msg">No active units inside Cloud database. Click Register Unit to add one.</div>';
+                return;
+            }
+
+            target.innerHTML = "";
+            snap.forEach((doc) => {
+                const item = doc.data();
+                const cardNode = document.createElement("div");
+                cardNode.className = "card";
+                cardNode.innerHTML = `
+                    <div>
+                        <div class="card-code">${clean(item.code)}</div>
+                        <div class="card-title">${clean(item.title)}</div>
+                        <div class="card-desc">${clean(item.desc)}</div>
+                    </div>
+                    <div class="card-footer">
+                        <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">${clean(item.year || 'Year 1')}</span>
+                        <button class="btn-del" onclick="removeNode('${doc.id}')">Delete</button>
+                    </div>`;
+                target.appendChild(cardNode);
+            });
+        }, err => {
+            document.getElementById("mainGrid").innerHTML = `<div class="status-msg" style="color:var(--red)">Sync Interrupted: ${err.message}</div>`;
         });
 
-        function showDebug(msg) {
-            const logger = document.getElementById("errorLog");
-            if(logger) { logger.style.display = "block"; logger.innerText = msg; }
-        }
-
-        function toggleModal(open) {
-            const modal = document.getElementById("unitModal");
-            if (open) { modal.classList.add("open"); } 
-            else { modal.classList.remove("open"); document.getElementById("unitForm").reset(); }
-        }
-
-        function initLiveSync() {
-            db.collection("units").onSnapshot((snap) => {
-                const grid = document.getElementById("unitsGrid");
-                if(!grid) return;
-
-                if (snap.empty) {
-                    grid.innerHTML = `
-                        <div class="empty-state">
-                            <p style="margin-bottom:15px;">No cloud data structures registered yet.</p>
-                            <p style="font-size:12px; color:var(--blue)">Click 'Add New Unit' above to map your Year 1 content.</p>
-                        </div>`;
-                    return;
-                }
-
-                grid.innerHTML = "";
-                snap.forEach((doc) => {
-                    const data = doc.data();
-                    const card = document.createElement("div");
-                    card.className = "unit-card";
-                    card.innerHTML = `
-                        <div>
-                            <div class="unit-code">${escapeHTML(data.code)}</div>
-                            <div class="unit-title">${escapeHTML(data.title)}</div>
-                            <div class="unit-desc">${escapeHTML(data.desc)}</div>
-                        </div>
-                        <div class="unit-footer">
-                            <span class="unit-year">${escapeHTML(data.year || 'Year 1')}</span>
-                            <button class="btn-delete" onclick="deleteUnit('${doc.id}', '${escapeHTML(data.code)}')">Delete</button>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            }, err => {
-                showDebug("Firestore Error: " + err.message);
-            });
-        }
-
-        function saveUnit(e) {
+        // Write Operations Setup
+        function addData(e) {
             e.preventDefault();
-            const code = document.getElementById("unitCode").value.trim();
-            const title = document.getElementById("unitTitle").value.trim();
-            const year = document.getElementById("unitYear").value;
-            const desc = document.getElementById("unitDesc").value.trim();
-
-            db.collection("units").add({
-                code: code,
-                title: title,
-                year: year,
-                desc: desc,
+            firestoreDB.collection("units").add({
+                code: document.getElementById("inCode").value.trim(),
+                title: document.getElementById("inTitle").value.trim(),
+                year: document.getElementById("inYear").value,
+                desc: document.getElementById("inDesc").value.trim(),
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
-            .then(() => toggleModal(false))
-            .catch(err => showDebug("Write Blocked: " + err.message));
+            .then(() => viewModal(false))
+            .catch(err => alert("Data blocked: " + err.message));
         }
 
-        function deleteUnit(id, code) {
-            if (confirm(`Delete unit: ${code}?`)) {
-                db.collection("units").doc(id).delete()
-                .catch(err => showDebug("Delete failed: " + err.message));
+        // Delete Operations Setup
+        function removeNode(id) {
+            if(confirm("Confirm deletion of this dataset mapping?")) {
+                firestoreDB.collection("units").doc(id).delete()
+                .catch(err => alert("Action denied: " + err.message));
             }
         }
 
-        function escapeHTML(str) {
+        function clean(str) {
             if (!str) return '';
-            return str.replace(/[&<>'"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[m]));
+            return str.replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
         }
     </script>
 </body>
