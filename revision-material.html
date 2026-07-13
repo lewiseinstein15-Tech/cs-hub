@@ -2,68 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Materials - CS HUB</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="config.js"></script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-            authDomain: "cs-hub-7c97b.firebaseapp.com",
-            databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
-            projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.appspot.com",
-            messagingSenderId: "76338162904",
-            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            const adminControls = document.getElementById('adminControls');
-            if (user && user.email === siteConfig.adminEmail) {
-                adminControls.style.display = "block"; // Show for Admin
-            } else {
-                adminControls.style.display = "none"; // Hide for Users
-            }
-        });
-    </script>
+    <style>
+        /* Mobile-friendly layout */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; }
+        
+        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; font-size: 1.2rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+        
+        /* Admin Panel Styles */
+        #adminControls { background: #202124; color: white; display: none; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
+        input, select, button { width: 100%; padding: 14px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 1rem; }
+        button { background: #1a73e8; color: white; font-weight: bold; cursor: pointer; }
+        .btn-yt { background: #d93025; }
+        
+        /* Links */
+        .item-link { display: block; padding: 12px; background: #f8f9fa; margin: 8px 0; text-decoration: none; color: #333; border-radius: 8px; border-left: 4px solid #1a73e8; }
+    </style>
 </head>
 <body>
+
+<div class="container">
     <h1>Revision Materials</h1>
 
-    <!-- Organized Sections for All Users -->
-    <section id="books">
-        <h2>📚 Books & Guides</h2>
-        <!-- Add your book links here -->
+    <!-- Admin Update Panel -->
+    <section id="adminControls">
+        <h3 style="margin-top:0;">Admin Update Panel</h3>
+        <input type="text" id="titleInput" placeholder="Material Title">
+        <input type="text" id="linkInput" placeholder="Paste URL Here">
+        <select id="category">
+            <option value="books">Books & Guides</option>
+            <option value="youtube">YouTube Tutorials</option>
+            <option value="lectures">Lecture Videos</option>
+            <option value="exams">Exams & CATs</option>
+        </select>
+        <button onclick="saveMaterial()">Update Section</button>
+        <button class="btn-yt" onclick="window.open('https://youtube.com', '_blank')">Open YouTube to Copy Link</button>
     </section>
 
-    <section id="youtube">
-        <h2>📺 YouTube Tutorials</h2>
-        <!-- Add your YouTube links here -->
-    </section>
+    <!-- Content Sections -->
+    <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
+    <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
+    <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
+    <section id="exams"><h2>📝 Exams & CATs</h2><div class="list"></div></section>
+</div>
 
-    <section id="lectures">
-        <h2>🎥 Lecture Videos</h2>
-        <!-- Add your lecture video links here -->
-    </section>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-    <section id="exams">
-        <h2>📝 Exams & CATs</h2>
-        <!-- Add your exam papers here -->
-    </section>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+        authDomain: "cs-hub-7c97b.firebaseapp.com",
+        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+        projectId: "cs-hub-7c97b",
+        storageBucket: "cs-hub-7c97b.appspot.com",
+        messagingSenderId: "76338162904",
+        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+    };
 
-    <!-- Admin-Only Update Panel -->
-    <section id="adminControls" style="display:none; background: #222; padding: 20px; border-radius: 10px; margin-top: 40px;">
-        <h3 style="color: #3B82F6;">Admin Update Panel</h3>
-        <p>You have permission to edit these sections.</p>
-        <button onclick="window.open('https://github.com/lewiseinstein5/CS-HUB/edit/main/revision.html', '_blank')">
-            Add/Update Materials on GitHub
-        </button>
-    </section>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    // Show Admin Panel for you
+    onAuthStateChanged(auth, (user) => {
+        if (user && user.email === "lewiseinstein5@gmail.com") {
+            document.getElementById('adminControls').style.display = "block";
+        }
+    });
+
+    window.saveMaterial = () => {
+        const title = document.getElementById('titleInput').value;
+        const url = document.getElementById('linkInput').value;
+        const cat = document.getElementById('category').value;
+        if(!title || !url) return alert("Please fill all fields");
+        push(ref(db, 'materials/' + cat), { title, url });
+        alert("Section updated successfully!");
+    };
+
+    // Load data dynamically
+    ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
+        onValue(ref(db, 'materials/' + cat), (snapshot) => {
+            const listDiv = document.querySelector(`#${cat} .list`);
+            listDiv.innerHTML = "";
+            const data = snapshot.val();
+            for(let key in data) {
+                listDiv.innerHTML += `<a href="${data[key].url}" class="item-link" target="_blank">${data[key].title}</a>`;
+            }
+        });
+    });
+</script>
 </body>
 </html>
