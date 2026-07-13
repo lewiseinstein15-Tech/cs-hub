@@ -5,25 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Materials - CS HUB</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; }
-        
-        /* Admin Panel - Set to display: block to test if it shows */
-        #adminControls { 
-            background: #e74c3c; /* Red color to see it clearly */
-            color: white; 
-            display: block; 
-            padding: 25px; 
-            border-radius: 15px; 
-            margin-bottom: 30px; 
-        }
-        
-        input, select, button { width: 100%; padding: 15px; margin: 8px 0; border-radius: 10px; border: none; box-sizing: border-box; font-size: 16px; }
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        /* Admin Panel starts hidden */
+        #adminControls { background: #1a1a1a; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: none; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; }
         button { background: #3B82F6; color: white; font-weight: bold; cursor: pointer; }
-        
-        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        h2 { color: #1a73e8; border-bottom: 2px solid #e8f0fe; padding-bottom: 10px; }
-        .item-link { display: block; padding: 12px; background: #f8f9fa; margin: 8px 0; text-decoration: none; color: #333; border-radius: 8px; border-left: 5px solid #3B82F6; }
+        .item-link { display: block; padding: 12px; background: white; margin: 5px 0; border-radius: 8px; border-left: 5px solid #3B82F6; text-decoration: none; color: #333; }
     </style>
 </head>
 <body>
@@ -31,18 +19,18 @@
 <div class="container">
     <h1>Revision Materials</h1>
 
-    <!-- Admin Panel -->
+    <!-- This section will only show for you -->
     <section id="adminControls">
-        <h3>Admin Update Panel (Test Mode)</h3>
+        <h3>Admin Update Panel</h3>
         <input type="text" id="titleInput" placeholder="Material Title">
-        <input type="text" id="linkInput" placeholder="Paste URL/Link Here">
+        <input type="text" id="linkInput" placeholder="Paste Google Drive/YouTube Link">
         <select id="category">
             <option value="books">Books & Guides</option>
             <option value="youtube">YouTube Tutorials</option>
             <option value="lectures">Lecture Videos</option>
             <option value="exams">Exams & CATs</option>
         </select>
-        <button onclick="saveMaterial()">Update Material</button>
+        <button onclick="saveMaterial()">Add Material</button>
     </section>
 
     <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
@@ -53,6 +41,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
     const firebaseConfig = {
@@ -66,18 +55,30 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getDatabase(app);
+
+    // RECOGNITION LOGIC
+    onAuthStateChanged(auth, (user) => {
+        const adminPanel = document.getElementById('adminControls');
+        // Check if user exists AND if email matches your admin email
+        if (user && user.email === "lewiseinstein5@gmail.com") {
+            adminPanel.style.display = "block";
+        } else {
+            adminPanel.style.display = "none";
+        }
+    });
 
     window.saveMaterial = () => {
         const title = document.getElementById('titleInput').value;
         const url = document.getElementById('linkInput').value;
         const cat = document.getElementById('category').value;
         
-        if(!title || !url) return alert("Please enter title and link.");
+        if(!title || !url) return alert("Please enter both a title and a link.");
         
         push(ref(db, 'materials/' + cat), { title, url })
-            .then(() => alert("Updated!"))
-            .catch((e) => alert("Error: " + e));
+            .then(() => alert("Added successfully!"))
+            .catch((e) => alert("Error: " + e.message));
     };
 
     ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
