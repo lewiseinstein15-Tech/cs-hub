@@ -2,25 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Settings</title>
-    <!-- Use your same styles as the dashboard for consistency -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #030611; --card-bg: rgba(10, 15, 36, 0.7); --white: #ffffff; --blue: #3B82F6; --border: rgba(255, 255, 255, 0.08); }
-        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; padding: 40px; }
-        .settings-card { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 18px; max-width: 600px; margin: auto; }
+        :root {
+            --bg: #030611;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .settings-card { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 18px; width: 100%; max-width: 500px; }
+        h2 { font-size: 20px; margin-bottom: 25px; }
         .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: #aaa; }
-        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border-radius: 8px; background: #060919; border: 1px solid var(--border); color: white; }
-        .btn-save { background: var(--blue); border: none; padding: 12px 24px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; width: 100%; }
+        label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--dim); }
+        input[type="text"], input[type="email"] { width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: white; box-sizing: border-box; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .btn-save { background: var(--blue); border: none; padding: 12px; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s; }
+        .btn-save:hover { opacity: 0.9; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: var(--dim); text-decoration: none; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="settings-card">
     <h2>System Settings</h2>
-    <div class="input-group">
-        <label>Maintenance Mode (Public site disabled?)</label>
+    <div class="checkbox-group">
         <input type="checkbox" id="maintenanceToggle">
+        <label style="margin-bottom:0;">Maintenance Mode (Public site disabled?)</label>
     </div>
     <div class="input-group">
         <label>Admin Notification Email</label>
@@ -31,32 +43,50 @@
         <input type="text" id="siteAnnouncement" placeholder="e.g. Server maintenance on Sunday...">
     </div>
     <button class="btn-save" onclick="saveSettings()">Save Configuration</button>
-    <button onclick="window.location.href='admin-dashboard.html'" style="margin-top:10px; background:none; border:none; color:gray; cursor:pointer;">&larr; Back to Dashboard</button>
+    <a href="admin-dashboard.html" class="back-link">&larr; Back to Dashboard</a>
 </div>
 
-<!-- Firebase Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-    // ... Initialize Firebase with your existing config ...
+    // --- PASTE YOUR CONFIG FROM DASHBOARD HERE ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+        authDomain: "cs-hub-7c97b.firebaseapp.com",
+        projectId: "cs-hub-7c97b",
+        storageBucket: "cs-hub-7c97b.firebasestorage.app",
+        messagingSenderId: "76338162904",
+        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+    };
+
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Load current settings on page load
+    // Load settings
     db.collection("config").doc("global").get().then(doc => {
         if(doc.exists) {
             const data = doc.data();
-            document.getElementById('maintenanceToggle').checked = data.maintenance;
+            document.getElementById('maintenanceToggle').checked = data.maintenance || false;
             document.getElementById('adminEmail').value = data.email || "";
             document.getElementById('siteAnnouncement').value = data.announcement || "";
         }
     });
 
+    // Save settings
     function saveSettings() {
+        const btn = document.querySelector('.btn-save');
+        btn.textContent = "Saving...";
         db.collection("config").doc("global").set({
             maintenance: document.getElementById('maintenanceToggle').checked,
             email: document.getElementById('adminEmail').value,
             announcement: document.getElementById('siteAnnouncement').value
-        }).then(() => alert("Settings saved!"));
+        }).then(() => {
+            alert("Settings updated successfully!");
+            btn.textContent = "Save Configuration";
+        }).catch(err => {
+            alert("Error: " + err.message);
+            btn.textContent = "Save Configuration";
+        });
     }
 </script>
 </body>
