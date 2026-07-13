@@ -224,10 +224,7 @@
             color: var(--dim);
         }
 
-        .btn-logout {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--red);
+        .btn-action {
             padding: 8px 16px;
             border-radius: 10px;
             cursor: pointer;
@@ -237,6 +234,23 @@
             align-items: center;
             gap: 6px;
             transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
+        }
+
+        .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
         }
 
         .btn-logout:hover {
@@ -617,7 +631,7 @@
                 <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
                 <li class="nav-item"><a href="admin-units.html">🎓 Units Control Panel</a></li>
                 <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                <li class="nav-item"><a href="revision-repo.html">📝 Revision Repo</a></li>
+                <li class="nav-item"><a href="revision-material.html">📝 Revision Material</a></li>
             </ul>
         </div>
 
@@ -643,7 +657,8 @@
                         <span>lewiseinstein15@gmail.com</span>
                     </div>
                 </div>
-                <button class="btn-logout" onclick="logout()">Logout &rarr;</button>
+                <button class="btn-action btn-settings" onclick="window.location.href='settings.html'">⚙️ Settings</button>
+                <button class="btn-action btn-logout" onclick="logout()">Logout &rarr;</button>
             </div>
         </header>
 
@@ -727,13 +742,13 @@
                     </div>
                     <a href="ai-system.html" class="manage-action-link">Open AI panel &rarr;</a>
                 </div>
-                <div class="manage-card card-yellow">
+                <div class="manage-card card-cyan">
                     <div>
-                        <div class="manage-icon">📢</div>
-                        <h4>Revision Repo</h4>
-                        <p>Create and manage clear informational updates and technical broadcasts for students.</p>
+                        <div class="manage-icon">📚</div>
+                        <h4>Revision Material</h4>
+                        <p>Manage books, learning YouTube links, videos, exams, and CATs.</p>
                     </div>
-                    <a href="revision-repo.html" class="manage-action-link">Open Revision Repo &rarr;</a>
+                    <a href="revision-material.html" class="manage-action-link">Open Revision Material &rarr;</a>
                 </div>
             </section>
 
