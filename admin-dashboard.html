@@ -4,89 +4,261 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- CORE FIREBASE SCRIPTS -->
+    <!-- CORE FIREBASE COMPAT LIBRARIES -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
-            --bg: #030611;
-            --sidebar: #060919;
-            --card: rgba(10, 15, 36, 0.7);
-            --border: rgba(255, 255, 255, 0.08);
-            --blue: #3B82F6;
-            --cyan: #06B6D4;
-            --text: #ffffff;
-            --dim: rgba(255, 255, 255, 0.5);
+            --bg-color: #030611;
+            --panel-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-blue: #3B82F6;
+            --accent-cyan: #06B6D4;
+            --accent-green: #22C55E;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --neon-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px 20px; display: flex; flex-direction: column; }
-        .brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; letter-spacing: 1px; }
-        .brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); display: block; margin-top: 2px; }
-        
-        .menu { list-style: none; margin-top: 40px; display: flex; flex-direction: column; gap: 8px; }
-        .menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; border-radius: 8px; transition: all 0.2s; }
-        .menu .active a, .menu a:hover { color: var(--text); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
 
-        .main-panel { flex-grow: 1; display: flex; flex-direction: column; }
-        .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 30px; background: rgba(6, 9, 25, 0.3); backdrop-filter: blur(10px); }
-        .topbar h2 { font-family: 'Orbitron', sans-serif; font-size: 18px; }
+        /* SIDEBAR STYLING */
+        .sidebar {
+            width: 260px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px 20px;
+            flex-shrink: 0;
+        }
 
-        .content { padding: 30px; overflow-y: auto; flex-grow: 1; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .stat-card { background: var(--card); border: 1px solid var(--border); padding: 24px; border-radius: 16px; }
-        .stat-title { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: #fff; }
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent-blue);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 35px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.15);
+            box-shadow: var(--neon-shadow);
+        }
+
+        /* WORKSPACE STYLING */
+        .workspace {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            height: 75px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background-color: rgba(6, 9, 25, 0.3);
+            backdrop-filter: blur(15px);
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .content-area {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        /* STATS GRID ARCHITECTURE */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(6, 182, 212, 0.25);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-blue);
+        }
+
+        .stat-card.cyan::before { background: var(--accent-cyan); }
+        .stat-card.green::before { background: var(--accent-green); }
+
+        .stat-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .system-log {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 25px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .log-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+        }
+
+        .log-stream {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR -->
+    <!-- NAVIGATION MENU CONSOLE -->
     <aside class="sidebar">
-        <div class="brand">
-            <h1>CS HUB</h1>
-            <span>ADMIN PANEL</span>
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>MANAGEMENT CORE</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="admin-dashboard.html">📊 Dashboard Hub</a></li>
+                <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
+                <!-- Cleaned matching route path directly linked to lowercase file -->
+                <li class="nav-item"><a href="admin-units.html">🎓 Units Control</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI Console</a></li>
+                <li class="nav-item"><a href="revision.html">📝 Revision Repo</a></li>
+            </ul>
         </div>
-        <ul class="menu">
-            <li class="active"><a href="admin-dashboard.html">📊 Dashboard</a></li>
-            <li><a href="notes.html">📚 Notes Control</a></li>
-            <!-- Corrected relative link for units page -->
-            <li><a href="admin-units.html">🎓 Units Engine</a></li>
-            <li><a href="ai-system.html">🤖 AI Console</a></li>
-            <li><a href="revision.html">📝 Revision Repo</a></li>
-        </ul>
     </aside>
 
-    <!-- MAIN PANEL -->
-    <main class="main-panel">
+    <!-- CONTENT DATA PANEL WRAPPER -->
+    <main class="workspace">
         <header class="topbar">
-            <h2>System Control Dashboard</h2>
+            <h2 class="page-title">Administrative Cluster Engine</h2>
         </header>
-        <div class="content">
+
+        <div class="content-area">
+            <!-- REAL-TIME NUMERIC COUNT DISPLAY GRID -->
             <div class="metrics-grid">
                 <div class="stat-card">
-                    <div class="stat-title">Total Academic Units</div>
+                    <div class="stat-title">Total Operational Units</div>
                     <div class="stat-value" id="statUnits">--</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total Dynamic Notes</div>
+                <div class="stat-card cyan">
+                    <div class="stat-title">Total Active Notes</div>
                     <div class="stat-value" id="statNotes">--</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Registered Active Users</div>
+                <div class="stat-card green">
+                    <div class="stat-title">Global Authenticated Users</div>
                     <div class="stat-value" id="statUsers">--</div>
                 </div>
+            </div>
+
+            <!-- SYSTEM LOG OUTPUT BANNER -->
+            <div class="system-log">
+                <div class="log-title">> STABLE PIPELINE ENGINE LOG</div>
+                <div class="log-stream" id="logStream">Initializing cloud data handshake channels...</div>
             </div>
         </div>
     </main>
 
     <script>
+        // FIREBASE INITIALIZATION MATRIX
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -100,25 +272,39 @@
         const db = firebase.firestore();
 
         document.addEventListener("DOMContentLoaded", () => {
-            initMetrics();
+            initMetricsSync();
         });
 
-        function initMetrics() {
-            db.collection("units").onSnapshot(s => { 
-                document.getElementById("statUnits").textContent = s.empty ? "0" : s.size; 
-            }, e => {
-                document.getElementById("statUnits").textContent = "0"; 
+        function writeLog(msg) {
+            const logger = document.getElementById("logStream");
+            if(logger) logger.innerHTML += `<br>> ${msg}`;
+        }
+
+        function initMetricsSync() {
+            // Live-sync totals for Units database
+            db.collection("units").onSnapshot(snapshot => {
+                document.getElementById("statUnits").textContent = snapshot.empty ? "0" : snapshot.size;
+                writeLog(`Data sync complete. Units array length: [${snapshot.size}]`);
+            }, error => {
+                console.error(error);
+                document.getElementById("statUnits").textContent = "0";
+                writeLog(`ERR: Units collection stream dropped: ${error.message}`);
             });
 
-            db.collection("notes").onSnapshot(s => { 
-                document.getElementById("statNotes").textContent = s.empty ? "0" : s.size; 
-            }, e => {
+            // Live-sync totals for Notes database
+            db.collection("notes").onSnapshot(snapshot => {
+                document.getElementById("statNotes").textContent = snapshot.empty ? "0" : snapshot.size;
+                writeLog(`Data sync complete. Notes array length: [${snapshot.size}]`);
+            }, error => {
+                console.error(error);
                 document.getElementById("statNotes").textContent = "0";
+                writeLog(`ERR: Notes collection stream dropped.`);
             });
 
-            db.collection("users").onSnapshot(s => { 
-                document.getElementById("statUsers").textContent = s.empty ? "0" : s.size; 
-            }, e => {
+            // Live-sync totals for Users database
+            db.collection("users").onSnapshot(snapshot => {
+                document.getElementById("statUsers").textContent = snapshot.empty ? "0" : snapshot.size;
+            }, error => {
                 document.getElementById("statUsers").textContent = "0";
             });
         }
