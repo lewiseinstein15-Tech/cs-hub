@@ -20,7 +20,6 @@
                     <li><a href="notes.html"><i class="fas fa-book"></i> Notes Management</a></li>
                     <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
                     <li><a href="ai-system.html"><i class="fas fa-robot"></i> AI System</a></li>
-                    <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                     <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
                     <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
                     <li><a href="file-manager.html"><i class="fas fa-folder"></i> File Manager</a></li>
@@ -109,12 +108,6 @@
                         <a href="ai-system.html" class="manage-link">Open AI panel <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="content-card">
-                        <div class="card-icon"><i class="fas fa-bullhorn"></i></div>
-                        <h3>Announcements</h3>
-                        <p>Create and manage announcements for students.</p>
-                        <a href="announcements.html" class="manage-link">Create announcement <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="content-card">
                         <div class="card-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>Analytics</h3>
                         <p>Track visits, popular content and site performance.</p>
@@ -132,36 +125,15 @@
                     <div class="quick-actions">
                         <h2>QUICK ACTIONS</h2>
                         <ul>
-                            <li><a href="#"><i class="fas fa-plus-circle"></i> Add New Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fas fa-edit"></i> Edit Existing Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fas fa-trash-alt"></i> Delete Note <i class="fas fa-arrow-right"></i></a></li>
-                            <li><a href="#"><i class="fas fa-upload"></i> Publish Changes <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#" data-quick-action="addNote"><i class="fas fa-plus-circle"></i> Add New Note <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#" data-quick-action="editNote"><i class="fas fa-edit"></i> Edit Existing Note <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#" data-quick-action="deleteNote"><i class="fas fa-trash-alt"></i> Delete Note <i class="fas fa-arrow-right"></i></a></li>
+                            <li><a href="#" data-quick-action="publish"><i class="fas fa-upload"></i> Publish Changes <i class="fas fa-arrow-right"></i></a></li>
                         </ul>
                     </div>
                     <div class="recent-activity">
                         <h2>RECENT ACTIVITY <a href="#" class="view-all-activity">View all <i class="fas fa-arrow-right"></i></a></h2>
-                        <ul>
-                            <li>
-                                <span class="activity-dot updated"></span>
-                                <p>Programming notes updated <span class="activity-detail">CSC110 • 12 minutes ago</span></p>
-                                <span class="activity-tag">UPDATED</span>
-                            </li>
-                            <li>
-                                <span class="activity-dot modified"></span>
-                                <p>Year 1 page modified <span class="activity-detail">Content structure updated • 1 hour ago</span></p>
-                                <span class="activity-tag">MODIFIED</span>
-                            </li>
-                            <li>
-                                <span class="activity-dot new-user"></span>
-                                <p>New user registered <span class="activity-detail">john.mutuku@student.kibabii.ac.ke • 3 hours ago</span></p>
-                                <span class="activity-tag">NEW USER</span>
-                            </li>
-                            <li>
-                                <span class="activity-dot system"></span>
-                                <p>AI System settings updated <span class="activity-detail">Model: GPT-4o • 5 hours ago</span></p>
-                                <span class="activity-tag">SYSTEM</span>
-                            </li>
-                        </ul>
+                        <ul id="activityList"></ul>
                     </div>
                 </div>
             </section>
@@ -170,7 +142,7 @@
                 <a href="notes.html"><i class="fas fa-book"></i> Notes</a>
                 <a href="users.html"><i class="fas fa-users"></i> Users</a>
                 <a href="ai-system.html"><i class="fas fa-robot"></i> AI</a>
-                <a href="#"><i class="fas fa-ellipsis-h"></i> More</a>
+                <a href="#" id="moreToggle"><i class="fas fa-ellipsis-h"></i> More</a>
             </footer>
         </main>
     </div>
