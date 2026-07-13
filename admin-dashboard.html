@@ -37,7 +37,7 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar Styling */
+        /* Responsive Sidebar Styling */
         .sidebar {
             width: 260px;
             background-color: var(--sidebar-bg);
@@ -46,8 +46,8 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 25px 20px;
-            transition: transform 0.3s ease;
-            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
             flex-shrink: 0;
         }
 
@@ -155,15 +155,16 @@
             margin-top: 20px;
         }
 
-        /* Workspace Viewport */
+        /* Workspace Viewport Setup */
         .workspace {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             min-width: 0;
+            height: 100vh;
         }
 
-        /* Top Header Navigation Panel */
+        /* Top Header Area with Dynamic Scaling */
         .topbar {
             height: 75px;
             border-bottom: 1px solid var(--border);
@@ -173,6 +174,7 @@
             padding: 0 30px;
             background-color: rgba(6, 9, 25, 0.3);
             backdrop-filter: blur(15px);
+            flex-shrink: 0;
         }
 
         .menu-toggle {
@@ -181,10 +183,10 @@
             color: var(--white);
             font-size: 20px;
             cursor: pointer;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 8px 12px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
@@ -194,6 +196,8 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            width: 100%;
+            justify-content: flex-end;
         }
 
         .admin-meta {
@@ -241,14 +245,14 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        /* Content Scroll Wrapper */
+        /* Scrollable Dynamic Content Container */
         .content-area {
             padding: 30px;
             overflow-y: auto;
             flex-grow: 1;
         }
 
-        /* Cyber Terminal Box Layout */
+        /* Cyber Terminal Banner Layout */
         .hero-terminal {
             background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
@@ -288,7 +292,7 @@
             max-width: 700px;
         }
 
-        /* Metrics Interface Grid Row */
+        /* Metrics Responsive Flexbox Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -360,7 +364,6 @@
             box-shadow: 0 0 8px var(--green);
         }
 
-        /* Section Block Architecture Headings */
         .section-header {
             font-family: 'Orbitron', sans-serif;
             font-size: 12px;
@@ -370,7 +373,7 @@
             margin-bottom: 20px;
         }
 
-        /* Dashboard Core Matrix Management Cards Grid */
+        /* Management Cards Row Container */
         .management-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -435,15 +438,11 @@
         .card-yellow .manage-action-link { color: var(--yellow); }
         .card-cyan .manage-action-link { color: var(--cyan); }
 
-        /* Actions and Tracking Logs Panels */
+        /* Bottom Split Section Layout */
         .split-layout {
             display: grid;
             grid-template-columns: 1fr 1.3fr;
             gap: 25px;
-        }
-
-        @media (max-width: 900px) {
-            .split-layout { grid-template-columns: 1fr; }
         }
 
         .split-panel {
@@ -515,7 +514,7 @@
 
         .arrow-indicator { color: var(--dim); }
 
-        /* Activity Log Streams */
+        /* Activity Logs Node Channels */
         .timeline-container {
             display: flex;
             flex-direction: column;
@@ -562,13 +561,44 @@
         .node-badge.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
         .node-badge.yellow { background: rgba(245, 158, 11, 0.15); color: var(--yellow); }
 
+        /* ADVANCED RESPONSIVE SCREEN-FIT VIEWPORT BREAKPOINTS */
         @media (max-width: 1024px) {
+            .menu-toggle {
+                display: flex;
+            }
+            .topbar-right {
+                position: relative;
+                width: auto;
+            }
             .sidebar {
                 position: fixed;
                 top: 0; bottom: 0; left: 0;
                 transform: translateX(-100%);
             }
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open { 
+                transform: translateX(0); 
+            }
+            .split-layout { 
+                grid-template-columns: 1fr; 
+            }
+            .content-area {
+                padding: 20px 15px;
+            }
+            .admin-details span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-terminal h2 {
+                font-size: 20px;
+            }
+            .metric-card {
+                padding: 15px;
+            }
+            .metric-data h3 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -579,20 +609,16 @@
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>ADMIN PANEL</span>
+                <span>ADMIN SYSTEM</span>
             </div>
             
             <ul class="nav-menu">
-                <li class="nav-item active"><a href="admin-dashboard.html">🎛️ Dashboard</a></li>
-                <li class="nav-item"><a href="notes.html">📚 Notes Management</a></li>
-                <li class="nav-item"><a href="users.html">👥 Users</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                <li class="nav-item"><a href="announcements.html">📢 Announcements</a></li>
-                <li class="nav-item"><a href="analytics.html">📊 Analytics</a></li>
-                <li class="nav-item"><a href="settings.html">⚙️ Settings</a></li>
-                <li class="nav-item"><a href="file-manager.html">📁 File Manager</a></li>
-                <li class="nav-item"><a href="backup.html">☁️ Backup & Restore</a></li>
-                <li class="nav-item"><a href="logs.html">📄 Logs</a></li>
+                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
+                <!-- UPDATED TO POINT TO ANOTHER PAGE (admin-units.html) -->
+                <li class="nav-item active"><a href="admin-units.html">🎓 Units Engine</a></li>
+                <li class="nav-item"><a href="ai-console.html">🤖 AI Console</a></li>
+                <li class="nav-item"><a href="revision-repo.html">📝 Revision Repo</a></li>
             </ul>
         </div>
 
@@ -610,7 +636,7 @@
     <main class="workspace">
         <header class="topbar">
             <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
-            <div class="topbar-right" style="margin-left: auto;">
+            <div class="topbar-right">
                 <div class="admin-meta">
                     <span class="shield-icon">🛡️</span>
                     <div class="admin-details">
@@ -636,12 +662,13 @@
             <section class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-left">
-                        <div class="metric-icon-circle blue">📚</div>
+                        <div class="metric-icon-circle blue">🎓</div>
                         <div class="metric-data">
                             <h3 id="statUnits">---</h3>
                             <p>Total Units</p>
                         </div>
                     </div>
+                    <!-- UPDATED TO POINT TO ANOTHER PAGE (admin-units.html) -->
                     <a href="admin-units.html" class="metric-link">View all &rarr;</a>
                 </div>
                 <div class="metric-card">
@@ -689,9 +716,10 @@
                 <div class="manage-card card-green">
                     <div>
                         <div class="manage-icon">🎓</div>
-                        <h4>Units Control</h4>
+                        <h4>Units Engine</h4>
                         <p>Configure curriculum pathways, map syllabus tracks, and core educational parameters.</p>
                     </div>
+                    <!-- UPDATED TO POINT TO ANOTHER PAGE (admin-units.html) -->
                     <a href="admin-units.html" class="manage-action-link">Configure units &rarr;</a>
                 </div>
                 <div class="manage-card card-purple">
@@ -700,7 +728,7 @@
                         <h4>AI System</h4>
                         <p>Configure AI assistant, generate drafts and manage automated system responses.</p>
                     </div>
-                    <a href="ai-system.html" class="manage-action-link">Open AI panel &rarr;</a>
+                    <a href="ai-console.html" class="manage-action-link">Open AI panel &rarr;</a>
                 </div>
                 <div class="manage-card card-yellow">
                     <div>
@@ -778,6 +806,14 @@
         function toggleSidebar() {
             document.getElementById("sidebar").classList.toggle("open");
         }
+
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.getElementById("menuToggle");
+            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove("open");
+            }
+        });
 
         auth.onAuthStateChanged((user) => {
             if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
