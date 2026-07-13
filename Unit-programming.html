@@ -4,30 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Programming | CS Hub</title>
+<title>CSC1110 - Programming</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
---soil:#0B1210;
---moss:#2A3B32;
---fog:#C8D6D0;
---card:#10201A;
-
---teal:#4FD1C5;
---mint:#7ED9A6;
---amber:#E8B04B;
---sky:#5FB8E0;
---purple:#B18AF0;
---coral:#F2836B;
-}
-
 
 *{
 margin:0;
@@ -35,633 +19,1342 @@ padding:0;
 box-sizing:border-box;
 }
 
-
 body{
-background:var(--soil);
-color:var(--fog);
-font-family:'Inter',sans-serif;
-}
 
+font-family:Poppins,sans-serif;
+
+background:#eef2f7;
+
+color:#222;
+
+line-height:1.8;
+
+}
 
 header{
-max-width:720px;
-margin:auto;
-padding:25px 24px 10px;
-}
 
+background:linear-gradient(135deg,#1565c0,#0d47a1);
 
-.back{
-text-decoration:none;
-color:var(--fog);
-border:1px solid var(--moss);
-padding:8px 14px;
-border-radius:20px;
-font-family:'JetBrains Mono',monospace;
-font-size:.75rem;
-}
-
-
-.hero{
-max-width:720px;
-margin:auto;
-padding:25px 24px;
-}
-
-
-.tag{
-font-family:'JetBrains Mono',monospace;
-color:var(--teal);
-font-size:.7rem;
-letter-spacing:.15em;
-}
-
-
-h1{
-font-family:'Space Grotesk',sans-serif;
-font-size:2.3rem;
 color:white;
+
+padding:40px 20px;
+
+text-align:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+}
+
+header h1{
+
+font-size:34px;
+
+}
+
+header p{
+
 margin-top:10px;
+
+opacity:.95;
+
+font-size:17px;
+
 }
 
+.container{
 
-.subtitle{
-margin-top:12px;
-line-height:1.7;
-opacity:.85;
-}
+max-width:1000px;
 
+margin:40px auto;
 
-main{
-max-width:720px;
-margin:auto;
-padding:20px 24px 60px;
-}
+background:white;
 
+padding:40px;
 
-.topic{
-
-background:var(--card);
-border:1px solid var(--moss);
-border-left:5px solid var(--accent);
 border-radius:15px;
 
-padding:20px;
-margin-bottom:18px;
+box-shadow:0 10px 25px rgba(0,0,0,.1);
 
 }
 
+h2{
 
-.topic-title{
+color:#1565c0;
 
-font-family:'Space Grotesk',sans-serif;
+margin-top:40px;
+
+margin-bottom:15px;
+
+padding-bottom:8px;
+
+border-bottom:3px solid #1565c0;
+
+}
+
+h3{
+
+margin-top:25px;
+
+color:#0d47a1;
+
+}
+
+h4{
+
+margin-top:20px;
+
+color:#1976d2;
+
+}
+
+p{
+
+margin:15px 0;
+
+text-align:justify;
+
+}
+
+ul{
+
+margin-left:25px;
+
+margin-top:10px;
+
+margin-bottom:15px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+margin:25px 0;
+
+}
+
+th{
+
+background:#1565c0;
+
 color:white;
-font-size:1.15rem;
-margin-bottom:10px;
+
+padding:12px;
+
+border:1px solid #ddd;
 
 }
 
+td{
 
-.topic p{
+padding:12px;
 
-line-height:1.7;
-margin-bottom:10px;
-
-}
-
-
-.topic ul{
-
-margin-left:20px;
-line-height:1.7;
+border:1px solid #ddd;
 
 }
 
+blockquote{
 
-.t1{--accent:var(--teal);}
-.t2{--accent:var(--mint);}
-.t3{--accent:var(--amber);}
-.t4{--accent:var(--sky);}
-.t5{--accent:var(--purple);}
-.t6{--accent:var(--coral);}
+background:#e3f2fd;
 
+padding:20px;
+
+border-left:5px solid #1565c0;
+
+font-style:italic;
+
+margin:20px 0;
+
+}
+
+.tip{
+
+background:#fff8e1;
+
+padding:18px;
+
+border-left:6px solid orange;
+
+margin:25px 0;
+
+}
+
+.footer{
+
+margin-top:60px;
+
+text-align:center;
+
+color:#666;
+
+font-size:14px;
+
+}
 
 </style>
 
 </head>
 
-
 <body>
-
 
 <header>
 
-<a class="back" href="Foundation.html">
-← Year 1
-</a>
+<h1>CSC1110 – Programming</h1>
+
+<p>Computer Science Hub • Complete University Notes</p>
 
 </header>
 
+<div class="container">
 
-<section class="hero">
-
-<div class="tag">// unit notes</div>
-
-<h1>Programming</h1>
-
-<p class="subtitle">
-The foundation of software development. This unit teaches how to think logically, design solutions and communicate instructions to computers using programming languages.
-</p>
-
-</section>
-
-
-
-<main>
-
-
-<div class="topic t1">
-
-<h2 class="topic-title">
-01 · Introduction to Programming
-</h2>
+<h2>1. Introduction to Computer Science</h2>
 
 <p>
-Programming is the process of creating instructions that tell a computer how to perform a task.
+
+Computer Science is the scientific study of computers, computational systems, software, algorithms and information processing. It combines mathematics, logic, engineering and programming to solve real-world problems using technology.
+
 </p>
 
 <p>
-A programmer transforms a problem from the real world into a logical solution that a computer can execute.
+
+Today, Computer Science powers smartphones, artificial intelligence, cybersecurity, robotics, cloud computing, data science, software engineering and almost every modern industry.
+
+</p><h2>2. Evolution of Computers</h2>
+
+<p>
+Computers have evolved over thousands of years, from simple counting devices to powerful electronic systems capable of performing billions of calculations every second.
 </p>
+
+<h3>2.1 Early Calculating Devices</h3>
+
+<h4>Abacus (Around 3000 BC)</h4>
+
+<p>
+The abacus is one of the earliest known calculating devices. It uses beads that slide along rods to perform arithmetic operations such as addition, subtraction, multiplication and division.
+</p>
+
+<p><strong>Advantages</strong></p>
 
 <ul>
-<li>Problem analysis</li>
-<li>Solution design</li>
-<li>Writing code</li>
-<li>Testing and debugging</li>
-<li>Maintenance</li>
+
+<li>Simple to use.</li>
+
+<li>Does not require electricity.</li>
+
+<li>Fast for basic arithmetic calculations.</li>
+
+</ul>
+
+<h4>Napier's Bones (1617)</h4>
+
+<p>
+Invented by <strong>John Napier</strong>, this mechanical device used numbered rods to simplify multiplication and division.
+</p>
+
+<h4>Pascaline (1642)</h4>
+
+<p>
+Invented by <strong>Blaise Pascal</strong>, the Pascaline was one of the first mechanical calculators capable of performing addition and subtraction.
+</p>
+
+<h4>Leibniz Calculator (1673)</h4>
+
+<p>
+Developed by <strong>Gottfried Wilhelm Leibniz</strong>, this calculator improved upon the Pascaline by performing multiplication and division more efficiently.
+</p>
+
+<h4>Difference Engine (1822)</h4>
+
+<p>
+Designed by <strong>Charles Babbage</strong>, the Difference Engine was built to calculate mathematical tables automatically. Charles Babbage is widely known as the <strong>Father of the Computer</strong>.
+</p>
+
+<h4>Analytical Engine (1837)</h4>
+
+<p>
+Charles Babbage later designed the Analytical Engine, considered the first concept of a general-purpose programmable computer. It introduced ideas similar to the CPU, memory, input and output used in modern computers.
+</p>
+
+<h4>Ada Lovelace</h4>
+
+<p>
+Ada Lovelace wrote the first algorithm intended for the Analytical Engine and is widely recognized as the world's first computer programmer.
+</p>
+
+<h3>2.2 Generations of Computers</h3>
+
+<table>
+
+<tr>
+<th>Generation</th>
+<th>Period</th>
+<th>Main Technology</th>
+<th>Main Characteristics</th>
+</tr>
+
+<tr>
+<td>First</td>
+<td>1940–1956</td>
+<td>Vacuum Tubes</td>
+<td>Very large, expensive and produced a lot of heat.</td>
+</tr>
+
+<tr>
+<td>Second</td>
+<td>1956–1963</td>
+<td>Transistors</td>
+<td>Smaller, faster and more reliable.</td>
+</tr>
+
+<tr>
+<td>Third</td>
+<td>1964–1971</td>
+<td>Integrated Circuits (ICs)</td>
+<td>Higher processing speed and lower power consumption.</td>
+</tr>
+
+<tr>
+<td>Fourth</td>
+<td>1971–Present</td>
+<td>Microprocessors</td>
+<td>Personal computers, laptops, smartphones and modern computing.</td>
+</tr>
+
+<tr>
+<td>Fifth</td>
+<td>Present and Beyond</td>
+<td>Artificial Intelligence</td>
+<td>Machine learning, robotics, expert systems and natural language processing.</td>
+</tr>
+
+</table>
+
+<div class="tip">
+
+<strong>Exam Tip</strong><br><br>
+
+Remember these facts:
+
+<ul>
+<li>Abacus → One of the earliest calculating devices.</li>
+<li>Charles Babbage → Father of the Computer.</li>
+<li>Ada Lovelace → First Computer Programmer.</li>
+<li>First Generation → Vacuum Tubes.</li>
+<li>Second Generation → Transistors.</li>
+<li>Third Generation → Integrated Circuits.</li>
+<li>Fourth Generation → Microprocessors.</li>
+<li>Fifth Generation → Artificial Intelligence.</li>
+</ul>
+
+</div><h2>3. Characteristics of Computers</h2>
+
+<p>
+A computer possesses several unique characteristics that make it an essential tool in education, business, healthcare, engineering, banking, research, and many other fields.
+</p>
+
+<h3>1. Speed</h3>
+
+<p>
+Computers perform millions or even billions of operations every second. Tasks that would take humans hours or days can be completed within seconds.
+</p>
+
+<h3>2. Accuracy</h3>
+
+<p>
+A computer produces highly accurate results when given the correct data and instructions. Errors usually occur because of incorrect input or faulty programs rather than the computer itself.
+</p>
+
+<h3>3. Diligence</h3>
+
+<p>
+Unlike humans, computers do not become tired, bored, or lose concentration. They can perform the same task repeatedly with consistent performance.
+</p>
+
+<h3>4. Reliability</h3>
+
+<p>
+Computers can operate continuously for long periods while maintaining consistent and dependable results.
+</p>
+
+<h3>5. Storage Capacity</h3>
+
+<p>
+Modern computers can store vast amounts of information and retrieve it quickly whenever needed.
+</p>
+
+<h3>6. Automation</h3>
+
+<p>
+Once a program is started, a computer can complete tasks automatically without constant human intervention.
+</p>
+
+<h3>7. Versatility</h3>
+
+<p>
+A single computer can perform many different tasks, such as programming, gaming, graphic design, scientific simulations, video editing, and web browsing.
+</p>
+
+<div class="tip">
+
+<strong>Key Points to Remember</strong>
+
+<ul>
+<li>Speed</li>
+<li>Accuracy</li>
+<li>Diligence</li>
+<li>Reliability</li>
+<li>Storage Capacity</li>
+<li>Automation</li>
+<li>Versatility</li>
 </ul>
 
 </div>
 
-
-
-<div class="topic t2">
-
-<h2 class="topic-title">
-02 · Programming Concepts
-</h2>
+<h2>4. Applications of Computers</h2>
 
 <p>
-Programming is built around fundamental ideas that allow computers to solve problems.
+Computers are used in almost every sector of modern society to improve efficiency, communication, and decision-making.
 </p>
 
+<table>
+
+<tr>
+<th>Field</th>
+<th>Application</th>
+</tr>
+
+<tr>
+<td>Education</td>
+<td>E-learning, online exams, research, digital libraries.</td>
+</tr>
+
+<tr>
+<td>Healthcare</td>
+<td>Electronic medical records, diagnosis, medical imaging, telemedicine.</td>
+</tr>
+
+<tr>
+<td>Banking</td>
+<td>Online banking, ATMs, mobile banking, fraud detection.</td>
+</tr>
+
+<tr>
+<td>Business</td>
+<td>Accounting, payroll, inventory management, customer databases.</td>
+</tr>
+
+<tr>
+<td>Engineering</td>
+<td>Computer-Aided Design (CAD), simulations, automation.</td>
+</tr>
+
+<tr>
+<td>Communication</td>
+<td>Email, video conferencing, messaging, social media.</td>
+</tr>
+
+<tr>
+<td>Entertainment</td>
+<td>Gaming, streaming, music production, animation.</td>
+</tr>
+
+<tr>
+<td>Government</td>
+<td>National databases, tax collection, digital services, elections.</td>
+</tr>
+
+</table><h2>5. Computer Hardware and Software</h2>
+
+<p>
+A computer system consists of two major components: <strong>hardware</strong> and <strong>software</strong>. Both must work together for a computer to function properly.
+</p>
+
+<h3>5.1 Computer Hardware</h3>
+
+<p>
+Hardware refers to the physical parts of a computer that can be seen and touched.
+</p>
+
+<h4>Examples of Hardware</h4>
+
 <ul>
-<li>Input — information given to a program</li>
-<li>Processing — operations performed on data</li>
-<li>Output — results produced by the program</li>
-<li>Storage — saving information for future use</li>
+<li>Keyboard</li>
+<li>Mouse</li>
+<li>Monitor</li>
+<li>Central Processing Unit (CPU)</li>
+<li>Motherboard</li>
+<li>Hard Disk Drive (HDD)</li>
+<li>Solid State Drive (SSD)</li>
+<li>Printer</li>
+<li>Scanner</li>
+<li>Speakers</li>
 </ul>
 
-</div>
+<h3>Categories of Hardware</h3>
 
+<table>
 
+<tr>
+<th>Category</th>
+<th>Examples</th>
+</tr>
 
-<div class="topic t3">
+<tr>
+<td>Input Devices</td>
+<td>Keyboard, Mouse, Scanner, Microphone, Webcam</td>
+</tr>
 
-<h2 class="topic-title">
-03 · Problem Solving in Programming
-</h2>
+<tr>
+<td>Output Devices</td>
+<td>Monitor, Printer, Projector, Speakers</td>
+</tr>
+
+<tr>
+<td>Processing Devices</td>
+<td>CPU, GPU</td>
+</tr>
+
+<tr>
+<td>Storage Devices</td>
+<td>Hard Disk, SSD, Flash Disk, Memory Card, DVD</td>
+</tr>
+
+<tr>
+<td>Communication Devices</td>
+<td>Network Card, Modem, Router</td>
+</tr>
+
+</table>
+
+<h3>5.2 Computer Software</h3>
 
 <p>
-Before writing code, programmers must understand the problem and design a clear solution.
+Software is a collection of programs and instructions that tell the computer what to do. Unlike hardware, software cannot be touched physically.
 </p>
 
+<h3>Types of Software</h3>
+
+<h4>1. System Software</h4>
+
+<p>
+System software manages the computer hardware and provides a platform for application software to run.
+</p>
+
+<p><strong>Examples:</strong></p>
+
 <ul>
-<li>Identify the problem</li>
-<li>Determine inputs and outputs</li>
-<li>Create an algorithm</li>
-<li>Convert the algorithm into code</li>
-<li>Test the solution</li>
+<li>Windows</li>
+<li>Linux</li>
+<li>macOS</li>
+<li>Android</li>
+<li>Device Drivers</li>
+<li>Utility Programs</li>
 </ul>
 
-</div><div class="topic t4">
-
-<h2 class="topic-title">
-04 · Algorithms
-</h2>
+<h4>2. Application Software</h4>
 
 <p>
-An algorithm is a step-by-step procedure used to solve a problem. It describes the logic of a solution before writing actual program code.
+Application software helps users perform specific tasks.
 </p>
 
-<p>
-A good algorithm should be:
-</p>
+<p><strong>Examples:</strong></p>
 
 <ul>
-<li><strong>Clear:</strong> Every step should be understandable.</li>
-<li><strong>Finite:</strong> It must eventually stop.</li>
-<li><strong>Correct:</strong> It should produce the expected result.</li>
-<li><strong>Efficient:</strong> It should use resources effectively.</li>
+<li>Microsoft Word</li>
+<li>Microsoft Excel</li>
+<li>Google Chrome</li>
+<li>Visual Studio Code</li>
+<li>Adobe Photoshop</li>
+<li>VLC Media Player</li>
 </ul>
 
+<div class="tip">
+
+<strong>Exam Tip</strong>
+
 <p>
-Example: Algorithm for adding two numbers:
+A common examination question is:
 </p>
 
+<blockquote>
+
+Differentiate between computer hardware and computer software, giving five examples of each.
+
+</blockquote>
+
+</div><h2>6. Types of Computers</h2>
+
+<p>
+Computers can be classified according to their size, processing power and purpose. Each type is designed to meet specific computing needs.
+</p>
+
+<h3>6.1 Classification by Size</h3>
+
+<table>
+
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+
+<tr>
+<td>Supercomputer</td>
+<td>The fastest and most powerful computers used for scientific research and complex simulations.</td>
+<td>Weather forecasting, space exploration, artificial intelligence.</td>
+</tr>
+
+<tr>
+<td>Mainframe Computer</td>
+<td>Large computers capable of serving thousands of users simultaneously.</td>
+<td>Banks, airlines, government institutions.</td>
+</tr>
+
+<tr>
+<td>Minicomputer</td>
+<td>Medium-sized computers that support multiple users.</td>
+<td>Universities and medium-sized organizations.</td>
+</tr>
+
+<tr>
+<td>Microcomputer</td>
+<td>The most common type of computer designed for one user.</td>
+<td>Desktop computers, laptops, tablets and smartphones.</td>
+</tr>
+
+</table>
+
+<h3>6.2 Classification by Purpose</h3>
+
 <ul>
+
+<li><strong>General Purpose Computers</strong> – Perform many different tasks such as browsing the internet, programming, gaming and document processing.</li>
+
+<li><strong>Special Purpose Computers</strong> – Designed to perform one specific task, for example ATMs, traffic control systems and washing machine controllers.</li>
+
+</ul>
+
+<h2>7. Data and Information</h2>
+
+<p>
+Although the terms <strong>data</strong> and <strong>information</strong> are often used together, they have different meanings.
+</p>
+
+<table>
+
+<tr>
+<th>Data</th>
+<th>Information</th>
+</tr>
+
+<tr>
+<td>Raw facts and figures that have not been processed.</td>
+<td>Processed data that is meaningful and useful.</td>
+</tr>
+
+<tr>
+<td>Cannot support decision making directly.</td>
+<td>Can be used to make decisions.</td>
+</tr>
+
+<tr>
+<td>Example: 75, 80, 90</td>
+<td>Example: The student's average score is 82%.</td>
+</tr>
+
+</table>
+
+<h3>Data Processing Cycle</h3>
+
+<ol>
+
+<li>Data Collection</li>
+
+<li>Input</li>
+
+<li>Processing</li>
+
+<li>Storage</li>
+
+<li>Output</li>
+
+<li>Feedback</li>
+
+</ol>
+
+<div class="tip">
+
+<strong>Key Points to Remember</strong>
+
+<ul>
+
+<li>Data = Raw facts.</li>
+
+<li>Information = Processed data.</li>
+
+<li>Information is produced after data has been processed.</li>
+
+</ul>
+
+</div><h2>8. Number Systems</h2>
+
+<p>
+A number system is a method of representing numbers using a specific set of digits. Computers operate using the binary number system because electronic circuits have only two stable states: ON and OFF.
+</p>
+
+<h3>Common Number Systems</h3>
+
+<table>
+
+<tr>
+<th>Number System</th>
+<th>Base</th>
+<th>Digits Used</th>
+</tr>
+
+<tr>
+<td>Binary</td>
+<td>2</td>
+<td>0, 1</td>
+</tr>
+
+<tr>
+<td>Octal</td>
+<td>8</td>
+<td>0 – 7</td>
+</tr>
+
+<tr>
+<td>Decimal</td>
+<td>10</td>
+<td>0 – 9</td>
+</tr>
+
+<tr>
+<td>Hexadecimal</td>
+<td>16</td>
+<td>0 – 9, A – F</td>
+</tr>
+
+</table>
+
+<h3>Why Computers Use Binary</h3>
+
+<ul>
+
+<li>Electronic circuits have only two stable states: ON and OFF.</li>
+
+<li>Binary is reliable and easy for digital circuits to process.</li>
+
+<li>Binary reduces errors in electronic communication.</li>
+
+</ul>
+
+<h3>Examples</h3>
+
+<table>
+
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+</tr>
+
+<tr>
+<td>2</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>101</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>1000</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>1010</td>
+</tr>
+
+</table>
+
+<h2>9. Data Representation</h2>
+
+<p>
+Computers store all forms of data, including numbers, text, images, audio and video, in binary form.
+</p>
+
+<h3>Basic Units of Data</h3>
+
+<table>
+
+<tr>
+<th>Unit</th>
+<th>Meaning</th>
+</tr>
+
+<tr>
+<td>Bit</td>
+<td>A single binary digit (0 or 1).</td>
+</tr>
+
+<tr>
+<td>Nibble</td>
+<td>4 bits.</td>
+</tr>
+
+<tr>
+<td>Byte</td>
+<td>8 bits.</td>
+</tr>
+
+<tr>
+<td>Kilobyte (KB)</td>
+<td>1,024 bytes.</td>
+</tr>
+
+<tr>
+<td>Megabyte (MB)</td>
+<td>1,024 KB.</td>
+</tr>
+
+<tr>
+<td>Gigabyte (GB)</td>
+<td>1,024 MB.</td>
+</tr>
+
+<tr>
+<td>Terabyte (TB)</td>
+<td>1,024 GB.</td>
+</tr>
+
+</table>
+
+<div class="tip">
+
+<strong>Exam Tip</strong>
+
+Students are often asked to:
+
+<ul>
+
+<li>Convert numbers between decimal and binary.</li>
+
+<li>State the bases of the four common number systems.</li>
+
+<li>Explain the relationship between bits, bytes, KB, MB, GB and TB.</li>
+
+</ul>
+
+</div><h2>10. Introduction to Programming</h2>
+
+<p>
+Programming is the process of designing, writing, testing and maintaining computer programs. A program is a sequence of instructions that tells a computer how to perform a particular task.
+</p>
+
+<p>
+Programmers use programming languages to communicate with computers and create software such as mobile applications, websites, desktop applications, games and artificial intelligence systems.
+</p>
+
+<h3>Characteristics of a Good Program</h3>
+
+<ul>
+
+<li>Correctness</li>
+
+<li>Efficiency</li>
+
+<li>Readability</li>
+
+<li>Maintainability</li>
+
+<li>Reliability</li>
+
+<li>Portability</li>
+
+</ul>
+
+<h3>Programming Languages</h3>
+
+<table>
+
+<tr>
+
+<th>Language</th>
+
+<th>Main Use</th>
+
+</tr>
+
+<tr>
+
+<td>C</td>
+
+<td>System programming and learning programming fundamentals.</td>
+
+</tr>
+
+<tr>
+
+<td>C++</td>
+
+<td>Software development and game programming.</td>
+
+</tr>
+
+<tr>
+
+<td>Java</td>
+
+<td>Enterprise systems and Android development.</td>
+
+</tr>
+
+<tr>
+
+<td>Python</td>
+
+<td>Artificial Intelligence, Data Science, Automation and Web Development.</td>
+
+</tr>
+
+<tr>
+
+<td>JavaScript</td>
+
+<td>Interactive websites and web applications.</td>
+
+</tr>
+
+</table>
+
+<h2>11. Algorithms</h2>
+
+<p>
+An <strong>algorithm</strong> is a finite sequence of clear, logical and ordered steps used to solve a problem or perform a task.
+</p>
+
+<h3>Characteristics of an Algorithm</h3>
+
+<ul>
+
+<li>Clearly defined inputs.</li>
+
+<li>Produces one or more outputs.</li>
+
+<li>Steps are unambiguous.</li>
+
+<li>Terminates after a finite number of steps.</li>
+
+<li>Efficient and easy to understand.</li>
+
+</ul>
+
+<h3>Example Algorithm</h3>
+
+<p><strong>Problem:</strong> Find the sum of two numbers.</p>
+
+<ol>
+
 <li>Start</li>
-<li>Input first number</li>
-<li>Input second number</li>
-<li>Add the numbers</li>
-<li>Display the answer</li>
-<li>Stop</li>
-</ul>
+
+<li>Input the first number.</li>
+
+<li>Input the second number.</li>
+
+<li>Add the two numbers.</li>
+
+<li>Display the result.</li>
+
+<li>Stop.</li>
+
+</ol>
+
+<div class="tip">
+
+<strong>Exam Tip</strong>
+
+A common exam question is:
+
+<blockquote>
+
+Define an algorithm and describe the characteristics of a good algorithm.
+
+</blockquote>
 
 </div>
-
-
-
-<div class="topic t5">
-
-<h2 class="topic-title">
-05 · Flowcharts
-</h2>
+<h2>12. Flowcharts</h2>
 
 <p>
-A flowchart is a visual representation of an algorithm using symbols connected by arrows.
+A <strong>flowchart</strong> is a graphical representation of an algorithm. It uses standardized symbols connected by arrows to illustrate the sequence of operations required to solve a problem.
 </p>
+
+<h3>Common Flowchart Symbols</h3>
+
+<table>
+
+<tr>
+<th>Symbol</th>
+<th>Name</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>Oval</td>
+<td>Start / End</td>
+<td>Shows the beginning or end of a program.</td>
+</tr>
+
+<tr>
+<td>Rectangle</td>
+<td>Process</td>
+<td>Represents a calculation or instruction.</td>
+</tr>
+
+<tr>
+<td>Parallelogram</td>
+<td>Input / Output</td>
+<td>Used for entering or displaying data.</td>
+</tr>
+
+<tr>
+<td>Diamond</td>
+<td>Decision</td>
+<td>Represents a Yes/No or True/False decision.</td>
+</tr>
+
+<tr>
+<td>Arrow</td>
+<td>Flow Line</td>
+<td>Shows the direction of execution.</td>
+</tr>
+
+</table>
+
+<h3>Advantages of Flowcharts</h3>
 
 <ul>
-<li><strong>Oval:</strong> Start and end points</li>
-<li><strong>Rectangle:</strong> Processing steps</li>
-<li><strong>Parallelogram:</strong> Input and output operations</li>
-<li><strong>Diamond:</strong> Decisions and conditions</li>
-<li><strong>Arrow:</strong> Flow direction</li>
+
+<li>Easy to understand.</li>
+
+<li>Improves communication among programmers.</li>
+
+<li>Simplifies debugging.</li>
+
+<li>Acts as program documentation.</li>
+
+<li>Makes program planning easier.</li>
+
 </ul>
 
-<p>
-Flowcharts help programmers understand program logic before implementation.
-</p>
-
-</div>
-
-
-
-<div class="topic t6">
-
-<h2 class="topic-title">
-06 · Pseudocode
-</h2>
+<h2>13. Introduction to C Programming</h2>
 
 <p>
-Pseudocode is an informal way of writing program instructions using simple English-like statements.
+<strong>C</strong> is a general-purpose programming language developed by <strong>Dennis Ritchie</strong> at Bell Laboratories in 1972. It is one of the most influential programming languages and forms the foundation of many modern languages such as C++, Java and C#.
 </p>
 
-<p>
-It allows programmers to focus on logic without worrying about programming language rules.
-</p>
-
-<p>
-Example:
-</p>
+<h3>Features of the C Language</h3>
 
 <ul>
-<li>BEGIN</li>
-<li>INPUT number</li>
-<li>IF number is greater than zero</li>
-<li>DISPLAY "Positive"</li>
-<li>END IF</li>
-<li>END</li>
+
+<li>Fast and efficient.</li>
+
+<li>Portable across different computer systems.</li>
+
+<li>Supports structured programming.</li>
+
+<li>Provides low-level memory access.</li>
+
+<li>Widely used in operating systems and embedded systems.</li>
+
 </ul>
 
-</div>
+<h3>Structure of a Simple C Program</h3>
 
-
-
-<div class="topic t1">
-
-<h2 class="topic-title">
-07 · Programming Languages
-</h2>
-
-<p>
-A programming language is a formal language used to communicate instructions to a computer.
-</p>
-
-<p>
-Programming languages are divided into different levels:
-</p>
-
-<ul>
-<li><strong>Machine Language:</strong> Instructions written in binary (0s and 1s).</li>
-<li><strong>Assembly Language:</strong> Low-level language using symbolic instructions.</li>
-<li><strong>High-Level Languages:</strong> Human-readable languages such as C, Java, Python and JavaScript.</li>
-</ul>
-
-</div>
-
-
-
-<div class="topic t2">
-
-<h2 class="topic-title">
-08 · Introduction to C Programming
-</h2>
-
-<p>
-C is a powerful general-purpose programming language widely used for system programming, embedded systems and learning programming fundamentals.
-</p>
-
-<p>
-A simple C program structure:
-</p>
-
-<ul>
-<li>Preprocessor directives</li>
-<li>Main function</li>
-<li>Statements</li>
-<li>Return statement</li>
-</ul>
-
-<p>
-Example:
-</p>
-
-<pre>
+<pre style="background:#f4f4f4;padding:15px;border-radius:8px;overflow:auto;"><code>
 #include &lt;stdio.h&gt;
 
 int main()
 {
-    printf("Hello World");
+    printf("Hello, World!");
+
     return 0;
 }
-</pre>
+</code></pre>
 
-</div>
-
-
-
-<div class="topic t3">
-
-<h2 class="topic-title">
-09 · Variables and Constants
-</h2>
-
-<p>
-A variable is a named storage location used to hold data that can change during program execution.
-</p>
-
-<p>
-A constant is a value that cannot be changed after it is defined.
-</p>
+<h3>Explanation</h3>
 
 <ul>
-<li>Variable declaration</li>
-<li>Variable initialization</li>
-<li>Assigning values</li>
-<li>Using variables in calculations</li>
+
+<li><strong>#include &lt;stdio.h&gt;</strong> imports the standard input/output library.</li>
+
+<li><strong>main()</strong> is the entry point of every C program.</li>
+
+<li><strong>printf()</strong> displays output on the screen.</li>
+
+<li><strong>return 0;</strong> indicates that the program ended successfully.</li>
+
 </ul>
 
-</div><div class="topic t4">
+<div class="tip">
 
-<h2 class="topic-title">
-10 · Data Types
-</h2>
+<strong>Remember</strong>
 
 <p>
-Data types define the kind of information a variable can store and how much memory is required.
-</p>
-
-<ul>
-<li><strong>int:</strong> Stores whole numbers.</li>
-<li><strong>float:</strong> Stores decimal numbers.</li>
-<li><strong>double:</strong> Stores larger decimal values with more precision.</li>
-<li><strong>char:</strong> Stores a single character.</li>
-<li><strong>string:</strong> Stores a collection of characters.</li>
-</ul>
-
-</div>
-
-
-
-<div class="topic t5">
-
-<h2 class="topic-title">
-11 · Operators and Expressions
-</h2>
-
-<p>
-Operators are symbols used to perform operations on data.
-</p>
-
-<ul>
-<li><strong>Arithmetic operators:</strong> +, -, *, /, %</li>
-<li><strong>Relational operators:</strong> &gt;, &lt;, ==, !=</li>
-<li><strong>Logical operators:</strong> AND, OR, NOT</li>
-<li><strong>Assignment operators:</strong> =, +=, -=</li>
-</ul>
-
-<p>
-Expressions combine variables, values and operators to produce a result.
+Every C program begins execution in the <strong>main()</strong> function.
 </p>
 
 </div>
-
-
-
-<div class="topic t6">
-
-<h2 class="topic-title">
-12 · Input and Output
-</h2>
+<h2>14. Variables and Data Types</h2>
 
 <p>
-Input allows a program to receive information from the user, while output displays results.
+A <strong>variable</strong> is a named memory location used to store data. The value of a variable can change while a program is running.
 </p>
 
-<p>
-In C programming:
-</p>
+<h3>Rules for Naming Variables</h3>
 
 <ul>
-<li><strong>printf():</strong> Used to display output.</li>
-<li><strong>scanf():</strong> Used to receive input.</li>
+<li>Must begin with a letter or an underscore (_).</li>
+<li>Cannot begin with a number.</li>
+<li>Cannot contain spaces.</li>
+<li>Cannot use C reserved keywords (such as <code>int</code>, <code>float</code>, or <code>return</code>).</li>
+<li>Should have meaningful names such as <code>studentAge</code> or <code>totalMarks</code>.</li>
 </ul>
 
-</div>
+<h3>Common C Data Types</h3>
 
+<table>
 
+<tr>
+<th>Data Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
 
-<div class="topic t1">
+<tr>
+<td>int</td>
+<td>Stores whole numbers.</td>
+<td>25</td>
+</tr>
 
-<h2 class="topic-title">
-13 · Decision Making
-</h2>
+<tr>
+<td>float</td>
+<td>Stores decimal numbers.</td>
+<td>12.75</td>
+</tr>
+
+<tr>
+<td>double</td>
+<td>Stores larger decimal values with higher precision.</td>
+<td>12345.6789</td>
+</tr>
+
+<tr>
+<td>char</td>
+<td>Stores a single character.</td>
+<td>'A'</td>
+</tr>
+
+</table>
+
+<h2>15. Operators in C</h2>
 
 <p>
-Decision structures allow programs to make choices based on conditions.
+Operators are symbols used to perform operations on variables and values.
 </p>
 
+<table>
+
+<tr>
+<th>Operator Type</th>
+<th>Examples</th>
+</tr>
+
+<tr>
+<td>Arithmetic</td>
+<td>+, -, *, /, %</td>
+</tr>
+
+<tr>
+<td>Relational</td>
+<td>==, !=, &lt;, &gt;, &lt;=, &gt;=</td>
+</tr>
+
+<tr>
+<td>Logical</td>
+<td>&amp;&amp;, ||, !</td>
+</tr>
+
+<tr>
+<td>Assignment</td>
+<td>=, +=, -=, *=, /=</td>
+</tr>
+
+</table>
+
+<h2>16. Programming Errors</h2>
+
+<p>
+Programming errors (bugs) are mistakes that prevent a program from working correctly.
+</p>
+
+<table>
+
+<tr>
+<th>Error Type</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Syntax Error</td>
+<td>Violates the rules of the programming language.</td>
+</tr>
+
+<tr>
+<td>Runtime Error</td>
+<td>Occurs while the program is executing.</td>
+</tr>
+
+<tr>
+<td>Logical Error</td>
+<td>The program runs but produces incorrect results.</td>
+</tr>
+
+</table>
+
+<div class="tip">
+
+<strong>Exam Tip</strong>
+
+Students should be able to:
 <ul>
-<li>if statement</li>
-<li>if-else statement</li>
-<li>else-if ladder</li>
-<li>switch statement</li>
+<li>Differentiate between syntax, runtime and logical errors.</li>
+<li>State examples of C data types.</li>
+<li>Explain the purpose of variables and operators.</li>
 </ul>
 
-<p>
-Example: A program can check whether a student has passed or failed depending on marks.
-</p>
-
-</div>
-
-
-
-<div class="topic t2">
-
-<h2 class="topic-title">
-14 · Loops and Repetition
-</h2>
+</div><h2>17. Summary</h2>
 
 <p>
-Loops allow a program to execute a block of code repeatedly until a condition is met.
+In this unit, we have covered the foundations of Computer Science and Programming. These concepts form the basis for advanced courses such as Data Structures, Operating Systems, Databases, Artificial Intelligence, Computer Networks and Software Engineering.
 </p>
+
+<h3>Main Topics Covered</h3>
 
 <ul>
-<li><strong>for loop:</strong> Used when the number of repetitions is known.</li>
-<li><strong>while loop:</strong> Repeats while a condition remains true.</li>
-<li><strong>do-while loop:</strong> Executes at least once before checking the condition.</li>
+
+<li>Introduction to Computer Science</li>
+
+<li>Evolution of Computers</li>
+
+<li>Characteristics of Computers</li>
+
+<li>Applications of Computers</li>
+
+<li>Computer Hardware and Software</li>
+
+<li>Types of Computers</li>
+
+<li>Data and Information</li>
+
+<li>Number Systems</li>
+
+<li>Data Representation</li>
+
+<li>Introduction to Programming</li>
+
+<li>Algorithms</li>
+
+<li>Flowcharts</li>
+
+<li>Introduction to C Programming</li>
+
+<li>Variables and Data Types</li>
+
+<li>Operators</li>
+
+<li>Programming Errors</li>
+
 </ul>
 
-</div>
+<div class="tip">
 
+<h3>Revision Checklist</h3>
 
-
-<div class="topic t3">
-
-<h2 class="topic-title">
-15 · Functions
-</h2>
-
-<p>
-A function is a reusable block of code designed to perform a specific task.
-</p>
+<p>Before your CAT or exam, make sure you can:</p>
 
 <ul>
-<li>Improves code organization</li>
-<li>Reduces repetition</li>
-<li>Makes programs easier to maintain</li>
-<li>Allows code reuse</li>
-</ul>
 
-<p>
-Functions have:
-</p>
+<li>✓ Define Computer Science.</li>
 
-<ul>
-<li>Function name</li>
-<li>Parameters</li>
-<li>Return value</li>
-<li>Function body</li>
-</ul>
+<li>✓ Explain the five generations of computers.</li>
 
-</div>
+<li>✓ Differentiate between hardware and software.</li>
 
+<li>✓ Explain the characteristics of computers.</li>
 
+<li>✓ Distinguish data from information.</li>
 
-<div class="topic t4">
+<li>✓ Convert between decimal and binary numbers.</li>
 
-<h2 class="topic-title">
-16 · Arrays and Strings
-</h2>
+<li>✓ Define an algorithm and draw simple flowcharts.</li>
 
-<p>
-An array stores multiple values of the same data type under one name.
-</p>
+<li>✓ Write and explain a simple C program.</li>
 
-<ul>
-<li>One-dimensional arrays</li>
-<li>Multi-dimensional arrays</li>
-<li>Accessing array elements using indexes</li>
-</ul>
+<li>✓ Identify common C data types and operators.</li>
 
-<p>
-A string is a sequence of characters used to store text.
-</p>
+<li>✓ Explain syntax, runtime and logical errors.</li>
 
-</div>
-
-
-
-<div class="topic t5">
-
-<h2 class="topic-title">
-17 · Debugging and Testing
-</h2>
-
-<p>
-Debugging is the process of finding and fixing errors in a program.
-</p>
-
-<ul>
-<li><strong>Syntax errors:</strong> Mistakes in programming language rules.</li>
-<li><strong>Runtime errors:</strong> Errors that occur while the program runs.</li>
-<li><strong>Logical errors:</strong> The program runs but gives wrong results.</li>
-</ul>
-
-</div>
-
-
-
-<div class="topic t6">
-
-<h2 class="topic-title">
-18 · Programming Best Practices
-</h2>
-
-<ul>
-<li>Write clean and readable code.</li>
-<li>Use meaningful variable names.</li>
-<li>Comment important sections of code.</li>
-<li>Test programs regularly.</li>
-<li>Break large problems into smaller functions.</li>
-<li>Follow consistent coding standards.</li>
 </ul>
 
 </div>
 
+<h2>Sample University Examination Questions</h2>
 
+<ol>
 
-<div class="topic t1">
+<li>Define Computer Science and explain its importance in modern society.</li>
 
-<h2 class="topic-title">
-📌 Programming Unit Revision Summary
-</h2>
+<li>Describe the evolution of computers from the Abacus to modern computers.</li>
 
-<ul>
-<li>Programming is the process of creating instructions for computers.</li>
-<li>Algorithms describe solutions step by step.</li>
-<li>Flowcharts and pseudocode help design program logic.</li>
-<li>C programming teaches fundamental programming concepts.</li>
-<li>Variables store data while data types define the kind of data.</li>
-<li>Control structures allow decisions and repetition.</li>
-<li>Functions improve organization and code reuse.</li>
-<li>Debugging helps create reliable software.</li>
-</ul>
+<li>Explain the five generations of computers and the major technology introduced in each generation.</li>
+
+<li>Differentiate between hardware and software with suitable examples.</li>
+
+<li>Discuss five characteristics of a computer.</li>
+
+<li>Differentiate between data and information.</li>
+
+<li>Convert the decimal number 25 to binary.</li>
+
+<li>Define an algorithm and explain its characteristics.</li>
+
+<li>Draw and explain the symbols used in a flowchart.</li>
+
+<li>Write a simple C program to display <strong>Hello World</strong> and explain each line.</li>
+
+<li>Differentiate between syntax errors, runtime errors and logical errors.</li>
+
+</ol>
+
+<hr style="margin:40px 0;">
+
+<div class="footer">
+
+<p><strong>Computer Science Hub</strong></p>
+
+<p>CSC1110 Programming Notes</p>
+
+<p>Prepared for learning and revision.</p>
 
 </div>
 
-
-</main>
-
-
-<footer>
-
-🌱 Programming — Year 1 Foundation
-
-</footer>
-
+</div>
 
 </body>
 
