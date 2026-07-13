@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS HUB - Admin Control</title>
+    <title>CS HUB - Units Control</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
     <!-- CORE FIREBASE SCRIPTS -->
@@ -27,33 +27,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; }
 
-        /* Sidebar UI */
         .sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px 20px; display: flex; flex-direction: column; }
         .brand h1 { font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800; background: linear-gradient(90deg, var(--blue), var(--cyan)); -webkit-background-clip: text; color: transparent; letter-spacing: 1px; }
         .brand span { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); display: block; margin-top: 2px; }
+        
         .menu { list-style: none; margin-top: 40px; display: flex; flex-direction: column; gap: 8px; }
         .menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--dim); text-decoration: none; font-size: 14px; border-radius: 8px; }
         .menu .active a, .menu a:hover { color: var(--text); background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
 
-        /* Workspace Main Panel */
         .main-panel { flex-grow: 1; display: flex; flex-direction: column; }
         .topbar { height: 75px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; background: rgba(6, 9, 25, 0.3); backdrop-filter: blur(10px); }
         .topbar h2 { font-family: 'Orbitron', sans-serif; font-size: 18px; }
+        
         .btn-action { background: var(--blue); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .btn-action:hover { background: #2563EB; }
-
-        /* Content Grid */
         .content { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
         .card-code { font-family: 'JetBrains Mono', monospace; color: var(--cyan); font-size: 12px; font-weight: bold; margin-bottom: 6px; }
         .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
         .card-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 15px; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; font-size: 11px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
         .btn-del { background: transparent; border: none; color: var(--red); cursor: pointer; font-weight: 600; }
         .status-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--dim); font-size: 14px; }
 
-        /* Form Modal Window */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal.show { display: flex; }
         .modal-box { background: #090d22; border: 1px solid var(--border); padding: 30px; border-radius: 16px; width: 100%; max-width: 420px; }
@@ -62,8 +59,6 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; color: #fff; border-radius: 6px; font-family: inherit; }
         .modal-btns { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
         .btn-close { background: transparent; border: 1px solid var(--border); color: #fff; padding: 10px 15px; border-radius: 6px; cursor: pointer; }
-        
-        #crashBanner { display: none; background: var(--red); color: white; padding: 12px; position: fixed; bottom: 0; left: 0; right: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: center; z-index: 99999; }
     </style>
 </head>
 <body>
@@ -120,16 +115,7 @@
         </div>
     </div>
 
-    <!-- RUNTIME ERROR ELEMENT -->
-    <div id="crashBanner"></div>
-
     <script>
-        window.onerror = function(m, u, l) {
-            const b = document.getElementById("crashBanner");
-            if(b) { b.style.display = "block"; b.innerText = "Fatal: " + m + " Line: " + l; }
-            return false;
-        };
-
         const config = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -169,13 +155,13 @@
                         <div class="card-desc">${clean(item.desc)}</div>
                     </div>
                     <div class="card-footer">
-                        <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">${clean(item.year || 'Year 1')}</span>
+                        <span style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; font-size:11px;">${clean(item.year || 'Year 1')}</span>
                         <button class="btn-del" onclick="removeNode('${doc.id}')">Delete</button>
                     </div>`;
                 target.appendChild(cardNode);
             });
         }, err => {
-            document.getElementById("mainGrid").innerHTML = `<div class="status-msg" style="color:var(--red)">Sync Interrupted: ${err.message}</div>`;
+            document.getElementById("mainGrid").innerHTML = `<div class="status-msg">Sync Interrupted: ${err.message}</div>`;
         });
 
         function addData(e) {
