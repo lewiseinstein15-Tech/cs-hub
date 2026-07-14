@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB | Year Two</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* ROOT VARIABLES */
+        /* ============================================================ */
+        :root {
+            --bg-primary: #050816;
+            --bg-secondary: #08122c;
+            --bg-card: rgba(10, 15, 36, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --orange: #F97316;
+            --pink: #EC4899;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+            --glass: rgba(255, 255, 255, 0.03);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ============================================================ */
+        /* RESET & BASE */
+        /* ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ============================================================ */
+        /* ANIMATED BACKGROUND */
+        /* ============================================================ */
+        .bg-effects {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-effects .glow-1 {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent 70%);
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+
+        .bg-effects .glow-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12), transparent 70%);
+            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
+        }
+
+        .bg-effects .glow-3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.05), transparent 60%);
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+        }
+
+        .bg-effects .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* ============================================================ */
+        /* TOPBAR */
+        /* ============================================================ */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 8, 22, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .topbar .logo span {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            background: none;
+            -webkit-background-clip: unset;
+            color: var(--dim);
+            letter-spacing: 1px;
+            margin-left: 6px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar-actions .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 10px;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .topbar-actions .btn-back:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+            transform: translateX(-3px);
+        }
+
+        .topbar-actions .btn-back .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .topbar-actions .btn-back:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================ */
+        /* HERO SECTION */
+        /* ============================================================ */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 50px 30px 30px 30px;
+            text-align: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero .year-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: var(--purple);
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(36px, 6vw, 60px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+            background-size: 200% 200%;
+            animation: gradientMove 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            color: var(--dim);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 8px auto;
+        }
+
+        .hero .university-tag {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--dim);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================================ */
+        /* SEMESTER SECTION */
+        /* ============================================================ */
+        .semester-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px 40px 30px;
+        }
+
+        .semester-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 40px 0 22px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .semester-header .sem-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--purple);
+            letter-spacing: 1px;
+        }
+
+        .semester-header .sem-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.2), transparent);
+        }
+
+        .semester-header .sem-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================================ */
+        /* UNITS GRID */
+        /* ============================================================ */
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* ============================================================ */
+        /* UNIT CARD - ADVANCED */
+        /* ============================================================ */
+        .unit-card {
+            display: block;
+            text-decoration: none;
+            color: var(--white);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px 22px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.05));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .unit-card:hover::before {
+            opacity: 1;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(139, 92, 246, 0.2);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.08), 0 4px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(10, 15, 36, 0.9);
+        }
+
+        .unit-card .card-glow {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.06), transparent 70%);
+            pointer-events: none;
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .unit-card:hover .card-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .unit-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .unit-card .code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--purple);
+            letter-spacing: 0.5px;
+            padding: 3px 12px;
+            border-radius: 6px;
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .unit-card .unit-icon {
+            font-size: 28px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .unit-card:hover .unit-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .unit-card .name {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+
+        .unit-card .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .unit-card .status {
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .unit-card .status.available {
+            color: var(--green);
+        }
+
+        .unit-card .status.available .dot {
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+        }
+
+        .unit-card .status.coming {
+            color: var(--yellow);
+        }
+
+        .unit-card .status.coming .dot {
+            background: var(--yellow);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .unit-card .status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .unit-card .arrow-link {
+            color: var(--dim);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            opacity: 0.4;
+        }
+
+        .unit-card:hover .arrow-link {
+            opacity: 1;
+            color: var(--purple);
+            transform: translateX(4px);
+        }
+
+        /* ============================================================ */
+        /* STATS BAR */
+        /* ============================================================ */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin: 30px 0 10px 0;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .stats-bar .stat-item {
+            text-align: center;
+        }
+
+        .stats-bar .stat-item .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--purple);
+        }
+
+        .stats-bar .stat-item .stat-label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================ */
+        /* INDUSTRIAL TRAINING SPECIAL CARD */
+        /* ============================================================ */
+        .unit-card.industrial {
+            border-color: rgba(245, 158, 11, 0.15);
+            background: rgba(245, 158, 11, 0.04);
+        }
+
+        .unit-card.industrial::before {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
+        }
+
+        .unit-card.industrial .code {
+            color: var(--yellow);
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .unit-card.industrial:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.06);
+        }
+
+        .unit-card.industrial .status {
+            color: var(--orange);
+        }
+
+        .unit-card.industrial .status .dot {
+            background: var(--orange);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .unit-card.industrial .card-glow {
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.06), transparent 70%);
+        }
+
+        /* ============================================================ */
+        /* FOOTER */
+        /* ============================================================ */
+        .footer {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 30px 30px 30px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer .footer-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--purple);
+            letter-spacing: 2px;
+        }
+
+        .footer p {
+            color: var(--dim);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .footer .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .footer .footer-socials a {
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-socials a:hover {
+            color: var(--purple);
+        }
+
+        /* ============================================================ */
+        /* RESPONSIVE */
+        /* ============================================================ */
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .topbar .logo {
+                font-size: 20px;
+            }
+
+            .topbar .logo span {
+                font-size: 10px;
+            }
+
+            .topbar-actions .btn-back {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 30px 16px 20px 16px;
+            }
+
+            .semester-section {
+                padding: 0 16px 30px 16px;
+            }
+
+            .units-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .semester-header {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .semester-header .sem-line {
+                display: none;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                padding: 16px;
+            }
+
+            .stats-bar .stat-item .stat-number {
+                font-size: 22px;
+            }
+
+            .footer {
+                padding: 30px 16px 20px 16px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .topbar-actions {
+                justify-content: space-between;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .unit-card {
+                padding: 18px 16px;
+            }
+
+            .unit-card .name {
+                font-size: 15px;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .units-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- BACKGROUND EFFECTS -->
+    <!-- ============================================================ -->
+    <div class="bg-effects">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        <div class="glow-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TOPBAR -->
+    <!-- ============================================================ -->
+    <header class="topbar">
+        <a href="dashboard.html" class="logo">
+            CS HUB
+            <span>Year Two</span>
+        </a>
+        <div class="topbar-actions">
+            <a href="dashboard.html" class="btn-back">
+                <span class="arrow">←</span> Dashboard
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- HERO -->
+    <!-- ============================================================ -->
+    <section class="hero">
+        <div class="year-badge">🎓 Year 2 · 2025/2026</div>
+        <h1>
+            <span class="gradient-text">Computer Science</span><br>
+            Sophomore Year
+        </h1>
+        <p>Bachelor of Science in Computer Science • Kibabii University</p>
+        <span class="university-tag">📍 Main Campus · 2025 Intake</span>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- STATS BAR -->
+    <!-- ============================================================ -->
+    <div class="semester-section">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">17</div>
+                <div class="stat-label">Total Units</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Semester 1</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Semester 2</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Available Now</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SEMESTER 1 -->
+    <!-- ============================================================ -->
+    <section class="semester-section">
+        <div class="semester-header">
+            <span class="sem-number">📘 S1</span>
+            <span class="sem-line"></span>
+            <span class="sem-badge">Semester One</span>
+        </div>
+
+        <div class="units-grid">
+            <!-- Object-Oriented Programming -->
+            <a href="Unit-oop.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC210</span>
+                    <span class="unit-icon">🧬</span>
+                </div>
+                <div class="name">Object-Oriented Programming</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Principles of Operating Systems -->
+            <a href="Unit-operating-systems.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC211</span>
+                    <span class="unit-icon">🖥️</span>
+                </div>
+                <div class="name">Principles of Operating Systems</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Introduction to Database Systems -->
+            <a href="Unit-database-systems.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC212</span>
+                    <span class="unit-icon">🗄️</span>
+                </div>
+                <div class="name">Introduction to Database Systems</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Research Methods -->
+            <a href="Unit-research-methods.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC213</span>
+                    <span class="unit-icon">🔬</span>
+                </div>
+                <div class="name">Research Methods</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Introduction to Artificial Intelligence -->
+            <a href="Unit-artificial-intelligence.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC214</span>
+                    <span class="unit-icon">🤖</span>
+                </div>
+                <div class="name">Introduction to Artificial Intelligence</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Calculus II -->
+            <a href="Unit-calculus-2.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">MAT210</span>
+                    <span class="unit-icon">∫</span>
+                </div>
+                <div class="name">Calculus II</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Linear Algebra I -->
+            <a href="Unit-linear-algebra-1.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">MAT212</span>
+                    <span class="unit-icon">📐</span>
+                </div>
+                <div class="name">Linear Algebra I</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Electricity and Magnetism -->
+            <a href="Unit-electricity-magnetism.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">SPH210</span>
+                    <span class="unit-icon">⚡</span>
+                </div>
+                <div class="name">Electricity and Magnetism</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SEMESTER 2 -->
+    <!-- ============================================================ -->
+    <section class="semester-section">
+        <div class="semester-header">
+            <span class="sem-number">📗 S2</span>
+            <span class="sem-line"></span>
+            <span class="sem-badge">Semester Two</span>
+        </div>
+
+        <div class="units-grid">
+            <!-- Electronics -->
+            <a href="Unit-electronics-2.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC220</span>
+                    <span class="unit-icon">⚡</span>
+                </div>
+                <div class="name">Electronics</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Operating Systems Design -->
+            <a href="Unit-os-design.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC221</span>
+                    <span class="unit-icon">🖥️</span>
+                </div>
+                <div class="name">Operating Systems Design</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Systems Analysis and Design -->
+            <a href="Unit-systems-analysis.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC222</span>
+                    <span class="unit-icon">📊</span>
+                </div>
+                <div class="name">Systems Analysis and Design</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Data Communication -->
+            <a href="Unit-data-communication.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC223</span>
+                    <span class="unit-icon">📡</span>
+                </div>
+                <div class="name">Data Communication</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Data Structures -->
+            <a href="Unit-data-structures.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC224</span>
+                    <span class="unit-icon">🌲</span>
+                </div>
+                <div class="name">Data Structures</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Logic Programming -->
+            <a href="Unit-logic-programming.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC225</span>
+                    <span class="unit-icon">🧠</span>
+                </div>
+                <div class="name">Logic Programming</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Client/Server Computing -->
+            <a href="Unit-client-server.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC226</span>
+                    <span class="unit-icon">🌐</span>
+                </div>
+                <div class="name">Client/Server Computing</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Statistics and Probability -->
+            <a href="Unit-statistics-2.html" class="unit-card">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">STA205</span>
+                    <span class="unit-icon">📊</span>
+                </div>
+                <div class="name">Statistics and Probability</div>
+                <div class="card-bottom">
+                    <span class="status coming">
+                        <span class="dot"></span> Coming Soon
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+
+            <!-- Industrial Training - Special Card -->
+            <a href="Unit-industrial-training.html" class="unit-card industrial">
+                <div class="card-glow"></div>
+                <div class="card-top">
+                    <span class="code">CSC239</span>
+                    <span class="unit-icon">🏭</span>
+                </div>
+                <div class="name">Industrial Training</div>
+                <div class="card-bottom">
+                    <span class="status">
+                        <span class="dot"></span> Internship Program
+                    </span>
+                    <span class="arrow-link">→</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <div class="footer-brand">CS HUB</div>
+        <p>Year 2 · Bachelor of Science in Computer Science</p>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.2);">Kibabii University Learning Portal</p>
+        <div class="footer-socials">
+            <a href="#">📧 Email</a>
+            <a href="#">🐦 Twitter</a>
+            <a href="#">💻 GitHub</a>
+            <a href="#">📱 LinkedIn</a>
+        </div>
+        <
