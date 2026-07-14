@@ -2,143 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSC1110 - Programming</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>CSC1110: The Complete Guide to C Programming</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:Poppins,sans-serif;background:#eef2f7;color:#222;line-height:1.8;}
-        header{background:linear-gradient(135deg,#1565c0,#0d47a1);color:white;padding:40px 20px;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,.2);}
-        header h1{font-size:34px;}
-        header p{margin-top:10px;opacity:.95;font-size:17px;}
-        .container{max-width:1000px;margin:40px auto;background:white;padding:40px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,.1);}
-        
-        /* New Dynamic Material Style */
-        .link-card{display:block;background:#e3f2fd;border-left:5px solid #1565c0;padding:15px;margin:10px 0;text-decoration:none;color:#1565c0;font-weight:600;transition:0.3s;}
-        .link-card:hover{background:#d1e9fa;}
-
-        h2{color:#1565c0;margin-top:40px;margin-bottom:15px;padding-bottom:8px;border-bottom:3px solid #1565c0;}
-        h3{margin-top:25px;color:#0d47a1;}
-        h4{margin-top:20px;color:#1976d2;}
-        p{margin:15px 0;text-align:justify;}
-        ul{margin-left:25px;margin-top:10px;margin-bottom:15px;}
-        table{width:100%;border-collapse:collapse;margin:25px 0;}
-        th{background:#1565c0;color:white;padding:12px;border:1px solid #ddd;}
-        td{padding:12px;border:1px solid #ddd;}
-        .tip{background:#fff8e1;padding:18px;border-left:6px solid orange;margin:25px 0;}
+        body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #fdfdfd; }
+        h1 { color: #1565c0; border-bottom: 3px solid #1565c0; }
+        h2 { color: #0d47a1; margin-top: 40px; }
+        .chapter { margin-bottom: 60px; }
+        .box { background: #f4f6f8; padding: 20px; border-left: 5px solid #1565c0; margin: 20px 0; }
+        pre { background: #2d2d2d; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .diagram { text-align: center; font-weight: bold; margin: 30px 0; border: 2px solid #333; padding: 20px; display: inline-block; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>CSC1110 – Programming</h1>
-    <p>Computer Science Hub • Complete University Notes</p>
-</header>
+<h1>CSC1110: Computer Programming (C Language)</h1>
+<p><em>Comprehensive Study Guide for Year 1 Students</em></p>
 
-<div class="container">
-    <!-- Dynamic Materials Section -->
-    <div id="dynamicMaterials">
-        <h2>Course Materials</h2>
-        <div id="materialList">Loading materials...</div>
-    </div>
-
-    <!-- All Your Original Notes Start Here -->
-    <h2>1. Introduction to Computer Science</h2>
-    <p>Computer Science is the scientific study of computers, computational systems, software, algorithms and information processing. It combines mathematics, logic, engineering and programming to solve real-world problems using technology.</p>
-    <p>Today, Computer Science powers smartphones, artificial intelligence, cybersecurity, robotics, cloud computing, data science, software engineering and almost every modern industry.</p>
+<div class="chapter">
+    <h2>Chapter 1: Computer Systems & Programming Fundamentals</h2>
+    <p>A computer is an electronic device that processes raw data into useful information[span_0](start_span)[span_0](end_span). It relies on a symbiosis between hardware (physical components) and software (the programs that control them)[span_1](start_span)[span_1](end_span).</p>
     
-    <h2>2. Evolution of Computers</h2>
-    <p>Computers have evolved over thousands of years, from simple counting devices to powerful electronic systems capable of performing billions of calculations every second.</p>
-    <h3>2.1 Early Calculating Devices</h3>
-    <h4>Abacus (Around 3000 BC)</h4>
-    <p>The abacus is one of the earliest known calculating devices. It uses beads that slide along rods to perform arithmetic operations.</p>
+    <h3>The Programming Hierarchy</h3>
+    <p>Languages are categorized by how close they are to the hardware[span_2](start_span)[span_2](end_span):</p>
     <ul>
-        <li>Simple to use.</li>
-        <li>Does not require electricity.</li>
-        <li>Fast for basic arithmetic calculations.</li>
+        <li><strong>Low-Level:</strong> Machine/Assembly (Direct hardware control)[span_3](start_span)[span_3](end_span).</li>
+        <li><strong>High-Level:</strong> C, Java, Python (Human-readable, requires translation)[span_4](start_span)[span_4](end_span).</li>
     </ul>
-    <h4>Napier's Bones (1617)</h4>
-    <p>Invented by <strong>John Napier</strong>, this mechanical device used numbered rods to simplify multiplication and division.</p>
-    <h4>Pascaline (1642)</h4>
-    <p>Invented by <strong>Blaise Pascal</strong>, the Pascaline was one of the first mechanical calculators capable of performing addition and subtraction.</p>
-    <h4>Leibniz Calculator (1673)</h4>
-    <p>Developed by <strong>Gottfried Wilhelm Leibniz</strong>, this calculator improved upon the Pascaline by performing multiplication and division more efficiently.</p>
-    <h4>Difference Engine (1822)</h4>
-    <p>Designed by <strong>Charles Babbage</strong>, the Difference Engine was built to calculate mathematical tables automatically. Charles Babbage is widely known as the <strong>Father of the Computer</strong>.</p>
-    <h4>Analytical Engine (1837)</h4>
-    <p>Charles Babbage later designed the Analytical Engine, considered the first concept of a general-purpose programmable computer.</p>
-    <h4>Ada Lovelace</h4>
-    <p>Ada Lovelace wrote the first algorithm intended for the Analytical Engine and is widely recognized as the world's first computer programmer.</p>
-
-    <h3>2.2 Generations of Computers</h3>
-    <table>
-        <tr><th>Generation</th><th>Period</th><th>Main Technology</th><th>Main Characteristics</th></tr>
-        <tr><td>First</td><td>1940–1956</td><td>Vacuum Tubes</td><td>Very large, expensive and produced a lot of heat.</td></tr>
-        <tr><td>Second</td><td>1956–1963</td><td>Transistors</td><td>Smaller, faster and more reliable.</td></tr>
-        <tr><td>Third</td><td>1964–1971</td><td>Integrated Circuits (ICs)</td><td>Higher processing speed and lower power consumption.</td></tr>
-        <tr><td>Fourth</td><td>1971–Present</td><td>Microprocessors</td><td>Personal computers, laptops, smartphones.</td></tr>
-        <tr><td>Fifth</td><td>Present and Beyond</td><td>Artificial Intelligence</td><td>Machine learning, robotics.</td></tr>
-    </table>
-
-    <div class="tip">
-        <strong>Exam Tip</strong><br><br>
-        <ul>
-            <li>Abacus → One of the earliest calculating devices.</li>
-            <li>Charles Babbage → Father of the Computer.</li>
-            <li>Ada Lovelace → First Computer Programmer.</li>
-            <li>Generations: Vacuum Tubes → Transistors → ICs → Microprocessors → AI.</li>
-        </ul>
+    
+    <div class="diagram">
+        Source Code --(Compiler)--> Machine Code --(Linker)--> Executable File
     </div>
+</div>
 
-    <h2>3. Characteristics of Computers</h2>
-    <h3>1. Speed | 2. Accuracy | 3. Diligence | 4. Reliability | 5. Storage Capacity | 6. Automation | 7. Versatility</h3>
-    <p>Computers are fast, accurate, tireless, reliable, have massive storage, work automatically, and are highly versatile.</p>
+<div class="chapter">
+    <h2>Chapter 2: Problem Solving & Flowcharting</h2>
+    <p>Before coding, we must plan[span_5](start_span)[span_5](end_span).</p>
+    <div class="box">
+        <strong>Standard Flowchart Symbols:</strong><br>
+        • Oval: Start or End[span_6](start_span)[span_6](end_span)<br>
+        • Parallelogram: Input/Output[span_7](start_span)[span_7](end_span)<br>
+        • Rectangle: Process (e.g., sum = a + b)[span_8](start_span)[span_8](end_span)<br>
+        • Diamond: Decision (If/Else logic)[span_9](start_span)[span_9](end_span)
+    </div>
+</div>
 
-    <h2>4. Applications of Computers</h2>
-    <table>
-        <tr><th>Field</th><th>Application</th></tr>
-        <tr><td>Education</td><td>E-learning, online exams, research.</td></tr>
-        <tr><td>Healthcare</td><td>Medical records, diagnosis, imaging.</td></tr>
-        <tr><td>Banking</td><td>Online banking, ATMs, fraud detection.</td></tr>
-    </table>
-
-    <h2>5. Computer Hardware and Software</h2>
-    <p>Hardware refers to the physical parts (keyboard, CPU, monitor). Software is the set of programs (Windows, Chrome, Word).</p>
-
-    <h2>6. Types of Computers</h2>
-    <p>Classified by size (Supercomputer, Mainframe, Minicomputer, Microcomputer) and purpose (General purpose, Special purpose).</p>
-
-    <h2>7. Data and Information</h2>
-    <p>Data is raw facts. Information is processed data. Information is produced after data has been processed.</p>
-
-    <h2>8. Number Systems</h2>
-    <p>Binary (Base 2), Octal (Base 8), Decimal (Base 10), Hexadecimal (Base 16).</p>
-
-    <h2>9. Data Representation</h2>
-    <p>Units: Bit (0 or 1), Nibble (4 bits), Byte (8 bits), KB, MB, GB, TB.</p>
-
-    <h2>10. Introduction to Programming</h2>
-    <p>Programming is designing, writing, testing, and maintaining software. Languages: C, C++, Java, Python, JavaScript.</p>
-
-    <h2>11. Algorithms</h2>
-    <p>An algorithm is a finite sequence of clear, logical steps to solve a problem.</p>
-
-    <h2>12. Flowcharts</h2>
-    <p>Graphical representation of an algorithm using symbols (Oval: Start/End, Rectangle: Process, Parallelogram: Input/Output, Diamond: Decision).</p>
-
-    <h2>13. Introduction to C Programming</h2>
-    <p>Developed by <strong>Dennis Ritchie</strong> in 1972. It is fast, efficient, and portable.</p>
-    <pre style="background:#f4f4f4;padding:15px;border-radius:8px;overflow:auto;"><code>#include &lt;stdio.h&gt;
+<div class="chapter">
+    <h2>Chapter 3: C Language Basics</h2>
+    <p>C is a high-level, compiled language[span_10](start_span)[span_10](end_span). A basic program structure:</p>
+    <pre>
+#include &lt;stdio.h&gt;
 int main() {
     printf("Hello, World!");
     return 0;
-}</code></pre>
-
-    <h2>14. Variables and Data Types</h2>
-    <p>Variables store data. Data types: int, float, double.</p>
+}
+    </pre>
 </div>
 
-<!-- The Bridge to your Firebase Database -->
+<div class="chapter">
+    <h2>Chapter 4: Control Structures & Iteration</h2>
+    <p>Programs make decisions using `if/else` and `switch` statements, and repeat tasks using `for`, `while`, and `do-while` loops[span_11](start_span)[span_11](end_span).</p>
+    
+    <h3>Example Question</h3>
+    <p><em>Question:</em> Write an algorithm to find the sum of two numbers.</p>
+    <p><em>Answer:</em> 
+    1. Input num1, num2[span_12](start_span)[span_12](end_span). 
+    2. Process: sum = num1 + num2[span_13](start_span)[span_13](end_span). 
+    3. Output: Display sum[span_14](start_span)[span_14](end_span).</p>
+</div>
+
+<div class="chapter">
+    <h2>Chapter 5: Modular Programming (Functions & Arrays)</h2>
+    <p>Functions allow us to break large problems into manageable chunks[span_15](start_span)[span_15](end_span). Arrays enable the storage of lists of data under a single name[span_16](start_span)[span_16](end_span).</p>
+</div>
+
+<div id="dynamicMaterials">
+    <h2>Course Materials</h2>
+    <div id="materialList">Loading additional materials...</div>
+</div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
@@ -153,10 +94,8 @@ int main() {
         if (data) {
             list.innerHTML = "";
             for (let key in data) {
-                list.innerHTML += `<a href="${data[key].url}" target="_blank" class="link-card">${data[key].title}</a>`;
+                list.innerHTML += `<a href="${data[key].url}" target="_blank" style="display:block; margin:10px 0; color:#1565c0;">${data[key].title}</a>`;
             }
-        } else {
-            list.innerHTML = "No additional materials added.";
         }
     });
 </script>
