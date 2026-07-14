@@ -234,6 +234,31 @@
             color: var(--dim);
         }
 
+        /* Settings button - HIDDEN by default, shown only for admin */
+        .btn-settings {
+            display: none !important;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-settings.admin-visible {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+        }
+
         /* ===== WELCOME ===== */
         .welcome-section {
             padding: 20px 0 10px 0;
@@ -652,8 +677,8 @@
                 
                 <li class="nav-section-title">ACCOUNT</li>
                 <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
-                <li class="nav-item"><a href="settings.html">⚙️ Settings</a></li>
                 <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+                <!-- Settings removed from sidebar for regular users -->
             </ul>
         </div>
         <div class="sidebar-footer">© 2026 CS Hub</div>
@@ -672,6 +697,8 @@
                 </span>
                 <div class="topbar-avatar" id="topbarAvatar">U</div>
             </div>
+            <!-- Settings button - hidden by default, shown only for admin -->
+            <a href="settings.html" class="btn-settings" id="settingsBtn">⚙️ Settings</a>
         </div>
 
         <!-- ===== WELCOME with Typing Effect ===== -->
@@ -791,10 +818,6 @@
                 <span class="icon">👤</span>
                 <h4>Profile</h4>
             </a>
-            <a href="settings.html" class="account-card">
-                <span class="icon">⚙️</span>
-                <h4>Settings</h4>
-            </a>
             <a href="#" class="account-card logout-card" onclick="logout()">
                 <span class="icon">🚪</span>
                 <h4>Logout</h4>
@@ -828,6 +851,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Admin email (only this user sees Settings)
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+
         // ============================================================
         // SIDEBAR FUNCTIONS
         // ============================================================
@@ -855,7 +881,7 @@
                 if (i < text.length) {
                     el.textContent += text.charAt(i);
                     i++;
-                    setTimeout(type, 60 + Math.random() * 40); // Random speed variation
+                    setTimeout(type, 60 + Math.random() * 40);
                 } else {
                     if (callback) callback();
                 }
@@ -864,13 +890,10 @@
         }
 
         function typeWelcome(name) {
-            // First type "Welcome back, "
             const prefixEl = document.getElementById('typedPrefix');
             prefixEl.textContent = 'Welcome back, ';
             
-            // Then type the name
             typeWriter(name, 'typedName', function() {
-                // After name is typed, cursor keeps blinking
                 document.getElementById('typingCursor').style.display = 'inline-block';
             });
         }
@@ -893,6 +916,18 @@
                     <small>${email}</small>
                 `;
             document.getElementById('topbarAvatar').textContent = initial;
+
+            // ==========================================================
+            // SHOW SETTINGS BUTTON ONLY FOR ADMIN
+            // ==========================================================
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                settingsBtn.classList.add('admin-visible');
+                console.log('🔑 Admin detected - Settings button shown');
+            } else {
+                settingsBtn.classList.remove('admin-visible');
+                console.log('👤 Regular user - Settings button hidden');
+            }
 
             // Start typing animation
             typeWelcome(displayName);
