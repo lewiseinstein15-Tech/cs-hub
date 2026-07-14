@@ -7,9 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ============================================================ */
-        /* ALL STYLES (same as before - keeping it compact) */
-        /* ============================================================ */
         :root {
             --bg: #030611;
             --sidebar-bg: #060919;
@@ -563,12 +560,6 @@
             transition: all 0.2s ease;
         }
 
-        .admin-controls .btn-edit:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: var(--blue);
-            color: var(--blue);
-        }
-
         .admin-controls .btn-delete:hover {
             background: rgba(239, 68, 68, 0.15);
             border-color: var(--red);
@@ -974,7 +965,7 @@
         const db = firebase.firestore();
 
         // ============================================================
-        // ADMIN DETECTION - FIXED!
+        // ADMIN STATUS
         // ============================================================
         let isAdminUser = false;
         let allProjects = [];
@@ -995,49 +986,7 @@
         }
 
         // ============================================================
-        // CHECK IF USER IS ADMIN
-        // ============================================================
-        function checkIsAdmin(user) {
-            if (!user) return false;
-            
-            // Get email from multiple sources
-            const email = (user.email || '').toLowerCase().trim();
-            const displayName = (user.displayName || '').toLowerCase().trim();
-            
-            console.log('🔍 Checking admin status for:', email);
-            
-            // Method 1: Exact admin email match
-            const adminEmails = [
-                'lewiseinstein15@gmail.com',
-                'admin@cshub.com',
-                'lewis@cshub.com'
-            ];
-            
-            for (let adminEmail of adminEmails) {
-                if (email === adminEmail.toLowerCase().trim()) {
-                    console.log('✅ Admin detected via exact email match:', email);
-                    return true;
-                }
-            }
-            
-            // Method 2: Check if email contains admin keywords
-            if (email.includes('admin') || email.includes('lecturer') || email.includes('staff')) {
-                console.log('✅ Admin detected via keyword in email:', email);
-                return true;
-            }
-            
-            // Method 3: Check Firebase custom claims (if you have them)
-            if (user.customClaims && user.customClaims.admin === true) {
-                console.log('✅ Admin detected via custom claims');
-                return true;
-            }
-            
-            console.log('👤 Regular user detected:', email);
-            return false;
-        }
-
-        // ============================================================
-        // AUTH CHECK
+        // AUTH CHECK - SIMPLIFIED ADMIN DETECTION
         // ============================================================
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -1049,12 +998,19 @@
             const displayName = user.displayName || user.email.split('@')[0] || 'User';
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
+
+            // ==========================================================
+            // ADMIN CHECK - DIRECT EMAIL COMPARISON
+            // ==========================================================
+            // Your admin email - exactly as it appears in Firebase
+            const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
             
-            // CHECK ADMIN STATUS - USING THE FIXED FUNCTION
-            isAdminUser = checkIsAdmin(user);
+            // Check if the logged-in user's email matches the admin email
+            isAdminUser = (email === ADMIN_EMAIL);
             
-            console.log('📊 Admin status:', isAdminUser);
-            console.log('📧 User email:', email);
+            // Log for debugging
+            console.log('📧 Logged in as:', email);
+            console.log('🔑 Admin status:', isAdminUser);
 
             // Update UI
             document.getElementById('userName').textContent = displayName;
@@ -1062,17 +1018,18 @@
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            // Show admin badge and controls
+            // Show admin badge and controls if admin
             if (isAdminUser) {
                 document.getElementById('userRole').textContent = '🔑 Admin';
                 document.getElementById('toggleFormBtn').classList.add('visible');
-                console.log('🔑 Admin mode ACTIVATED - showing admin controls');
+                console.log('✅ Admin mode ACTIVATED');
             } else {
                 document.getElementById('userRole').textContent = 'Student';
                 document.getElementById('toggleFormBtn').classList.remove('visible');
-                console.log('👤 Student mode - admin controls hidden');
+                console.log('👤 Student mode');
             }
 
+            // Load projects (will use isAdminUser flag)
             loadProjects();
         });
 
@@ -1102,9 +1059,8 @@
         // ADD PROJECT (Admin Only)
         // ============================================================
         function addProject() {
-            // Double-check admin status
             if (!isAdminUser) {
-                showToast('❌ You must be an admin to add projects', 'error');
+                showToast('❌ Admin access required', 'error');
                 return;
             }
 
@@ -1166,11 +1122,11 @@
         // ============================================================
         function deleteProject(id, title) {
             if (!isAdminUser) {
-                showToast('❌ You must be an admin to delete projects', 'error');
+                showToast('❌ Admin access required', 'error');
                 return;
             }
             
-            if (!confirm(`🗑️ Are you sure you want to delete "${title}"?`)) return;
+            if (!confirm(`🗑️ Delete "${title}"?`)) return;
 
             db.collection('projects').doc(id).delete()
                 .then(() => {
@@ -1227,7 +1183,7 @@
                     allProjects = [];
 
                     if (snapshot.empty) {
-                        grid.innerHTML = `<div class="empty-projects">📭 No projects available. Check back later!</div>`;
+                        grid.innerHTML = `<div class="empty-projects">📭 No projects available.</div>`;
                         updateStats(0, 0, 0, 0);
                         return;
                     }
@@ -1249,6 +1205,7 @@
                         const card = document.createElement('div');
                         card.className = 'project-card';
                         
+                        // Admin controls - only visible if isAdminUser is true
                         let adminControlsHTML = '';
                         if (isAdminUser) {
                             adminControlsHTML = `
@@ -1257,18 +1214,6 @@
                                 </div>
                             `;
                         }
-
-                        let statusDropdownHTML = `
-                            <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
-                                <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
-                                    <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
-                                    <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-                                    <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
-                                    <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
-                                    <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
-                                </select>
-                            </div>
-                        `;
 
                         card.innerHTML = `
                             <div class="card-glow"></div>
@@ -1289,13 +1234,20 @@
                                     </div>
                                 </div>
                             </div>
-                            ${statusDropdownHTML}
+                            <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
+                                <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
+                                    <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
+                                    <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
+                                    <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
+                                    <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
+                                    <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
+                                </select>
+                            </div>
                             ${adminControlsHTML}
                         `;
                         grid.appendChild(card);
                     });
 
-                    // Apply filters
                     filterProjects();
                     updateStats(snapshot.size);
                 });
@@ -1330,7 +1282,6 @@
                 if (show) visible++;
             });
 
-            // Update visible count
             const emptyMsg = document.querySelector('.empty-projects');
             if (emptyMsg) {
                 if (visible === 0 && document.querySelectorAll('.project-card').length > 0) {
@@ -1371,7 +1322,7 @@
             }, 3000);
         }
 
-        console.log('✅ Projects page loaded successfully!');
+        console.log('✅ Projects page loaded!');
     </script>
 
 </body>
