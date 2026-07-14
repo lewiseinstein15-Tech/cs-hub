@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS HUB OS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+    <title>CS HUB - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg: #050816;
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
             --blue: #3B82F6;
             --cyan: #06B6D4;
             --purple: #8B5CF6;
             --green: #22C55E;
+            --yellow: #F59E0B;
+            --red: #EF4444;
             --white: #ffffff;
-            --dim: rgba(255, 255, 255, .6);
+            --dim: rgba(255, 255, 255, 0.5);
         }
 
         * {
@@ -24,52 +29,34 @@
         }
 
         body {
-            min-height: 100vh;
-            background: var(--bg);
-            color: white;
+            background-color: var(--bg);
+            color: var(--white);
             font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
             overflow-x: hidden;
         }
 
-        /* background */
-        .background {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, .25), transparent 35%),
-                        radial-gradient(circle at 80% 70%, rgba(6, 182, 212, .2), transparent 35%),
-                        #050816;
-        }
-
-        /* moving CS words */
-        .code {
-            position: fixed;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            color: rgba(6, 182, 212, .2);
-            animation: moveWords 18s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes moveWords {
-            from { transform: translateY(120vh); }
-            to { transform: translateY(-30vh); }
-        }
-
-        /* header */
-        header {
-            height: 75px;
-            padding: 15px 25px;
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
-            backdrop-filter: blur(15px);
+            padding: 25px 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            flex-shrink: 0;
         }
 
-        .logo {
-            font-family: 'JetBrains Mono', monospace;
+        .sidebar-brand {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
             font-size: 22px;
             font-weight: 800;
             letter-spacing: 2px;
@@ -78,323 +65,625 @@
             color: transparent;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
         }
 
-        .profile-circle {
-            width: 42px;
-            height: 42px;
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover,
+        .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-item.active a {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+
+        .sidebar-profile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--blue), var(--cyan));
             font-weight: 800;
             font-size: 18px;
-            color: white;
-            text-decoration: none;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
         }
 
-        .logout {
+        .profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .profile-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .sidebar-footer {
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .workspace {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background-color: rgba(6, 9, 25, 0.3);
+            backdrop-filter: blur(15px);
+            flex-shrink: 0;
+        }
+
+        .menu-toggle {
+            background: none;
             border: none;
-            background: #ef4444;
-            color: white;
-            padding: 9px 15px;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .admin-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shield-icon {
+            font-size: 18px;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .admin-details h4 {
+            font-size: 13px;
+            color: var(--white);
+        }
+
+        .admin-details span {
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .btn-action {
+            padding: 8px 16px;
             border-radius: 10px;
             cursor: pointer;
-        }
-
-        /* main */
-        .container {
-            padding: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* welcome no box */
-        .welcome {
-            padding: 10px 5px;
-        }
-
-        #welcomeText {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            line-height: 1.7;
-            text-shadow: 0 0 12px rgba(6, 182, 212, .5);
-        }
-
-        .system-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            margin-top: 8px;
-            color: var(--cyan);
-        }
-
-        /* mascot */
-        .mascot {
-            margin: 25px auto;
-            text-align: center;
-            padding: 20px;
-            max-width: 420px;
-        }
-
-        .robot {
-            font-size: 55px;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .mascot h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 17px;
-            margin-top: 10px;
-        }
-
-        .mascot p {
             font-size: 13px;
-            color: var(--dim);
-            margin-top: 6px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
 
-        /* grid styles */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
+        .btn-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .card {
-            padding: 18px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid rgba(255, 255, 255, .1);
-            backdrop-filter: blur(15px);
-            transition: .3s;
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--cyan);
+        .btn-logout:hover {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        .card .icon {
-            font-size: 30px;
-            margin-bottom: 10px;
+        .content-area {
+            padding: 30px;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
-        .card h2 {
-            font-size: 16px;
+        /* ===== HERO WELCOME ===== */
+        .hero-welcome {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px 35px;
+            margin-bottom: 30px;
+        }
+
+        .hero-welcome h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
             margin-bottom: 6px;
         }
 
-        .card p {
+        .hero-welcome h2 span {
+            color: var(--cyan);
+        }
+
+        .hero-welcome p {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dim);
+            margin-bottom: 4px;
+        }
+
+        .stat-card .stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-number.blue { color: var(--blue); }
+        .stat-card .stat-number.green { color: var(--green); }
+        .stat-card .stat-number.purple { color: var(--purple); }
+        .stat-card .stat-number.yellow { color: var(--yellow); }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
             font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            margin-top: 10px;
+        }
+
+        /* ===== UNITS GRID ===== */
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .unit-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .unit-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .unit-card .unit-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--blue);
+            margin-bottom: 4px;
+        }
+
+        .unit-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .unit-card p {
+            font-size: 13px;
+            color: var(--dim);
+            margin-bottom: 12px;
+        }
+
+        .unit-card .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .unit-card .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .unit-card .progress-text {
+            font-size: 11px;
+            color: var(--dim);
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* ===== TWO COLUMN LAYOUT ===== */
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+        }
+
+        .split-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 25px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .panel-header h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             color: var(--dim);
         }
 
-        /* Stats & Panels sections */
-        .panel-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            letter-spacing: 1px;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            color: var(--cyan);
-            text-transform: uppercase;
+        .panel-header a {
+            font-size: 12px;
+            color: var(--blue);
+            text-decoration: none;
         }
 
-        .activity-panel {
-            padding: 20px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-
-        .activity-item {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        /* ===== NOTES LIST ===== */
+        .note-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .note-item:last-child {
+            border-bottom: none;
+        }
+
+        .note-item .note-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .note-item .note-meta {
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .note-item .note-badge {
+            font-size: 9px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        /* ===== ACTIVITY FEED ===== */
+        .activity-item {
+            display: flex;
+            gap: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: flex-start;
         }
 
         .activity-item:last-child {
             border-bottom: none;
         }
 
-        .activity-time {
-            color: var(--dim);
-            font-size: 11px;
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
         }
 
-        .status {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 15px;
-            background: rgba(34, 197, 94, .1);
-            border: 1px solid rgba(34, 197, 94, .3);
-            font-family: 'JetBrains Mono', monospace;
+        .activity-dot.blue { background: var(--blue); }
+        .activity-dot.green { background: var(--green); }
+        .activity-dot.purple { background: var(--purple); }
+        .activity-dot.yellow { background: var(--yellow); }
+
+        .activity-text {
             font-size: 13px;
-            color: var(--green);
+            line-height: 1.5;
         }
 
-        footer {
-            text-align: center;
-            padding: 25px;
-            font-size: 12px;
+        .activity-text .highlight {
+            color: var(--cyan);
+        }
+
+        .activity-time {
+            font-size: 10px;
             color: var(--dim);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .menu-toggle {
+                display: flex;
+            }
+            .topbar-right {
+                position: relative;
+                width: auto;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+            .content-area {
+                padding: 20px 15px;
+            }
+            .admin-details span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-welcome h2 {
+                font-size: 20px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .units-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="background"></div>
-
-    <div class="code" style="left:10%;animation-delay:0s">
-        AI<br>Python<br>Machine Learning<br>Algorithms
-    </div>
-    <div class="code" style="left:45%;animation-delay:5s">
-        Data Structures<br>Cyber Security<br>Networking<br>Cloud
-    </div>
-    <div class="code" style="left:75%;animation-delay:8s">
-        Database<br>Programming<br>Software Engineering<br>Computing
-    </div>
-
-    <header>
-        <div class="logo">CS HUB OS</div>
-        <div class="header-right">
-            <a href="profile.html" class="profile-circle" id="profileCircle">L</a>
-            <button class="logout" onclick="logout()">Logout</button>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="welcome">
-            <div id="welcomeText">Loading...</div>
-            <div class="system-text" id="systemText">SYSTEM INITIALIZING...</div>
-        </div>
-
-        <div class="mascot">
-            <div class="robot">🤖</div>
-            <h2>CS HUB AI Companion</h2>
-            <p>Your Computer Science learning system is online.</p>
-        </div>
-
-        <!-- Real-Time Stats Display -->
-        <div class="panel-title">System Metrics</div>
-        <div class="grid" style="margin-top: 0;">
-            <div class="card">
-                <div class="icon">👥</div>
-                <h2>Users</h2>
-                <p id="statUsers">Loading...</p>
+    <!-- ============================================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>LEARNING ECOSYSTEM</span>
             </div>
-            <div class="card">
-                <div class="icon">📄</div>
-                <h2>Notes</h2>
-                <p id="statNotes">Loading...</p>
-            </div>
-            <div class="card">
-                <div class="icon">📚</div>
-                <h2>Units</h2>
-                <p id="statUnits">Loading...</p>
-            </div>
-            <div class="card">
-                <div class="icon">🟢</div>
-                <h2>Status</h2>
-                <p id="statStatus">Online</p>
-            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item active"><a href="dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item"><a href="units.html">🎓 My Units</a></li>
+                <li class="nav-item"><a href="notes.html">📚 Notes</a></li>
+                <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
+                <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI Assistant</a></li>
+            </ul>
         </div>
 
-        <!-- System Core Navigation Map -->
-        <div class="panel-title">Navigation Hub</div>
-        <div class="grid" style="margin-top: 0;">
-            <a href="notes.html">
-                <div class="card">
-                    <div class="icon">📚</div>
-                    <h2>Notes</h2>
-                    <p>Computer Science notes Year 1-4</p>
-                </div>
-            </a>
-            <a href="ai-system.html">
-                <div class="card">
-                    <div class="icon">🤖</div>
-                    <h2>AI System</h2>
-                    <p>Intelligent CS learning system</p>
-                </div>
-            </a>
-            <a href="units.html">
-                <div class="card">
-                    <div class="icon">🎓</div>
-                    <h2>Units</h2>
-                    <p>Explore all CS units</p>
-                </div>
-            </a>
-            <a href="labs.html">
-                <div class="card">
-                    <div class="icon">💻</div>
-                    <h2>Labs</h2>
-                    <p>Coding practice</p>
-                </div>
-            </a>
-            <a href="projects.html">
-                <div class="card">
-                    <div class="icon">🚀</div>
-                    <h2>Projects</h2>
-                    <p>Build technology</p>
-                </div>
-            </a>
-            <a href="revision.html">
-                <div class="card">
-                    <div class="icon">📝</div>
-                    <h2>Revision</h2>
-                    <p>Revision Materials</p>
-                </div>
-            </a>
-            <a href="settings.html">
-                <div class="card">
-                    <div class="icon">⚙️</div>
-                    <h2>Settings</h2>
-                    <p>System Configuration</p>
-                </div>
-            </a>
+        <div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Student</div>
+            </div>
+            <div class="sidebar-footer">© 2026 CS Hub</div>
         </div>
+    </aside>
 
-        <!-- Live Activity Log Monitoring -->
-        <div class="panel-title">Real-Time Activity Log</div>
-        <div class="activity-panel" id="activityPanel">
-            <div class="activity-item">System logs initializing...</div>
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================================ -->
+    <main class="workspace">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <div class="topbar-right">
+                <div class="admin-meta">
+                    <span class="shield-icon">🛡️</span>
+                    <div class="admin-details">
+                        <h4 id="topbarName">User</h4>
+                        <span id="topbarEmail">user@email.com</span>
+                    </div>
+                </div>
+                <button class="btn-action btn-settings" onclick="window.location.href='settings.html'">⚙️ Settings</button>
+                <button class="btn-action btn-logout" onclick="logout()">Logout &rarr;</button>
+            </div>
+        </header>
+
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+
+            <!-- ===== WELCOME HERO ===== -->
+            <section class="hero-welcome">
+                <h2>Welcome back, <span id="welcomeName">User</span> 👋</h2>
+                <p>Your CS learning dashboard — track your units, notes, and progress all in one place.</p>
+            </section>
+
+            <!-- ===== STATS ===== -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Enrolled Units</div>
+                    <div class="stat-number blue" id="statUnits">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Notes Completed</div>
+                    <div class="stat-number green" id="statNotes">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Labs Done</div>
+                    <div class="stat-number purple" id="statLabs">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Overall Progress</div>
+                    <div class="stat-number yellow" id="statProgress">0%</div>
+                </div>
+            </section>
+
+            <!-- ===== MY UNITS ===== -->
+            <h3 class="section-header">📖 My Enrolled Units</h3>
+            <section class="units-grid" id="unitsGrid">
+                <p style="color: var(--dim); grid-column: 1/-1;">Loading your units...</p>
+            </section>
+
+            <!-- ===== SPLIT: Recent Notes + Activity ===== -->
+            <section class="split-layout">
+
+                <!-- Recent Notes -->
+                <div class="split-panel">
+                    <div class="panel-header">
+                        <h4>📄 Recent Notes</h4>
+                        <a href="notes.html">View all &rarr;</a>
+                    </div>
+                    <div id="recentNotes">
+                        <p style="color: var(--dim); font-size: 13px;">Loading notes...</p>
+                    </div>
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="split-panel">
+                    <div class="panel-header">
+                        <h4>⚡ Recent Activity</h4>
+                        <a href="logs.html">View all &rarr;</a>
+                    </div>
+                    <div id="activityFeed">
+                        <p style="color: var(--dim); font-size: 13px;">Loading activity...</p>
+                    </div>
+                </div>
+
+            </section>
+
         </div>
+    </main>
 
-        <div class="status" id="status">✓ CS HUB SYSTEM READY</div>
-    </div>
-
-    <footer>CS HUB OS © 2026</footer>
-
-    <!-- Firebase SDK Dependencies -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <!-- ============================================================ -->
+    <!-- FIREBASE & SCRIPTS -->
+    <!-- ============================================================ -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
 
     <script>
-        // --- 1. FIREBASE CONFIGURATION & INITIALIZATION ---
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -407,145 +696,249 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
-        // --- 2. AUTHENTICATION & USER MANAGEMENT ---
+        // ============================================================
+        // AUTH CHECK
+        // ============================================================
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
                 return;
             }
 
-            let email = user.email;
-            let username = email.split("@")[0].replace(/[0-9]/g, "");
-            username = username.charAt(0).toUpperCase() + username.slice(1);
-            let isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            // Show user info
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
 
-            // Handle Greeting
-            let hour = new Date().getHours();
-            let greeting = (hour < 12) ? "Good Morning" : (hour < 18) ? "Good Afternoon" : "Good Evening";
-            let message = isAdmin ? `${greeting} Admin ${username} 👋\nWelcome back to CS HUB` : `${greeting} ${username} 👋\nWelcome back to CS HUB`;
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarName').textContent = displayName;
+            document.getElementById('topbarEmail').textContent = email;
+            document.getElementById('welcomeName').textContent = displayName;
 
-            typeWriter(message);
-            document.getElementById("profileCircle").textContent = username.charAt(0).toUpperCase();
-
-            // Initialize Real-time Streams once authenticated
-            initRealTimeStats();
-            initRealTimeActivity();
+            // Load data
+            loadUserStats();
+            loadUserUnits();
+            loadRecentNotes();
+            loadActivityFeed();
         });
 
+        // ============================================================
+        // TOGGLE SIDEBAR (Mobile)
+        // ============================================================
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Close sidebar on outside click (mobile)
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.menu-toggle');
+            if (window.innerWidth <= 1024 &&
+                !sidebar.contains(e.target) &&
+                !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         function logout() {
             auth.signOut().then(() => {
-                window.location.href = "index.html";
-            }).catch(err => console.error("Logout Error:", err));
-        }
-
-        // --- 3. UI ANIMATION SCHEDULERS ---
-        function typeWriter(text) {
-            let i = 0;
-            let element = document.getElementById("welcomeText");
-            element.innerHTML = "";
-
-            function write() {
-                if (i < text.length) {
-                    element.innerHTML += (text[i] === "\n") ? "<br>" : text[i];
-                    i++;
-                    setTimeout(write, 35);
-                }
-            }
-            write();
-        }
-
-        const systemMessages = [
-            "AI SYSTEM ONLINE...",
-            "LOADING KNOWLEDGE ENGINE...",
-            "DATABASE CONNECTED...",
-            "CS HUB READY ✓"
-        ];
-        let messageIdx = 0;
-        setInterval(() => {
-            document.getElementById("systemText").textContent = systemMessages[messageIdx];
-            messageIdx = (messageIdx + 1) % systemMessages.length;
-        }, 3000);
-
-        // --- 4. REAL-TIME DATA STREAM SYNCHRONIZERS ---
-        function initRealTimeStats() {
-            // Live Users Count
-            db.collection("users").onSnapshot((snapshot) => {
-                document.getElementById("statUsers").textContent = `${snapshot.size} Active`;
-            }, err => console.error("Error reading live user metrics:", err));
-
-            // Live Notes Count
-            db.collection("notes").onSnapshot((snapshot) => {
-                document.getElementById("statNotes").textContent = `${snapshot.size} Documents`;
-            }, err => console.error("Error reading live notes data:", err));
-
-            // Live Units Count
-            db.collection("units").onSnapshot((snapshot) => {
-                document.getElementById("statUnits").textContent = `${snapshot.size} Syllabus Units`;
-            }, err => console.error("Error reading live unit configurations:", err));
-
-            // Live Infrastructure Status Verification
-            db.collection("system_status").doc("current").onSnapshot((doc) => {
-                if (doc.exists && doc.data().status) {
-                    document.getElementById("statStatus").textContent = doc.data().status;
-                } else {
-                    document.getElementById("statStatus").textContent = "Operational";
-                }
-            }, () => {
-                document.getElementById("statStatus").textContent = "Operational";
+                window.location.href = 'login.html';
             });
         }
 
-        function initRealTimeActivity() {
-            db.collection("activity_logs")
-              .orderBy("timestamp", "desc")
-              .limit(8)
-              .onSnapshot((snapshot) => {
-                  const panel = document.getElementById("activityPanel");
-                  if (snapshot.empty) {
-                      panel.innerHTML = '<div class="activity-item">No records found. Everything quiet.</div>';
-                      return;
-                  }
-                  
-                  panel.innerHTML = "";
-                  snapshot.forEach((doc) => {
-                      const data = doc.data();
-                      const timeString = data.timestamp ? formatRelativeTime(data.timestamp.toDate()) : "Just now";
-                      
-                      const item = document.createElement("div");
-                      item.className = "activity-item";
-                      item.innerHTML = `<span>${escapeHTML(data.text)}</span><span class="activity-time">${timeString}</span>`;
-                      panel.appendChild(item);
-                  });
-              }, err => {
-                  console.error("Activity stream failure:", err);
-                  document.getElementById("activityPanel").innerHTML = '<div class="activity-item" style="color:#ef4444;">Error streaming activities.</div>';
-              });
+        // ============================================================
+        // LOAD USER STATS
+        // ============================================================
+        function loadUserStats() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            // Count enrolled units
+            db.collection('users')
+                .doc(user.uid)
+                .collection('enrolledUnits')
+                .onSnapshot((snap) => {
+                    document.getElementById('statUnits').textContent = snap.size;
+                });
+
+            // Count notes (using a mock - you can adjust this)
+            db.collection('notes')
+                .where('userId', '==', user.uid)
+                .onSnapshot((snap) => {
+                    document.getElementById('statNotes').textContent = snap.size;
+                });
+
+            // Count labs
+            db.collection('users')
+                .doc(user.uid)
+                .collection('completedLabs')
+                .onSnapshot((snap) => {
+                    document.getElementById('statLabs').textContent = snap.size;
+                });
+
+            // Overall progress (mock - you can customize)
+            db.collection('users')
+                .doc(user.uid)
+                .onSnapshot((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        const progress = data.overallProgress || 0;
+                        document.getElementById('statProgress').textContent = progress + '%';
+                    }
+                });
         }
 
-        // --- 5. HELPER UTILITIES ---
-        function formatRelativeTime(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            let interval = Math.floor(seconds / 31536000);
-            if (interval >= 1) return interval === 1 ? "1 year ago" : `${interval} years ago`;
-            interval = Math.floor(seconds / 2592000);
-            if (interval >= 1) return interval === 1 ? "1 month ago" : `${interval} months ago`;
-            interval = Math.floor(seconds / 86400);
-            if (interval >= 1) return interval === 1 ? "1 day ago" : `${interval} days ago`;
-            interval = Math.floor(seconds / 3600);
-            if (interval >= 1) return interval === 1 ? "1 hour ago" : `${interval} hours ago`;
-            interval = Math.floor(seconds / 60);
-            if (interval >= 1) return interval === 1 ? "1 minute ago" : `${interval} minutes ago`;
-            return seconds < 10 ? "Just now" : `${Math.floor(seconds)} seconds ago`;
+        // ============================================================
+        // LOAD USER UNITS
+        // ============================================================
+        function loadUserUnits() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            // Listen for enrolled units
+            db.collection('users')
+                .doc(user.uid)
+                .collection('enrolledUnits')
+                .onSnapshot(async (snapshot) => {
+                    const container = document.getElementById('unitsGrid');
+
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <p style="color: var(--dim); grid-column: 1/-1; text-align: center; padding: 30px 0;">
+                                You haven't enrolled in any units yet.<br>
+                                <a href="units.html" style="color: var(--blue);">Browse units →</a>
+                            </p>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = '';
+
+                    for (const doc of snapshot.docs) {
+                        const unitData = doc.data();
+                        const unitId = doc.id;
+
+                        // Get unit details from 'units' collection
+                        const unitDoc = await db.collection('units').doc(unitId).get();
+                        const unitInfo = unitDoc.exists ? unitDoc.data() : { name: unitId, code: unitId };
+
+                        // Get progress for this unit
+                        const progressDoc = await db.collection('users')
+                            .doc(user.uid)
+                            .collection('unitProgress')
+                            .doc(unitId)
+                            .get();
+
+                        const progress = progressDoc.exists ? progressDoc.data().progress || 0 : 0;
+
+                        const card = document.createElement('a');
+                        card.className = 'unit-card';
+                        card.href = `unit.html?id=${unitId}`;
+
+                        card.innerHTML = `
+                            <div class="unit-code">${unitInfo.code || unitId}</div>
+                            <h4>${unitInfo.name || unitId}</h4>
+                            <p>${unitInfo.description || 'No description available.'}</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%;"></div>
+                            </div>
+                            <span class="progress-text">${progress}% complete</span>
+                        `;
+
+                        container.appendChild(card);
+                    }
+                });
         }
 
-        function escapeHTML(str) {
-            if (!str) return '';
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
+        // ============================================================
+        // LOAD RECENT NOTES
+        // ============================================================
+        function loadRecentNotes() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection('notes')
+                .where('userId', '==', user.uid)
+                .orderBy('createdAt', 'desc')
+                .limit(4)
+                .onSnapshot((snapshot) => {
+                    const container = document.getElementById('recentNotes');
+
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <p style="color: var(--dim); font-size: 13px;">No notes yet. Start taking notes!</p>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const note = doc.data();
+                        const div = document.createElement('div');
+                        div.className = 'note-item';
+                        div.innerHTML = `
+                            <div>
+                                <div class="note-title">${note.title || 'Untitled'}</div>
+                                <div class="note-meta">${note.unitCode || 'General'} • ${note.topic || ''}</div>
+                            </div>
+                            <span class="note-badge">${note.status || 'Draft'}</span>
+                        `;
+                        container.appendChild(div);
+                    });
+                });
         }
+
+        // ============================================================
+        // LOAD ACTIVITY FEED
+        // ============================================================
+        function loadActivityFeed() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection('activity_logs')
+                .where('userId', '==', user.uid)
+                .orderBy('timestamp', 'desc')
+                .limit(4)
+                .onSnapshot((snapshot) => {
+                    const container = document.getElementById('activityFeed');
+
+                    if (snapshot.empty) {
+                        container.innerHTML = `
+                            <p style="color: var(--dim); font-size: 13px;">No recent activity.</p>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const activity = doc.data();
+                        const colors = ['blue', 'green', 'purple', 'yellow'];
+                        const color = colors[Math.floor(Math.random() * colors.length)];
+
+                        const div = document.createElement('div');
+                        div.className = 'activity-item';
+                        div.innerHTML = `
+                            <span class="activity-dot ${color}"></span>
+                            <div>
+                                <div class="activity-text">${activity.text || 'Activity'}</div>
+                                <span class="activity-time">${activity.timestamp ? new Date(activity.timestamp.toDate()).toLocaleString() : 'Just now'}</span>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // ============================================================
+        // HANDLE ERRORS (optional)
+        // ============================================================
+        console.log('✅ CS HUB Dashboard loaded successfully!');
     </script>
+
 </body>
 </html>
