@@ -279,9 +279,31 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        /* Welcome with Typing Animation */
+        /* Welcome with Matrix Loading Typing Animation */
         .welcome-section {
             padding: 20px 0 10px 0;
+        }
+
+        .welcome-section .matrix-line {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--dim);
+            font-size: 11px;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 4px;
+            min-height: 18px;
+        }
+
+        .welcome-section .matrix-line .highlight {
+            color: var(--cyan);
+        }
+
+        .welcome-section .matrix-line .green-text {
+            color: var(--green);
+        }
+
+        .welcome-section .matrix-line .purple-text {
+            color: var(--purple);
         }
 
         .welcome-section .env-tag {
@@ -290,8 +312,9 @@
             font-size: 11px;
             font-weight: bold;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             opacity: 0.7;
+            min-height: 20px;
         }
 
         .welcome-section h1 {
@@ -338,30 +361,31 @@
             border-radius: 2px;
         }
 
-        /* Code Quote Box */
+        /* Code Quote Box - Written in Code Handwriting */
         .welcome-section .quote-box {
-            margin-top: 12px;
-            padding: 16px 20px;
+            margin-top: 14px;
+            padding: 18px 22px;
             background: rgba(6, 182, 212, 0.04);
             border-left: 3px solid var(--cyan);
             border-radius: 0 10px 10px 0;
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             color: var(--dim);
-            line-height: 1.7;
+            line-height: 1.8;
             position: relative;
             overflow: hidden;
+            min-height: 80px;
         }
 
         .welcome-section .quote-box .quote-mark {
             color: var(--cyan);
             font-size: 18px;
-            opacity: 0.4;
+            opacity: 0.3;
             font-family: 'Georgia', serif;
         }
 
         .welcome-section .quote-box .code-comment {
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.15);
             font-size: 11px;
         }
 
@@ -377,17 +401,35 @@
             color: var(--cyan);
         }
 
+        .welcome-section .quote-box .code-number {
+            color: var(--yellow);
+        }
+
+        .welcome-section .quote-box .code-operator {
+            color: var(--red);
+        }
+
         .welcome-section .quote-box .quote-author {
             display: block;
             margin-top: 8px;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.2);
             text-align: right;
             font-style: italic;
             font-family: 'Inter', sans-serif;
         }
 
-        /* Stats Grid - Only 3 stats */
+        .welcome-section .quote-box .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            background: var(--cyan);
+            animation: blink 0.8s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -671,6 +713,7 @@
             .topbar { padding: 16px 24px; }
             .welcome-section h1 { font-size: 26px; min-height: 70px; }
             .welcome-section h1 .typing-cursor { height: 32px; }
+            .welcome-section .matrix-line { font-size: 12px; }
         }
 
         @media (min-width: 1024px) {
@@ -698,6 +741,7 @@
             .stat-card .stat-number { font-size: 28px; }
             .welcome-section h1 { font-size: 32px; min-height: 80px; }
             .welcome-section h1 .typing-cursor { height: 38px; }
+            .welcome-section .matrix-line { font-size: 13px; }
         }
 
         @media (max-width: 600px) {
@@ -713,6 +757,7 @@
             .welcome-section h1 { font-size: 18px; min-height: 50px; }
             .welcome-section h1 .typing-cursor { height: 22px; }
             .welcome-section .quote-box { font-size: 11px; padding: 12px 14px; }
+            .welcome-section .matrix-line { font-size: 9px; }
         }
 
         @media (max-width: 400px) {
@@ -795,22 +840,27 @@
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <!-- WELCOME WITH TYPING ANIMATION -->
+        <!-- WELCOME WITH MATRIX LOADING TYPING ANIMATION -->
         <section class="welcome-section">
-            <div class="env-tag">[ >_ ADMIN ENVIRONMENT ]</div>
+            <div id="matrixContainer">
+                <div class="matrix-line" id="matrixLine1"></div>
+                <div class="matrix-line" id="matrixLine2"></div>
+                <div class="matrix-line" id="matrixLine3"></div>
+            </div>
+            
+            <div class="env-tag" id="envTag"></div>
+            
             <h1 id="welcomeText">
-                <span id="typedPrefix">Welcome back, </span>
+                <span id="typedPrefix"></span>
                 <span class="highlight-name" id="typedName"></span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
             
-            <div class="quote-box">
+            <div class="quote-box" id="quoteBox">
                 <span class="quote-mark">"</span>
-                <span class="code-keyword">function</span> <span class="code-function">learn</span>() {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">const</span> <span class="code-string">knowledge</span> = <span class="code-function">build</span>();<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> knowledge.<span class="code-function">apply</span>();<br>
-                }
-                <span class="quote-author">— Lewis Einstein, CS HUB Founder</span>
+                <span id="quoteText"></span>
+                <span class="cursor-blink" id="quoteCursor"></span>
+                <span class="quote-author" id="quoteAuthor"></span>
             </div>
         </section>
 
@@ -971,9 +1021,9 @@
         }
 
         // ============================================================
-        // TYPING ANIMATION
+        // TYPING ANIMATION - FULL MATRIX LOADING SEQUENCE
         // ============================================================
-        function typeWriter(text, elementId, callback) {
+        function typeWriterFull(text, elementId, speed = 40, callback) {
             const el = document.getElementById(elementId);
             let i = 0;
             el.textContent = '';
@@ -982,7 +1032,7 @@
                 if (i < text.length) {
                     el.textContent += text.charAt(i);
                     i++;
-                    setTimeout(type, 50 + Math.random() * 30);
+                    setTimeout(type, speed + Math.random() * 20);
                 } else {
                     if (callback) callback();
                 }
@@ -990,13 +1040,130 @@
             type();
         }
 
-        function typeWelcome(name) {
-            const prefixEl = document.getElementById('typedPrefix');
-            prefixEl.textContent = 'Welcome back, ';
+        function typeWriterWithCursor(text, elementId, speed = 50, callback) {
+            const el = document.getElementById(elementId);
+            let i = 0;
+            el.textContent = '';
             
-            typeWriter(name, 'typedName', function() {
-                document.getElementById('typingCursor').style.display = 'inline-block';
-            });
+            function type() {
+                if (i < text.length) {
+                    el.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed + Math.random() * 20);
+                } else {
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        function startMatrixLoading() {
+            // Matrix lines
+            const lines = [
+                { id: 'matrixLine1', text: '⟳ Initializing CS HUB kernel...', color: 'dim' },
+                { id: 'matrixLine2', text: '⟳ Loading system modules...', color: 'dim' },
+                { id: 'matrixLine3', text: '⟳ Synchronizing with Firebase...', color: 'dim' }
+            ];
+
+            let lineIndex = 0;
+            
+            function typeNextLine() {
+                if (lineIndex < lines.length) {
+                    const line = lines[lineIndex];
+                    const el = document.getElementById(line.id);
+                    el.textContent = '';
+                    let i = 0;
+                    
+                    function typeChar() {
+                        if (i < line.text.length) {
+                            el.textContent += line.text.charAt(i);
+                            i++;
+                            setTimeout(typeChar, 30 + Math.random() * 20);
+                        } else {
+                            // Change color to green when done
+                            el.style.color = 'var(--green)';
+                            lineIndex++;
+                            setTimeout(typeNextLine, 300);
+                        }
+                    }
+                    typeChar();
+                } else {
+                    // All lines done, start env tag
+                    setTimeout(() => {
+                        typeWriterWithCursor('[ >_ ADMIN ENVIRONMENT ]', 'envTag', 40, () => {
+                            // Start welcome message
+                            setTimeout(() => {
+                                typeWriterWithCursor('Welcome back, ', 'typedPrefix', 30, () => {
+                                    typeWriterWithCursor('Admin Lewis', 'typedName', 50, () => {
+                                        document.getElementById('typingCursor').style.display = 'inline-block';
+                                        // Start quote after welcome
+                                        setTimeout(() => {
+                                            typeQuote();
+                                        }, 400);
+                                    });
+                                });
+                            }, 300);
+                        });
+                    }, 400);
+                }
+            }
+
+            typeNextLine();
+        }
+
+        // ============================================================
+        // CODE QUOTE TYPING
+        // ============================================================
+        function typeQuote() {
+            const quoteText = 
+                '<span class="code-keyword">function</span> <span class="code-function">learn</span>() {<br>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">const</span> <span class="code-string">knowledge</span> = <span class="code-function">build</span>();<br>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> knowledge.<span class="code-function">apply</span>();<br>' +
+                '}';
+            
+            const el = document.getElementById('quoteText');
+            const authorEl = document.getElementById('quoteAuthor');
+            const cursorEl = document.getElementById('quoteCursor');
+            
+            // Hide cursor initially
+            cursorEl.style.display = 'none';
+            
+            // Type the quote with HTML tags
+            let i = 0;
+            el.innerHTML = '';
+            
+            function typeQuoteChar() {
+                if (i < quoteText.length) {
+                    // Handle HTML tags properly
+                    if (quoteText.substring(i).startsWith('&lt;')) {
+                        el.innerHTML += '&lt;';
+                        i += 4;
+                    } else if (quoteText.substring(i).startsWith('&gt;')) {
+                        el.innerHTML += '&gt;';
+                        i += 4;
+                    } else if (quoteText.substring(i).startsWith('<span')) {
+                        // Find the full span tag
+                        let endIdx = quoteText.indexOf('</span>', i) + 7;
+                        el.innerHTML += quoteText.substring(i, endIdx);
+                        i = endIdx;
+                    } else if (quoteText.substring(i).startsWith('<br>')) {
+                        el.innerHTML += '<br>';
+                        i += 4;
+                    } else {
+                        el.innerHTML += quoteText.charAt(i);
+                        i++;
+                    }
+                    setTimeout(typeQuoteChar, 30 + Math.random() * 20);
+                } else {
+                    // Show author after quote
+                    cursorEl.style.display = 'none';
+                    setTimeout(() => {
+                        typeWriterWithCursor('— Lewis Einstein, CS HUB Founder', 'quoteAuthor', 30);
+                    }, 400);
+                }
+            }
+            
+            typeQuoteChar();
         }
 
         // ============================================================
@@ -1008,8 +1175,8 @@
                 return;
             }
             
-            // Start typing animation
-            typeWelcome('Admin Lewis');
+            // Start the full matrix loading sequence
+            startMatrixLoading();
             
             loadStats();
             loadActivityFeed();
