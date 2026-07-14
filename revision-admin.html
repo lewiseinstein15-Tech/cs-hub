@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - Revision Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* ROOT VARIABLES */
+        /* ============================================================ */
+        :root {
+            --bg-primary: #050816;
+            --bg-secondary: #08122c;
+            --bg-card: rgba(10, 15, 36, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --orange: #F97316;
+            --pink: #EC4899;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ============================================================ */
+        /* ANIMATED BACKGROUND */
+        /* ============================================================ */
+        .bg-effects {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-effects .glow-1 {
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.12), transparent 70%);
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+
+        .bg-effects .glow-2 {
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.10), transparent 70%);
+            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
+        }
+
+        .bg-effects .glow-3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.04), transparent 60%);
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+        }
+
+        .bg-effects .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* ============================================================ */
+        /* TOPBAR */
+        /* ============================================================ */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 8, 22, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .topbar .logo span {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            background: none;
+            -webkit-background-clip: unset;
+            color: var(--dim);
+            letter-spacing: 1px;
+            margin-left: 6px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-actions .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .topbar-actions .btn-back:hover {
+            background: rgba(236, 72, 153, 0.15);
+            border-color: var(--pink);
+            transform: translateX(-3px);
+        }
+
+        .topbar-actions .btn-back .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .topbar-actions .btn-back:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================ */
+        /* HERO */
+        /* ============================================================ */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 30px 30px 10px 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero .admin-badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: rgba(236, 72, 153, 0.10);
+            border: 1px solid rgba(236, 72, 153, 0.15);
+            color: var(--pink);
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 900;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .hero p {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* ============================================================ */
+        /* CATEGORY TABS */
+        /* ============================================================ */
+        .tabs {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 20px auto 0 auto;
+            padding: 0 30px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+        }
+
+        .tab-btn.active {
+            background: rgba(236, 72, 153, 0.08);
+            border-color: rgba(236, 72, 153, 0.2);
+            color: var(--pink);
+        }
+
+        .tab-btn .count {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+        }
+
+        /* ============================================================ */
+        /* MAIN CONTENT */
+        /* ============================================================ */
+        .admin-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 30px 40px 30px;
+        }
+
+        /* ============================================================ */
+        /* ADD FORM */
+        /* ============================================================ */
+        .add-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 30px;
+        }
+
+        .add-form h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.05);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group select option {
+            background: var(--bg-primary);
+            color: var(--white);
+        }
+
+        .btn-submit {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+            grid-column: 1 / -1;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ============================================================ */
+        /* ITEMS LIST */
+        /* ============================================================ */
+        .items-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .items-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dim);
+            letter-spacing: 0.5px;
+        }
+
+        .items-header .total {
+            font-size: 12px;
+            color: var(--dim);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .items-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: all 0.3s ease;
+        }
+
+        .item-row:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .item-row .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-row .item-info .title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .item-row .item-info .url {
+            font-size: 11px;
+            color: var(--dim);
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-all;
+        }
+
+        .item-row .item-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .item-row .item-actions button {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .item-row .item-actions .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .item-row .item-actions .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* ============================================================ */
+        /* TOAST NOTIFICATION */
+        /* ============================================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            border-color: var(--green);
+        }
+        .toast.error {
+            border-color: var(--red);
+        }
+        .toast.info {
+            border-color: var(--blue);
+        }
+
+        /* ============================================================ */
+        /* RESPONSIVE */
+        /* ============================================================ */
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .topbar .logo {
+                font-size: 18px;
+            }
+            .hero {
+                padding: 20px 16px 5px 16px;
+            }
+            .tabs {
+                padding: 0 16px;
+                gap: 6px;
+            }
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+            .admin-section {
+                padding: 15px 16px 30px 16px;
+            }
+            .add-form {
+                padding: 18px 16px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .item-row {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .item-row .item-actions {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .toast {
+                width: 90%;
+                font-size: 13px;
+                padding: 12px 18px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .topbar-actions .btn-back span {
+                display: none;
+            }
+            .tab-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- BACKGROUND EFFECTS -->
+    <!-- ============================================================ -->
+    <div class="bg-effects">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        <div class="glow-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TOPBAR -->
+    <!-- ============================================================ -->
+    <header class="topbar">
+        <a href="dashboard.html" class="logo">
+            CS HUB
+            <span>Admin</span>
+        </a>
+        <div class="topbar-actions">
+            <a href="revision-material.html" class="btn-back">
+                <span class="arrow">←</span>
+                <span>Materials</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- HERO -->
+    <!-- ============================================================ -->
+    <section class="hero">
+        <span class="admin-badge">🔑 Admin Panel</span>
+        <h1>Manage Revision Materials</h1>
+        <p>Add, edit, or remove books, YouTube tutorials, lecture videos, and exam papers.</p>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TABS -->
+    <!-- ============================================================ -->
+    <div class="tabs" id="tabContainer">
+        <button class="tab-btn active" data-category="books">📚 Books <span class="count" id="countBooks">0</span></button>
+        <button class="tab-btn" data-category="youtube">📺 YouTube <span class="count" id="countYoutube">0</span></button>
+        <button class="tab-btn" data-category="lectures">🎥 Lectures <span class="count" id="countLectures">0</span></button>
+        <button class="tab-btn" data-category="exams">📝 Exams <span class="count" id="countExams">0</span></button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ADMIN SECTION -->
+    <!-- ============================================================ -->
+    <section class="admin-section">
+
+        <!-- ===== ADD FORM ===== -->
+        <div class="add-form" id="addForm">
+            <h3 id="formTitle">➕ Add New Item</h3>
+            <input type="hidden" id="editKey" value="">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Item Title</label>
+                    <input type="text" id="itemTitle" placeholder="e.g., Introduction to Algorithms" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="itemCategory">
+                        <option value="books">📚 Books & Guides</option>
+                        <option value="youtube">📺 YouTube Tutorials</option>
+                        <option value="lectures">🎥 Lecture Videos</option>
+                        <option value="exams">📝 Exams & CATs</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>URL / Link</label>
+                    <input type="url" id="itemUrl" placeholder="https://example.com/resource" required>
+                </div>
+                <button class="btn-submit" id="submitBtn">➕ Add Item</button>
+            </div>
+        </div>
+
+        <!-- ===== ITEMS LIST ===== -->
+        <div class="items-header">
+            <h3 id="listTitle">📚 Books &amp; Guides</h3>
+            <span class="total" id="totalItems">0 items</span>
+        </div>
+        <div class="items-list" id="itemsList">
+            <p style="color: var(--dim); text-align: center; padding: 30px 0;">Loading items...</p>
+        </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOAST NOTIFICATION -->
+    <!-- ============================================================ -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================================ -->
+    <!-- FIREBASE -->
+    <!-- ============================================================ -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
+    </script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.appspot.com",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentCategory = 'books';
+        let allItems = {};
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const itemsList = document.getElementById('itemsList');
+        const totalItems = document.getElementById('totalItems');
+        const listTitle = document.getElementById('listTitle');
+        const formTitle = document.getElementById('formTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const editKey = document.getElementById('editKey');
+        const itemTitle = document.getElementById('itemTitle');
+        const itemCategory = document.getElementById('itemCategory');
+        const itemUrl = document.getElementById('itemUrl');
+        const toast = document.getElementById('toast');
+
+        // ============================================================
+        // AUTH CHECK
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+                window.location.href = 'revision-material.html';
+                return;
+            }
+            console.log('✅ Admin authenticated');
+            loadCounts();
+            loadItems(currentCategory);
+        });
+
+        // ============================================================
+        // TAB SWITCHING
+        // ============================================================
+        tabBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                loadItems(currentCategory);
+                updateFormCategory(currentCategory);
+            });
+        });
+
+        function updateFormCategory(category) {
+            const names = {
+                'books': '📚 Books & Guides',
+                'youtube': '📺 YouTube Tutorials',
+                'lectures': '🎥 Lecture Videos',
+                'exams': '📝 Exams & CATs'
+            };
+            itemCategory.value = category;
+            const titles = {
+                'books': '📚 Books &amp; Guides',
+                'youtube': '📺 YouTube Tutorials',
+                'lectures': '🎥 Lecture Videos',
+                'exams': '📝 Exams &amp; CATs'
+            };
+            listTitle.innerHTML = titles[category] || category;
+        }
+
+        // ============================================================
+        // LOAD COUNTS
+        // ============================================================
+        function loadCounts() {
+            const categories = ['books', 'youtube', 'lectures', 'exams'];
+            categories.forEach((cat) => {
+                const ref = db.ref('materials/' + cat);
+                ref.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    let count = 0;
+                    if (data) count = Object.keys(data).length;
+                    document.getElementById('count' + cat.charAt(0).toUpperCase() + cat.slice(1)).textContent = count;
+                });
+            });
+        }
+
+        // ============================================================
+        // LOAD ITEMS
+        // ============================================================
+        function loadItems(category) {
+            const ref = db.ref('materials/' + category);
+
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val();
+                allItems = data || {};
+                renderItems(data, category);
+            });
+        }
+
+        function renderItems(data, category) {
+            itemsList.innerHTML = '';
+
+            const keys = Object.keys(data || {});
+            totalItems.textContent = keys.length + ' item' + (keys.length !== 1 ? 's' : '');
+
+            if (keys.length === 0) {
+                itemsList.innerHTML = `
+                    <p style="color: var(--dim); text-align: center; padding: 30px 0;">
+                        📭 No items in this category. Add one above!
+                    </p>
+                `;
+                return;
+            }
+
+            keys.forEach((key) => {
+                const item = data[key];
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <div class="item-info">
+                        <span class="title">${item.title || 'Untitled'}</span>
+                        <span class="url">${item.url || 'No URL'}</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-edit" onclick="editItem('${category}','${key}')">✏️ Edit</button>
+                        <button class="btn-delete" onclick="deleteItem('${category}','${key}')">🗑️ Delete</button>
+                    </div>
+                `;
+                itemsList.appendChild(row);
+            });
+        }
+
+        // ============================================================
+        // ADD / UPDATE ITEM
+        // ============================================================
+        submitBtn.addEventListener('click', () => {
+            const title = itemTitle.value.trim();
+            const category = itemCategory.value;
+            const url = itemUrl.value.trim();
+            const key = editKey.value;
+
+            if (!title || !url) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+
+            // Validate URL
+            try {
+                new URL(url);
+            } catch (_) {
+                showToast('Please enter a valid URL (include https://)', 'error');
+                return;
+            }
+
+            const ref = db.ref('materials/' + category);
+
+            if (key) {
+                // Update existing
+                ref.child(key).update({
+                    title: title,
+                    url: url
+                }).then(() => {
+                    showToast('✅ Item updated successfully!', 'success');
+                    resetForm();
+                    // Switch to the category of the updated item
+                    switchTab(category);
+                }).catch((err) => {
+                    showToast('❌ Error updating item: ' + err.message, 'error');
+                });
+            } else {
+                // Add new
+                ref.push({
+                    title: title,
+                    url: url
+                }).then(() => {
+                    showToast('✅ Item added successfully!', 'success');
+                    resetForm();
+                    switchTab(category);
+                }).catch((err) => {
+                    showToast('❌ Error adding item: ' + err.message, 'error');
+                });
+            }
+        });
+
+        // ============================================================
+        // EDIT ITEM
+        // ============================================================
+        function editItem(category, key) {
+            const ref = db.ref('materials/' + category + '/' + key);
+            ref.once('value', (snapshot) => {
+                const item = snapshot.val();
+                if (item) {
+                    itemTitle.value = item.title || '';
+                    itemUrl.value = item.url || '';
+                    itemCategory.value = category;
+                    editKey.value = key;
+                    submitBtn.textContent = '💾 Update Item';
+                    formTitle.textContent = '✏️ Edit Item';
+                    switchTab(category);
+                    showToast('📝 Editing: ' + (item.title || 'Untitled'), 'info');
+                }
+            });
+        }
+
+        // ============================================================
+        // DELETE ITEM
+        // ============================================================
+        function deleteItem(category, key) {
+            const ref = db.ref('materials/' + category + '/' + key);
+            // Get title for confirmation
+            ref.once('value', (snapshot) => {
+                const item = snapshot.val();
+                const title = item ? item.title : 'this item';
+                if (confirm('🗑️ Delete "' + title + '" ?')) {
+                    ref.remove().then(() => {
+                        showToast('🗑️ "' + title + '" deleted', 'success');
+                        if (editKey.value === key) resetForm();
+                    }).catch((err) => {
+                        showToast('❌ Error deleting: ' + err.message, 'error');
+                    });
+                }
+            });
+        }
+
+        // ============================================================
+        // HELPER FUNCTIONS
+        // ============================================================
+        function resetForm() {
+            itemTitle.value = '';
+            itemUrl.value = '';
+            editKey.value = '';
+            submitBtn.textContent = '➕ Add Item';
+            formTitle.textContent = '➕ Add New Item';
+            // Don't reset category - keep it as is
+        }
+
+        function switchTab(category) {
+            tabBtns.forEach((btn) => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            currentCategory = category;
+            loadItems(category);
+            updateFormCategory(category);
+        }
+
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            // Force reflow
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        // KEYBOARD SHORTCUT: Enter to submit
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.target.id === 'itemTitle' || e.target.id === 'itemUrl')) {
+                submitBtn.click();
+            }
+        });
+
+        console.log('✅ Revision Admin Panel loaded!');
+    </script>
+
+</body>
+</html>
