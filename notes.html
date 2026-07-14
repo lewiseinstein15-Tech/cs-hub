@@ -1,457 +1,932 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CS HUB NOTES</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
-
-<style>
-
-:root{
---bg:#050816;
---blue:#3B82F6;
---cyan:#06B6D4;
---purple:#8B5CF6;
---text:#ffffff;
---dim:rgba(255,255,255,.55);
-}
-
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-
-body{
-
-min-height:100vh;
-background:var(--bg);
-color:var(--text);
-font-family:'JetBrains Mono',monospace;
-overflow-x:hidden;
-
-}
-
-
-/* background */
-
-body::before{
-
-content:"";
-
-position:fixed;
-inset:0;
-
-background:
-radial-gradient(circle at 20% 20%,rgba(59,130,246,.2),transparent 35%),
-radial-gradient(circle at 80% 80%,rgba(6,182,212,.18),transparent 35%);
-
-z-index:-2;
-
-}
-
-
-
-
-/* moving code */
-
-.code{
-
-position:fixed;
-
-color:rgba(6,182,212,.18);
-
-font-size:13px;
-
-line-height:2;
-
-animation:move 18s linear infinite;
-
-z-index:-1;
-
-}
-
-
-@keyframes move{
-
-from{
-transform:translateY(120vh);
-}
-
-to{
-transform:translateY(-40vh);
-}
-
-}
-
-
-
-
-
-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 25px;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-backdrop-filter:blur(15px);
-
-}
-
-
-
-.logo{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:20px;
-
-font-weight:800;
-
-background:linear-gradient(90deg,var(--blue),var(--cyan));
-
--webkit-background-clip:text;
-
-color:transparent;
-
-}
-
-
-
-.back{
-
-color:white;
-
-text-decoration:none;
-
-font-size:13px;
-
-}
-
-
-
-
-.container{
-
-padding:30px 25px;
-
-}
-
-
-
-
-.title{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:22px;
-
-letter-spacing:2px;
-
-}
-
-
-
-.subtitle{
-
-margin-top:8px;
-
-color:var(--dim);
-
-font-size:13px;
-
-margin-bottom:35px;
-
-}
-
-
-
-
-/* year menu */
-
-
-.year-list{
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-}
-
-
-
-.year{
-
-display:flex;
-
-align-items:center;
-
-gap:18px;
-
-padding:18px;
-
-border-left:3px solid var(--cyan);
-
-background:rgba(255,255,255,.04);
-
-border-radius:12px;
-
-transition:.3s;
-
-text-decoration:none;
-
-color:white;
-
-}
-
-
-
-.year:hover{
-
-background:rgba(6,182,212,.12);
-
-transform:translateX(8px);
-
-}
-
-
-
-.number{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:22px;
-
-color:var(--cyan);
-
-}
-
-
-
-.info h2{
-
-font-family:'Orbitron',sans-serif;
-
-font-size:16px;
-
-}
-
-
-
-.info p{
-
-font-size:12px;
-
-color:var(--dim);
-
-margin-top:5px;
-
-}
-
-
-
-
-footer{
-
-text-align:center;
-
-padding:30px;
-
-font-size:12px;
-
-color:var(--dim);
-
-}
-
-
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - Notes Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-item.active a {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+
+        .sidebar-profile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
+        .profile-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        .sidebar-footer {
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+        }
+
+        /* Workspace */
+        .workspace {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background-color: rgba(6, 9, 25, 0.3);
+            backdrop-filter: blur(15px);
+            flex-shrink: 0;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .admin-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shield-icon {
+            font-size: 18px;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .admin-details h4 { font-size: 13px; color: var(--white); }
+        .admin-details span { font-size: 11px; color: var(--dim); }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+        }
+
+        .btn-settings {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
+        }
+        .btn-settings:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+        .btn-logout:hover {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .content-area {
+            padding: 30px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Hero */
+        .hero-terminal {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .env-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero-terminal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .hero-terminal p {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--green);
+        }
+        .stat-box .label {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Add Form */
+        .add-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .add-form .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--green);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 14px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.05);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: rgba(255, 255, 255, 0.2); }
+        .form-group select option { background: var(--bg); color: var(--white); }
+
+        .btn-submit {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--green), var(--cyan));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Notes List */
+        .notes-list-header {
+            display: grid;
+            grid-template-columns: 120px 1fr 100px 60px;
+            gap: 12px;
+            padding: 10px 4px;
+            border-bottom: 1px solid var(--border);
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .note-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 100px 60px;
+            gap: 12px;
+            padding: 12px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            align-items: center;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .note-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .note-row .title {
+            font-weight: 500;
+            color: var(--white);
+        }
+        .note-row .unit {
+            font-size: 12px;
+            color: var(--dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .note-row .status {
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 12px;
+            text-align: center;
+            width: fit-content;
+        }
+        .note-row .status.published {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+        .note-row .status.draft {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--yellow);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+        .note-row .actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+        .note-row .actions button {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .note-row .actions .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+        .note-row .actions .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .empty-notes {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.info { border-color: var(--blue); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .menu-toggle { display: flex; }
+            .topbar-right { position: relative; width: auto; }
+            .sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .content-area { padding: 20px 15px; }
+            .admin-details span { display: none; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .form-grid .btn-submit { grid-column: 1 / -1; }
+            .notes-list-header { display: none; }
+            .note-row {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                padding: 14px;
+            }
+            .note-row .actions { justify-content: flex-start; margin-top: 6px; }
+            .note-row .status { text-align: left; }
+        }
+
+        @media (max-width: 600px) {
+            .topbar { padding: 0 16px; height: 65px; }
+            .topbar-right .btn-settings span { display: none; }
+            .topbar-right .btn-logout span { display: none; }
+            .admin-meta .admin-details span { display: none; }
+            .admin-meta .shield-icon { display: none; }
+            .hero-terminal h2 { font-size: 20px; }
+            .hero-terminal { padding: 20px; }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-box .number { font-size: 22px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .content-area { padding: 12px; }
+        }
+
+        @media (min-width: 1025px) {
+            .stats-row { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
 </head>
-
-
 <body>
 
-
-<div class="code" style="left:10%">
-Artificial Intelligence<br>
-Python<br>
-Algorithms<br>
-Data Science
-</div>
-
-
-<div class="code" style="left:55%;animation-delay:5s">
-Programming<br>
-Cyber Security<br>
-Networking<br>
-Database
-</div>
-
-
-
-
-<header>
-
-<div class="logo">
-CS HUB NOTES
-</div>
-
-
-<a class="back" href="dashboard.html">
-← Dashboard
-</a>
-
-
-</header>
-
-
-
-
-
-<div class="container">
-
-
-<div class="title">
-KNOWLEDGE DATABASE
-</div>
-
-
-<div class="subtitle">
-Select your Computer Science academic level
-</div>
-
-
-
-
-<div class="year-list">
-
-
-
-<a class="year" href="year1.html">
-
-<div class="number">
-01
-</div>
-
-<div class="info">
-
-<h2>
-YEAR 1
-</h2>
-
-<p>
-Foundation & Core Programming
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a class="year" href="year2.html">
-
-<div class="number">
-02
-</div>
-
-<div class="info">
-
-<h2>
-YEAR 2
-</h2>
-
-<p>
-Intermediate Computer Science
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a class="year" href="year3.html">
-
-<div class="number">
-03
-</div>
-
-<div class="info">
-
-<h2>
-YEAR 3
-</h2>
-
-<p>
-Advanced Computing Systems
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a class="year" href="year4.html">
-
-<div class="number">
-04
-</div>
-
-<div class="info">
-
-<h2>
-YEAR 4
-</h2>
-
-<p>
-Professional & Specialization
-</p>
-
-</div>
-
-</a>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-<footer>
-
-CS HUB OS © 2026
-
-</footer>
-
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>ADMIN SYSTEM</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item active"><a href="notes.html">📚 Notes Control</a></li>
+                <li class="nav-item"><a href="admin-units.html">🎓 Units Control Panel</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                <li class="nav-item"><a href="revision-material.html">📝 Revision Material</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar">AL</div>
+                <div class="profile-name">Admin Lewis</div>
+                <div class="profile-role">Super Admin</div>
+            </div>
+            <div class="sidebar-footer">© 2026 CS Hub<br>All rights reserved.</div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="workspace">
+        <header class="topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <div class="topbar-right">
+                <div class="admin-meta">
+                    <span class="shield-icon">🛡️</span>
+                    <div class="admin-details">
+                        <h4>Admin Lewis</h4>
+                        <span>lewiseinstein15@gmail.com</span>
+                    </div>
+                </div>
+                <button class="btn-action btn-settings" onclick="window.location.href='settings.html'">⚙️ Settings</button>
+                <button class="btn-action btn-logout" onclick="logout()">Logout &rarr;</button>
+            </div>
+        </header>
+
+        <div class="content-area">
+
+            <!-- HERO -->
+            <section class="hero-terminal">
+                <div class="env-tag">[ >_ NOTES CONTROL NODE ]</div>
+                <h2>📚 Notes Control Panel</h2>
+                <p>Manage all study notes across the BSc Computer Science curriculum — add, edit, or delete notes for all units.</p>
+            </section>
+
+            <!-- STATS -->
+            <section class="stats-row">
+                <div class="stat-box">
+                    <div class="number" id="totalNotes">0</div>
+                    <div class="label">Total Notes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="publishedNotes">0</div>
+                    <div class="label">Published</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="draftNotes">0</div>
+                    <div class="label">Drafts</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="unitsWithNotes">0</div>
+                    <div class="label">Units Covered</div>
+                </div>
+            </section>
+
+            <!-- ADD FORM -->
+            <div class="add-form">
+                <div class="section-title">➕ Add New Note</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Note Title</label>
+                        <input type="text" id="noteTitle" placeholder="e.g., Chapter 1: Introduction">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Code</label>
+                        <input type="text" id="noteUnit" placeholder="e.g., CSC1110">
+                    </div>
+                    <div class="form-group">
+                        <label>Topic</label>
+                        <input type="text" id="noteTopic" placeholder="e.g., Variables and Data Types">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="noteStatus">
+                            <option value="Published">✅ Published</option>
+                            <option value="Draft">📝 Draft</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit" onclick="addNote()">➕ Add Note</button>
+                </div>
+            </div>
+
+            <!-- NOTES LIST -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--dim); letter-spacing: 0.5px;">📋 All Notes</h3>
+                <span style="font-size: 12px; color: var(--dim);" id="noteCount">0 notes</span>
+            </div>
+
+            <div class="notes-list-header">
+                <span>Title</span>
+                <span>Unit / Topic</span>
+                <span>Status</span>
+                <span>Actions</span>
+            </div>
+            <div id="notesList">
+                <div class="empty-notes">Loading notes...</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        let editingNoteId = null;
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+                window.location.href = "index.html";
+                return;
+            }
+            loadNotes();
+        });
+
+        function logout() {
+            auth.signOut().then(() => { window.location.href = "index.html"; });
+        }
+
+        // ============================================================
+        // SIDEBAR
+        // ============================================================
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("open");
+        }
+
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".menu-toggle");
+            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                sidebar.classList.remove("open");
+            }
+        });
+
+        // ============================================================
+        // LOAD NOTES
+        // ============================================================
+        function loadNotes() {
+            const listDiv = document.getElementById('notesList');
+
+            db.collection("notes").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+                listDiv.innerHTML = "";
+
+                let total = 0,
+                    published = 0,
+                    draft = 0;
+                const unitsSet = new Set();
+
+                if (snapshot.empty) {
+                    listDiv.innerHTML = `<div class="empty-notes">📭 No notes found. Add your first note above!</div>`;
+                    updateStats(0, 0, 0, 0);
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const note = doc.data();
+                    const id = doc.id;
+                    total++;
+
+                    if (note.status === "Published") published++;
+                    else if (note.status === "Draft") draft++;
+
+                    if (note.unit) unitsSet.add(note.unit);
+
+                    const row = document.createElement('div');
+                    row.className = 'note-row';
+                    row.innerHTML = `
+                        <span class="title">${note.title || 'Untitled'}</span>
+                        <span class="unit">${note.unit || 'N/A'} / ${note.topic || ''}</span>
+                        <span class="status ${note.status === 'Published' ? 'published' : 'draft'}">${note.status || 'Draft'}</span>
+                        <div class="actions">
+                            <button class="btn-edit" onclick="editNote('${id}')">✏️</button>
+                            <button class="btn-delete" onclick="deleteNote('${id}')">🗑️</button>
+                        </div>
+                    `;
+                    listDiv.appendChild(row);
+                });
+
+                updateStats(total, published, draft, unitsSet.size);
+                document.getElementById('noteCount').textContent = total + ' notes';
+            });
+        }
+
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateStats(total, published, draft, units) {
+            document.getElementById('totalNotes').textContent = total;
+            document.getElementById('publishedNotes').textContent = published;
+            document.getElementById('draftNotes').textContent = draft;
+            document.getElementById('unitsWithNotes').textContent = units;
+        }
+
+        // ============================================================
+        // ADD NOTE
+        // ============================================================
+        function addNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const unit = document.getElementById('noteUnit').value.trim();
+            const topic = document.getElementById('noteTopic').value.trim();
+            const status = document.getElementById('noteStatus').value;
+
+            if (!title || !unit) {
+                showToast('Please fill in Title and Unit Code', 'error');
+                return;
+            }
+
+            const noteData = {
+                title: title,
+                unit: unit,
+                topic: topic || 'General',
+                status: status,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (editingNoteId) {
+                // Update existing note
+                db.collection("notes").doc(editingNoteId).update(noteData)
+                    .then(() => {
+                        showToast(`✅ Updated: ${title}`, 'success');
+                        resetForm();
+                        db.collection("activity_logs").add({
+                            text: `Updated note: ${title} (${unit})`,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    })
+                    .catch((err) => {
+                        showToast('❌ Error: ' + err.message, 'error');
+                    });
+            } else {
+                // Add new note
+                db.collection("notes").add(noteData)
+                    .then(() => {
+                        showToast(`✅ Added: ${title}`, 'success');
+                        resetForm();
+                        db.collection("activity_logs").add({
+                            text: `Added note: ${title} (${unit})`,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    })
+                    .catch((err) => {
+                        showToast('❌ Error: ' + err.message, 'error');
+                    });
+            }
+        }
+
+        // ============================================================
+        // EDIT NOTE
+        // ============================================================
+        function editNote(id) {
+            db.collection("notes").doc(id).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const note = doc.data();
+                        document.getElementById('noteTitle').value = note.title || '';
+                        document.getElementById('noteUnit').value = note.unit || '';
+                        document.getElementById('noteTopic').value = note.topic || '';
+                        document.getElementById('noteStatus').value = note.status || 'Draft';
+                        editingNoteId = id;
+                        document.querySelector('.add-form .section-title').textContent = '✏️ Edit Note';
+                        document.querySelector('.btn-submit').textContent = '💾 Update Note';
+                        document.getElementById('noteTitle').focus();
+                        showToast('📝 Editing: ' + note.title, 'info');
+                    }
+                });
+        }
+
+        // ============================================================
+        // DELETE NOTE
+        // ============================================================
+        function deleteNote(id) {
+            db.collection("notes").doc(id).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const note = doc.data();
+                        const name = note.title || 'Untitled';
+                        if (confirm(`🗑️ Are you sure you want to delete "${name}"?`)) {
+                            db.collection("notes").doc(id).delete()
+                                .then(() => {
+                                    showToast(`🗑️ "${name}" deleted`, 'success');
+                                    db.collection("activity_logs").add({
+                                        text: `Deleted note: ${name}`,
+                                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                                    });
+                                    if (editingNoteId === id) resetForm();
+                                })
+                                .catch((err) => {
+                                    showToast('❌ Error: ' + err.message, 'error');
+                                });
+                        }
+                    }
+                });
+        }
+
+        // ============================================================
+        // RESET FORM
+        // ============================================================
+        function resetForm() {
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteUnit').value = '';
+            document.getElementById('noteTopic').value = '';
+            document.getElementById('noteStatus').value = 'Published';
+            editingNoteId = null;
+            document.querySelector('.add-form .section-title').textContent = '➕ Add New Note';
+            document.querySelector('.btn-submit').textContent = '➕ Add Note';
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        // KEYBOARD SHORTCUT: Enter to submit
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.target.id === 'noteTitle' || e.target.id === 'noteUnit' || e.target.id ===
+                    'noteTopic')) {
+                addNote();
+            }
+        });
+
+        console.log('✅ Notes Control Panel loaded!');
+    </script>
 
 </body>
-
 </html>
