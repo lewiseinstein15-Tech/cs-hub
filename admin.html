@@ -2,92 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>CS HUB Admin</title>
     <style>
-        body { font-family: sans-serif; background: #111; color: white; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: #222; padding: 25px; border-radius: 10px; border: 1px solid #333; }
-        input, select, button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 5px; border: none; font-size: 16px; box-sizing: border-box; }
-        .btn-update { background: #0F0; color: #000; font-weight: bold; cursor: pointer; }
-        .btn-login { background: #4285F4; color: white; font-weight: bold; cursor: pointer; }
-        #dashboard { display: none; } /* Hidden until logged in */
+        body { background: #000; color: #0F0; font-family: sans-serif; padding: 20px; }
+        .admin-box { max-width: 400px; margin: auto; border: 2px solid #0F0; padding: 20px; }
+        input, select, button { width: 100%; padding: 15px; margin: 10px 0; background: #222; color: #0F0; border: 1px solid #0F0; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2 style="color: #0F0;">Secure Admin Panel</h2>
-    
-    <!-- Login Section -->
-    <div id="loginSection">
-        <p>You must authenticate to access the database.</p>
-        <button class="btn-login" onclick="adminLogin()">Login with Google</button>
-    </div>
-
-    <!-- Admin Controls Section -->
-    <div id="dashboard">
-        <p style="color: #0F0;">Status: Connected as Admin</p>
-        <input type="text" id="titleInput" placeholder="Material Title">
-        <input type="text" id="linkInput" placeholder="Paste URL/Link Here">
-        <select id="category">
-            <option value="books">Books & Guides</option>
-            <option value="youtube">YouTube Tutorials</option>
-            <option value="lectures">Lecture Videos</option>
-            <option value="exams">Exams & CATs</option>
-        </select>
-        <button class="btn-update" onclick="saveMaterial()">Update Database</button>
-    </div>
+<div class="admin-box">
+    <h2>Admin Access</h2>
+    <input type="text" id="title" placeholder="Title">
+    <input type="text" id="url" placeholder="Link">
+    <select id="cat">
+        <option value="books">Books</option>
+        <option value="youtube">YouTube</option>
+        <option value="lectures">Lectures</option>
+        <option value="exams">Exams</option>
+    </select>
+    <button onclick="save()">Update Database</button>
 </div>
-
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-        authDomain: "cs-hub-7c97b.firebaseapp.com",
-        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
-        projectId: "cs-hub-7c97b",
-        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-    const provider = new GoogleAuthProvider();
-
-    // Login Function
-    window.adminLogin = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                if (result.user.email === "lewiseinstein5@gmail.com") {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('dashboard').style.display = 'block';
-                } else {
-                    alert("Unauthorized Email.");
-                    auth.signOut();
-                }
-            })
-            .catch((error) => alert("Login Failed: " + error.message));
-    };
-
-    // Save Function
-    window.saveMaterial = () => {
-        const title = document.getElementById('titleInput').value;
-        const url = document.getElementById('linkInput').value;
-        const cat = document.getElementById('category').value;
-        
-        if(!title || !url) return alert("Please fill all fields.");
-        
-        push(ref(db, 'materials/' + cat), { title, url })
-            .then(() => {
-                alert("Database Updated!");
-                document.getElementById('titleInput').value = '';
-                document.getElementById('linkInput').value = '';
-            })
-            .catch((e) => alert("Error: " + e.message));
-    };
+    // Add Firebase init and save() logic here exactly like our previous working Admin code
 </script>
 </body>
 </html>
