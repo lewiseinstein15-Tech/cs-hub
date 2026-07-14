@@ -458,7 +458,7 @@ try{
 const userCredential = await auth.createUserWithEmailAndPassword(email,password);
 
 
-await db.collection("users").doc(userCredential.user.uid).set({
+await db.collection("Users").doc(userCredential.user.uid).set({
 
 name:name,
 
@@ -481,7 +481,10 @@ alert(error.message);
 }
 
 
-}async function loginUser(){
+}
+
+
+async function loginUser(){
 
 const email=document.getElementById("loginEmail").value;
 
