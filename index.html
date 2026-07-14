@@ -2,664 +2,499 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>CS HUB OS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-
-:root{
---bg:#050816;
---blue:#3B82F6;
---cyan:#06B6D4;
---purple:#8B5CF6;
---green:#22C55E;
---white:#ffffff;
---glass:rgba(255,255,255,.05);
---border:rgba(255,255,255,.12);
-}
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-body{
-height:100vh;
-overflow:hidden;
-background:var(--bg);
-color:white;
-font-family:Inter,sans-serif;
-}
-
-
-/* Background glow */
-
-.background{
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%,rgba(59,130,246,.25),transparent 40%),
-radial-gradient(circle at 80% 80%,rgba(6,182,212,.25),transparent 40%),
-radial-gradient(circle at 50% 50%,rgba(139,92,246,.15),transparent 50%);
-}
-
-
-/* Code rain */
-
-#codeRain{
-position:fixed;
-inset:0;
-overflow:hidden;
-opacity:.25;
-font-family:"JetBrains Mono";
-color:#3B82F6;
-}
-
-
-/* Boot screen */
-
-#boot{
-position:fixed;
-inset:0;
-z-index:10;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#050816;
-}
-
-
-.boot-box{
-
-width:380px;
-padding:35px;
-border-radius:25px;
-background:var(--glass);
-border:1px solid var(--border);
-backdrop-filter:blur(20px);
-text-align:center;
-
-}
-
-
-.logo{
-
-font-family:"JetBrains Mono";
-font-size:35px;
-font-weight:800;
-letter-spacing:4px;
-
-background:linear-gradient(90deg,var(--blue),var(--cyan));
--webkit-background-clip:text;
-color:transparent;
-
-}
-
-
-.boot-text{
-
-margin-top:20px;
-font-size:13px;
-color:rgba(255,255,255,.6);
-font-family:"JetBrains Mono";
-
-}
-
-
-.loading{
-
-height:6px;
-background:rgba(255,255,255,.1);
-border-radius:10px;
-margin-top:25px;
-overflow:hidden;
-
-}
-
-
-.loading span{
-
-display:block;
-height:100%;
-width:0%;
-background:linear-gradient(90deg,var(--blue),var(--cyan));
-animation:load 4s forwards;
-
-}
-
-
-@keyframes load{
-
-to{
-width:100%;
-}
-
-}
-
-
-/* Login area */
-
-#app{
-
-display:none;
-height:100vh;
-align-items:center;
-justify-content:center;
-padding:20px;
-
-}
-
-
-.card{
-
-width:400px;
-padding:35px;
-border-radius:25px;
-
-background:var(--glass);
-border:1px solid var(--border);
-
-backdrop-filter:blur(25px);
-
-box-shadow:
-0 0 50px rgba(59,130,246,.15);
-
-}
-
-
-.brand{
-
-text-align:center;
-margin-bottom:30px;
-
-}
-
-
-.brand h1{
-
-font-family:"JetBrains Mono";
-font-size:28px;
-
-background:linear-gradient(90deg,var(--blue),var(--cyan));
--webkit-background-clip:text;
-color:transparent;
-
-}
-
-
-.brand p{
-
-font-size:12px;
-color:rgba(255,255,255,.5);
-margin-top:8px;
-
-}
-
-
-input{
-
-width:100%;
-padding:14px;
-margin-bottom:15px;
-
-border-radius:12px;
-
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.15);
-
-color:white;
-outline:none;
-
-}
-
-
-button{
-
-width:100%;
-padding:14px;
-
-border:none;
-border-radius:12px;
-
-background:linear-gradient(90deg,var(--blue),var(--cyan));
-
-color:white;
-
-font-weight:700;
-cursor:pointer;
-
-}
-
-
-button:hover{
-
-transform:translateY(-2px);
-
-}
-
-
-.link{
-
-text-align:center;
-margin-top:20px;
-font-size:13px;
-color:var(--cyan);
-cursor:pointer;
-
-}
-
-
-.hidden{
-
-display:none;
-
-}
-
+  :root{
+    --bg:#040a04;
+    --green:#22ff66;
+    --green-dim:#0e5c26;
+    --green-glow:rgba(34,255,102,0.35);
+    --text:#c9ffd8;
+    --text-dim:rgba(201,255,216,0.5);
+    --panel:rgba(10,25,14,0.55);
+    --panel-border:rgba(34,255,102,0.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    width:100%;min-height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+  }
+  ::selection{background:var(--green);color:#000;}
+
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;
+    background-image:
+      linear-gradient(rgba(34,255,102,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34,255,102,0.04) 1px, transparent 1px);
+    background-size:38px 38px;
+    pointer-events:none;
+  }
+  .glow-field{
+    position:fixed;inset:0;z-index:0;
+    background:
+      radial-gradient(ellipse 700px 500px at 15% 15%, rgba(34,255,102,0.08), transparent 60%),
+      radial-gradient(ellipse 600px 500px at 85% 85%, rgba(34,255,102,0.06), transparent 60%);
+    pointer-events:none;
+  }
+
+  #codeRain{
+    position:fixed;inset:0;z-index:1;
+    overflow:hidden;opacity:.18;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--green);
+    pointer-events:none;
+  }
+
+  .wrap{
+    position:relative;z-index:2;
+    max-width:1180px;margin:0 auto;
+    padding:28px 20px 60px;
+  }
+
+  .topbrand{
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:30px;
+  }
+  .topbrand .mark{
+    width:46px;height:46px;border-radius:12px;
+    border:1px solid var(--green);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;
+    color:var(--green);
+    box-shadow:0 0 18px var(--green-glow) inset, 0 0 12px var(--green-glow);
+  }
+  .topbrand h1{
+    font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;
+    letter-spacing:2px;color:var(--green);
+  }
+  .topbrand span{
+    display:block;font-size:10px;letter-spacing:2px;color:var(--text-dim);
+    margin-top:2px;text-transform:uppercase;
+  }
+
+  .stage{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  @media (min-width:900px){
+    .stage{grid-template-columns:1fr 420px;align-items:start;}
+  }
+
+  /* Console panel */
+  .console{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:16px;
+    padding:20px 22px 26px;
+    backdrop-filter:blur(6px);
+    min-height:420px;
+  }
+  .console-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:14px;margin-bottom:16px;
+    border-bottom:1px solid var(--panel-border);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:2px;color:var(--text-dim);
+  }
+  .console-dots{display:flex;gap:6px;}
+  .console-dots span{width:7px;height:7px;border-radius:50%;background:var(--green-dim);}
+  .console-dots span:first-child{background:var(--green);box-shadow:0 0 6px var(--green);}
+
+  .console-log{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;line-height:2;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .console-log .line{
+    opacity:0;transform:translateX(-8px);
+    animation:lineIn 0.4s ease forwards;
+    color:var(--text-dim);
+  }
+  .console-log .line.done{color:var(--text);}
+  .console-log .line b{color:var(--green);font-weight:700;margin-right:2px;}
+  @keyframes lineIn{to{opacity:1;transform:translateX(0);}}
+  .cursor{
+    display:inline-block;width:8px;height:15px;background:var(--green);
+    margin-left:4px;vertical-align:-2px;
+    animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* Login card */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:18px;
+    padding:30px 26px 28px;
+    backdrop-filter:blur(6px);
+    box-shadow:0 0 60px rgba(34,255,102,0.06);
+  }
+  .card-logo{
+    width:64px;height:64px;margin:0 auto 16px;
+    border-radius:50%;border:1px solid var(--green);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:var(--green);
+    box-shadow:0 0 24px var(--green-glow) inset, 0 0 20px var(--green-glow);
+  }
+  .card h2{
+    text-align:center;font-family:'JetBrains Mono',monospace;
+    font-size:19px;letter-spacing:1.5px;color:var(--green);
+    margin-bottom:4px;
+  }
+  .card .sub{
+    text-align:center;font-size:11px;letter-spacing:3px;
+    color:var(--text-dim);margin-bottom:24px;text-transform:uppercase;
+  }
+
+  .field{margin-bottom:14px;position:relative;}
+  .field input{
+    width:100%;padding:13px 14px 13px 42px;
+    background:rgba(34,255,102,0.03);
+    border:1px solid var(--panel-border);
+    border-radius:10px;
+    color:var(--text);font-size:14px;font-family:'Inter',sans-serif;
+    outline:none;transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input::placeholder{color:rgba(201,255,216,0.35);}
+  .field input:focus{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(34,255,102,0.12);
+  }
+  .field .icon{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    color:var(--green-dim);font-size:15px;pointer-events:none;
+  }
+  .field .pw-toggle{
+    position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    background:none;border:none;color:var(--text-dim);cursor:pointer;
+    font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;
+  }
+  .field .pw-toggle:hover{color:var(--green);}
+
+  .btn-main{
+    width:100%;padding:14px;border:none;border-radius:10px;
+    background:linear-gradient(90deg,#16c94b,var(--green));
+    color:#04160a;font-size:14.5px;font-weight:800;letter-spacing:1px;
+    cursor:pointer;font-family:'JetBrains Mono',monospace;
+    box-shadow:0 8px 24px rgba(34,255,102,0.25);
+    transition:transform .15s ease, box-shadow .2s ease;
+    text-transform:uppercase;
+    margin-top:4px;
+  }
+  .btn-main:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(34,255,102,0.35);}
+  .btn-main:active{transform:translateY(0);}
+
+  .divider{margin:20px 0;text-align:center;position:relative;color:var(--green-dim);font-size:10px;letter-spacing:2px;font-family:'JetBrains Mono',monospace;}
+  .divider::before,.divider::after{content:'';position:absolute;top:50%;width:36%;height:1px;background:var(--panel-border);}
+  .divider::before{left:0;}.divider::after{right:0;}
+
+  .link{
+    text-align:center;font-size:12.5px;color:var(--text-dim);
+    margin-top:14px;cursor:pointer;
+  }
+  .link:hover{color:var(--green);}
+  .link.accent{color:var(--green);font-weight:700;}
+
+  .hidden{display:none;}
+
+  /* Stats footer */
+  .stats{
+    margin-top:26px;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+  }
+  @media (min-width:640px){.stats{grid-template-columns:repeat(5,1fr);}}
+  .stat{
+    background:var(--panel);border:1px solid var(--panel-border);
+    border-radius:14px;padding:16px 10px;text-align:center;
+  }
+  .stat .num{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:18px;color:var(--green);}
+  .stat .lbl{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+
+  .footer-note{
+    text-align:center;margin-top:26px;font-size:11px;color:rgba(201,255,216,0.25);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+  }
 </style>
-
 </head>
-
 <body>
 
-<div class="background"></div>
-
+<div class="grid-bg"></div>
+<div class="glow-field"></div>
 <div id="codeRain"></div>
 
+<div class="wrap">
+  <div class="topbrand">
+    <div class="mark">&lt;/&gt;</div>
+    <div>
+      <h1>CS HUB</h1>
+      <span>Computer Science Learning Ecosystem</span>
+    </div>
+  </div>
 
-<div id="boot">
+  <div class="stage">
+    <div class="console">
+      <div class="console-head">
+        <span>CS HUB SYSTEM CONSOLE</span>
+        <div class="console-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="console-log" id="consoleLog"></div>
+    </div>
 
-<div class="boot-box">
+    <div class="card">
+      <div class="card-logo">&lt;/&gt;</div>
+      <h2>COMPUTER SCIENCE HUB</h2>
+      <div class="sub">Learn · Build · Innovate</div>
 
-<div class="logo">
-CS HUB OS
+      <div id="loginSection">
+        <div class="field">
+          <span class="icon">&#128100;</span>
+          <input id="loginEmail" type="email" placeholder="Email" autocomplete="email">
+        </div>
+        <div class="field">
+          <span class="icon">&#128274;</span>
+          <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
+          <button type="button" class="pw-toggle" id="loginPwToggle">SHOW</button>
+        </div>
+
+        <button class="btn-main" onclick="loginUser()">Login</button>
+
+        <div class="divider">OR</div>
+        <div class="link accent" onclick="showRegister()">Don't have an account? Create Account</div>
+        <div class="link" onclick="resetPassword()">Forgot Password?</div>
+      </div>
+
+      <div id="registerSection" class="hidden">
+        <div class="field">
+          <span class="icon">&#128100;</span>
+          <input id="registerName" type="text" placeholder="Full Name" autocomplete="name">
+        </div>
+        <div class="field">
+          <span class="icon">&#128231;</span>
+          <input id="registerEmail" type="email" placeholder="Email" autocomplete="email">
+        </div>
+        <div class="field">
+          <span class="icon">&#128274;</span>
+          <input id="registerPassword" type="password" placeholder="Password" autocomplete="new-password">
+          <button type="button" class="pw-toggle" id="registerPwToggle">SHOW</button>
+        </div>
+
+        <button class="btn-main" onclick="createAccount()">Create Account</button>
+
+        <div class="divider">OR</div>
+        <div class="link accent" onclick="showLogin()">Already have an account? Login</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num">500+</div><div class="lbl">Notes</div></div>
+    <div class="stat"><div class="num">100+</div><div class="lbl">Code Examples</div></div>
+    <div class="stat"><div class="num">50+</div><div class="lbl">Interactive Labs</div></div>
+    <div class="stat"><div class="num">AI</div><div class="lbl">Study Assistant</div></div>
+    <div class="stat"><div class="num">ALL</div><div class="lbl">Years 1st–4th</div></div>
+  </div>
+
+  <div class="footer-note">&copy; 2026 Computer Science Hub. All rights reserved.</div>
 </div>
-
-<div class="boot-text" id="bootText">
-Initializing Computer Science Ecosystem...
-</div>
-
-
-<div class="loading">
-<span></span>
-</div>
-
-</div>
-
-</div>
-
-
-<div id="app">
-
-
-<div class="card">
-
-<div class="brand">
-
-<h1>
-CS HUB
-</h1>
-
-<p>
-Computer Science Learning Ecosystem
-</p>
-
-</div><div id="loginSection">
-
-<input id="loginEmail" type="email" placeholder="Email">
-
-<input id="loginPassword" type="password" placeholder="Password">
-
-
-<button onclick="loginUser()">
-LOGIN
-</button>
-
-
-<div class="link" onclick="showRegister()">
-Don't have an account? Create Account
-</div>
-
-
-<div class="link" onclick="resetPassword()">
-Forgot Password?
-</div>
-
-</div>
-
-
-
-<div id="registerSection" class="hidden">
-
-
-<input id="registerName" type="text" placeholder="Full Name">
-
-
-<input id="registerEmail" type="email" placeholder="Email">
-
-
-<input id="registerPassword" type="password" placeholder="Password">
-
-
-<button onclick="createAccount()">
-CREATE ACCOUNT
-</button>
-
-
-<div class="link" onclick="showLogin()">
-Already have an account? Login
-</div>
-
-
-</div>
-
-
-</div>
-
-</div>
-
-
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-
 <script>
+/* ---------- Boot / console animation ---------- */
+const bootLines = [
+  "Initializing System...",
+  "Booting Computer Science Ecosystem...",
+  "Connecting to Secure Database...",
+  "Loading Academic Modules...",
+  "Loading AI Assistant...",
+  "Verifying User Credentials...",
+  "Encrypting Connection...",
+  "Preparing Student Workspace...",
+  "System Ready."
+];
 
+const consoleLog = document.getElementById('consoleLog');
 
+function typeBootLines(lines, i){
+  if(i >= lines.length){
+    const welcome = document.createElement('div');
+    welcome.className = 'line done';
+    welcome.innerHTML = '<b>&gt;</b> Welcome, Future Computer Scientist.<span class="cursor"></span>';
+    consoleLog.appendChild(welcome);
+    return;
+  }
+  const el = document.createElement('div');
+  el.className = 'line';
+  el.innerHTML = '<b>&gt;</b> ' + lines[i];
+  consoleLog.appendChild(el);
+
+  setTimeout(function(){
+    el.classList.add('done');
+  }, 350);
+
+  setTimeout(function(){
+    typeBootLines(lines, i + 1);
+  }, 420);
+}
+
+typeBootLines(bootLines, 0);
+
+/* ---------- Firebase ---------- */
 const firebaseConfig = {
-
-apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-
-authDomain: "cs-hub-7c97b.firebaseapp.com",
-
-projectId: "cs-hub-7c97b",
-
-storageBucket: "cs-hub-7c97b.firebasestorage.app",
-
-messagingSenderId: "76338162904",
-
-appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-
+  apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+  authDomain: "cs-hub-7c97b.firebaseapp.com",
+  projectId: "cs-hub-7c97b",
+  storageBucket: "cs-hub-7c97b.firebasestorage.app",
+  messagingSenderId: "76338162904",
+  appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
 };
 
-
 firebase.initializeApp(firebaseConfig);
-
-
 const auth = firebase.auth();
-
 const db = firebase.firestore();
-
-
 
 const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
-
-
-setTimeout(()=>{
-
-document.getElementById("boot").style.display="none";
-
-document.getElementById("app").style.display="flex";
-
-},4000);
-
-
-
+/* ---------- Panel switching ---------- */
 function showRegister(){
-
-document.getElementById("loginSection").classList.add("hidden");
-
-document.getElementById("registerSection").classList.remove("hidden");
-
+  document.getElementById("loginSection").classList.add("hidden");
+  document.getElementById("registerSection").classList.remove("hidden");
 }
-
-
 
 function showLogin(){
-
-document.getElementById("registerSection").classList.add("hidden");
-
-document.getElementById("loginSection").classList.remove("hidden");
-
+  document.getElementById("registerSection").classList.add("hidden");
+  document.getElementById("loginSection").classList.remove("hidden");
 }
 
+/* ---------- Password show/hide ---------- */
+document.getElementById('loginPwToggle').addEventListener('click', function(){
+  const pw = document.getElementById('loginPassword');
+  const show = pw.type === 'password';
+  pw.type = show ? 'text' : 'password';
+  this.textContent = show ? 'HIDE' : 'SHOW';
+});
 
+document.getElementById('registerPwToggle').addEventListener('click', function(){
+  const pw = document.getElementById('registerPassword');
+  const show = pw.type === 'password';
+  pw.type = show ? 'text' : 'password';
+  this.textContent = show ? 'HIDE' : 'SHOW';
+});
 
+/* ---------- Create account ---------- */
 async function createAccount(){
+  const name = document.getElementById("registerName").value;
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
 
+  if(!name || !email || !password){
+    alert("Fill all fields");
+    return;
+  }
 
-const name=document.getElementById("registerName").value;
+  try{
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
 
-const email=document.getElementById("registerEmail").value;
+    await db.collection("Users").doc(userCredential.user.uid).set({
+      name: name,
+      email: email,
+      role: "student"
+    });
 
-const password=document.getElementById("registerPassword").value;
+    alert("Account created successfully");
+    showLogin();
 
-
-if(!name || !email || !password){
-
-alert("Fill all fields");
-
-return;
-
+  } catch(error){
+    alert(error.message);
+  }
 }
 
-
-try{
-
-
-const userCredential = await auth.createUserWithEmailAndPassword(email,password);
-
-
-await db.collection("Users").doc(userCredential.user.uid).set({
-
-name:name,
-
-email:email,
-
-role:"student"
-
-});
-
-
-alert("Account created successfully");
-
-showLogin();
-
-
-}catch(error){
-
-alert(error.message);
-
-}
-
-
-}
-
-
+/* ---------- Login ---------- */
 async function loginUser(){
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-const email=document.getElementById("loginEmail").value;
+  if(!email || !password){
+    alert("Enter email and password");
+    return;
+  }
 
-const password=document.getElementById("loginPassword").value;
+  try{
+    const result = await auth.signInWithEmailAndPassword(email, password);
+    const user = result.user;
+    const username = user.email.split("@")[0];
 
+    if(user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
+      localStorage.setItem("role", "admin");
+      localStorage.setItem("name", "Lewis");
+      window.location.href = "admin-dashboard.html";
+    } else {
+      localStorage.setItem("role", "student");
+      localStorage.setItem("name", username);
+      window.location.href = "dashboard.html";
+    }
 
-if(!email || !password){
-
-alert("Enter email and password");
-
-return;
-
+  } catch(error){
+    alert("Login failed: " + error.message);
+  }
 }
 
-
-try{
-
-
-const result = await auth.signInWithEmailAndPassword(email,password);
-
-
-const user = result.user;
-
-
-const username = user.email.split("@")[0];
-
-
-if(user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
-
-
-localStorage.setItem("role","admin");
-
-localStorage.setItem("name","Lewis");
-
-
-window.location.href="admin-dashboard.html";
-
-
-}else{
-
-
-localStorage.setItem("role","student");
-
-localStorage.setItem("name",username);
-
-
-window.location.href="dashboard.html";
-
-
-}
-
-
-
-}catch(error){
-
-alert("Login failed: "+error.message);
-
-}
-
-
-}
-
-
-
+/* ---------- Forgot password ---------- */
 function resetPassword(){
+  const email = document.getElementById("loginEmail").value;
 
+  if(!email){
+    alert("Enter your email first");
+    return;
+  }
 
-const email=document.getElementById("loginEmail").value;
-
-
-if(!email){
-
-alert("Enter your email first");
-
-return;
-
+  auth.sendPasswordResetEmail(email)
+    .then(function(){
+      alert("Password reset email sent");
+    })
+    .catch(function(error){
+      alert(error.message);
+    });
 }
 
+/* ---------- Code rain animation ---------- */
+const rain = document.getElementById("codeRain");
+let chars = "01{}[]<>;/AIpythonCS";
 
-auth.sendPasswordResetEmail(email)
-
-.then(()=>{
-
-alert("Password reset email sent");
-
-})
-
-.catch(error=>{
-
-alert(error.message);
-
-});
-
-
+for(let i = 0; i < 30; i++){
+  let column = document.createElement("div");
+  column.style.position = "absolute";
+  column.style.left = Math.random() * 100 + "%";
+  column.style.top = "-200px";
+  column.style.fontSize = "14px";
+  column.innerHTML = Array(30).fill(0).map(function(){
+    return chars[Math.floor(Math.random() * chars.length)];
+  }).join("<br>");
+  column.style.animation = `fall ${5 + Math.random() * 8}s linear infinite`;
+  rain.appendChild(column);
 }
 
-
-
-
-
-/* Code rain animation */
-
-
-const rain=document.getElementById("codeRain");
-
-
-let chars="01{}[]<>;/AIpythonCS";
-
-
-for(let i=0;i<40;i++){
-
-
-let column=document.createElement("div");
-
-
-column.style.position="absolute";
-
-column.style.left=Math.random()*100+"%";
-
-column.style.top="-200px";
-
-column.style.fontSize="14px";
-
-
-column.innerHTML=Array(30)
-
-.fill(0)
-
-.map(()=>chars[Math.floor(Math.random()*chars.length)])
-
-.join("<br>");
-
-
-column.style.animation=`fall ${5+Math.random()*8}s linear infinite`;
-
-
-rain.appendChild(column);
-
-
-}
-
-
-
-const style=document.createElement("style");
-
-
-style.innerHTML=`
-
-@keyframes fall{
-
-from{
-
-transform:translateY(-200px);
-
-}
-
-
-to{
-
-transform:translateY(120vh);
-
-}
-
-
-}
-
+const rainStyle = document.createElement("style");
+rainStyle.innerHTML = `
+  @keyframes fall{
+    from{ transform:translateY(-200px); }
+    to{ transform:translateY(120vh); }
+  }
 `;
-
-
-document.head.appendChild(style);
-
-
+document.head.appendChild(rainStyle);
 </script>
 
-
 </body>
-
 </html>
