@@ -2,103 +2,433 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CSC1110: The Complete Guide to C Programming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSC1110 - Complete Course Notes</title>
     <style>
-        body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; background: #fdfdfd; }
-        h1 { color: #1565c0; border-bottom: 3px solid #1565c0; }
-        h2 { color: #0d47a1; margin-top: 40px; }
-        .chapter { margin-bottom: 60px; }
-        .box { background: #f4f6f8; padding: 20px; border-left: 5px solid #1565c0; margin: 20px 0; }
-        pre { background: #2d2d2d; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto; }
-        .diagram { text-align: center; font-weight: bold; margin: 30px 0; border: 2px solid #333; padding: 20px; display: inline-block; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            line-height: 1.8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            font-size: 2.8rem;
+            color: #0a2463;
+            border-bottom: 4px solid #1e88e5;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #3a5a7a;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        h2 {
+            font-size: 2rem;
+            color: #0d47a1;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-left: 6px solid #1e88e5;
+            padding-left: 18px;
+            background: #f8faff;
+            padding: 12px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        h3 {
+            font-size: 1.5rem;
+            color: #1565c0;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        h4 {
+            font-size: 1.2rem;
+            color: #1a3a6a;
+            margin-top: 25px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        p {
+            margin-bottom: 16px;
+            color: #2d3e50;
+        }
+        ul,
+        ol {
+            margin: 12px 0 20px 30px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .note-box {
+            background: #e3f2fd;
+            border-left: 6px solid #1e88e5;
+            padding: 18px 24px;
+            margin: 25px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+        .warning-box {
+            background: #fff3e0;
+            border-left: 6px solid #ff9800;
+            padding: 18px 24px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 6px solid #43a047;
+            padding: 18px 24px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 18px 22px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin: 18px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        pre .comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        pre .keyword {
+            color: #f472b6;
+            font-weight: 600;
+        }
+        pre .string {
+            color: #86efac;
+        }
+        pre .function {
+            color: #60a5fa;
+        }
+        pre .number {
+            color: #fcd34d;
+        }
+        .code-title {
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .flow-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+        .flow-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .flow-card h4 {
+            margin-top: 0;
+            color: #0a2463;
+        }
+        .symbol {
+            display: inline-block;
+            font-weight: 700;
+            padding: 6px 14px;
+            background: #1e293b;
+            color: white;
+            border-radius: 30px;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+        hr {
+            margin: 50px 0 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 30px;
+            font-size: 0.95rem;
+        }
+        .badge {
+            background: #1e88e5;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-left: 12px;
+            font-weight: 500;
+        }
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .flow-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>📘 CSC1110: Complete C Programming</h1>
+        <div class="subtitle">Year 1 · Comprehensive Notes · Examples &amp; Explanations</div>
 
-<h1>CSC1110: Computer Programming (C Language)</h1>
-<p><em>Comprehensive Study Guide for Year 1 Students</em></p>
+        <!-- ============= CHAPTER 1 ============= -->
+        <h2>1. Computer Systems &amp; Programming Fundamentals</h2>
+        <p>A <strong>computer</strong> is an electronic device that processes raw data into meaningful information. It combines <strong>hardware</strong> (physical parts) and <strong>software</strong> (programs that give instructions).</p>
 
-<div class="chapter">
-    <h2>Chapter 1: Computer Systems & Programming Fundamentals</h2>
-    <p>A computer is an electronic device that processes raw data into useful information[span_0](start_span)[span_0](end_span). It relies on a symbiosis between hardware (physical components) and software (the programs that control them)[span_1](start_span)[span_1](end_span).</p>
-    
-    <h3>The Programming Hierarchy</h3>
-    <p>Languages are categorized by how close they are to the hardware[span_2](start_span)[span_2](end_span):</p>
-    <ul>
-        <li><strong>Low-Level:</strong> Machine/Assembly (Direct hardware control)[span_3](start_span)[span_3](end_span).</li>
-        <li><strong>High-Level:</strong> C, Java, Python (Human-readable, requires translation)[span_4](start_span)[span_4](end_span).</li>
-    </ul>
-    
-    <div class="diagram">
-        Source Code --(Compiler)--> Machine Code --(Linker)--> Executable File
-    </div>
-</div>
+        <h3>The Programming Hierarchy</h3>
+        <ul>
+            <li><strong>Low‑Level Languages</strong> – close to machine hardware.
+                <ul>
+                    <li><em>Machine Code:</em> Binary (0s and 1s) – the only language the CPU understands directly.</li>
+                    <li><em>Assembly:</em> Uses mnemonics (e.g., <code>MOV</code>, <code>ADD</code>) – one step above machine.</li>
+                </ul>
+            </li>
+            <li><strong>High‑Level Languages</strong> – human‑readable, like English/math.
+                <ul>
+                    <li><em>C, Java, Python:</em> Must be <strong>translated</strong> into machine code by a compiler or interpreter.</li>
+                </ul>
+            </li>
+        </ul>
 
-<div class="chapter">
-    <h2>Chapter 2: Problem Solving & Flowcharting</h2>
-    <p>Before coding, we must plan[span_5](start_span)[span_5](end_span).</p>
-    <div class="box">
-        <strong>Standard Flowchart Symbols:</strong><br>
-        • Oval: Start or End[span_6](start_span)[span_6](end_span)<br>
-        • Parallelogram: Input/Output[span_7](start_span)[span_7](end_span)<br>
-        • Rectangle: Process (e.g., sum = a + b)[span_8](start_span)[span_8](end_span)<br>
-        • Diamond: Decision (If/Else logic)[span_9](start_span)[span_9](end_span)
-    </div>
-</div>
+        <div class="note-box">
+            <strong>🔁 The Compilation Process:</strong><br>
+            <code>Source Code (.c)</code> → <strong>Compiler</strong> → <code>Object Code (.o)</code> → <strong>Linker</strong> → <code>Executable File (.exe or a.out)</code>
+        </div>
 
-<div class="chapter">
-    <h2>Chapter 3: C Language Basics</h2>
-    <p>C is a high-level, compiled language[span_10](start_span)[span_10](end_span). A basic program structure:</p>
-    <pre>
-#include &lt;stdio.h&gt;
-int main() {
-    printf("Hello, World!");
-    return 0;
+        <h3>Why C?</h3>
+        <ul>
+            <li>Structured, efficient, and gives low‑level access to memory.</li>
+            <li>Foundation for many modern languages (C++, Java, C#).</li>
+            <li>Widely used in systems programming, embedded devices, and operating systems.</li>
+        </ul>
+
+        <!-- ============= CHAPTER 2 ============= -->
+        <h2>2. Problem Solving &amp; Flowcharting</h2>
+        <p>Before writing code, <strong>plan</strong> your solution. Flowcharts visually represent the logic.</p>
+
+        <div class="flow-grid">
+            <div class="flow-card">
+                <h4>🔷 Standard Symbols</h4>
+                <ul>
+                    <li><span class="symbol">⬤</span> <strong>Oval</strong> – Start / End</li>
+                    <li><span class="symbol">▭</span> <strong>Parallelogram</strong> – Input / Output</li>
+                    <li><span class="symbol">▬</span> <strong>Rectangle</strong> – Process (e.g., <code>sum = a + b</code>)</li>
+                    <li><span class="symbol">◇</span> <strong>Diamond</strong> – Decision (condition / if‑else)</li>
+                </ul>
+            </div>
+            <div class="flow-card">
+                <h4>📋 Example: Sum of Two Numbers</h4>
+                <ol>
+                    <li><strong>Start</strong> (Oval)</li>
+                    <li><strong>Input</strong> num1, num2 (Parallelogram)</li>
+                    <li><strong>Process</strong> sum = num1 + num2 (Rectangle)</li>
+                    <li><strong>Output</strong> sum (Parallelogram)</li>
+                    <li><strong>End</strong> (Oval)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <strong>💡 Algorithm = Step‑by‑step procedure.</strong> Flowcharts are just a graphical way to show the algorithm.
+        </div>
+
+        <!-- ============= CHAPTER 3 ============= -->
+        <h2>3. C Language Basics</h2>
+        <p>C is a <strong>compiled</strong>, high‑level language. A C program starts execution from the <code>main()</code> function.</p>
+
+        <h3>Basic Structure</h3>
+        <pre><span class="comment">// Preprocessor directive – includes standard I/O library</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="comment">// Statements go here</span>
+    <span class="function">printf</span>(<span class="string">"Hello, World!\n"</span>);
+    <span class="keyword">return</span> <span class="number">0</span>;   <span class="comment">// 0 means successful execution</span>
+}</pre>
+
+        <h4>Key Components</h4>
+        <ul>
+            <li><code>#include</code> – pulls in header files (like <code>stdio.h</code> for I/O).</li>
+            <li><code>int main()</code> – the entry point. Every C program must have one.</li>
+            <li><code>printf()</code> – prints formatted output to the console.</li>
+            <li><code>return 0;</code> – signals the OS that the program finished without errors.</li>
+        </ul>
+
+        <div class="warning-box">
+            <strong>⚠️ Note:</strong> C is case‑sensitive. <code>main</code> is not the same as <code>Main</code>.
+        </div>
+
+        <h3>Variables &amp; Data Types</h3>
+        <pre><span class="keyword">int</span> age = <span class="number">20</span>;             <span class="comment">// integer</span>
+<span class="keyword">float</span> pi = <span class="number">3.14159</span>;        <span class="comment">// floating‑point</span>
+<span class="keyword">char</span> grade = <span class="string">'A'</span>;           <span class="comment">// single character (single quotes)</span>
+<span class="keyword">double</span> big = <span class="number">1.23456789</span>;   <span class="comment">// double precision float</span></pre>
+
+        <h4>Format Specifiers for <code>printf()</code> / <code>scanf()</code></h4>
+        <ul>
+            <li><code>%d</code> – int</li>
+            <li><code>%f</code> – float</li>
+            <li><code>%c</code> – char</li>
+            <li><code>%s</code> – string (array of chars)</li>
+            <li><code>%lf</code> – double</li>
+        </ul>
+
+        <div class="note-box">
+            <strong>📥 Input Example:</strong><br>
+            <code>scanf("%d", &amp;age);</code> &nbsp;— the <code>&amp;</code> gives the <em>address</em> of the variable.
+        </div>
+
+        <!-- ============= CHAPTER 4 ============= -->
+        <h2>4. Control Structures &amp; Iteration</h2>
+        <p>Programs can make decisions and repeat tasks.</p>
+
+        <h3>Decision Making</h3>
+        <h4>if / else</h4>
+        <pre><span class="keyword">if</span> (score &gt;= <span class="number">60</span>) {
+    <span class="function">printf</span>(<span class="string">"Pass\n"</span>);
+} <span class="keyword">else</span> {
+    <span class="function">printf</span>(<span class="string">"Fail\n"</span>);
+}</pre>
+
+        <h4>switch statement</h4>
+        <pre><span class="keyword">switch</span> (day) {
+    <span class="keyword">case</span> <span class="number">1</span>: <span class="function">printf</span>(<span class="string">"Monday"</span>); <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="number">2</span>: <span class="function">printf</span>(<span class="string">"Tuesday"</span>); <span class="keyword">break</span>;
+    <span class="keyword">default</span>: <span class="function">printf</span>(<span class="string">"Other day"</span>);
+}</pre>
+
+        <h3>Loops (Iteration)</h3>
+        <h4>for loop – when you know the number of iterations</h4>
+        <pre><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+    <span class="function">printf</span>(<span class="string">"i = %d\n"</span>, i);
+}</pre>
+
+        <h4>while loop – condition‑controlled</h4>
+        <pre><span class="keyword">int</span> n = <span class="number">1</span>;
+<span class="keyword">while</span> (n &lt;= <span class="number">5</span>) {
+    <span class="function">printf</span>(<span class="string">"%d "</span>, n);
+    n++;
+}</pre>
+
+        <h4>do‑while – runs at least once</h4>
+        <pre><span class="keyword">int</span> x;
+<span class="keyword">do</span> {
+    <span class="function">printf</span>(<span class="string">"Enter positive: "</span>);
+    <span class="function">scanf</span>(<span class="string">"%d"</span>, &amp;x);
+} <span class="keyword">while</span> (x &lt;= <span class="number">0</span>);</pre>
+
+        <div class="tip-box">
+            <strong>🔁 Common Mistake:</strong> Forgetting to update the loop variable leads to infinite loops.
+        </div>
+
+        <h3>Example: Sum of Two Numbers (Full Code)</h3>
+        <pre><span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> a, b, sum;
+    <span class="function">printf</span>(<span class="string">"Enter two numbers: "</span>);
+    <span class="function">scanf</span>(<span class="string">"%d %d"</span>, &amp;a, &amp;b);
+    sum = a + b;
+    <span class="function">printf</span>(<span class="string">"Sum = %d\n"</span>, sum);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</pre>
+
+        <!-- ============= CHAPTER 5 ============= -->
+        <h2>5. Modular Programming – Functions &amp; Arrays</h2>
+
+        <h3>Functions</h3>
+        <p>Break large problems into smaller, reusable pieces.</p>
+        <pre><span class="comment">// Function definition</span>
+<span class="keyword">int</span> <span class="function">add</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+    <span class="keyword">return</span> x + y;
 }
-    </pre>
-</div>
 
-<div class="chapter">
-    <h2>Chapter 4: Control Structures & Iteration</h2>
-    <p>Programs make decisions using `if/else` and `switch` statements, and repeat tasks using `for`, `while`, and `do-while` loops[span_11](start_span)[span_11](end_span).</p>
-    
-    <h3>Example Question</h3>
-    <p><em>Question:</em> Write an algorithm to find the sum of two numbers.</p>
-    <p><em>Answer:</em> 
-    1. Input num1, num2[span_12](start_span)[span_12](end_span). 
-    2. Process: sum = num1 + num2[span_13](start_span)[span_13](end_span). 
-    3. Output: Display sum[span_14](start_span)[span_14](end_span).</p>
-</div>
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> result = <span class="function">add</span>(<span class="number">5</span>, <span class="number">3</span>);
+    <span class="function">printf</span>(<span class="string">"Result = %d\n"</span>, result);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</pre>
 
-<div class="chapter">
-    <h2>Chapter 5: Modular Programming (Functions & Arrays)</h2>
-    <p>Functions allow us to break large problems into manageable chunks[span_15](start_span)[span_15](end_span). Arrays enable the storage of lists of data under a single name[span_16](start_span)[span_16](end_span).</p>
-</div>
+        <div class="note-box">
+            <strong>📌 Benefits:</strong> Reusability, easier debugging, and cleaner code.
+        </div>
 
-<div id="dynamicMaterials">
-    <h2>Course Materials</h2>
-    <div id="materialList">Loading additional materials...</div>
-</div>
+        <h3>Arrays</h3>
+        <p>Store multiple values of the same type in a single variable.</p>
+        <pre><span class="keyword">int</span> numbers[<span class="number">5</span>] = {<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>};
+<span class="comment">// Access: numbers[0] = 10, numbers[4] = 50</span>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+    <span class="function">printf</span>(<span class="string">"%d "</span>, numbers[i]);
+}</pre>
 
-    const db = getDatabase(initializeApp({
-        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com"
-    }));
+        <h4>Array with Function Example</h4>
+        <pre><span class="keyword">void</span> <span class="function">printArray</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> size) {
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) {
+        <span class="function">printf</span>(<span class="string">"%d "</span>, arr[i]);
+    }
+}</pre>
 
-    onValue(ref(db, 'materials/CSC1110'), (snapshot) => {
-        const list = document.getElementById('materialList');
-        const data = snapshot.val();
-        if (data) {
-            list.innerHTML = "";
-            for (let key in data) {
-                list.innerHTML += `<a href="${data[key].url}" target="_blank" style="display:block; margin:10px 0; color:#1565c0;">${data[key].title}</a>`;
-            }
-        }
-    });
-</script>
+        <div class="warning-box">
+            <strong>⚠️ Caution:</strong> C does not check array bounds. Accessing <code>numbers[10]</code> may cause undefined behavior.
+        </div>
 
+        <!-- ============= EXTRA ============= -->
+        <hr>
+        <h2>🎯 Practice Questions</h2>
+        <ol>
+            <li><strong>Write a program</strong> to find the largest of three numbers.</li>
+            <li><strong>Create a function</strong> that returns the factorial of a number using a loop.</li>
+            <li><strong>Using arrays</strong>, calculate the average of 10 student scores.</li>
+            <li><strong>Draw a flowchart</strong> for a program that prints even numbers from 2 to 20.</li>
+        </ol>
+
+        <div class="tip-box">
+            <strong>✅ Solution Approach:</strong> Always start with the algorithm / flowchart, then translate to C code.
+        </div>
+
+        <h2>📚 Summary of Key Concepts</h2>
+        <ul>
+            <li><strong>Compilation</strong> turns source code into machine code.</li>
+            <li><strong>Flowcharts</strong> help visualise logic before coding.</li>
+            <li><strong>Data types</strong> – int, float, char, double.</li>
+            <li><strong>Control</strong> – if/else, switch, for, while, do‑while.</li>
+            <li><strong>Functions</strong> – modularise code; <code>main()</code> is the entry.</li>
+            <li><strong>Arrays</strong> – store lists; index starts at 0.</li>
+        </ul>
+
+        <div class="footer">
+            <strong>CSC1110 – Complete Notes</strong> &nbsp;|&nbsp; Prepared for Year 1 Students &nbsp;|&nbsp; All examples tested with standard C.
+        </div>
+
+    </div>
 </body>
 </html>
