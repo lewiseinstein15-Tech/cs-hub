@@ -2,16 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Materials</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Courier New', monospace; color: #0F0; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Courier New', monospace; color: #0F0; overflow-x: hidden; }
         canvas { display: block; position: fixed; top: 0; left: 0; z-index: 0; }
-        .container { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 20px; background: rgba(0,0,0,0.7); min-height: 100vh; }
-        h1 { text-align: center; border-bottom: 2px solid #0F0; padding-bottom: 10px; }
-        section { margin-bottom: 25px; }
-        h2 { background: #111; padding: 10px; border-left: 5px solid #0F0; }
-        .item-link { display: block; padding: 12px; background: rgba(0, 255, 0, 0.1); margin: 8px 0; text-decoration: none; color: #0F0; border: 1px solid #0F0; }
-        #admin-link { color: #333; font-size: 10px; text-align: center; display: block; margin-top: 50px; }
+        
+        .container { position: relative; z-index: 1; width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
+        h1 { text-align: center; border-bottom: 2px solid #0F0; padding-bottom: 5px; font-size: 24px; }
+        
+        section { margin-bottom: 15px; }
+        h2 { background: rgba(0, 50, 0, 0.8); padding: 10px; border-left: 5px solid #0F0; margin: 0; font-size: 16px; }
+        .list { background: rgba(0, 0, 0, 0.5); }
+        .item-link { display: block; padding: 10px; text-decoration: none; color: #0F0; border-bottom: 1px solid #333; }
+        
+        /* The Admin Button - Positioned at bottom right */
+        #admin-btn { position: fixed; bottom: 10px; right: 10px; background: #0F0; color: #000; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold; z-index: 99; }
     </style>
 </head>
 <body>
@@ -22,27 +28,55 @@
     <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
     <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
     <section id="exams"><h2>📝 Exams & CATs</h2><div class="list"></div></section>
-    <!-- Secret Admin Entrance -->
-    <a href="admin.html" id="admin-link">.</a>
 </div>
+
+<!-- Visible Admin Button for you -->
+<a href="admin.html" id="admin-btn">ADMIN</a>
+
 <script type="module">
-    // Matrix effect script same as before...
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+        authDomain: "cs-hub-7c97b.firebaseapp.com",
+        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+        projectId: "cs-hub-7c97b",
+        storageBucket: "cs-hub-7c97b.appspot.com",
+        messagingSenderId: "76338162904",
+        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Matrix Logic
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const drops = Array(Math.floor(canvas.width/14)).fill(1);
     function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#0F0'; ctx.font = '14px monospace';
+        ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#0F0';
         drops.forEach((y, i) => {
-            ctx.fillText(letters.charAt(Math.floor(Math.random()*letters.length)), i*14, y*14);
+            ctx.fillText(String.fromCharCode(33+Math.random()*94), i*14, y*14);
             if(y*14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         });
     }
     setInterval(draw, 33);
-    // Fetch data same as before...
+
+    // Data Loading
+    ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
+        onValue(ref(db, 'materials/' + cat), (snapshot) => {
+            const listDiv = document.querySelector(`#${cat} .list`);
+            listDiv.innerHTML = "";
+            const data = snapshot.val();
+            for(let key in data) {
+                listDiv.innerHTML += `<a href="${data[key].url}" class="item-link" target="_blank">${data[key].title}</a>`;
+            }
+        });
+    });
 </script>
 </body>
 </html>
