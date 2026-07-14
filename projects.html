@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>CS HUB - Project Showcase</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --bg: #030611;
@@ -403,7 +403,6 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Project Preview Image Area */
         .project-preview {
             height: 180px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.05));
@@ -440,7 +439,6 @@
             opacity: 0.4;
         }
 
-        /* Project Content */
         .project-content {
             padding: 20px 22px 22px 22px;
             flex: 1;
@@ -488,7 +486,6 @@
             overflow: hidden;
         }
 
-        /* Tech Stack Tags */
         .tech-tags {
             display: flex;
             flex-wrap: wrap;
@@ -513,7 +510,6 @@
             color: var(--cyan);
         }
 
-        /* Project Footer */
         .project-footer {
             display: flex;
             justify-content: space-between;
@@ -749,140 +745,90 @@
             border-radius: 12px;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            backdrop-filter: blur(10px);
+            font-size: 13px;
             font-weight: 500;
-            z-index: 9999;
             opacity: 0;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.success { border-color: var(--green); }
-        .toast.error { border-color: var(--red); }
-        .toast.info { border-color: var(--blue); }
-
-        /* Responsive */
-        @media (min-width: 600px) {
-            .main-content { padding: 20px 24px 80px 24px; }
-            .topbar { padding: 16px 24px; }
-            .stats-row { grid-template-columns: repeat(4, 1fr); }
-            .projects-grid { grid-template-columns: repeat(2, 1fr); }
-            .form-grid { grid-template-columns: 1fr 1fr; }
+            transition: all 0.3s ease;
+            z-index: 2000;
+            max-width: 90vw;
         }
 
-        @media (min-width: 1024px) {
-            .sidebar {
-                transform: translateX(0);
-                position: sticky;
-                top: 0;
-                height: 100vh;
-                width: 260px;
-                border-radius: 0;
-                z-index: 50;
-            }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-color: rgba(34, 197, 94, 0.4); }
+        .toast.error { border-color: rgba(239, 68, 68, 0.4); }
+
+        @media (min-width: 900px) {
+            .sidebar { transform: translateX(0); position: sticky; }
             .sidebar-overlay { display: none !important; }
-            .sidebar-close.mobile-show { display: none !important; }
-            body { display: flex; gap: 0; }
-            .main-content {
-                padding: 24px 32px 80px 32px;
-                flex: 1;
-                max-width: 100%;
-            }
-            .topbar { display: none; }
-            .menu-toggle { display: none !important; }
-            .projects-grid { grid-template-columns: repeat(3, 1fr); }
+            .menu-toggle { display: none; }
+            .main-content { margin-left: 0; }
         }
 
-        @media (max-width: 600px) {
-            .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .stat-box .number { font-size: 22px; }
-            .stat-box { padding: 14px; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
+        @media (max-width: 640px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
             .form-grid { grid-template-columns: 1fr; }
-            .hero-terminal h2 { font-size: 20px; }
-            .hero-terminal { padding: 20px; }
-            .topbar .btn-action span { display: none; }
-            .project-preview { height: 120px; font-size: 32px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
         <div>
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">&times;</button>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>STUDENT PORTAL</span>
+                <span>PROJECT SHOWCASE</span>
             </div>
-            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
 
             <ul class="nav-menu">
-                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
-                
-                <li class="nav-section-title">LEARN</li>
-                <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
-                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
-                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
-                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
-                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
-                
-                <li class="nav-section-title">EXPLORE</li>
-                <li class="nav-item active"><a href="projects.html">💻 Projects</a></li>
-                <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
-                <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                
-                <li class="nav-section-title">ACCOUNT</li>
-                <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
-                <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+                <li class="nav-section-title">Navigate</li>
+                <li class="nav-item"><a href="dashboard.html">🏠 Dashboard</a></li>
+                <li class="nav-item active"><a href="projects.html">🚀 Projects</a></li>
+                <li class="nav-item"><a href="notes.html">📝 Notes</a></li>
             </ul>
         </div>
+
         <div>
             <div class="sidebar-profile">
                 <div class="profile-avatar" id="userAvatar">U</div>
                 <div class="profile-name" id="userName">User</div>
-                <div class="profile-role" id="userRole">Student</div>
+                <span class="profile-role" id="userRole">Student</span>
             </div>
-            <div class="sidebar-footer">© 2026 CS Hub</div>
+            <div class="sidebar-footer">CS HUB &copy; 2026</div>
         </div>
-    </aside>
+    </div>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- TOP BAR (mobile only) -->
         <div class="topbar">
-            <button class="menu-toggle" onclick="openSidebar()">☰</button>
+            <button class="menu-toggle" onclick="openSidebar()">&#9776;</button>
             <div class="topbar-user">
-                <span class="topbar-name" id="topbarName">
-                    User
-                    <small id="topbarEmail">user@email.com</small>
-                </span>
                 <div class="topbar-avatar" id="topbarAvatar">U</div>
+                <div class="topbar-name">
+                    <span id="topbarName">User</span>
+                    <small id="topbarEmail">user@email.com</small>
+                </div>
+                <button class="btn-action btn-logout" onclick="logout()">Logout</button>
             </div>
-            <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <!-- HERO -->
-        <section class="hero-terminal">
-            <div class="env-tag">[ >_ PROJECT SHOWCASE ]</div>
-            <h2>💻 Student Projects</h2>
-            <p>Explore innovative projects built by Computer Science students — web apps, mobile apps, AI systems, and more.</p>
-        </section>
+        <div class="hero-terminal">
+            <div class="env-tag">&gt; PROJECT_SHOWCASE.EXE</div>
+            <h2>Student Project Showcase</h2>
+            <p>Explore, submit, and track Computer Science student projects across all units.</p>
+        </div>
 
-        <!-- STATS -->
-        <section class="stats-row">
+        <div class="stats-row">
             <div class="stat-box">
                 <div class="number blue" id="totalProjects">0</div>
-                <div class="label">Total Projects</div>
+                <div class="label">Total</div>
             </div>
             <div class="stat-box">
                 <div class="number green" id="completedProjects">0</div>
@@ -896,88 +842,84 @@
                 <div class="number purple" id="featuredProjects">0</div>
                 <div class="label">Featured</div>
             </div>
-        </section>
+        </div>
 
-        <!-- ADMIN: Toggle Add Form -->
         <button class="btn-toggle-form" id="toggleFormBtn" onclick="toggleAddForm()">➕ Add New Project</button>
 
-        <!-- ADD PROJECT FORM -->
         <div class="add-project-form" id="addProjectForm">
-            <div class="form-title">➕ Add New Project</div>
+            <div class="form-title">&gt; NEW PROJECT ENTRY</div>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Project Title</label>
-                    <input type="text" id="projectTitle" placeholder="e.g., Student Management System">
+                    <input type="text" id="projectTitle" placeholder="e.g. Smart Attendance System">
                 </div>
                 <div class="form-group">
                     <label>Unit Code</label>
-                    <input type="text" id="projectUnit" placeholder="e.g., CSC222">
+                    <input type="text" id="projectUnit" placeholder="e.g. CSC1210">
                 </div>
                 <div class="form-group">
                     <label>Category</label>
                     <select id="projectCategory">
-                        <option value="Web Development">🌐 Web Development</option>
-                        <option value="Mobile App">📱 Mobile App</option>
-                        <option value="AI/ML">🤖 AI/ML</option>
-                        <option value="Data Science">📊 Data Science</option>
-                        <option value="Game Dev">🎮 Game Dev</option>
-                        <option value="Other">🔧 Other</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile App">Mobile App</option>
+                        <option value="AI/ML">AI/ML</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Game Dev">Game Dev</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Status</label>
                     <select id="projectStatus">
-                        <option value="Completed">✅ Completed</option>
-                        <option value="In Progress">🟡 In Progress</option>
-                        <option value="Featured">⭐ Featured</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Featured">Featured</option>
                     </select>
                 </div>
                 <div class="form-group full-width">
                     <label>Description</label>
-                    <textarea id="projectDescription" placeholder="Describe the project..."></textarea>
+                    <textarea id="projectDescription" placeholder="Brief description of the project"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Live Demo URL</label>
-                    <input type="text" id="projectDemo" placeholder="https://project-demo.com">
+                    <input type="text" id="projectDemo" placeholder="https://...">
                 </div>
                 <div class="form-group">
                     <label>GitHub URL</label>
-                    <input type="text" id="projectGithub" placeholder="https://github.com/username/project">
+                    <input type="text" id="projectGithub" placeholder="https://github.com/...">
                 </div>
                 <div class="form-group">
                     <label>Tech Stack (comma separated)</label>
-                    <input type="text" id="projectTech" placeholder="React, Python, Firebase">
+                    <input type="text" id="projectTech" placeholder="HTML, CSS, JavaScript">
                 </div>
                 <div class="form-group">
-                    <label>Contributors</label>
-                    <input type="text" id="projectContributors" placeholder="Lewis K., Jane D.">
+                    <label>Contributors (comma separated)</label>
+                    <input type="text" id="projectContributors" placeholder="Lewis, Einstein">
                 </div>
-                <button class="btn-submit" onclick="addProject()">➕ Add Project</button>
+                <button class="btn-submit" onclick="addProject()">Submit Project</button>
             </div>
         </div>
 
-        <!-- FILTER BAR -->
         <div class="filter-bar">
             <span class="filter-label">Filter:</span>
             <select id="filterCategory" onchange="filterProjects()">
                 <option value="all">All Categories</option>
-                <option value="Web Development">🌐 Web Development</option>
-                <option value="Mobile App">📱 Mobile App</option>
-                <option value="AI/ML">🤖 AI/ML</option>
-                <option value="Data Science">📊 Data Science</option>
-                <option value="Game Dev">🎮 Game Dev</option>
-                <option value="Other">🔧 Other</option>
+                <option value="web development">Web Development</option>
+                <option value="mobile app">Mobile App</option>
+                <option value="ai/ml">AI/ML</option>
+                <option value="data science">Data Science</option>
+                <option value="game dev">Game Dev</option>
+                <option value="other">Other</option>
             </select>
             <select id="filterStatus" onchange="filterProjects()">
                 <option value="all">All Status</option>
-                <option value="Completed">✅ Completed</option>
-                <option value="In Progress">🟡 In Progress</option>
-                <option value="Featured">⭐ Featured</option>
+                <option value="completed">Completed</option>
+                <option value="in progress">In Progress</option>
+                <option value="featured">Featured</option>
             </select>
-            <input type="text" id="searchProject" placeholder="🔍 Search projects..." oninput="filterProjects()">
+            <input type="text" id="searchProject" placeholder="Search projects or tech..." oninput="filterProjects()">
         </div>
 
-        <!-- PROJECTS GRID -->
         <div class="projects-grid" id="projectsGrid">
             <div class="empty-projects">
                 <span class="empty-icon">🚀</span>
@@ -991,12 +933,9 @@
     <div class="toast" id="toast"></div>
 
     <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
         // ============================================================
@@ -1049,9 +988,9 @@
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
-            // Admin check
+            // Admin check (fixed: case-insensitive comparison)
             const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
-            isAdminUser = (email === ADMIN_EMAIL);
+            isAdminUser = (email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
 
             console.log('📧 Logged in as:', email);
             console.log('🔑 Admin status:', isAdminUser);
@@ -1218,11 +1157,10 @@
                                 No projects yet. Be the first to showcase your work!
                             </div>
                         `;
-                        updateStats(0, 0, 0, 0);
+                        updateStats(0);
                         return;
                     }
 
-                    // Sort: Featured first, then by creation date
                     const projects = [];
                     snapshot.forEach((doc) => {
                         projects.push({ id: doc.id, ...doc.data() });
@@ -1257,7 +1195,7 @@
 
                         const card = document.createElement('div');
                         card.className = 'project-card';
-                        
+
                         let adminControlsHTML = '';
                         if (isAdminUser) {
                             adminControlsHTML = `
@@ -1267,7 +1205,6 @@
                             `;
                         }
 
-                        // Generate stars
                         const stars = '⭐'.repeat(Math.min(project.rating || 3, 5));
 
                         card.innerHTML = `
@@ -1283,8 +1220,8 @@
                                 <div class="project-title">${project.title || 'Untitled'}</div>
                                 <div class="project-description">${project.description || 'No description'}</div>
                                 <div class="tech-tags">
-                                    ${project.techStack && project.techStack.length > 0 ? 
-                                        project.techStack.map(tech => `<span class="tech-tag">${tech}</span>`).join('') : 
+                                    ${project.techStack && project.techStack.length > 0 ?
+                                        project.techStack.map(tech => `<span class="tech-tag">${tech}</span>`).join('') :
                                         '<span class="tech-tag">No tech specified</span>'
                                     }
                                 </div>
