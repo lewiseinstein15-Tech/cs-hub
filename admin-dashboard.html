@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>CS HUB - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -96,7 +96,8 @@
             border: 1px solid transparent;
         }
 
-        .nav-item a:hover, .nav-item.active a {
+        .nav-item a:hover,
+        .nav-item.active a {
             color: var(--white);
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.2);
@@ -164,6 +165,7 @@
             height: 100vh;
         }
 
+        /* Topbar */
         .topbar {
             height: 75px;
             border-bottom: 1px solid var(--border);
@@ -234,6 +236,7 @@
             gap: 6px;
             transition: all 0.2s ease;
             border: 1px solid transparent;
+            text-decoration: none;
         }
 
         .btn-settings {
@@ -264,7 +267,7 @@
             flex-grow: 1;
         }
 
-        /* Hero Terminal */
+        /* Hero */
         .hero-terminal {
             background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
@@ -304,10 +307,12 @@
             max-width: 700px;
         }
 
-        /* Metrics Grid */
+        /* ============================================================ */
+        /* METRICS GRID - FIXED LAYOUT */
+        /* ============================================================ */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 35px;
         }
@@ -316,36 +321,54 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 20px;
+            padding: 20px 22px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            transition: all 0.2s ease;
         }
 
-        .metric-left {
+        .metric-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .metric-card .metric-top {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 14px;
+            margin-bottom: 12px;
         }
 
         .metric-icon-circle {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
+            flex-shrink: 0;
         }
 
-        .metric-icon-circle.blue { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
-        .metric-icon-circle.green { background: rgba(34, 197, 94, 0.1); color: var(--green); }
-        .metric-icon-circle.purple { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
-        .metric-icon-circle.yellow { background: rgba(245, 158, 11, 0.1); color: var(--yellow); }
+        .metric-icon-circle.blue {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--blue);
+        }
+        .metric-icon-circle.green {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+        }
+        .metric-icon-circle.purple {
+            background: rgba(139, 92, 246, 0.12);
+            color: var(--purple);
+        }
+        .metric-icon-circle.yellow {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--yellow);
+        }
 
         .metric-data h3 {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
         }
 
@@ -357,13 +380,28 @@
             margin-top: 2px;
         }
 
+        .metric-card .metric-bottom {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
         .metric-link {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--blue);
             text-decoration: none;
-            display: block;
-            margin-top: 8px;
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .metric-link:hover {
+            color: var(--cyan);
+            gap: 8px;
         }
 
         .status-dot {
@@ -376,6 +414,9 @@
             box-shadow: 0 0 8px var(--green);
         }
 
+        /* ============================================================ */
+        /* SECTION HEADERS */
+        /* ============================================================ */
         .section-header {
             font-family: 'Orbitron', sans-serif;
             font-size: 12px;
@@ -383,12 +424,15 @@
             color: var(--dim);
             text-transform: uppercase;
             margin-bottom: 20px;
+            margin-top: 10px;
         }
 
-        /* Management Grid */
+        /* ============================================================ */
+        /* MANAGEMENT GRID */
+        /* ============================================================ */
         .management-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 35px;
         }
@@ -402,55 +446,85 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 170px;
+            min-height: 160px;
         }
 
         .manage-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.12);
             background: rgba(10, 15, 36, 0.9);
+            transform: translateY(-2px);
         }
 
-        .manage-icon {
+        .manage-card .manage-icon {
             font-size: 22px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: inline-block;
             padding: 8px;
             border-radius: 8px;
+            width: fit-content;
         }
 
-        .manage-card.card-blue .manage-icon { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
-        .manage-card.card-green .manage-icon { background: rgba(34, 197, 94, 0.1); color: var(--green); }
-        .manage-card.card-purple .manage-icon { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
-        .manage-card.card-yellow .manage-icon { background: rgba(245, 158, 11, 0.1); color: var(--yellow); }
-        .manage-card.card-cyan .manage-icon { background: rgba(6, 182, 212, 0.1); color: var(--cyan); }
+        .manage-card.card-blue .manage-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+        }
+        .manage-card.card-green .manage-icon {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+        }
+        .manage-card.card-purple .manage-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--purple);
+        }
+        .manage-card.card-cyan .manage-icon {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--cyan);
+        }
 
         .manage-card h4 {
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .manage-card p {
             font-size: 12px;
             color: var(--dim);
             line-height: 1.5;
-            margin-bottom: 15px;
             flex-grow: 1;
+            margin-bottom: 12px;
         }
 
         .manage-action-link {
             font-size: 12px;
             font-weight: 500;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
         }
 
-        .card-blue .manage-action-link { color: var(--blue); }
-        .card-green .manage-action-link { color: var(--green); }
-        .card-purple .manage-action-link { color: var(--purple); }
-        .card-yellow .manage-action-link { color: var(--yellow); }
-        .card-cyan .manage-action-link { color: var(--cyan); }
+        .manage-action-link:hover {
+            gap: 8px;
+        }
 
-        /* ===== REVISION ADMIN SECTION (MERGED FROM admin.html) ===== */
+        .card-blue .manage-action-link {
+            color: var(--blue);
+        }
+        .card-green .manage-action-link {
+            color: var(--green);
+        }
+        .card-purple .manage-action-link {
+            color: var(--purple);
+        }
+        .card-cyan .manage-action-link {
+            color: var(--cyan);
+        }
+
+        /* ============================================================ */
+        /* REVISION ADMIN SECTION */
+        /* ============================================================ */
         .revision-admin-section {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -513,7 +587,7 @@
         }
 
         .revision-form-row .form-group select option {
-            background: var(--bg-primary);
+            background: var(--bg);
             color: var(--white);
         }
 
@@ -536,7 +610,6 @@
             box-shadow: 0 8px 30px rgba(6, 182, 212, 0.3);
         }
 
-        /* Revision Items List */
         .revision-items-list {
             margin-top: 20px;
         }
@@ -608,7 +681,9 @@
             font-size: 13px;
         }
 
-        /* Split Layout */
+        /* ============================================================ */
+        /* SPLIT LAYOUT */
+        /* ============================================================ */
         .split-layout {
             display: grid;
             grid-template-columns: 1fr 1.3fr;
@@ -634,6 +709,7 @@
             font-size: 12px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            color: var(--dim);
         }
 
         .panel-view-all {
@@ -643,7 +719,13 @@
             border: 1px solid var(--border);
             padding: 4px 10px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s ease;
+        }
+
+        .panel-view-all:hover {
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .action-list {
@@ -677,14 +759,26 @@
             font-size: 14px;
         }
 
-        .action-left-content span.icon-add { color: var(--green); }
-        .action-left-content span.icon-edit { color: var(--yellow); }
-        .action-left-content span.icon-delete { color: var(--red); }
-        .action-left-content span.icon-publish { color: var(--blue); }
+        .action-left-content span.icon-add {
+            color: var(--green);
+        }
+        .action-left-content span.icon-edit {
+            color: var(--yellow);
+        }
+        .action-left-content span.icon-delete {
+            color: var(--red);
+        }
+        .action-left-content span.icon-publish {
+            color: var(--blue);
+        }
 
-        .arrow-indicator { color: var(--dim); }
+        .arrow-indicator {
+            color: var(--dim);
+        }
 
-        /* Activity Logs */
+        /* ============================================================ */
+        /* ACTIVITY LOGS */
+        /* ============================================================ */
         .timeline-container {
             display: flex;
             flex-direction: column;
@@ -704,19 +798,36 @@
         .timeline-node::before {
             content: '';
             position: absolute;
-            left: -5px; top: calc(50% - 4px);
-            width: 8px; height: 8px;
+            left: -5px;
+            top: calc(50% - 4px);
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--border);
         }
 
-        .timeline-node.blue::before { background: var(--blue); }
-        .timeline-node.purple::before { background: var(--purple); }
-        .timeline-node.green::before { background: var(--green); }
-        .timeline-node.yellow::before { background: var(--yellow); }
+        .timeline-node.blue::before {
+            background: var(--blue);
+        }
+        .timeline-node.purple::before {
+            background: var(--purple);
+        }
+        .timeline-node.green::before {
+            background: var(--green);
+        }
+        .timeline-node.yellow::before {
+            background: var(--yellow);
+        }
 
-        .node-details h5 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-        .node-details p { font-size: 11px; color: var(--dim); }
+        .node-details h5 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .node-details p {
+            font-size: 11px;
+            color: var(--dim);
+        }
 
         .node-badge {
             font-family: 'JetBrains Mono', monospace;
@@ -726,12 +837,26 @@
             border-radius: 4px;
         }
 
-        .node-badge.blue { background: rgba(59, 130, 246, 0.15); color: var(--blue); }
-        .node-badge.purple { background: rgba(139, 92, 246, 0.15); color: var(--purple); }
-        .node-badge.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-        .node-badge.yellow { background: rgba(245, 158, 11, 0.15); color: var(--yellow); }
+        .node-badge.blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+        }
+        .node-badge.purple {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--purple);
+        }
+        .node-badge.green {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+        }
+        .node-badge.yellow {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--yellow);
+        }
 
-        /* Toast Notification */
+        /* ============================================================ */
+        /* TOAST */
+        /* ============================================================ */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -757,19 +882,56 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        .toast.success { border-color: var(--green); }
-        .toast.error { border-color: var(--red); }
-        .toast.info { border-color: var(--blue); }
+        .toast.success {
+            border-color: var(--green);
+        }
+        .toast.error {
+            border-color: var(--red);
+        }
+        .toast.info {
+            border-color: var(--blue);
+        }
 
-        /* Responsive */
+        /* ============================================================ */
+        /* RESPONSIVE */
+        /* ============================================================ */
         @media (max-width: 1024px) {
-            .menu-toggle { display: flex; }
-            .topbar-right { position: relative; width: auto; }
-            .sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .split-layout { grid-template-columns: 1fr; }
-            .content-area { padding: 20px 15px; }
-            .admin-details span { display: none; }
+            .menu-toggle {
+                display: flex;
+            }
+            .topbar-right {
+                position: relative;
+                width: auto;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content-area {
+                padding: 20px 15px;
+            }
+            .admin-details span {
+                display: none;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .management-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+
             .revision-form-row {
                 grid-template-columns: 1fr 1fr;
             }
@@ -791,18 +953,124 @@
         }
 
         @media (max-width: 600px) {
+            .topbar {
+                padding: 0 16px;
+                height: 65px;
+            }
+            .topbar-right .btn-settings span {
+                display: none;
+            }
+            .topbar-right .btn-logout span {
+                display: none;
+            }
+            .admin-meta .admin-details span {
+                display: none;
+            }
+            .admin-meta .shield-icon {
+                display: none;
+            }
+
+            .hero-terminal h2 {
+                font-size: 20px;
+            }
+            .hero-terminal {
+                padding: 20px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .metric-card {
+                padding: 16px;
+            }
+            .metric-data h3 {
+                font-size: 20px;
+            }
+            .metric-icon-circle {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+
+            .management-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .manage-card {
+                min-height: 130px;
+                padding: 16px;
+            }
+            .manage-card h4 {
+                font-size: 13px;
+            }
+            .manage-card p {
+                font-size: 11px;
+            }
+
             .revision-form-row {
                 grid-template-columns: 1fr;
             }
-            .hero-terminal h2 { font-size: 20px; }
-            .metric-card { padding: 15px; }
-            .metric-data h3 { font-size: 20px; }
-            .management-grid { grid-template-columns: 1fr 1fr; }
+
+            .split-panel {
+                padding: 18px;
+            }
+
+            .content-area {
+                padding: 12px;
+            }
+
+            .section-header {
+                font-size: 10px;
+                margin-bottom: 14px;
+                margin-top: 6px;
+            }
         }
 
         @media (max-width: 400px) {
-            .management-grid { grid-template-columns: 1fr; }
-            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .topbar-actions .btn-back span {
+                display: none;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .metric-card {
+                padding: 12px;
+            }
+            .metric-data h3 {
+                font-size: 16px;
+            }
+
+            .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-row-item {
+                padding: 10px 14px;
+                font-size: 12px;
+            }
+            .action-left-content {
+                font-size: 12px;
+                gap: 8px;
+            }
+
+            .admin-meta .admin-details h4 {
+                font-size: 12px;
+            }
+            .admin-meta .admin-details span {
+                display: none;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .management-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
     </style>
 </head>
@@ -815,7 +1083,7 @@
                 <h1>CS HUB</h1>
                 <span>ADMIN SYSTEM</span>
             </div>
-            
+
             <ul class="nav-menu">
                 <li class="nav-item active"><a href="admin-dashboard.html">📊 Dashboard</a></li>
                 <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
@@ -853,7 +1121,7 @@
         </header>
 
         <div class="content-area">
-            
+
             <!-- HERO -->
             <section class="hero-terminal">
                 <div class="env-tag">[ >_ ADMIN ENVIRONMENT ]</div>
@@ -862,47 +1130,58 @@
                 <p class="accent-blue">Manage content across CS Hub — notes, units, revision materials, and tools — and keep an eye on how the site is structured.</p>
             </section>
 
-            <!-- STATS -->
+            <!-- STATS - FIXED LAYOUT -->
             <section class="metrics-grid">
                 <div class="metric-card">
-                    <div class="metric-left">
+                    <div class="metric-top">
                         <div class="metric-icon-circle blue">🎓</div>
                         <div class="metric-data">
                             <h3 id="statUnits">---</h3>
                             <p>Total Units</p>
                         </div>
                     </div>
-                    <a href="admin-units.html" class="metric-link">View all &rarr;</a>
+                    <div class="metric-bottom">
+                        <a href="admin-units.html" class="metric-link">View all →</a>
+                    </div>
                 </div>
+
                 <div class="metric-card">
-                    <div class="metric-left">
+                    <div class="metric-top">
                         <div class="metric-icon-circle green">📄</div>
                         <div class="metric-data">
                             <h3 id="statNotes">---</h3>
                             <p>Notes Published</p>
                         </div>
                     </div>
-                    <a href="notes.html" class="metric-link">View all &rarr;</a>
+                    <div class="metric-bottom">
+                        <a href="notes.html" class="metric-link">View all →</a>
+                    </div>
                 </div>
+
                 <div class="metric-card">
-                    <div class="metric-left">
+                    <div class="metric-top">
                         <div class="metric-icon-circle purple">👥</div>
                         <div class="metric-data">
                             <h3 id="statUsers">---</h3>
                             <p>Registered Users</p>
                         </div>
                     </div>
-                    <a href="users.html" class="metric-link">View all &rarr;</a>
+                    <div class="metric-bottom">
+                        <a href="users.html" class="metric-link">View all →</a>
+                    </div>
                 </div>
+
                 <div class="metric-card">
-                    <div class="metric-left">
+                    <div class="metric-top">
                         <div class="metric-icon-circle yellow">📚</div>
                         <div class="metric-data">
                             <h3 id="statMaterials">---</h3>
                             <p>Revision Materials</p>
                         </div>
                     </div>
-                    <a href="revision-material.html" class="metric-link">View all &rarr;</a>
+                    <div class="metric-bottom">
+                        <a href="revision-material.html" class="metric-link">View all →</a>
+                    </div>
                 </div>
             </section>
 
@@ -913,41 +1192,44 @@
                     <div>
                         <div class="manage-icon">📄</div>
                         <h4>Notes</h4>
-                        <p>Review and add unit notes across all four years of the BSc CS curriculum.</p>
+                        <p>Review and add unit notes across all four years.</p>
                     </div>
-                    <a href="notes.html" class="manage-action-link">Manage notes &rarr;</a>
+                    <a href="notes.html" class="manage-action-link">Manage notes →</a>
                 </div>
+
                 <div class="manage-card card-green">
                     <div>
                         <div class="manage-icon">🎓</div>
-                        <h4>Units Control Panel</h4>
-                        <p>Configure curriculum pathways, map syllabus tracks, and core educational parameters.</p>
+                        <h4>Units Control</h4>
+                        <p>Configure curriculum pathways and syllabus tracks.</p>
                     </div>
-                    <a href="admin-units.html" class="manage-action-link">Configure units &rarr;</a>
+                    <a href="admin-units.html" class="manage-action-link">Configure units →</a>
                 </div>
+
                 <div class="manage-card card-purple">
                     <div>
                         <div class="manage-icon">🤖</div>
                         <h4>AI System</h4>
-                        <p>Configure AI assistant, generate drafts and manage automated system responses.</p>
+                        <p>Configure AI assistant and automated responses.</p>
                     </div>
-                    <a href="ai-system.html" class="manage-action-link">Open AI panel &rarr;</a>
+                    <a href="ai-system.html" class="manage-action-link">Open AI panel →</a>
                 </div>
+
                 <div class="manage-card card-cyan">
                     <div>
                         <div class="manage-icon">📚</div>
                         <h4>Revision Material</h4>
-                        <p>Manage books, learning YouTube links, videos, exams, and CATs.</p>
+                        <p>Manage books, videos, exams, and CATs.</p>
                     </div>
-                    <a href="revision-material.html" class="manage-action-link">Open Revision Material &rarr;</a>
+                    <a href="revision-material.html" class="manage-action-link">Open Revision →</a>
                 </div>
             </section>
 
-            <!-- ===== REVISION ADMIN SECTION (MERGED FROM admin.html) ===== -->
+            <!-- REVISION ADMIN SECTION -->
             <h3 class="section-header">📚 Quick Revision Manager</h3>
             <section class="revision-admin-section">
                 <div class="section-title">Add New Revision Material</div>
-                
+
                 <div class="revision-form-row">
                     <div class="form-group">
                         <label>Title</label>
@@ -984,23 +1266,25 @@
             <!-- ACTIONS AND LOG -->
             <section class="split-layout">
                 <div class="split-panel">
-                    <div class="panel-top-bar"><h4>Quick Actions</h4></div>
+                    <div class="panel-top-bar">
+                        <h4>Quick Actions</h4>
+                    </div>
                     <div class="action-list">
                         <a href="notes.html?action=add" class="action-row-item">
                             <div class="action-left-content"><span class="icon-add">＋</span> Add New Note</div>
-                            <span class="arrow-indicator">&rarr;</span>
+                            <span class="arrow-indicator">→</span>
                         </a>
                         <a href="notes.html?action=edit" class="action-row-item">
                             <div class="action-left-content"><span class="icon-edit">📝</span> Edit Existing Note</div>
-                            <span class="arrow-indicator">&rarr;</span>
+                            <span class="arrow-indicator">→</span>
                         </a>
                         <a href="notes.html?action=delete" class="action-row-item">
                             <div class="action-left-content"><span class="icon-delete">🗑️</span> Delete Note</div>
-                            <span class="arrow-indicator">&rarr;</span>
+                            <span class="arrow-indicator">→</span>
                         </a>
                         <a href="revision-material.html" class="action-row-item">
                             <div class="action-left-content"><span class="icon-publish">📚</span> View Revision Materials</div>
-                            <span class="arrow-indicator">&rarr;</span>
+                            <span class="arrow-indicator">→</span>
                         </a>
                     </div>
                 </div>
@@ -1008,7 +1292,7 @@
                 <div class="split-panel">
                     <div class="panel-top-bar">
                         <h4>Recent Activity</h4>
-                        <a href="logs.html" class="panel-view-all">View all &rarr;</a>
+                        <a href="logs.html" class="panel-view-all">View all →</a>
                     </div>
                     <div class="timeline-container" id="activityPanel">
                         <div class="timeline-node blue">
@@ -1028,10 +1312,14 @@
     <div class="toast" id="toast"></div>
 
     <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
+    </script>
 
     <script>
         // ============================================================
@@ -1090,9 +1378,15 @@
         // TYPEWRITER
         // ============================================================
         function typeWriter(text) {
-            let i = 0; const el = document.getElementById("welcomeText"); el.innerHTML = "";
+            let i = 0;
+            const el = document.getElementById("welcomeText");
+            el.innerHTML = "";
+
             function write() {
-                if (i < text.length) { el.innerHTML += text[i++]; setTimeout(write, 40); }
+                if (i < text.length) {
+                    el.innerHTML += text[i++];
+                    setTimeout(write, 40);
+                }
             }
             write();
         }
@@ -1110,7 +1404,6 @@
             db.collection("users").onSnapshot(snap => {
                 document.getElementById("statUsers").textContent = snap.size;
             });
-            // Revision materials count from Realtime DB
             rtdb.ref('materials').on('value', (snapshot) => {
                 const data = snapshot.val();
                 let count = 0;
@@ -1130,37 +1423,42 @@
             db.collection("activity_logs").orderBy("timestamp", "desc").limit(4).onSnapshot(snap => {
                 const logContainer = document.getElementById("activityPanel");
                 if (snap.empty) {
-                    logContainer.innerHTML = `<p style="font-size:12px; color:var(--dim);">No infrastructure updates log found.</p>`;
+                    logContainer.innerHTML =
+                        `<p style="font-size:12px; color:var(--dim);">No infrastructure updates log found.</p>`;
                     return;
                 }
                 logContainer.innerHTML = "";
                 snap.forEach(doc => {
                     const log = doc.data();
-                    let color = "blue", badge = "MODIFIED";
-                    if ((log.text||"").toLowerCase().includes("add")) { color = "green"; badge = "ADDED"; }
-                    if ((log.text||"").toLowerCase().includes("delete")) { color = "yellow"; badge = "DELETED"; }
-                    if ((log.text||"").toLowerCase().includes("update")) { color = "purple"; badge = "UPDATED"; }
-                    
+                    let color = "blue",
+                        badge = "MODIFIED";
+                    if ((log.text || "").toLowerCase().includes("add")) { color = "green";
+                        badge = "ADDED"; }
+                    if ((log.text || "").toLowerCase().includes("delete")) { color = "yellow";
+                        badge = "DELETED"; }
+                    if ((log.text || "").toLowerCase().includes("update")) { color = "purple";
+                        badge = "UPDATED"; }
+
                     const div = document.createElement("div");
                     div.className = `timeline-node ${color}`;
                     div.innerHTML = `
-                        <div class="node-details">
-                            <h5>${log.text}</h5>
-                            <p>${log.timestamp ? new Date(log.timestamp.toDate()).toLocaleTimeString() : 'Just now'}</p>
-                        </div>
-                        <span class="node-badge ${color}">${badge}</span>`;
+                            <div class="node-details">
+                                <h5>${log.text}</h5>
+                                <p>${log.timestamp ? new Date(log.timestamp.toDate()).toLocaleTimeString() : 'Just now'}</p>
+                            </div>
+                            <span class="node-badge ${color}">${badge}</span>`;
                     logContainer.appendChild(div);
                 });
             });
         }
 
         // ============================================================
-        // REVISION ITEMS (MERGED FROM admin.html)
+        // REVISION ITEMS
         // ============================================================
         function loadRevisionItems() {
             const listDiv = document.getElementById('revisionList');
             const category = document.getElementById('revCategory').value;
-            
+
             rtdb.ref('materials/' + category).on('value', (snapshot) => {
                 listDiv.innerHTML = "";
                 const data = snapshot.val();
@@ -1173,12 +1471,12 @@
                     const div = document.createElement('div');
                     div.className = 'revision-item-row';
                     div.innerHTML = `
-                        <span class="item-title">${item.title || 'Untitled'}</span>
-                        <span class="item-url">${item.url || 'No URL'}</span>
-                        <div class="item-actions">
-                            <button class="btn-del" onclick="deleteRevisionItem('${category}', '${key}')">🗑️ Delete</button>
-                        </div>
-                    `;
+                            <span class="item-title">${item.title || 'Untitled'}</span>
+                            <span class="item-url">${item.url || 'No URL'}</span>
+                            <div class="item-actions">
+                                <button class="btn-del" onclick="deleteRevisionItem('${category}', '${key}')">🗑️ Delete</button>
+                            </div>
+                        `;
                     listDiv.appendChild(div);
                 }
             });
@@ -1194,7 +1492,6 @@
                 return;
             }
 
-            // Validate URL
             try {
                 new URL(url);
             } catch (_) {
@@ -1207,7 +1504,6 @@
                 showToast('✅ Item saved successfully!', 'success');
                 document.getElementById('revTitle').value = '';
                 document.getElementById('revUrl').value = '';
-                // Log activity
                 db.collection('activity_logs').add({
                     text: `Added revision material: ${title} (${category})`,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -1219,7 +1515,7 @@
 
         function deleteRevisionItem(category, key) {
             if (!confirm('Are you sure you want to delete this item?')) return;
-            
+
             const ref = rtdb.ref('materials/' + category + '/' + key);
             ref.once('value', (snapshot) => {
                 const item = snapshot.val();
@@ -1236,7 +1532,6 @@
             });
         }
 
-        // Category change reloads list
         document.getElementById('revCategory').addEventListener('change', loadRevisionItems);
 
         // ============================================================
