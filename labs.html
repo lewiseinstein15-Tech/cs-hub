@@ -1,12 +1,1285 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>CS HUB Notes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - Labs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --orange: #F97316;
+            --pink: #EC4899;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 25px 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.open { transform: translateX(0); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        .sidebar-brand { margin-bottom: 30px; }
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none;
+        }
+        .sidebar-close.mobile-show { display: block; }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dim);
+            padding: 12px 16px 6px 16px;
+            font-weight: 600;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .sidebar-footer {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .sidebar-profile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
+        .profile-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .main-content {
+            padding: 16px 16px 80px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .topbar-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .topbar-name small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        .btn-action {
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
+        }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+        .btn-logout:hover {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .hero-terminal {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .env-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero-terminal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .hero-terminal p {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .stat-box .number.blue { color: var(--blue); }
+        .stat-box .number.green { color: var(--green); }
+        .stat-box .number.yellow { color: var(--yellow); }
+        .stat-box .number.purple { color: var(--purple); }
+        .stat-box .label {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .filter-bar select,
+        .filter-bar input {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .filter-bar select option {
+            background: var(--bg);
+            color: var(--white);
+        }
+
+        .filter-bar .filter-label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .lab-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .lab-card .card-glow {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.04), transparent 70%);
+            pointer-events: none;
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .lab-card:hover .card-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .lab-card .lab-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lab-card .lab-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--dim);
+            background: rgba(255,255,255,0.03);
+            padding: 2px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .lab-card .lab-status {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .lab-card .lab-status.not-started {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+        .lab-card .lab-status.in-progress {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--yellow);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+        .lab-card .lab-status.completed {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+
+        .lab-card .lab-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+
+        .lab-card .lab-unit {
+            font-size: 12px;
+            color: var(--dim);
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lab-card .lab-description {
+            font-size: 13px;
+            color: var(--dim);
+            line-height: 1.5;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .lab-card .lab-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .lab-card .lab-meta .difficulty {
+            font-size: 10px;
+            font-weight: 500;
+            padding: 2px 12px;
+            border-radius: 12px;
+        }
+
+        .lab-card .lab-meta .difficulty.easy {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+        .lab-card .lab-meta .difficulty.medium {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--yellow);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+        .lab-card .lab-meta .difficulty.hard {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .lab-card .lab-meta .due-date {
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .lab-card .lab-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+
+        .lab-card .lab-actions button,
+        .lab-card .lab-actions a {
+            padding: 5px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .lab-card .lab-actions .btn-download:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .lab-card .lab-actions .btn-complete:hover {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .lab-card .lab-actions .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .admin-controls {
+            display: none;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-controls.visible {
+            display: flex;
+        }
+
+        .admin-controls button {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-controls .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .add-lab-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .add-lab-form.visible { display: block; }
+
+        .add-lab-form .form-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--cyan);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group.full-width { grid-column: 1 / -1; }
+
+        .form-group label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.05);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group select option {
+            background: var(--bg);
+            color: var(--white);
+        }
+
+        .btn-submit {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            grid-column: 1 / -1;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-toggle-form {
+            padding: 8px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+            margin-bottom: 16px;
+        }
+
+        .btn-toggle-form.visible { display: inline-block; }
+        .btn-toggle-form:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--blue);
+        }
+
+        .empty-labs {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--dim);
+            font-size: 14px;
+            grid-column: 1 / -1;
+        }
+
+        .empty-labs .empty-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.info { border-color: var(--blue); }
+
+        @media (min-width: 600px) {
+            .main-content { padding: 20px 24px 80px 24px; }
+            .topbar { padding: 16px 24px; }
+            .stats-row { grid-template-columns: repeat(4, 1fr); }
+            .labs-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                width: 260px;
+                border-radius: 0;
+                z-index: 50;
+            }
+            .sidebar-overlay { display: none !important; }
+            .sidebar-close.mobile-show { display: none !important; }
+            body { display: flex; gap: 0; }
+            .main-content {
+                padding: 24px 32px 80px 32px;
+                flex: 1;
+                max-width: 100%;
+            }
+            .topbar { display: none; }
+            .menu-toggle { display: none !important; }
+            .labs-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-box .number { font-size: 22px; }
+            .stat-box { padding: 14px; }
+            .labs-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .form-grid { grid-template-columns: 1fr; }
+            .hero-terminal h2 { font-size: 20px; }
+            .hero-terminal { padding: 20px; }
+            .topbar .btn-action span { display: none; }
+        }
+    </style>
 </head>
-
 <body>
-<h1>CS HUB Notes</h1>
-<p>Notes system loading...</p>
-</body>
 
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>STUDENT PORTAL</span>
+            </div>
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
+                
+                <li class="nav-section-title">LEARN</li>
+                <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
+                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
+                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
+                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
+                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
+                
+                <li class="nav-section-title">EXPLORE</li>
+                <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
+                <li class="nav-item active"><a href="labs.html">🧪 Labs</a></li>
+                <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                
+                <li class="nav-section-title">ACCOUNT</li>
+                <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
+                <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Student</div>
+            </div>
+            <div class="sidebar-footer">© 2026 CS Hub</div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <button class="menu-toggle" onclick="openSidebar()">☰</button>
+            <div class="topbar-user">
+                <span class="topbar-name" id="topbarName">
+                    User
+                    <small id="topbarEmail">user@email.com</small>
+                </span>
+                <div class="topbar-avatar" id="topbarAvatar">U</div>
+            </div>
+            <button class="btn-action btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <section class="hero-terminal">
+            <div class="env-tag">[ >_ LABORATORY PORTAL ]</div>
+            <h2>🧪 Labs</h2>
+            <p>Access programming labs, exercises, and hands-on practice materials for all courses.</p>
+        </section>
+
+        <section class="stats-row">
+            <div class="stat-box">
+                <div class="number blue" id="totalLabs">0</div>
+                <div class="label">Total Labs</div>
+            </div>
+            <div class="stat-box">
+                <div class="number green" id="completedLabs">0</div>
+                <div class="label">Completed</div>
+            </div>
+            <div class="stat-box">
+                <div class="number yellow" id="inProgressLabs">0</div>
+                <div class="label">In Progress</div>
+            </div>
+            <div class="stat-box">
+                <div class="number purple" id="notStartedLabs">0</div>
+                <div class="label">Not Started</div>
+            </div>
+        </section>
+
+        <button class="btn-toggle-form" id="toggleFormBtn" onclick="toggleAddForm()">➕ Add New Lab</button>
+
+        <div class="add-lab-form" id="addLabForm">
+            <div class="form-title">➕ Add New Lab</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Lab Title</label>
+                    <input type="text" id="labTitle" placeholder="e.g., Introduction to Python">
+                </div>
+                <div class="form-group">
+                    <label>Unit Code</label>
+                    <input type="text" id="labUnit" placeholder="e.g., CSC1110">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <select id="labYear">
+                        <option value="Year 1">Year 1</option>
+                        <option value="Year 2">Year 2</option>
+                        <option value="Year 3">Year 3</option>
+                        <option value="Year 4">Year 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Difficulty</label>
+                    <select id="labDifficulty">
+                        <option value="Easy">🟢 Easy</option>
+                        <option value="Medium">🟡 Medium</option>
+                        <option value="Hard">🔴 Hard</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Description</label>
+                    <textarea id="labDescription" placeholder="Describe the lab exercise..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Lab Number</label>
+                    <input type="text" id="labNumber" placeholder="e.g., Lab 1">
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="labDueDate">
+                </div>
+                <button class="btn-submit" onclick="addLab()">➕ Add Lab</button>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <span class="filter-label">Filter:</span>
+            <select id="filterYear" onchange="filterLabs()">
+                <option value="all">All Years</option>
+                <option value="Year 1">Year 1</option>
+                <option value="Year 2">Year 2</option>
+                <option value="Year 3">Year 3</option>
+                <option value="Year 4">Year 4</option>
+            </select>
+            <select id="filterStatus" onchange="filterLabs()">
+                <option value="all">All Status</option>
+                <option value="Not Started">🔴 Not Started</option>
+                <option value="In Progress">🟡 In Progress</option>
+                <option value="Completed">✅ Completed</option>
+            </select>
+            <input type="text" id="searchLab" placeholder="🔍 Search labs..." oninput="filterLabs()">
+        </div>
+
+        <div class="labs-grid" id="labsGrid">
+            <div class="empty-labs">
+                <span class="empty-icon">🧪</span>
+                No labs available. Check back later!
+            </div>
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let isAdminUser = false;
+        let allLabs = [];
+
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+
+            const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+            isAdminUser = (email === ADMIN_EMAIL);
+
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarName').textContent = displayName;
+            document.getElementById('topbarEmail').textContent = email;
+
+            if (isAdminUser) {
+                document.getElementById('userRole').textContent = '🔑 Admin';
+                document.getElementById('toggleFormBtn').classList.add('visible');
+            } else {
+                document.getElementById('userRole').textContent = 'Student';
+                document.getElementById('toggleFormBtn').classList.remove('visible');
+            }
+
+            loadLabs();
+        });
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        }
+
+        function toggleAddForm() {
+            const form = document.getElementById('addLabForm');
+            form.classList.toggle('visible');
+            document.getElementById('toggleFormBtn').textContent = form.classList.contains('visible') ? '✕ Cancel' : '➕ Add New Lab';
+        }
+
+        function addLab() {
+            if (!isAdminUser) {
+                showToast('❌ Admin access required', 'error');
+                return;
+            }
+
+            const title = document.getElementById('labTitle').value.trim();
+            const unit = document.getElementById('labUnit').value.trim();
+            const year = document.getElementById('labYear').value;
+            const difficulty = document.getElementById('labDifficulty').value;
+            const description = document.getElementById('labDescription').value.trim();
+            const labNumber = document.getElementById('labNumber').value.trim();
+            const dueDate = document.getElementById('labDueDate').value;
+
+            if (!title || !unit) {
+                showToast('Please fill in Title and Unit Code', 'error');
+                return;
+            }
+
+            const labData = {
+                title: title,
+                unit: unit,
+                year: year,
+                difficulty: difficulty,
+                description: description || 'No description provided.',
+                labNumber: labNumber || 'Lab ' + (allLabs.length + 1),
+                dueDate: dueDate || 'No deadline',
+                status: 'Not Started',
+                progress: 0,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('labs').add(labData)
+                .then(() => {
+                    showToast('✅ Lab added successfully!', 'success');
+                    document.getElementById('labTitle').value = '';
+                    document.getElementById('labUnit').value = '';
+                    document.getElementById('labDescription').value = '';
+                    document.getElementById('labNumber').value = '';
+                    document.getElementById('labDueDate').value = '';
+                    toggleAddForm();
+                    db.collection('activity_logs').add({
+                        text: `Added lab: ${title} (${unit})`,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .catch((err) => {
+                    showToast('❌ Error: ' + err.message, 'error');
+                });
+        }
+
+        function updateLabStatus(id, newStatus) {
+            const progressMap = {
+                'Not Started': 0,
+                'In Progress': 50,
+                'Completed': 100
+            };
+
+            db.collection('labs').doc(id).update({
+                status: newStatus,
+                progress: progressMap[newStatus] || 0,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                showToast(`✅ Status updated to ${newStatus}`, 'success');
+                db.collection('activity_logs').add({
+                    text: `Updated lab status to ${newStatus}`,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            })
+            .catch((err) => {
+                showToast('❌ Error: ' + err.message, 'error');
+            });
+        }
+
+        function deleteLab(id, title) {
+            if (!isAdminUser) {
+                showToast('❌ Admin access required', 'error');
+                return;
+            }
+            if (!confirm(`🗑️ Delete lab "${title}"?`)) return;
+
+            db.collection('labs').doc(id).delete()
+                .then(() => {
+                    showToast(`🗑️ "${title}" deleted`, 'success');
+                    db.collection('activity_logs').add({
+                        text: `Deleted lab: ${title}`,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .catch((err) => {
+                    showToast('❌ Error: ' + err.message, 'error');
+                });
+        }
+
+        function loadLabs() {
+            const grid = document.getElementById('labsGrid');
+
+            db.collection('labs')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot((snapshot) => {
+                    grid.innerHTML = '';
+                    allLabs = [];
+
+                    if (snapshot.empty) {
+                        grid.innerHTML = `
+                            <div class="empty-labs">
+                                <span class="empty-icon">🧪</span>
+                                No labs available. Check back later!
+                            </div>
+                        `;
+                        updateStats(0, 0, 0, 0);
+                        return;
+                    }
+
+                    snapshot.forEach((doc) => {
+                        const lab = doc.data();
+                        const id = doc.id;
+                        allLabs.push({ id, ...lab });
+
+                        const statusClass = lab.status.toLowerCase().replace(' ', '-');
+                        const statusEmojis = {
+                            'Not Started': '🔴',
+                            'In Progress': '🟡',
+                            'Completed': '✅'
+                        };
+
+                        const difficultyEmojis = {
+                            'Easy': '🟢',
+                            'Medium': '🟡',
+                            'Hard': '🔴'
+                        };
+
+                        const card = document.createElement('div');
+                        card.className = 'lab-card';
+
+                        let adminControlsHTML = '';
+                        if (isAdminUser) {
+                            adminControlsHTML = `
+                                <div class="admin-controls visible">
+                                    <button class="btn-delete" onclick="deleteLab('${id}', '${lab.title.replace(/'/g, "\\'")}')">🗑️ Delete</button>
+                                </div>
+                            `;
+                        }
+
+                        // Status dropdown for students
+                        let statusDropdownHTML = `
+                            <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
+                                <select onchange="updateLabStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
+                                    <option value="Not Started" ${lab.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
+                                    <option value="In Progress" ${lab.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
+                                    <option value="Completed" ${lab.status === 'Completed' ? 'selected' : ''}>✅ Completed</option>
+                                </select>
+                            </div>
+                        `;
+
+                        card.innerHTML = `
+                            <div class="card-glow"></div>
+                            <div class="lab-top">
+                                <span class="lab-number">${lab.labNumber || 'Lab'}</span>
+                                <span class="lab-status ${statusClass}">${statusEmojis[lab.status] || ''} ${lab.status || 'Not Started'}</span>
+                            </div>
+                            <div class="lab-title">${lab.title || 'Untitled'}</div>
+                            <div class="lab-unit">📚 ${lab.unit || 'N/A'} • ${lab.year || 'N/A'}</div>
+                            <div class="lab-description">${lab.description || 'No description'}</div>
+                            <div class="lab-meta">
+                                <span class="difficulty ${lab.difficulty ? lab.difficulty.toLowerCase() : 'easy'}">${difficultyEmojis[lab.difficulty] || ''} ${lab.difficulty || 'Easy'}</span>
+                                <span class="due-date">📅 ${lab.dueDate || 'No deadline'}</span>
+                            </div>
+                            ${statusDropdownHTML}
+                            <div class="lab-actions">
+                                <a href="#" class="btn-download" onclick="showToast('📥 Downloading lab materials...', 'info')">📥 Download</a>
+                                <button class="btn-complete" onclick="updateLabStatus('${id}', 'Completed')">✅ Mark Complete</button>
+                            </div>
+                            ${adminControlsHTML}
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    filterLabs();
+                    updateStats(snapshot.size);
+                });
+        }
+
+        function filterLabs() {
+            const yearFilter = document.getElementById('filterYear').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const searchTerm = document.getElementById('searchLab').value.toLowerCase();
+
+            const cards = document.querySelectorAll('.lab-card');
+            let visible = 0;
+
+            cards.forEach((card) => {
+                const title = card.querySelector('.lab-title')?.textContent?.toLowerCase() || '';
+                const unit = card.querySelector('.lab-unit')?.textContent?.toLowerCase() || '';
+                const status = card.querySelector('.lab-status')?.textContent?.toLowerCase() || '';
+                const year = card.querySelector('.lab-unit')?.textContent || '';
+                const labNumber = card.querySelector('.lab-number')?.textContent?.toLowerCase() || '';
+
+                let show = true;
+
+                if (yearFilter !== 'all' && !year.includes(yearFilter)) show = false;
+                if (statusFilter !== 'all' && !status.includes(statusFilter.toLowerCase())) show = false;
+                if (searchTerm && !title.includes(searchTerm) && !unit.includes(searchTerm) && !labNumber.includes(searchTerm)) show = false;
+
+                card.style.display = show ? 'flex' : 'none';
+                if (show) visible++;
+            });
+
+            const emptyMsg = document.querySelector('.empty-labs');
+            if (emptyMsg) {
+                if (visible === 0 && document.querySelectorAll('.lab-card').length > 0) {
+                    emptyMsg.style.display = 'block';
+                    emptyMsg.innerHTML = `<span class="empty-icon">🔍</span> No labs match your filters.`;
+                } else {
+                    emptyMsg.style.display = 'none';
+                }
+            }
+        }
+
+        function updateStats(total) {
+            const completed = allLabs.filter(l => l.status === 'Completed').length;
+            const inProgress = allLabs.filter(l => l.status === 'In Progress').length;
+            const notStarted = allLabs.filter(l => l.status === 'Not Started' || !l.status).length;
+
+            document.getElementById('totalLabs').textContent = total || allLabs.length;
+            document.getElementById('completedLabs').textContent = completed;
+            document.getElementById('inProgressLabs').textContent = inProgress;
+            document.getElementById('notStartedLabs').textContent = notStarted;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        console.log('✅ Labs page loaded!');
+    </script>
+
+</body>
 </html>
