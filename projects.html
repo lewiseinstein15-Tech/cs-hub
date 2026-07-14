@@ -1,12 +1,1291 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>CS HUB Notes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --orange: #F97316;
+            --pink: #EC4899;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 25px 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.open { transform: translateX(0); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        .sidebar-brand { margin-bottom: 30px; }
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none;
+        }
+        .sidebar-close.mobile-show { display: block; }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dim);
+            padding: 12px 16px 6px 16px;
+            font-weight: 600;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .sidebar-footer {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .sidebar-profile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
+        .profile-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px 16px 80px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .topbar-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .topbar-name small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        .btn-action {
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
+        }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+        .btn-logout:hover {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Hero */
+        .hero-terminal {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .env-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hero-terminal h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .hero-terminal p {
+            color: var(--dim);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-align: center;
+        }
+
+        .stat-box .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .stat-box .number.blue { color: var(--blue); }
+        .stat-box .number.green { color: var(--green); }
+        .stat-box .number.yellow { color: var(--yellow); }
+        .stat-box .number.purple { color: var(--purple); }
+        .stat-box .label {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .filter-bar select,
+        .filter-bar input {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .filter-bar select option {
+            background: var(--bg);
+            color: var(--white);
+        }
+
+        .filter-bar .filter-label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card .card-glow {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.04), transparent 70%);
+            pointer-events: none;
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .project-card:hover .card-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .project-card .project-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card .project-unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--dim);
+            background: rgba(255,255,255,0.03);
+            padding: 2px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .project-card .project-status {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .project-card .project-status.not-started {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+        .project-card .project-status.in-progress {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--yellow);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+        .project-card .project-status.submitted {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+        .project-card .project-status.completed {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+        .project-card .project-status.on-hold {
+            background: rgba(139, 92, 246, 0.12);
+            color: var(--purple);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+        }
+
+        .project-card .project-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+        }
+
+        .project-card .project-description {
+            font-size: 13px;
+            color: var(--dim);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-card .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card .project-meta .due-date {
+            font-size: 11px;
+            color: var(--dim);
+        }
+
+        .project-card .project-meta .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .project-card .project-meta .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .project-card .project-meta .progress-text {
+            font-size: 10px;
+            color: var(--dim);
+        }
+
+        /* Admin Controls - Hidden for regular users */
+        .admin-controls {
+            display: none;
+            gap: 8px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-controls.visible {
+            display: flex;
+        }
+
+        .admin-controls button {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-controls .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .admin-controls .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* Add Project Form - Admin Only */
+        .add-project-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .add-project-form.visible {
+            display: block;
+        }
+
+        .add-project-form .form-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: var(--cyan);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.05);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group select option {
+            background: var(--bg);
+            color: var(--white);
+        }
+
+        .btn-submit {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            grid-column: 1 / -1;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-toggle-form {
+            padding: 8px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+            margin-bottom: 16px;
+        }
+
+        .btn-toggle-form.visible {
+            display: inline-block;
+        }
+
+        .btn-toggle-form:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--blue);
+        }
+
+        .empty-projects {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--dim);
+            font-size: 14px;
+            grid-column: 1 / -1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.info { border-color: var(--blue); }
+
+        /* Responsive */
+        @media (min-width: 600px) {
+            .main-content { padding: 20px 24px 80px 24px; }
+            .topbar { padding: 16px 24px; }
+            .stats-row { grid-template-columns: repeat(4, 1fr); }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                width: 260px;
+                border-radius: 0;
+                z-index: 50;
+            }
+            .sidebar-overlay { display: none !important; }
+            .sidebar-close.mobile-show { display: none !important; }
+            body { display: flex; gap: 0; }
+            .main-content {
+                padding: 24px 32px 80px 32px;
+                flex: 1;
+                max-width: 100%;
+            }
+            .topbar { display: none; }
+            .menu-toggle { display: none !important; }
+            .projects-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-box .number { font-size: 22px; }
+            .stat-box { padding: 14px; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .form-grid { grid-template-columns: 1fr; }
+            .hero-terminal h2 { font-size: 20px; }
+            .hero-terminal { padding: 20px; }
+            .content-area { padding: 12px; }
+            .topbar .btn-action span { display: none; }
+        }
+    </style>
 </head>
-
 <body>
-<h1>CS HUB Notes</h1>
-<p>Notes system loading...</p>
-</body>
 
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>STUDENT PORTAL</span>
+            </div>
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
+                
+                <li class="nav-section-title">LEARN</li>
+                <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
+                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
+                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
+                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
+                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
+                
+                <li class="nav-section-title">EXPLORE</li>
+                <li class="nav-item active"><a href="projects.html">💻 Projects</a></li>
+                <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
+                <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                
+                <li class="nav-section-title">ACCOUNT</li>
+                <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
+                <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Student</div>
+            </div>
+            <div class="sidebar-footer">© 2026 CS Hub</div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- TOP BAR (mobile only) -->
+        <div class="topbar">
+            <button class="menu-toggle" onclick="openSidebar()">☰</button>
+            <div class="topbar-user">
+                <span class="topbar-name" id="topbarName">
+                    User
+                    <small id="topbarEmail">user@email.com</small>
+                </span>
+                <div class="topbar-avatar" id="topbarAvatar">U</div>
+            </div>
+            <button class="btn-action btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- HERO -->
+        <section class="hero-terminal">
+            <div class="env-tag">[ >_ PROJECTS PORTAL ]</div>
+            <h2>💻 Projects</h2>
+            <p>Track and manage your course projects, personal projects, and group assignments.</p>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-row">
+            <div class="stat-box">
+                <div class="number blue" id="totalProjects">0</div>
+                <div class="label">Total Projects</div>
+            </div>
+            <div class="stat-box">
+                <div class="number green" id="completedProjects">0</div>
+                <div class="label">Completed</div>
+            </div>
+            <div class="stat-box">
+                <div class="number yellow" id="inProgressProjects">0</div>
+                <div class="label">In Progress</div>
+            </div>
+            <div class="stat-box">
+                <div class="number purple" id="notStartedProjects">0</div>
+                <div class="label">Not Started</div>
+            </div>
+        </section>
+
+        <!-- ADMIN: Toggle Add Form -->
+        <button class="btn-toggle-form" id="toggleFormBtn" onclick="toggleAddForm()">➕ Add New Project</button>
+
+        <!-- ADD PROJECT FORM (Admin Only) -->
+        <div class="add-project-form" id="addProjectForm">
+            <div class="form-title">➕ Add New Project</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Project Title</label>
+                    <input type="text" id="projectTitle" placeholder="e.g., Student Management System">
+                </div>
+                <div class="form-group">
+                    <label>Unit Code</label>
+                    <input type="text" id="projectUnit" placeholder="e.g., CSC222">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <select id="projectYear">
+                        <option value="Year 1">Year 1</option>
+                        <option value="Year 2">Year 2</option>
+                        <option value="Year 3">Year 3</option>
+                        <option value="Year 4">Year 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="projectStatus">
+                        <option value="Not Started">🔴 Not Started</option>
+                        <option value="In Progress">🟡 In Progress</option>
+                        <option value="Submitted">🔵 Submitted</option>
+                        <option value="Completed">🟢 Completed</option>
+                        <option value="On Hold">🟣 On Hold</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Description</label>
+                    <textarea id="projectDescription" placeholder="Describe the project..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="projectDueDate">
+                </div>
+                <div class="form-group">
+                    <label>Team Size</label>
+                    <input type="number" id="projectTeamSize" placeholder="e.g., 3" min="1">
+                </div>
+                <button class="btn-submit" onclick="addProject()">➕ Add Project</button>
+            </div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <span class="filter-label">Filter:</span>
+            <select id="filterStatus">
+                <option value="all">All Status</option>
+                <option value="Not Started">🔴 Not Started</option>
+                <option value="In Progress">🟡 In Progress</option>
+                <option value="Submitted">🔵 Submitted</option>
+                <option value="Completed">🟢 Completed</option>
+                <option value="On Hold">🟣 On Hold</option>
+            </select>
+            <select id="filterYear">
+                <option value="all">All Years</option>
+                <option value="Year 1">Year 1</option>
+                <option value="Year 2">Year 2</option>
+                <option value="Year 3">Year 3</option>
+                <option value="Year 4">Year 4</option>
+            </select>
+            <input type="text" id="searchProject" placeholder="🔍 Search projects..." oninput="filterProjects()">
+        </div>
+
+        <!-- PROJECTS GRID -->
+        <div class="projects-grid" id="projectsGrid">
+            <div class="empty-projects">Loading projects...</div>
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        let allProjects = [];
+
+        // ============================================================
+        // SIDEBAR FUNCTIONS
+        // ============================================================
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        // AUTH CHECK
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+            const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarName').textContent = displayName;
+            document.getElementById('topbarEmail').textContent = email;
+
+            if (isAdmin) {
+                document.getElementById('userRole').textContent = '🔑 Admin';
+                document.getElementById('toggleFormBtn').classList.add('visible');
+            }
+
+            loadProjects(isAdmin);
+        });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        }
+
+        // ============================================================
+        // TOGGLE ADD FORM
+        // ============================================================
+        function toggleAddForm() {
+            const form = document.getElementById('addProjectForm');
+            form.classList.toggle('visible');
+            if (form.classList.contains('visible')) {
+                document.getElementById('toggleFormBtn').textContent = '✕ Cancel';
+            } else {
+                document.getElementById('toggleFormBtn').textContent = '➕ Add New Project';
+            }
+        }
+
+        // ============================================================
+        // ADD PROJECT
+        // ============================================================
+        function addProject() {
+            const title = document.getElementById('projectTitle').value.trim();
+            const unit = document.getElementById('projectUnit').value.trim();
+            const year = document.getElementById('projectYear').value;
+            const status = document.getElementById('projectStatus').value;
+            const description = document.getElementById('projectDescription').value.trim();
+            const dueDate = document.getElementById('projectDueDate').value;
+            const teamSize = parseInt(document.getElementById('projectTeamSize').value) || 1;
+
+            if (!title || !unit) {
+                showToast('Please fill in Title and Unit Code', 'error');
+                return;
+            }
+
+            const projectData = {
+                title: title,
+                unit: unit,
+                year: year,
+                status: status,
+                description: description || 'No description provided.',
+                dueDate: dueDate || 'No deadline',
+                teamSize: teamSize,
+                progress: status === 'Completed' ? 100 : status === 'In Progress' ? 50 : 0,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('projects').add(projectData)
+                .then(() => {
+                    showToast('✅ Project added successfully!', 'success');
+                    document.getElementById('projectTitle').value = '';
+                    document.getElementById('projectUnit').value = '';
+                    document.getElementById('projectDescription').value = '';
+                    document.getElementById('projectDueDate').value = '';
+                    document.getElementById('projectTeamSize').value = '';
+                    toggleAddForm();
+                    db.collection('activity_logs').add({
+                        text: `Added project: ${title} (${unit})`,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .catch((err) => {
+                    showToast('❌ Error: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // DELETE PROJECT
+        // ============================================================
+        function deleteProject(id, title) {
+            if (!confirm(`🗑️ Are you sure you want to delete "${title}"?`)) return;
+
+            db.collection('projects').doc(id).delete()
+                .then(() => {
+                    showToast(`🗑️ "${title}" deleted`, 'success');
+                    db.collection('activity_logs').add({
+                        text: `Deleted project: ${title}`,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .catch((err) => {
+                    showToast('❌ Error: ' + err.message, 'error');
+                });
+        }
+
+        // ============================================================
+        // UPDATE PROJECT STATUS (Student Action)
+        // ============================================================
+        function updateProjectStatus(id, newStatus) {
+            const progressMap = {
+                'Not Started': 0,
+                'In Progress': 50,
+                'Submitted': 80,
+                'Completed': 100,
+                'On Hold': 20
+            };
+
+            db.collection('projects').doc(id).update({
+                status: newStatus,
+                progress: progressMap[newStatus] || 0,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                showToast(`✅ Status updated to ${newStatus}`, 'success');
+                db.collection('activity_logs').add({
+                    text: `Updated project status to ${newStatus}`,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            })
+            .catch((err) => {
+                showToast('❌ Error: ' + err.message, 'error');
+            });
+        }
+
+        // ============================================================
+        // LOAD PROJECTS
+        // ============================================================
+        function loadProjects(isAdmin) {
+            const grid = document.getElementById('projectsGrid');
+
+            db.collection('projects')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot((snapshot) => {
+                    grid.innerHTML = '';
+                    allProjects = [];
+
+                    if (snapshot.empty) {
+                        grid.innerHTML = `<div class="empty-projects">📭 No projects available. Check back later!</div>`;
+                        updateStats(0, 0, 0, 0);
+                        return;
+                    }
+
+                    snapshot.forEach((doc) => {
+                        const project = doc.data();
+                        const id = doc.id;
+                        allProjects.push({ id, ...project });
+
+                        const statusClass = project.status.toLowerCase().replace(' ', '-');
+
+                        // Status emoji
+                        const statusEmojis = {
+                            'Not Started': '🔴',
+                            'In Progress': '🟡',
+                            'Submitted': '🔵',
+                            'Completed': '🟢',
+                            'On Hold': '🟣'
+                        };
+
+                        const card = document.createElement('div');
+                        card.className = 'project-card';
+                        card.innerHTML = `
+                            <div class="card-glow"></div>
+                            <div class="project-top">
+                                <span class="project-unit">${project.unit || 'N/A'}</span>
+                                <span class="project-status ${statusClass}">${statusEmojis[project.status] || ''} ${project.status || 'Not Started'}</span>
+                            </div>
+                            <div class="project-title">${project.title || 'Untitled'}</div>
+                            <div class="project-description">${project.description || 'No description'}</div>
+                            <div class="project-meta">
+                                <div style="width:100%;">
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                        <span class="due-date">📅 ${project.dueDate || 'No deadline'}</span>
+                                        <span class="progress-text">${project.progress || 0}%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width:${project.progress || 0}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${isAdmin ? `
+                                <div class="admin-controls visible">
+                                    <button class="btn-delete" onclick="deleteProject('${id}', '${project.title}')">🗑️ Delete</button>
+                                </div>
+                            ` : `
+                                <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
+                                    <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
+                                        <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
+                                        <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
+                                        <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
+                                        <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
+                                        <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
+                                    </select>
+                                </div>
+                            `}
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    // Apply filters
+                    filterProjects();
+                    updateStats(snapshot.size);
+                });
+        }
+
+        // ============================================================
+        // FILTER PROJECTS
+        // ============================================================
+        function filterProjects() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const yearFilter = document.getElementById('filterYear').value;
+            const searchTerm = document.getElementById('searchProject').value.toLowerCase();
+
+            const cards = document.querySelectorAll('.project-card');
+            let visible = 0;
+
+            cards.forEach((card) => {
+                const title = card.querySelector('.project-title')?.textContent?.toLowerCase() || '';
+                const unit = card.querySelector('.project-unit')?.textContent?.toLowerCase() || '';
+                const year = card.querySelector('.project-meta')?.textContent?.includes('Year') ? 
+                    (card.querySelector('.project-meta')?.textContent?.match(/Year \d/) || [''])[0] : '';
+                const status = card.querySelector('.project-status')?.textContent?.toLowerCase() || '';
+
+                let show = true;
+
+                if (statusFilter !== 'all' && !status.includes(statusFilter.toLowerCase())) show = false;
+                if (yearFilter !== 'all' && !year.includes(yearFilter)) show = false;
+                if (searchTerm && !title.includes(searchTerm) && !unit.includes(searchTerm)) show = false;
+
+                card.style.display = show ? 'flex' : 'none';
+                if (show) visible++;
+            });
+
+            // Update visible count
+            const emptyMsg = document.querySelector('.empty-projects');
+            if (emptyMsg) {
+                if (visible === 0) {
+                    emptyMsg.style.display = 'block';
+                    emptyMsg.textContent = '🔍 No projects match your filters.';
+                } else {
+                    emptyMsg.style.display = 'none';
+                }
+            }
+        }
+
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateStats(total) {
+            const completed = allProjects.filter(p => p.status === 'Completed').length;
+            const inProgress = allProjects.filter(p => p.status === 'In Progress').length;
+            const notStarted = allProjects.filter(p => p.status === 'Not Started' || !p.status).length;
+
+            document.getElementById('totalProjects').textContent = total || allProjects.length;
+            document.getElementById('completedProjects').textContent = completed;
+            document.getElementById('inProgressProjects').textContent = inProgress;
+            document.getElementById('notStartedProjects').textContent = notStarted;
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        console.log('✅ Projects page loaded successfully!');
+    </script>
+
+</body>
 </html>
