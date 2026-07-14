@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - YouTube Tutorials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #050816;
+            --bg-secondary: #08122c;
+            --bg-card: rgba(10, 15, 36, 0.75);
+            --border: rgba(255, 255, 255, 0.06);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --orange: #F97316;
+            --pink: #EC4899;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .bg-effects {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-effects .glow-1 {
+            position: absolute; top: -20%; left: -10%; width: 60%; height: 60%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.12), transparent 70%);
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+        .bg-effects .glow-2 {
+            position: absolute; bottom: -20%; right: -10%; width: 50%; height: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.10), transparent 70%);
+            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
+        }
+        .bg-effects .glow-3 {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; height: 80%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.04), transparent 60%);
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+        }
+        .bg-effects .grid-overlay {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.3;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        .topbar {
+            position: sticky; top: 0; z-index: 100; padding: 16px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(5, 8, 22, 0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .topbar .logo {
+            font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 800;
+            background: linear-gradient(135deg, var(--red), var(--orange));
+            -webkit-background-clip: text; color: transparent; letter-spacing: 2px;
+            text-decoration: none;
+        }
+        .topbar .logo span {
+            font-size: 11px; font-weight: 400; color: var(--dim);
+            font-family: 'Inter', sans-serif; letter-spacing: 1px; margin-left: 6px;
+            background: none; -webkit-background-clip: unset; color: var(--dim);
+        }
+        .topbar-actions { display: flex; align-items: center; gap: 12px; }
+        .topbar-actions .btn-back {
+            display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+            border-radius: 10px; color: var(--white); text-decoration: none;
+            font-size: 13px; font-weight: 500; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); transition: all 0.3s ease;
+        }
+        .topbar-actions .btn-back:hover {
+            background: rgba(239, 68, 68, 0.15); border-color: var(--red);
+            transform: translateX(-3px);
+        }
+        .topbar-actions .btn-back .arrow { transition: transform 0.3s ease; }
+        .topbar-actions .btn-back:hover .arrow { transform: translateX(-4px); }
+
+        .hero {
+            position: relative; z-index: 1; padding: 30px 30px 10px 30px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .hero .category-badge {
+            display: inline-block; padding: 4px 16px; border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.15);
+            color: var(--red);
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif; font-size: clamp(28px, 4vw, 44px);
+            font-weight: 900; margin-top: 8px; margin-bottom: 4px;
+        }
+        .hero p { color: var(--dim); font-size: 14px; }
+
+        .items-section {
+            position: relative; z-index: 1; max-width: 1100px;
+            margin: 0 auto; padding: 20px 30px 40px 30px;
+        }
+        .items-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .item-card {
+            display: block; text-decoration: none; color: var(--white);
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px 22px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
+        }
+        .item-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+        .item-card .item-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .item-card .item-url {
+            font-size: 11px; color: var(--dim); word-break: break-all;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .item-card .item-open {
+            margin-top: 10px; font-size: 12px; color: var(--red);
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .item-card .item-open .arrow { transition: transform 0.3s ease; }
+        .item-card:hover .item-open .arrow { transform: translateX(4px); }
+
+        .item-card .youtube-badge {
+            display: inline-block; margin-top: 8px;
+            padding: 2px 10px; border-radius: 4px;
+            font-size: 9px; font-weight: 600; text-transform: uppercase;
+            background: rgba(239, 68, 68, 0.12); color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+
+        .empty-state {
+            text-align: center; padding: 50px 20px; color: var(--dim);
+        }
+        .empty-state .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+        .empty-state p { font-size: 14px; }
+
+        .admin-float-btn {
+            position: fixed; bottom: 30px; right: 30px; z-index: 999;
+            padding: 12px 20px; border-radius: 50px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: var(--white); border: none; font-family: 'Inter', sans-serif;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
+            transition: all 0.3s ease; display: none;
+            align-items: center; gap: 8px; text-decoration: none;
+        }
+        .admin-float-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(236, 72, 153, 0.4);
+        }
+        .admin-float-btn.visible { display: flex; }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+            .topbar .logo { font-size: 18px; }
+            .hero { padding: 20px 16px 5px 16px; }
+            .items-section { padding: 10px 16px 30px 16px; }
+            .items-grid { grid-template-columns: 1fr; }
+            .admin-float-btn { bottom: 20px; right: 20px; padding: 10px 16px; font-size: 12px; }
+        }
+        @media (max-width: 400px) {
+            .topbar-actions .btn-back span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-effects">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+        <div class="glow-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <header class="topbar">
+        <a href="dashboard.html" class="logo">
+            CS HUB
+            <span>YouTube</span>
+        </a>
+        <div class="topbar-actions">
+            <a href="revision-material.html" class="btn-back">
+                <span class="arrow">←</span>
+                <span>All Materials</span>
+            </a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <span class="category-badge">📺 Category</span>
+        <h1>YouTube Tutorials</h1>
+        <p>Curated YouTube playlists and tutorials for your Computer Science courses.</p>
+    </section>
+
+    <section class="items-section">
+        <div class="items-grid" id="itemsGrid">
+            <div class="empty-state" id="emptyState">
+                <span class="empty-icon">📭</span>
+                <p>No YouTube tutorials added yet. Check back later!</p>
+            </div>
+        </div>
+    </section>
+
+    <a href="revision-admin.html" class="admin-float-btn" id="adminFloatBtn">
+        ⚙️ Admin
+    </a>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
+    </script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.appspot.com",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        const CATEGORY = 'youtube';
+
+        auth.onAuthStateChanged((user) => {
+            const isAdmin = user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+            if (isAdmin) {
+                document.getElementById('adminFloatBtn').classList.add('visible');
+            }
+            loadItems();
+        });
+
+        function loadItems() {
+            const grid = document.getElementById('itemsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const ref = db.ref('materials/' + CATEGORY);
+
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val();
+                const items = grid.querySelectorAll('.item-card');
+                items.forEach(el => el.remove());
+
+                if (!data) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                const keys = Object.keys(data);
+                keys.forEach((key) => {
+                    const item = data[key];
+                    const card = document.createElement('a');
+                    card.className = 'item-card';
+                    card.href = item.url || '#';
+                    card.target = '_blank';
+                    card.innerHTML = `
+                        <div class="item-title">${item.title || 'Untitled'}</div>
+                        <div class="item-url">${item.url || 'No URL'}</div>
+                        <span class="youtube-badge">▶ YouTube</span>
+                        <div class="item-open">Watch <span class="arrow">→</span></div>
+                    `;
+                    grid.appendChild(card);
+                });
+            });
+        }
+
+        console.log('✅ YouTube page loaded!');
+    </script>
+
+</body>
+</html>
