@@ -5,33 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Materials</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: 'Courier New', monospace; color: #0F0; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; font-family: monospace; color: #0F0; }
         canvas { display: block; position: fixed; top: 0; left: 0; z-index: 0; }
         
-        .container { position: relative; z-index: 1; width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; box-sizing: border-box; }
-        h1 { text-align: center; border-bottom: 2px solid #0F0; padding-bottom: 5px; font-size: 24px; }
+        .container { position: relative; z-index: 2; width: 90%; max-width: 500px; margin: 20px auto; background: rgba(0, 0, 0, 0.8); padding: 20px; border: 1px solid #0F0; border-radius: 10px; }
         
-        section { margin-bottom: 15px; }
-        h2 { background: rgba(0, 50, 0, 0.8); padding: 10px; border-left: 5px solid #0F0; margin: 0; font-size: 16px; }
-        .list { background: rgba(0, 0, 0, 0.5); }
-        .item-link { display: block; padding: 10px; text-decoration: none; color: #0F0; border-bottom: 1px solid #333; }
+        /* Admin Button at the very top */
+        #admin-btn { display: block; background: #0F0; color: #000; text-align: center; padding: 10px; font-weight: bold; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
         
-        /* The Admin Button - Positioned at bottom right */
-        #admin-btn { position: fixed; bottom: 10px; right: 10px; background: #0F0; color: #000; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold; z-index: 99; }
+        h1 { text-align: center; border-bottom: 1px solid #0F0; margin-top: 0; }
+        .category-box { margin-bottom: 20px; }
+        h2 { font-size: 16px; margin-bottom: 5px; border-left: 3px solid #0F0; padding-left: 10px; }
+        .list { min-height: 20px; }
+        .item-link { display: block; padding: 8px; color: #fff; text-decoration: none; border-bottom: 1px solid #222; }
     </style>
 </head>
 <body>
 <canvas id="matrixCanvas"></canvas>
-<div class="container">
-    <h1>CS HUB - Materials</h1>
-    <section id="books"><h2>📚 Books & Guides</h2><div class="list"></div></section>
-    <section id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></section>
-    <section id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></section>
-    <section id="exams"><h2>📝 Exams & CATs</h2><div class="list"></div></section>
-</div>
 
-<!-- Visible Admin Button for you -->
-<a href="admin.html" id="admin-btn">ADMIN</a>
+<div class="container">
+    <!-- Admin Button is now at the top -->
+    <a href="admin.html" id="admin-btn">OPEN ADMIN DASHBOARD</a>
+    
+    <h1>CS HUB</h1>
+    
+    <div class="category-box" id="books"><h2>📚 Books & Guides</h2><div class="list"></div></div>
+    <div class="category-box" id="youtube"><h2>📺 YouTube Tutorials</h2><div class="list"></div></div>
+    <div class="category-box" id="lectures"><h2>🎥 Lecture Videos</h2><div class="list"></div></div>
+    <div class="category-box" id="exams"><h2>📝 Exams & CATs</h2><div class="list"></div></div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
@@ -50,7 +52,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Matrix Logic
+    // Matrix Background
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -66,14 +68,14 @@
     }
     setInterval(draw, 33);
 
-    // Data Loading
+    // Load Data
     ['books', 'youtube', 'lectures', 'exams'].forEach(cat => {
         onValue(ref(db, 'materials/' + cat), (snapshot) => {
             const listDiv = document.querySelector(`#${cat} .list`);
             listDiv.innerHTML = "";
             const data = snapshot.val();
             for(let key in data) {
-                listDiv.innerHTML += `<a href="${data[key].url}" class="item-link" target="_blank">${data[key].title}</a>`;
+                listDiv.innerHTML += `<a href="${data[key].url}" class="item-link" target="_blank">▸ ${data[key].title}</a>`;
             }
         });
     });
