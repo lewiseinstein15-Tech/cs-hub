@@ -2,63 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CS HUB - Admin Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS HUB Admin</title>
     <style>
-        body { background: #000; color: #0F0; font-family: monospace; padding: 20px; }
-        .admin-box { max-width: 400px; margin: auto; border: 2px solid #0F0; padding: 20px; border-radius: 10px; }
-        input, select, button { width: 100%; padding: 15px; margin: 10px 0; background: #111; color: #0F0; border: 1px solid #0F0; box-sizing: border-box; }
+        body { background: #000; color: #0F0; font-family: monospace; padding: 20px; display: flex; justify-content: center; }
+        .box { width: 100%; max-width: 400px; border: 1px solid #0F0; padding: 20px; border-radius: 10px; }
+        input, select, button { width: 100%; padding: 12px; margin: 10px 0; background: #111; color: #0F0; border: 1px solid #0F0; border-radius: 5px; box-sizing: border-box; }
         button { background: #0F0; color: #000; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="admin-box" id="authBox">
-    <h2>Admin Access</h2>
-    <button onclick="login()">Login with Google</button>
+<div class="box" id="loginBox">
+    <h3>Admin Password</h3>
+    <input type="password" id="pass" placeholder="Enter Password">
+    <button onclick="checkPass()">Login</button>
 </div>
 
-<div class="admin-box" id="adminPanel" style="display:none;">
-    <h2>Admin Dashboard</h2>
-    <input type="text" id="title" placeholder="Material Title">
-    <input type="text" id="url" placeholder="Paste Link">
+<div class="box" id="adminBox" style="display:none;">
+    <h3>Update Materials</h3>
+    <input type="text" id="title" placeholder="Title (e.g. Java Notes)">
+    <input type="text" id="url" placeholder="Paste YouTube or Drive Link">
     <select id="cat">
         <option value="books">Books & Guides</option>
         <option value="youtube">YouTube Tutorials</option>
         <option value="lectures">Lecture Videos</option>
         <option value="exams">Exams & CATs</option>
     </select>
-    <button onclick="save()">Update Database</button>
+    <button onclick="save()">Save to Site</button>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
     const app = initializeApp({
         apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-        authDomain: "cs-hub-7c97b.firebaseapp.com",
         databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
-        projectId: "cs-hub-7c97b",
-        storageBucket: "cs-hub-7c97b.appspot.com",
-        messagingSenderId: "76338162904",
-        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        projectId: "cs-hub-7c97b"
     });
-
-    const auth = getAuth(app);
     const db = getDatabase(app);
-    const provider = new GoogleAuthProvider();
 
-    window.login = () => {
-        signInWithPopup(auth, provider).then((result) => {
-            if (result.user.email === "lewiseinstein5@gmail.com") {
-                document.getElementById('authBox').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-            } else {
-                alert("Access Denied: Only lewiseinstein5@gmail.com is authorized.");
-                auth.signOut();
-            }
-        });
+    window.checkPass = () => {
+        if(document.getElementById('pass').value === "stein15") {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('adminBox').style.display = 'block';
+        } else { alert("Wrong Password!"); }
     };
 
     window.save = () => {
@@ -66,7 +55,7 @@
         const url = document.getElementById('url').value;
         const cat = document.getElementById('cat').value;
         if(!title || !url) return alert("Fill all fields!");
-        push(ref(db, 'materials/' + cat), { title, url }).then(() => alert("Saved!"));
+        push(ref(db, 'materials/' + cat), { title, url }).then(() => alert("Saved! Page will update."));
     };
 </script>
 </body>
