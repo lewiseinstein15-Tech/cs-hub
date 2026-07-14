@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* ============================================================ */
+        /* ALL STYLES (same as before - keeping it compact) */
+        /* ============================================================ */
         :root {
             --bg: #030611;
             --sidebar-bg: #060919;
@@ -973,12 +976,6 @@
         // ============================================================
         // ADMIN DETECTION - FIXED!
         // ============================================================
-        const ADMIN_EMAILS = [
-            "lewiseinstein15@gmail.com",
-            "admin@cshub.com",
-            "lewis@cshub.com"
-        ];
-
         let isAdminUser = false;
         let allProjects = [];
 
@@ -1000,26 +997,42 @@
         // ============================================================
         // CHECK IF USER IS ADMIN
         // ============================================================
-        function isAdmin(user) {
-            if (!user || !user.email) return false;
+        function checkIsAdmin(user) {
+            if (!user) return false;
             
-            const email = user.email.toLowerCase().trim();
+            // Get email from multiple sources
+            const email = (user.email || '').toLowerCase().trim();
+            const displayName = (user.displayName || '').toLowerCase().trim();
             
-            // Check against admin emails list
-            for (let adminEmail of ADMIN_EMAILS) {
+            console.log('🔍 Checking admin status for:', email);
+            
+            // Method 1: Exact admin email match
+            const adminEmails = [
+                'lewiseinstein15@gmail.com',
+                'admin@cshub.com',
+                'lewis@cshub.com'
+            ];
+            
+            for (let adminEmail of adminEmails) {
                 if (email === adminEmail.toLowerCase().trim()) {
-                    console.log('✅ Admin detected:', email);
+                    console.log('✅ Admin detected via exact email match:', email);
                     return true;
                 }
             }
             
-            // Check if email contains admin pattern
+            // Method 2: Check if email contains admin keywords
             if (email.includes('admin') || email.includes('lecturer') || email.includes('staff')) {
-                console.log('✅ Admin pattern detected:', email);
+                console.log('✅ Admin detected via keyword in email:', email);
                 return true;
             }
             
-            console.log('👤 Regular user:', email);
+            // Method 3: Check Firebase custom claims (if you have them)
+            if (user.customClaims && user.customClaims.admin === true) {
+                console.log('✅ Admin detected via custom claims');
+                return true;
+            }
+            
+            console.log('👤 Regular user detected:', email);
             return false;
         }
 
@@ -1032,12 +1045,16 @@
                 return;
             }
 
+            // Get user info
             const displayName = user.displayName || user.email.split('@')[0] || 'User';
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
             
-            // CHECK ADMIN STATUS
-            isAdminUser = isAdmin(user);
+            // CHECK ADMIN STATUS - USING THE FIXED FUNCTION
+            isAdminUser = checkIsAdmin(user);
+            
+            console.log('📊 Admin status:', isAdminUser);
+            console.log('📧 User email:', email);
 
             // Update UI
             document.getElementById('userName').textContent = displayName;
@@ -1049,7 +1066,7 @@
             if (isAdminUser) {
                 document.getElementById('userRole').textContent = '🔑 Admin';
                 document.getElementById('toggleFormBtn').classList.add('visible');
-                console.log('🔑 Admin mode activated - showing admin controls');
+                console.log('🔑 Admin mode ACTIVATED - showing admin controls');
             } else {
                 document.getElementById('userRole').textContent = 'Student';
                 document.getElementById('toggleFormBtn').classList.remove('visible');
@@ -1241,34 +1258,17 @@
                             `;
                         }
 
-                        let statusDropdownHTML = '';
-                        if (isAdminUser) {
-                            // Admin sees full dropdown with all options
-                            statusDropdownHTML = `
-                                <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
-                                    <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
-                                        <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
-                                        <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-                                        <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
-                                        <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
-                                        <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
-                                    </select>
-                                </div>
-                            `;
-                        } else {
-                            // Student sees limited dropdown
-                            statusDropdownHTML = `
-                                <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
-                                    <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
-                                        <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
-                                        <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-                                        <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
-                                        <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
-                                        <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
-                                    </select>
-                                </div>
-                            `;
-                        }
+                        let statusDropdownHTML = `
+                            <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
+                                <select onchange="updateProjectStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
+                                    <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
+                                    <option value="In Progress" ${project.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
+                                    <option value="Submitted" ${project.status === 'Submitted' ? 'selected' : ''}>🔵 Submitted</option>
+                                    <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
+                                    <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>🟣 On Hold</option>
+                                </select>
+                            </div>
+                        `;
 
                         card.innerHTML = `
                             <div class="card-glow"></div>
