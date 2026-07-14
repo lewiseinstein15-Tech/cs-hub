@@ -1,12 +1,848 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>CS HUB Notes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 25px 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar-brand {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none;
+        }
+
+        .sidebar-close.mobile-show {
+            display: block;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dim);
+            padding: 12px 16px 6px 16px;
+            font-weight: 600;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item a:hover,
+        .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .nav-item.active a {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        }
+
+        .sidebar-footer {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: 16px 16px 80px 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ===== TOP BAR ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .topbar-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .topbar-name small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        /* Settings button - hidden by default, shown only for admin */
+        .btn-settings {
+            display: none !important;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-settings:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-settings.admin-visible {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== PROFILE HEADER ===== */
+        .profile-header {
+            text-align: center;
+            padding: 30px 0 20px 0;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 40px;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .profile-header .profile-email {
+            color: var(--dim);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .profile-header .profile-role {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .profile-header .profile-role.admin {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--purple);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        /* ===== PROFILE INFO CARDS ===== */
+        .profile-section {
+            margin-top: 24px;
+        }
+
+        .profile-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-card .label {
+            font-size: 13px;
+            color: var(--dim);
+        }
+
+        .info-card .value {
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--white);
+        }
+
+        .info-card .value .highlight {
+            color: var(--cyan);
+        }
+
+        /* ===== STATS MINI ===== */
+        .stats-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .stats-mini-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stats-mini-card .number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .stats-mini-card .number.blue { color: var(--blue); }
+        .stats-mini-card .number.green { color: var(--green); }
+        .stats-mini-card .number.purple { color: var(--purple); }
+
+        .stats-mini-card .label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        /* ===== EDIT PROFILE BUTTON ===== */
+        .btn-edit-profile {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(59, 130, 246, 0.05);
+            color: var(--blue);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-edit-profile:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--blue);
+        }
+
+        /* ============================================================ */
+        /* RESPONSIVE */
+        /* ============================================================ */
+
+        @media (min-width: 600px) {
+            .main-content {
+                padding: 20px 24px 80px 24px;
+            }
+            .topbar {
+                padding: 16px 24px;
+            }
+            .profile-header h2 {
+                font-size: 28px;
+            }
+            .profile-avatar-large {
+                width: 120px;
+                height: 120px;
+                font-size: 48px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                width: 260px;
+                border-radius: 0;
+                z-index: 50;
+            }
+            .sidebar-overlay {
+                display: none !important;
+            }
+            .sidebar-close.mobile-show {
+                display: none !important;
+            }
+            body {
+                display: flex;
+                gap: 0;
+            }
+            .main-content {
+                padding: 24px 40px 80px 40px;
+                flex: 1;
+                max-width: 100%;
+            }
+            .topbar {
+                display: none;
+            }
+            .menu-toggle {
+                display: none !important;
+            }
+            .stats-mini-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats-mini-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .profile-avatar-large {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+            .profile-header h2 {
+                font-size: 18px;
+            }
+            .info-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+    </style>
 </head>
-
 <body>
-<h1>CS HUB Notes</h1>
-<p>Notes system loading...</p>
-</body>
 
+    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>COMPUTER SCIENCE HUB</span>
+            </div>
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
+                
+                <li class="nav-section-title">LEARN</li>
+                <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
+                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
+                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
+                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
+                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
+                
+                <li class="nav-section-title">EXPLORE</li>
+                <li class="nav-item"><a href="notes.html">📄 Notes</a></li>
+                <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
+                <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
+                <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                
+                <li class="nav-section-title">ACCOUNT</li>
+                <li class="nav-item active"><a href="profile.html">👤 Profile</a></li>
+                <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">© 2026 CS Hub</div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- ===== TOP BAR (mobile only) ===== -->
+        <div class="topbar">
+            <button class="menu-toggle" onclick="openSidebar()">☰</button>
+            <div class="topbar-user">
+                <span class="topbar-name" id="topbarName">
+                    User
+                    <small id="topbarEmail">user@email.com</small>
+                </span>
+                <div class="topbar-avatar" id="topbarAvatar">U</div>
+            </div>
+            <a href="settings.html" class="btn-settings" id="settingsBtn">⚙️ Settings</a>
+        </div>
+
+        <!-- ===== PROFILE HEADER ===== -->
+        <section class="profile-header">
+            <div class="profile-avatar-large" id="profileAvatar">U</div>
+            <h2 id="profileName">User</h2>
+            <div class="profile-email" id="profileEmail">user@email.com</div>
+            <span class="profile-role" id="profileRole">Student</span>
+        </section>
+
+        <!-- ===== PROFILE INFO ===== -->
+        <section class="profile-section">
+            <h3>📋 Account Details</h3>
+            
+            <div class="info-card">
+                <span class="label">Full Name</span>
+                <span class="value" id="displayName">User</span>
+            </div>
+            
+            <div class="info-card">
+                <span class="label">Email Address</span>
+                <span class="value" id="displayEmail">user@email.com</span>
+            </div>
+            
+            <div class="info-card">
+                <span class="label">Account Type</span>
+                <span class="value" id="displayRole">Student</span>
+            </div>
+            
+            <div class="info-card">
+                <span class="label">Account Created</span>
+                <span class="value" id="displayCreated">Loading...</span>
+            </div>
+            
+            <div class="info-card">
+                <span class="label">Last Login</span>
+                <span class="value" id="displayLastLogin">Loading...</span>
+            </div>
+            
+            <div class="info-card">
+                <span class="label">User ID (UID)</span>
+                <span class="value" style="font-size: 11px; color: var(--dim);" id="displayUid">Loading...</span>
+            </div>
+        </section>
+
+        <!-- ===== STATS ===== -->
+        <section class="profile-section">
+            <h3>📊 Your Stats</h3>
+            <div class="stats-mini-grid">
+                <div class="stats-mini-card">
+                    <div class="number blue" id="statNotes">0</div>
+                    <div class="label">Notes Read</div>
+                </div>
+                <div class="stats-mini-card">
+                    <div class="number green" id="statProjects">0</div>
+                    <div class="label">Projects</div>
+                </div>
+                <div class="stats-mini-card">
+                    <div class="number purple" id="statLabs">0</div>
+                    <div class="label">Labs Completed</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== EDIT BUTTON ===== -->
+        <a href="settings.html" class="btn-edit-profile" id="editProfileBtn">
+            ✏️ Edit Profile
+        </a>
+
+    </div>
+
+    <!-- ===== FIREBASE ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Admin email
+        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+
+        // ============================================================
+        // SIDEBAR FUNCTIONS
+        // ============================================================
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        // FORMAT DATE
+        // ============================================================
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Unknown';
+            try {
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return 'Unknown';
+            }
+        }
+
+        // ============================================================
+        // AUTH CHECK
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+            const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            // ===== UPDATE UI =====
+            // Topbar
+            document.getElementById('topbarName').innerHTML = `
+                    ${displayName}
+                    <small>${email}</small>
+                `;
+            document.getElementById('topbarAvatar').textContent = initial;
+
+            // Settings button (admin only)
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (isAdmin) {
+                settingsBtn.classList.add('admin-visible');
+            }
+
+            // Profile Header
+            document.getElementById('profileAvatar').textContent = initial;
+            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('profileEmail').textContent = email;
+
+            // Role
+            const roleEl = document.getElementById('profileRole');
+            if (isAdmin) {
+                roleEl.textContent = '🔑 Administrator';
+                roleEl.classList.add('admin');
+            } else {
+                roleEl.textContent = '🎓 Student';
+                roleEl.classList.remove('admin');
+            }
+
+            // Account Details
+            document.getElementById('displayName').textContent = displayName;
+            document.getElementById('displayEmail').textContent = email;
+            document.getElementById('displayRole').textContent = isAdmin ? 'Administrator' : 'Student';
+            document.getElementById('displayUid').textContent = user.uid;
+
+            // Edit Profile button - hide for non-admin? No, let users see it
+            // but it goes to settings.html which is admin-only
+
+            // ===== LOAD USER DATA FROM FIRESTORE =====
+            db.collection('users').doc(user.uid).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.createdAt) {
+                            document.getElementById('displayCreated').textContent = formatDate(data.createdAt);
+                        }
+                        if (data.lastLogin) {
+                            document.getElementById('displayLastLogin').textContent = formatDate(data.lastLogin);
+                        }
+                    } else {
+                        // Create user document if it doesn't exist
+                        db.collection('users').doc(user.uid).set({
+                            email: email,
+                            displayName: displayName,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                            role: isAdmin ? 'admin' : 'student'
+                        }).then(() => {
+                            document.getElementById('displayCreated').textContent = 'Just now';
+                            document.getElementById('displayLastLogin').textContent = 'Just now';
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.error('Error loading user data:', err);
+                    document.getElementById('displayCreated').textContent = 'Error loading';
+                    document.getElementById('displayLastLogin').textContent = 'Error loading';
+                });
+
+            // Update last login
+            db.collection('users').doc(user.uid).update({
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(() => {});
+
+            // ===== LOAD STATS =====
+            loadStats(user);
+
+            // ===== EDIT PROFILE BUTTON =====
+            const editBtn = document.getElementById('editProfileBtn');
+            if (isAdmin) {
+                editBtn.href = 'settings.html';
+                editBtn.textContent = '✏️ Edit Profile (Admin)';
+            } else {
+                // For regular users, show a message or hide
+                editBtn.href = '#';
+                editBtn.textContent = '📧 Contact Admin to Update Profile';
+                editBtn.style.cursor = 'not-allowed';
+                editBtn.style.opacity = '0.6';
+                editBtn.onclick = function(e) {
+                    e.preventDefault();
+                    alert('Profile updates are managed by the administrator. Please contact admin@cshub.com for changes.');
+                };
+            }
+        });
+
+        // ============================================================
+        // LOAD STATS
+        // ============================================================
+        function loadStats(user) {
+            // Notes
+            db.collection('notes')
+                .where('userId', '==', user.uid)
+                .get()
+                .then((snap) => {
+                    document.getElementById('statNotes').textContent = snap.size;
+                })
+                .catch(() => {
+                    document.getElementById('statNotes').textContent = '0';
+                });
+
+            // Projects
+            db.collection('projects')
+                .where('userId', '==', user.uid)
+                .get()
+                .then((snap) => {
+                    document.getElementById('statProjects').textContent = snap.size;
+                })
+                .catch(() => {
+                    document.getElementById('statProjects').textContent = '0';
+                });
+
+            // Labs
+            db.collection('users')
+                .doc(user.uid)
+                .collection('completedLabs')
+                .get()
+                .then((snap) => {
+                    document.getElementById('statLabs').textContent = snap.size;
+                })
+                .catch(() => {
+                    document.getElementById('statLabs').textContent = '0';
+                });
+        }
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            });
+        }
+
+        console.log('✅ CS HUB Profile page loaded successfully!');
+    </script>
+
+</body>
 </html>
