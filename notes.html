@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Admin Notes</title>
+    <title>CS HUB - Notes</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar - Admin Version */
+        /* Sidebar - Student Version */
         .sidebar {
             width: 260px;
             background-color: var(--sidebar-bg);
@@ -347,46 +347,6 @@
             background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
         }
 
-        /* Admin Controls */
-        .admin-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .admin-controls .btn-admin {
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--dim);
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .admin-controls .btn-admin:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--blue);
-            color: var(--white);
-        }
-
-        .admin-controls .btn-admin.add:hover {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: var(--green);
-            color: var(--green);
-        }
-
-        .admin-controls .btn-admin.delete:hover {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: var(--red);
-            color: var(--red);
-        }
-
         /* Notes Grid */
         .notes-grid {
             display: grid;
@@ -464,11 +424,6 @@
             color: var(--green);
             border: 1px solid rgba(34, 197, 94, 0.15);
         }
-        .note-card .note-status.draft {
-            background: rgba(245, 158, 11, 0.12);
-            color: var(--yellow);
-            border: 1px solid rgba(245, 158, 11, 0.15);
-        }
 
         .note-card .note-title {
             font-size: 16px;
@@ -515,131 +470,12 @@
             transform: translateX(4px);
         }
 
-        .note-card .admin-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-            position: relative;
-            z-index: 1;
-        }
-
-        .note-card .admin-actions button {
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--dim);
-            font-family: 'Inter', sans-serif;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .note-card .admin-actions .btn-edit:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: var(--blue);
-            color: var(--blue);
-        }
-
-        .note-card .admin-actions .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: var(--red);
-            color: var(--red);
-        }
-
-        .note-card .admin-actions .btn-toggle:hover {
-            background: rgba(245, 158, 11, 0.15);
-            border-color: var(--yellow);
-            color: var(--yellow);
-        }
-
         .empty-notes {
             text-align: center;
             padding: 30px 0;
             color: var(--dim);
             font-size: 14px;
             grid-column: 1 / -1;
-        }
-
-        /* Add Note Form */
-        .add-note-form {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .add-note-form .form-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: var(--green);
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
-            gap: 14px;
-            align-items: end;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-size: 11px;
-            color: var(--dim);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--green);
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.05);
-        }
-        .form-group input::placeholder { color: rgba(255, 255, 255, 0.2); }
-        .form-group select option { background: var(--bg); color: var(--white); }
-
-        .btn-submit {
-            padding: 10px 24px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--green), var(--cyan));
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
         }
 
         /* Toast */
@@ -677,8 +513,6 @@
             .admin-details span { display: none; }
             .stats-row { grid-template-columns: repeat(3, 1fr); }
             .notes-grid { grid-template-columns: repeat(2, 1fr); }
-            .form-grid { grid-template-columns: 1fr 1fr; }
-            .form-grid .btn-submit { grid-column: 1 / -1; }
         }
 
         @media (max-width: 768px) {
@@ -699,7 +533,6 @@
             .notes-grid { grid-template-columns: 1fr; }
             .stats-row { grid-template-columns: 1fr 1fr; }
             .year-header .year-badge { font-size: 16px; }
-            .form-grid { grid-template-columns: 1fr; }
         }
 
         @media (min-width: 1025px) {
@@ -710,28 +543,30 @@
 </head>
 <body>
 
-    <!-- SIDEBAR - ADMIN VERSION (No year1-4 links) -->
+    <!-- SIDEBAR - STUDENT VERSION -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>ADMIN SYSTEM</span>
+                <span>STUDENT PORTAL</span>
             </div>
 
             <ul class="nav-menu">
-                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
-                <li class="nav-item active"><a href="notes.html">📚 Notes Control</a></li>
-                <li class="nav-item"><a href="admin-units.html">🎓 Units Control Panel</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item active"><a href="notes.html">📚 All Notes</a></li>
+                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
+                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
+                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
+                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
                 <li class="nav-item"><a href="revision-material.html">📝 Revision Material</a></li>
             </ul>
         </div>
 
         <div>
             <div class="sidebar-profile">
-                <div class="profile-avatar">AL</div>
-                <div class="profile-name">Admin Lewis</div>
-                <div class="profile-role">Super Admin</div>
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Student</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub<br>All rights reserved.</div>
         </div>
@@ -743,10 +578,10 @@
             <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
             <div class="topbar-right">
                 <div class="admin-meta">
-                    <span class="shield-icon">🛡️</span>
+                    <span class="shield-icon">📚</span>
                     <div class="admin-details">
-                        <h4>Admin Lewis</h4>
-                        <span>lewiseinstein15@gmail.com</span>
+                        <h4 id="topbarName">User</h4>
+                        <span id="topbarEmail">user@email.com</span>
                     </div>
                 </div>
                 <button class="btn-action btn-settings" onclick="window.location.href='settings.html'">⚙️ Settings</button>
@@ -758,9 +593,9 @@
 
             <!-- HERO -->
             <section class="hero-terminal">
-                <div class="env-tag">[ >_ NOTES CONTROL NODE ]</div>
-                <h2>📚 Notes Control Panel</h2>
-                <p>Manage all study notes across Year 1 to Year 4 — add, edit, publish, or delete notes.</p>
+                <div class="env-tag">[ >_ NOTES LIBRARY ]</div>
+                <h2>📚 All Study Notes</h2>
+                <p>Access notes from Year 1 to Year 4 — organized by year for easy browsing.</p>
             </section>
 
             <!-- STATS -->
@@ -786,33 +621,6 @@
                     <div class="label">Year 4</div>
                 </div>
             </section>
-
-            <!-- ADD NOTE FORM -->
-            <div class="add-note-form">
-                <div class="form-title">➕ Add New Note</div>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Note Title</label>
-                        <input type="text" id="noteTitle" placeholder="e.g., Chapter 1: Introduction">
-                    </div>
-                    <div class="form-group">
-                        <label>Unit Code</label>
-                        <input type="text" id="noteUnit" placeholder="e.g., CSC1110">
-                    </div>
-                    <div class="form-group">
-                        <label>Topic</label>
-                        <input type="text" id="noteTopic" placeholder="e.g., Variables and Data Types">
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="noteStatus">
-                            <option value="Published">✅ Published</option>
-                            <option value="Draft">📝 Draft</option>
-                        </select>
-                    </div>
-                    <button class="btn-submit" onclick="addNote()">➕ Add Note</button>
-                </div>
-            </div>
 
             <!-- YEAR 1 -->
             <section class="year-section">
@@ -893,8 +701,8 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Admin email for checking
         const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
-        let editingNoteId = null;
 
         // ============================================================
         // YEAR MAPPING
@@ -947,23 +755,44 @@
         // ============================================================
         function logout() {
             auth.signOut().then(() => {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
             });
         }
 
         // ============================================================
-        // AUTH CHECK - ADMIN ONLY
+        // AUTH CHECK - BOTH USERS AND ADMIN SEE SAME VIEW
         // ============================================================
         auth.onAuthStateChanged((user) => {
-            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
-                window.location.href = "index.html";
+            if (!user) {
+                window.location.href = "login.html";
                 return;
             }
+
+            // Update user info
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+
+            // Check if admin - show admin badge
+            const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarName').textContent = displayName;
+            document.getElementById('topbarEmail').textContent = email;
+
+            // Show admin badge if admin
+            if (isAdmin) {
+                document.getElementById('userRole').textContent = '🔑 Admin';
+            } else {
+                document.getElementById('userRole').textContent = 'Student';
+            }
+
             loadAllNotes();
         });
 
         // ============================================================
-        // LOAD ALL NOTES
+        // LOAD ALL NOTES - SAME FOR BOTH USER AND ADMIN
         // ============================================================
         function loadAllNotes() {
             const yearContainers = {
@@ -986,6 +815,7 @@
             }
 
             db.collection("notes")
+                .where("status", "==", "Published")
                 .orderBy("createdAt", "desc")
                 .onSnapshot((snapshot) => {
                     let total = 0;
@@ -1012,24 +842,20 @@
                         total++;
                         yearCounts[year]++;
 
-                        const card = document.createElement('div');
+                        const card = document.createElement('a');
                         card.className = 'note-card';
+                        card.href = `note-detail.html?id=${doc.id}`;
                         card.innerHTML = `
                             <div class="card-glow"></div>
                             <div class="note-top">
                                 <span class="note-unit">${unitCode || 'N/A'}</span>
-                                <span class="note-status ${note.status === 'Published' ? 'published' : 'draft'}">${note.status || 'Draft'}</span>
+                                <span class="note-status published">Published</span>
                             </div>
                             <div class="note-title">${note.title || 'Untitled'}</div>
                             <div class="note-topic">${note.topic || 'General'}</div>
                             <div class="note-bottom">
                                 <span class="note-date">${note.createdAt ? new Date(note.createdAt.toDate()).toLocaleDateString() : 'Just now'}</span>
                                 <span class="note-arrow">→</span>
-                            </div>
-                            <div class="admin-actions">
-                                <button class="btn-edit" onclick="editNote('${doc.id}')">✏️ Edit</button>
-                                <button class="btn-toggle" onclick="toggleNoteStatus('${doc.id}', '${note.status || 'Draft'}')">${note.status === 'Published' ? '📝 Draft' : '✅ Publish'}</button>
-                                <button class="btn-delete" onclick="deleteNote('${doc.id}')">🗑️ Delete</button>
                             </div>
                         `;
                         yearContainers[year].appendChild(card);
@@ -1066,170 +892,7 @@
             document.getElementById('y4Count').textContent = y4 + ' notes';
         }
 
-        // ============================================================
-        // ADD NOTE
-        // ============================================================
-        function addNote() {
-            const title = document.getElementById('noteTitle').value.trim();
-            const unit = document.getElementById('noteUnit').value.trim();
-            const topic = document.getElementById('noteTopic').value.trim();
-            const status = document.getElementById('noteStatus').value;
-
-            if (!title || !unit) {
-                showToast('Please fill in Title and Unit Code', 'error');
-                return;
-            }
-
-            const noteData = {
-                title: title,
-                unit: unit,
-                topic: topic || 'General',
-                status: status,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            if (editingNoteId) {
-                db.collection("notes").doc(editingNoteId).update(noteData)
-                    .then(() => {
-                        showToast(`✅ Updated: ${title}`, 'success');
-                        resetForm();
-                        db.collection("activity_logs").add({
-                            text: `Updated note: ${title} (${unit})`,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    })
-                    .catch((err) => {
-                        showToast('❌ Error: ' + err.message, 'error');
-                    });
-            } else {
-                db.collection("notes").add(noteData)
-                    .then(() => {
-                        showToast(`✅ Added: ${title}`, 'success');
-                        resetForm();
-                        db.collection("activity_logs").add({
-                            text: `Added note: ${title} (${unit})`,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    })
-                    .catch((err) => {
-                        showToast('❌ Error: ' + err.message, 'error');
-                    });
-            }
-        }
-
-        // ============================================================
-        // EDIT NOTE
-        // ============================================================
-        function editNote(id) {
-            db.collection("notes").doc(id).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const note = doc.data();
-                        document.getElementById('noteTitle').value = note.title || '';
-                        document.getElementById('noteUnit').value = note.unit || '';
-                        document.getElementById('noteTopic').value = note.topic || '';
-                        document.getElementById('noteStatus').value = note.status || 'Draft';
-                        editingNoteId = id;
-                        document.querySelector('.add-note-form .form-title').textContent = '✏️ Edit Note';
-                        document.querySelector('.btn-submit').textContent = '💾 Update Note';
-                        document.getElementById('noteTitle').focus();
-                        showToast('📝 Editing: ' + note.title, 'info');
-                        document.querySelector('.add-note-form').scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-        }
-
-        // ============================================================
-        // DELETE NOTE
-        // ============================================================
-        function deleteNote(id) {
-            db.collection("notes").doc(id).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const note = doc.data();
-                        const name = note.title || 'Untitled';
-                        if (confirm(`🗑️ Are you sure you want to delete "${name}"?`)) {
-                            db.collection("notes").doc(id).delete()
-                                .then(() => {
-                                    showToast(`🗑️ "${name}" deleted`, 'success');
-                                    db.collection("activity_logs").add({
-                                        text: `Deleted note: ${name}`,
-                                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                                    });
-                                    if (editingNoteId === id) resetForm();
-                                })
-                                .catch((err) => {
-                                    showToast('❌ Error: ' + err.message, 'error');
-                                });
-                        }
-                    }
-                });
-        }
-
-        // ============================================================
-        // TOGGLE NOTE STATUS
-        // ============================================================
-        function toggleNoteStatus(id, currentStatus) {
-            const newStatus = currentStatus === 'Published' ? 'Draft' : 'Published';
-            const action = newStatus === 'Published' ? 'Publishing' : 'Moving to Draft';
-            
-            if (confirm(`📝 ${action} this note?`)) {
-                db.collection("notes").doc(id).update({
-                    status: newStatus,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then(() => {
-                    showToast(`✅ Note status changed to ${newStatus}`, 'success');
-                    db.collection("activity_logs").add({
-                        text: `Changed note status to ${newStatus}`,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                })
-                .catch((err) => {
-                    showToast('❌ Error: ' + err.message, 'error');
-                });
-            }
-        }
-
-        // ============================================================
-        // RESET FORM
-        // ============================================================
-        function resetForm() {
-            document.getElementById('noteTitle').value = '';
-            document.getElementById('noteUnit').value = '';
-            document.getElementById('noteTopic').value = '';
-            document.getElementById('noteStatus').value = 'Published';
-            editingNoteId = null;
-            document.querySelector('.add-note-form .form-title').textContent = '➕ Add New Note';
-            document.querySelector('.btn-submit').textContent = '➕ Add Note';
-        }
-
-        // ============================================================
-        // TOAST
-        // ============================================================
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type;
-            void toast.offsetWidth;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // ============================================================
-        // KEYBOARD SHORTCUT: Enter to submit
-        // ============================================================
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && (e.target.id === 'noteTitle' || e.target.id === 'noteUnit' || e.target.id === 'noteTopic')) {
-                addNote();
-            }
-        });
-
-        console.log('✅ Admin Notes Control loaded!');
+        console.log('✅ Notes page loaded successfully!');
     </script>
 
 </body>
