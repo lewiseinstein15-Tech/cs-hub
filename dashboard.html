@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>CS HUB - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -20,25 +20,20 @@
             --red: #EF4444;
             --white: #ffffff;
             --dim: rgba(255, 255, 255, 0.5);
-            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
             color: var(--white);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
+            display: flex;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== SIDEBAR ===== */
+        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
@@ -167,14 +162,15 @@
             margin-top: 10px;
         }
 
-        /* ===== MAIN CONTENT ===== */
+        /* Main Content */
         .main-content {
             padding: 16px 16px 80px 16px;
             max-width: 1200px;
             margin: 0 auto;
+            flex: 1;
         }
 
-        /* ===== TOP BAR ===== */
+        /* Top Bar */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -234,32 +230,7 @@
             color: var(--dim);
         }
 
-        /* Settings button - HIDDEN by default, shown only for admin */
-        .btn-settings {
-            display: none !important;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .btn-settings:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-settings.admin-visible {
-            display: inline-flex !important;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ===== WELCOME ===== */
+        /* Welcome Section */
         .welcome-section {
             padding: 20px 0 10px 0;
         }
@@ -337,7 +308,7 @@
             font-style: italic;
         }
 
-        /* ===== STATS GRID (2x2 on mobile) ===== */
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -372,7 +343,7 @@
             margin-top: 2px;
         }
 
-        /* ===== SECTION HEADERS ===== */
+        /* Section Headers */
         .section-header {
             font-family: 'Orbitron', sans-serif;
             font-size: 11px;
@@ -382,7 +353,7 @@
             margin: 24px 0 14px 0;
         }
 
-        /* ===== LEARN CARDS (stack on mobile) ===== */
+        /* Learn Cards */
         .learn-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -441,7 +412,7 @@
             font-size: 16px;
         }
 
-        /* ===== RESOURCES GRID (2x2 on mobile) ===== */
+        /* Resources Grid - REMOVED Notes button */
         .resources-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -480,7 +451,7 @@
             margin-top: 2px;
         }
 
-        /* ===== ACCOUNT SECTION ===== */
+        /* Account Section */
         .account-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -521,36 +492,16 @@
             color: var(--red);
         }
 
-        /* ============================================================ */
-        /* RESPONSIVE BREAKPOINTS */
-        /* ============================================================ */
-
+        /* Responsive */
         @media (min-width: 600px) {
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .learn-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .resources-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .account-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .main-content {
-                padding: 20px 24px 80px 24px;
-            }
-            .topbar {
-                padding: 16px 24px;
-            }
-            .welcome-section h1 {
-                font-size: 26px;
-                min-height: 70px;
-            }
-            .welcome-section h1 .typing-cursor {
-                height: 32px;
-            }
+            .stats-grid { grid-template-columns: repeat(4, 1fr); }
+            .learn-grid { grid-template-columns: 1fr 1fr; }
+            .resources-grid { grid-template-columns: repeat(4, 1fr); }
+            .account-grid { grid-template-columns: repeat(3, 1fr); }
+            .main-content { padding: 20px 24px 80px 24px; }
+            .topbar { padding: 16px 24px; }
+            .welcome-section h1 { font-size: 26px; min-height: 70px; }
+            .welcome-section h1 .typing-cursor { height: 32px; }
         }
 
         @media (min-width: 1024px) {
@@ -563,73 +514,32 @@
                 border-radius: 0;
                 z-index: 50;
             }
-            .sidebar-overlay {
-                display: none !important;
-            }
-            .sidebar-close.mobile-show {
-                display: none !important;
-            }
-            body {
-                display: flex;
-                gap: 0;
-            }
+            .sidebar-overlay { display: none !important; }
+            .sidebar-close.mobile-show { display: none !important; }
+            body { display: flex; gap: 0; }
             .main-content {
                 padding: 24px 32px 80px 32px;
                 flex: 1;
                 max-width: 100%;
             }
-            .topbar {
-                display: none;
-            }
-            .menu-toggle {
-                display: none !important;
-            }
-            .learn-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .stats-grid {
-                gap: 16px;
-            }
-            .stat-card .stat-number {
-                font-size: 28px;
-            }
-            .welcome-section h1 {
-                font-size: 32px;
-                min-height: 80px;
-            }
-            .welcome-section h1 .typing-cursor {
-                height: 38px;
-            }
+            .topbar { display: none; }
+            .menu-toggle { display: none !important; }
+            .learn-grid { grid-template-columns: repeat(4, 1fr); }
+            .stats-grid { gap: 16px; }
+            .stat-card .stat-number { font-size: 28px; }
+            .welcome-section h1 { font-size: 32px; min-height: 80px; }
+            .welcome-section h1 .typing-cursor { height: 38px; }
         }
 
         @media (max-width: 380px) {
-            .stats-grid {
-                gap: 8px;
-            }
-            .stat-card {
-                padding: 10px 8px;
-            }
-            .stat-card .stat-number {
-                font-size: 18px;
-            }
-            .resources-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-            .resource-card {
-                padding: 12px 8px;
-            }
-            .welcome-section h1 {
-                font-size: 18px;
-                min-height: 50px;
-            }
-            .welcome-section h1 .typing-cursor {
-                height: 22px;
-            }
-            .welcome-section .quote-box {
-                font-size: 11px;
-                padding: 10px 14px;
-            }
+            .stats-grid { gap: 8px; }
+            .stat-card { padding: 10px 8px; }
+            .stat-card .stat-number { font-size: 18px; }
+            .resources-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .resource-card { padding: 12px 8px; }
+            .welcome-section h1 { font-size: 18px; min-height: 50px; }
+            .welcome-section h1 .typing-cursor { height: 22px; }
+            .welcome-section .quote-box { font-size: 11px; padding: 10px 14px; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -646,15 +556,15 @@
 </head>
 <body>
 
-    <!-- ===== SIDEBAR OVERLAY ===== -->
+    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- ===== SIDEBAR ===== -->
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>COMPUTER SCIENCE HUB</span>
+                <span>STUDENT PORTAL</span>
             </div>
             <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
 
@@ -669,7 +579,7 @@
                 <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
                 
                 <li class="nav-section-title">EXPLORE</li>
-                <li class="nav-item"><a href="notes.html">📄 Notes</a></li>
+                <!-- REMOVED: Notes button -->
                 <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
                 <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
                 <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
@@ -678,16 +588,15 @@
                 <li class="nav-section-title">ACCOUNT</li>
                 <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
                 <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
-                <!-- Settings removed from sidebar for regular users -->
             </ul>
         </div>
         <div class="sidebar-footer">© 2026 CS Hub</div>
     </aside>
 
-    <!-- ===== MAIN CONTENT ===== -->
+    <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- ===== TOP BAR (mobile only) ===== -->
+        <!-- TOP BAR (mobile only) -->
         <div class="topbar">
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
@@ -697,18 +606,14 @@
                 </span>
                 <div class="topbar-avatar" id="topbarAvatar">U</div>
             </div>
-            <!-- Settings button - hidden by default, shown only for admin -->
-            <a href="settings.html" class="btn-settings" id="settingsBtn">⚙️ Settings</a>
         </div>
 
-        <!-- ===== WELCOME with Typing Effect ===== -->
+        <!-- WELCOME -->
         <section class="welcome-section">
-            <h1 id="welcomeText">
-                <span id="typedPrefix">Welcome back, </span>
-                <span class="highlight-name" id="typedName"></span>
+            <h1>
+                Welcome back, <span class="highlight-name" id="welcomeName">User</span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
-            
             <div class="quote-box">
                 <span class="quote-mark">"</span>
                 The only way to learn a new programming language is by writing programs in it.
@@ -716,7 +621,7 @@
             </div>
         </section>
 
-        <!-- ===== STATS ===== -->
+        <!-- STATS -->
         <section class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number blue" id="statNotes">0</div>
@@ -736,7 +641,7 @@
             </div>
         </section>
 
-        <!-- ===== LEARN & STUDY ===== -->
+        <!-- LEARN & STUDY -->
         <h3 class="section-header">📖 Learn &amp; Study</h3>
         <section class="learn-grid">
             <a href="foundation.html" class="learn-card">
@@ -781,14 +686,10 @@
             </a>
         </section>
 
-        <!-- ===== RESOURCES & TOOLS ===== -->
+        <!-- RESOURCES & TOOLS - REMOVED Notes button -->
         <h3 class="section-header">🛠️ Resources &amp; Tools</h3>
         <section class="resources-grid">
-            <a href="notes.html" class="resource-card">
-                <span class="icon">📄</span>
-                <h4>Notes</h4>
-                <p>Access all your study notes</p>
-            </a>
+            <!-- REMOVED: Notes card -->
             <a href="projects.html" class="resource-card">
                 <span class="icon">💻</span>
                 <h4>Projects</h4>
@@ -811,7 +712,7 @@
             </a>
         </section>
 
-        <!-- ===== ACCOUNT ===== -->
+        <!-- ACCOUNT -->
         <h3 class="section-header">👤 Account</h3>
         <section class="account-grid">
             <a href="profile.html" class="account-card">
@@ -826,7 +727,7 @@
 
     </div>
 
-    <!-- ===== FIREBASE ===== -->
+    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -850,9 +751,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        // Admin email (only this user sees Settings)
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
         // ============================================================
         // SIDEBAR FUNCTIONS
@@ -890,10 +788,8 @@
         }
 
         function typeWelcome(name) {
-            const prefixEl = document.getElementById('typedPrefix');
-            prefixEl.textContent = 'Welcome back, ';
-            
-            typeWriter(name, 'typedName', function() {
+            document.getElementById('welcomeName').textContent = '';
+            typeWriter(name, 'welcomeName', function() {
                 document.getElementById('typingCursor').style.display = 'inline-block';
             });
         }
@@ -912,38 +808,22 @@
             const initial = displayName.charAt(0).toUpperCase();
 
             document.getElementById('topbarName').innerHTML = `
-                    ${displayName}
-                    <small>${email}</small>
-                `;
+                ${displayName}
+                <small>${email}</small>
+            `;
             document.getElementById('topbarAvatar').textContent = initial;
 
-            // ==========================================================
-            // SHOW SETTINGS BUTTON ONLY FOR ADMIN
-            // ==========================================================
-            const settingsBtn = document.getElementById('settingsBtn');
-            if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                settingsBtn.classList.add('admin-visible');
-                console.log('🔑 Admin detected - Settings button shown');
-            } else {
-                settingsBtn.classList.remove('admin-visible');
-                console.log('👤 Regular user - Settings button hidden');
-            }
-
-            // Start typing animation
             typeWelcome(displayName);
-
-            loadStats();
+            loadStats(user);
         });
 
         // ============================================================
         // LOAD STATS
         // ============================================================
-        function loadStats() {
-            const user = auth.currentUser;
-            if (!user) return;
-
+        function loadStats(user) {
+            // Count notes (published only)
             db.collection('notes')
-                .where('userId', '==', user.uid)
+                .where('status', '==', 'Published')
                 .get()
                 .then((snap) => {
                     document.getElementById('statNotes').textContent = snap.size;
@@ -952,6 +832,7 @@
                     document.getElementById('statNotes').textContent = '0';
                 });
 
+            // Projects
             db.collection('projects')
                 .where('userId', '==', user.uid)
                 .get()
@@ -962,6 +843,7 @@
                     document.getElementById('statProjects').textContent = '0';
                 });
 
+            // Labs
             db.collection('users')
                 .doc(user.uid)
                 .collection('completedLabs')
@@ -973,6 +855,7 @@
                     document.getElementById('statLabs').textContent = '0';
                 });
 
+            // Days active
             document.getElementById('statDays').textContent = '7';
         }
 
