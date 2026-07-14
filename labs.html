@@ -7,6 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* ============================================================ */
+        /* ROOT VARIABLES */
+        /* ============================================================ */
         :root {
             --bg: #030611;
             --sidebar-bg: #060919;
@@ -24,6 +27,9 @@
             --dim: rgba(255, 255, 255, 0.5);
         }
 
+        /* ============================================================ */
+        /* RESET & BASE */
+        /* ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -35,6 +41,9 @@
             overflow-x: hidden;
         }
 
+        /* ============================================================ */
+        /* SIDEBAR */
+        /* ============================================================ */
         .sidebar {
             position: fixed;
             top: 0;
@@ -66,7 +75,6 @@
             z-index: 999;
             display: none;
         }
-
         .sidebar-overlay.active { display: block; }
 
         .sidebar-brand { margin-bottom: 30px; }
@@ -184,6 +192,9 @@
             border-radius: 6px;
         }
 
+        /* ============================================================ */
+        /* MAIN CONTENT */
+        /* ============================================================ */
         .main-content {
             padding: 16px 16px 80px 16px;
             max-width: 1200px;
@@ -191,6 +202,9 @@
             flex: 1;
         }
 
+        /* ============================================================ */
+        /* TOP BAR */
+        /* ============================================================ */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -278,6 +292,9 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
+        /* ============================================================ */
+        /* HERO */
+        /* ============================================================ */
         .hero-terminal {
             background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
@@ -306,6 +323,9 @@
             font-size: 14px;
         }
 
+        /* ============================================================ */
+        /* STATS */
+        /* ============================================================ */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -338,6 +358,9 @@
             margin-top: 2px;
         }
 
+        /* ============================================================ */
+        /* FILTER BAR */
+        /* ============================================================ */
         .filter-bar {
             display: flex;
             gap: 12px;
@@ -370,12 +393,18 @@
             font-weight: 600;
         }
 
+        /* ============================================================ */
+        /* LABS GRID */
+        /* ============================================================ */
         .labs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
         }
 
+        /* ============================================================ */
+        /* LAB CARD */
+        /* ============================================================ */
         .lab-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -568,6 +597,9 @@
             color: var(--red);
         }
 
+        /* ============================================================ */
+        /* ADMIN CONTROLS */
+        /* ============================================================ */
         .admin-controls {
             display: none;
             gap: 8px;
@@ -600,6 +632,9 @@
             color: var(--red);
         }
 
+        /* ============================================================ */
+        /* ADD LAB FORM */
+        /* ============================================================ */
         .add-lab-form {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -718,6 +753,9 @@
             border-color: var(--blue);
         }
 
+        /* ============================================================ */
+        /* EMPTY STATE */
+        /* ============================================================ */
         .empty-labs {
             text-align: center;
             padding: 60px 0;
@@ -732,6 +770,9 @@
             margin-bottom: 12px;
         }
 
+        /* ============================================================ */
+        /* TOAST */
+        /* ============================================================ */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -756,6 +797,9 @@
         .toast.error { border-color: var(--red); }
         .toast.info { border-color: var(--blue); }
 
+        /* ============================================================ */
+        /* RESPONSIVE */
+        /* ============================================================ */
         @media (min-width: 600px) {
             .main-content { padding: 20px 24px 80px 24px; }
             .topbar { padding: 16px 24px; }
@@ -802,8 +846,14 @@
 </head>
 <body>
 
+    <!-- ============================================================ -->
+    <!-- SIDEBAR OVERLAY -->
+    <!-- ============================================================ -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
+    <!-- ============================================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================================ -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -843,8 +893,14 @@
         </div>
     </aside>
 
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================================ -->
     <div class="main-content">
 
+        <!-- ============================================================ -->
+        <!-- TOP BAR (mobile only) -->
+        <!-- ============================================================ -->
         <div class="topbar">
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
@@ -857,12 +913,18 @@
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- HERO -->
+        <!-- ============================================================ -->
         <section class="hero-terminal">
             <div class="env-tag">[ >_ LABORATORY PORTAL ]</div>
             <h2>🧪 Labs</h2>
             <p>Access programming labs, exercises, and hands-on practice materials for all courses.</p>
         </section>
 
+        <!-- ============================================================ -->
+        <!-- STATS -->
+        <!-- ============================================================ -->
         <section class="stats-row">
             <div class="stat-box">
                 <div class="number blue" id="totalLabs">0</div>
@@ -882,8 +944,14 @@
             </div>
         </section>
 
+        <!-- ============================================================ -->
+        <!-- ADMIN: TOGGLE ADD FORM -->
+        <!-- ============================================================ -->
         <button class="btn-toggle-form" id="toggleFormBtn" onclick="toggleAddForm()">➕ Add New Lab</button>
 
+        <!-- ============================================================ -->
+        <!-- ADD LAB FORM (Admin Only) -->
+        <!-- ============================================================ -->
         <div class="add-lab-form" id="addLabForm">
             <div class="form-title">➕ Add New Lab</div>
             <div class="form-grid">
@@ -928,6 +996,9 @@
             </div>
         </div>
 
+        <!-- ============================================================ -->
+        <!-- FILTER BAR -->
+        <!-- ============================================================ -->
         <div class="filter-bar">
             <span class="filter-label">Filter:</span>
             <select id="filterYear" onchange="filterLabs()">
@@ -946,6 +1017,9 @@
             <input type="text" id="searchLab" placeholder="🔍 Search labs..." oninput="filterLabs()">
         </div>
 
+        <!-- ============================================================ -->
+        <!-- LABS GRID -->
+        <!-- ============================================================ -->
         <div class="labs-grid" id="labsGrid">
             <div class="empty-labs">
                 <span class="empty-icon">🧪</span>
@@ -955,8 +1029,14 @@
 
     </div>
 
+    <!-- ============================================================ -->
+    <!-- TOAST -->
+    <!-- ============================================================ -->
     <div class="toast" id="toast"></div>
 
+    <!-- ============================================================ -->
+    <!-- FIREBASE -->
+    <!-- ============================================================ -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -965,6 +1045,9 @@
     </script>
 
     <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -978,9 +1061,15 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // ============================================================
+        // ADMIN STATUS
+        // ============================================================
         let isAdminUser = false;
         let allLabs = [];
 
+        // ============================================================
+        // SIDEBAR FUNCTIONS
+        // ============================================================
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('sidebarOverlay').classList.add('active');
@@ -993,6 +1082,9 @@
             document.body.style.overflow = '';
         }
 
+        // ============================================================
+        // AUTH CHECK
+        // ============================================================
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 window.location.href = "login.html";
@@ -1003,9 +1095,14 @@
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
+            // Admin check - direct email comparison
             const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
             isAdminUser = (email === ADMIN_EMAIL);
 
+            console.log('📧 Logged in as:', email);
+            console.log('🔑 Admin status:', isAdminUser);
+
+            // Update UI
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
@@ -1014,26 +1111,37 @@
             if (isAdminUser) {
                 document.getElementById('userRole').textContent = '🔑 Admin';
                 document.getElementById('toggleFormBtn').classList.add('visible');
+                console.log('✅ Admin mode ACTIVATED');
             } else {
                 document.getElementById('userRole').textContent = 'Student';
                 document.getElementById('toggleFormBtn').classList.remove('visible');
+                console.log('👤 Student mode');
             }
 
             loadLabs();
         });
 
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         function logout() {
             auth.signOut().then(() => {
                 window.location.href = "login.html";
             });
         }
 
+        // ============================================================
+        // TOGGLE ADD FORM
+        // ============================================================
         function toggleAddForm() {
             const form = document.getElementById('addLabForm');
             form.classList.toggle('visible');
             document.getElementById('toggleFormBtn').textContent = form.classList.contains('visible') ? '✕ Cancel' : '➕ Add New Lab';
         }
 
+        // ============================================================
+        // ADD LAB (Admin Only)
+        // ============================================================
         function addLab() {
             if (!isAdminUser) {
                 showToast('❌ Admin access required', 'error');
@@ -1086,6 +1194,9 @@
                 });
         }
 
+        // ============================================================
+        // UPDATE LAB STATUS
+        // ============================================================
         function updateLabStatus(id, newStatus) {
             const progressMap = {
                 'Not Started': 0,
@@ -1110,6 +1221,9 @@
             });
         }
 
+        // ============================================================
+        // DELETE LAB (Admin Only)
+        // ============================================================
         function deleteLab(id, title) {
             if (!isAdminUser) {
                 showToast('❌ Admin access required', 'error');
@@ -1130,6 +1244,9 @@
                 });
         }
 
+        // ============================================================
+        // LOAD LABS
+        // ============================================================
         function loadLabs() {
             const grid = document.getElementById('labsGrid');
 
@@ -1171,6 +1288,7 @@
                         const card = document.createElement('div');
                         card.className = 'lab-card';
 
+                        // Admin controls (only visible to admin)
                         let adminControlsHTML = '';
                         if (isAdminUser) {
                             adminControlsHTML = `
@@ -1180,7 +1298,7 @@
                             `;
                         }
 
-                        // Status dropdown for students
+                        // Status dropdown for students and admin
                         let statusDropdownHTML = `
                             <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1;">
                                 <select onchange="updateLabStatus('${id}', this.value)" style="padding:4px 8px; border-radius:6px; border:1px solid var(--border); background:rgba(255,255,255,0.03); color:var(--white); font-size:11px; flex:1;">
@@ -1189,6 +1307,16 @@
                                     <option value="Completed" ${lab.status === 'Completed' ? 'selected' : ''}>✅ Completed</option>
                                 </select>
                             </div>
+                        `;
+
+                        // Download button with toast feedback
+                        const downloadBtn = `
+                            <a href="#" class="btn-download" onclick="showToast('📥 Downloading ${lab.title} lab materials...', 'info')">📥 Download</a>
+                        `;
+
+                        // Complete button
+                        const completeBtn = `
+                            <button class="btn-complete" onclick="updateLabStatus('${id}', 'Completed')">✅ Mark Complete</button>
                         `;
 
                         card.innerHTML = `
@@ -1206,8 +1334,8 @@
                             </div>
                             ${statusDropdownHTML}
                             <div class="lab-actions">
-                                <a href="#" class="btn-download" onclick="showToast('📥 Downloading lab materials...', 'info')">📥 Download</a>
-                                <button class="btn-complete" onclick="updateLabStatus('${id}', 'Completed')">✅ Mark Complete</button>
+                                ${downloadBtn}
+                                ${completeBtn}
                             </div>
                             ${adminControlsHTML}
                         `;
@@ -1219,6 +1347,9 @@
                 });
         }
 
+        // ============================================================
+        // FILTER LABS
+        // ============================================================
         function filterLabs() {
             const yearFilter = document.getElementById('filterYear').value;
             const statusFilter = document.getElementById('filterStatus').value;
@@ -1255,6 +1386,9 @@
             }
         }
 
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
         function updateStats(total) {
             const completed = allLabs.filter(l => l.status === 'Completed').length;
             const inProgress = allLabs.filter(l => l.status === 'In Progress').length;
@@ -1266,6 +1400,9 @@
             document.getElementById('notStartedLabs').textContent = notStarted;
         }
 
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1278,7 +1415,7 @@
             }, 3000);
         }
 
-        console.log('✅ Labs page loaded!');
+        console.log('✅ Labs page loaded successfully!');
     </script>
 
 </body>
