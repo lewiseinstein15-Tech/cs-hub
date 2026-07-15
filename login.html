@@ -393,6 +393,18 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+/* ============================================================
+   ADMIN EMAILS - Same as admin-dashboard.html
+   ============================================================ */
+const ADMIN_EMAILS = [
+  "lewiseinstein15@gmail.com",
+  "unscriptedusa@gmail.com"
+];
+
+function isAdmin(email) {
+  return ADMIN_EMAILS.includes(email.toLowerCase());
+}
+
 /* ---------- Panel switching ---------- */
 const loginPanel = document.getElementById('loginPanel');
 const signupPanel = document.getElementById('signupPanel');
@@ -452,19 +464,31 @@ form.addEventListener('submit', async function(e){
     const result = await auth.signInWithEmailAndPassword(email, password);
     const user = result.user;
 
-    const userDoc = await db.collection("Users")
-      .where("email", "==", user.email)
-      .get();
+    // Check if user is admin
+    if (isAdmin(user.email)) {
+      window.location.href = "admin-dashboard.html";
+      return;
+    }
 
+    // Check Firestore for role (fallback)
     let role = "student";
-    if(!userDoc.empty){
-      role = userDoc.docs[0].data().role;
+    try {
+      const userDoc = await db.collection("Users")
+        .where("email", "==", user.email)
+        .get();
+
+      if(!userDoc.empty){
+        role = userDoc.docs[0].data().role || "student";
+      }
+    } catch (err) {
+      // Firestore error - default to student
+      role = "student";
     }
 
     if(role === "admin"){
       window.location.href = "admin-dashboard.html";
     } else {
-      window.location.href = "student-dashboard.html";
+      window.location.href = "dashboard.html";
     }
 
   } catch(error){
@@ -492,12 +516,23 @@ signupForm.addEventListener('submit', async function(e){
   try {
     await auth.createUserWithEmailAndPassword(email, password);
 
-    await db.collection("Users").add({
-      email: email,
-      role: "student"
-    });
-
-    window.location.href = "student-dashboard.html";
+    // Check if new user is admin (should only happen if admin email is used)
+    // But since they're signing up, they won't have admin role yet unless they use the admin email
+    // Admin emails are pre-defined, so if they sign up with an admin email, they're admin
+    if (isAdmin(email)) {
+      // Save as admin in Firestore
+      await db.collection("Users").add({
+        email: email,
+        role: "admin"
+      });
+      window.location.href = "admin-dashboard.html";
+    } else {
+      await db.collection("Users").add({
+        email: email,
+        role: "student"
+      });
+      window.location.href = "dashboard.html";
+    }
 
   } catch(error){
     showError(signupErrMsg, error.message);
