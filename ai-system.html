@@ -35,12 +35,13 @@
             overflow-x: hidden;
         }
 
+        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
-            width: 280px;
+            width: 260px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             padding: 25px 20px;
@@ -183,24 +184,28 @@
             border-radius: 6px;
         }
 
+        /* Main Content */
         .main-content {
-            padding: 16px 16px 80px 16px;
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 0;
+            max-width: 100%;
+            margin: 0;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
 
+        /* Top Bar */
         .topbar {
+            padding: 16px 30px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(15px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 16px 12px 16px;
-            border-bottom: 1px solid var(--border);
-            background-color: rgba(6, 9, 25, 0.6);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            flex-shrink: 0;
         }
 
         .menu-toggle {
@@ -209,19 +214,43 @@
             color: var(--white);
             font-size: 22px;
             cursor: pointer;
+            display: none;
             padding: 6px 10px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .topbar-user {
+        .topbar-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .topbar-left .ai-icon {
+            font-size: 28px;
+        }
+
+        .topbar-left .ai-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .topbar-left .ai-subtitle {
+            font-size: 11px;
+            color: var(--dim);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .topbar-avatar {
@@ -235,17 +264,6 @@
             font-weight: 700;
             font-size: 14px;
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-        }
-
-        .topbar-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .topbar-name small {
-            display: block;
-            font-size: 10px;
-            font-weight: 400;
-            color: var(--dim);
         }
 
         .btn-action {
@@ -277,108 +295,23 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        .hero-terminal {
-            background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.06), transparent), var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px 30px;
-            margin-bottom: 30px;
-        }
-
-        .env-tag {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--purple);
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .hero-terminal h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .hero-terminal p {
-            color: var(--dim);
-            font-size: 13px;
-        }
-
-        .ai-container {
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px 24px 0 24px;
+            overflow: hidden;
         }
 
-        .chat-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            min-height: 550px;
-        }
-
-        .chat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-
-        .chat-header .ai-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--green);
-        }
-
-        .chat-header .ai-status .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            animation: pulseDot 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-
-        .chat-header .chat-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-header .chat-actions button {
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--dim);
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .chat-header .chat-actions button:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--blue);
-            color: var(--white);
-        }
-
+        /* Chat Messages */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            max-height: 450px;
-            padding: 4px 0;
-            margin-bottom: 16px;
+            padding: 10px 0 20px 0;
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -394,25 +327,26 @@
 
         .message {
             display: flex;
-            gap: 12px;
-            margin-bottom: 14px;
-            animation: fadeIn 0.3s ease;
+            gap: 14px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .message .avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             flex-shrink: 0;
+            margin-top: 4px;
         }
 
         .message .avatar.ai {
@@ -423,235 +357,140 @@
             background: linear-gradient(135deg, var(--cyan), var(--green));
         }
 
-        .message .bubble {
+        .message .content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message .content .bubble {
             background: rgba(255, 255, 255, 0.03);
-            padding: 10px 14px;
-            border-radius: 12px;
-            max-width: 80%;
-            font-size: 13px;
-            line-height: 1.6;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 14px;
+            line-height: 1.7;
             border: 1px solid var(--border);
             word-break: break-word;
         }
 
-        .message.user .bubble {
+        .message.user .content .bubble {
             background: rgba(59, 130, 246, 0.08);
-            border-color: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.12);
         }
 
-        .message.ai .bubble {
-            background: rgba(139, 92, 246, 0.05);
-            border-color: rgba(139, 92, 246, 0.1);
+        .message.ai .content .bubble {
+            background: rgba(139, 92, 246, 0.04);
+            border-color: rgba(139, 92, 246, 0.08);
         }
 
-        .message .bubble .code-block {
+        .message .content .bubble .code-block {
             background: rgba(0, 0, 0, 0.5);
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border-radius: 8px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
             color: var(--green);
-            margin-top: 6px;
+            margin-top: 8px;
             overflow-x: auto;
             white-space: pre-wrap;
         }
 
-        .message .bubble .search-result {
+        .message .content .bubble .search-result {
             background: rgba(59, 130, 246, 0.05);
             padding: 8px 12px;
             border-radius: 6px;
             border-left: 3px solid var(--blue);
             margin-top: 6px;
-            font-size: 12px;
+            font-size: 13px;
         }
 
-        .message .bubble .search-result a {
+        .message .content .bubble .search-result a {
             color: var(--cyan);
             text-decoration: none;
         }
-        .message .bubble .search-result a:hover {
+        .message .content .bubble .search-result a:hover {
             text-decoration: underline;
         }
 
-        .message .timestamp {
-            font-size: 9px;
-            color: var(--dim);
-            margin-top: 4px;
-            display: block;
-        }
-
-        .message .file-preview {
-            margin-top: 8px;
-            padding: 8px 12px;
+        .message .content .bubble .file-preview {
+            margin-top: 10px;
+            padding: 10px 14px;
             background: rgba(255,255,255,0.03);
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .message .file-preview img,
-        .message .file-preview video {
-            max-width: 150px;
-            max-height: 150px;
-            border-radius: 6px;
+        .message .content .bubble .file-preview img,
+        .message .content .bubble .file-preview video {
+            max-width: 180px;
+            max-height: 180px;
+            border-radius: 8px;
             object-fit: cover;
         }
 
-        .message .file-preview .file-icon {
-            font-size: 28px;
+        .message .content .bubble .file-preview .file-icon {
+            font-size: 32px;
         }
-        .message .file-preview .file-name {
-            font-size: 12px;
+        .message .content .bubble .file-preview .file-name {
+            font-size: 13px;
             color: var(--dim);
         }
 
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid var(--border);
-            padding-top: 14px;
-            flex-wrap: wrap;
+        .message .content .timestamp {
+            font-size: 10px;
+            color: var(--dim);
+            margin-top: 6px;
+            display: block;
+            opacity: 0.6;
         }
 
-        .chat-input-area .input-wrapper {
-            flex: 1;
-            display: flex;
-            gap: 8px;
-            min-width: 0;
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 30px 0 10px 0;
         }
 
-        .chat-input-area input {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            min-width: 0;
+        .welcome-message .welcome-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
         }
 
-        .chat-input-area input:focus {
-            outline: none;
-            border-color: var(--purple);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.05);
-        }
-
-        .chat-input-area input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .chat-input-area .btn-send {
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: none;
+        .welcome-message h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
             background: linear-gradient(135deg, var(--purple), var(--blue));
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            -webkit-background-clip: text;
+            color: transparent;
         }
 
-        .chat-input-area .btn-send:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
-        }
-
-        .chat-input-area .btn-send:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .file-upload-buttons {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .file-upload-buttons .btn-file {
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
+        .welcome-message p {
             color: var(--dim);
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 36px;
-            position: relative;
+            font-size: 14px;
+            max-width: 500px;
+            margin: 8px auto 0 auto;
+            line-height: 1.6;
         }
 
-        .file-upload-buttons .btn-file:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--blue);
-            color: var(--white);
-        }
-
-        .file-upload-buttons .btn-file input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .btn-voice {
-            padding: 8px 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--dim);
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-voice:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--blue);
-            color: var(--white);
-        }
-
-        .btn-voice.recording {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: var(--red);
-            color: var(--red);
-            animation: pulseRecording 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseRecording {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
+        /* Quick Prompts */
         .quick-prompts {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 12px;
+            margin: 12px 0 20px 0;
+            justify-content: center;
         }
 
         .quick-prompt {
-            padding: 5px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.02);
             color: var(--dim);
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -659,18 +498,21 @@
         .quick-prompt:hover {
             border-color: var(--purple);
             color: var(--white);
-            background: rgba(139, 92, 246, 0.05);
+            background: rgba(139, 92, 246, 0.08);
+            transform: translateY(-2px);
         }
 
+        /* Typing Indicator */
         .typing-indicator {
             display: none;
             gap: 4px;
             padding: 8px 14px;
-            background: rgba(139, 92, 246, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            background: rgba(139, 92, 246, 0.06);
+            border-radius: 14px;
+            border: 1px solid rgba(139, 92, 246, 0.08);
             width: fit-content;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            align-items: center;
         }
 
         .typing-indicator.show {
@@ -678,8 +520,8 @@
         }
 
         .typing-indicator span {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--purple);
             animation: typingBounce 1.2s ease-in-out infinite;
@@ -690,9 +532,136 @@
 
         @keyframes typingBounce {
             0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-6px); }
+            30% { transform: translateY(-8px); }
         }
 
+        /* Input Area */
+        .input-area {
+            padding: 16px 0 24px 0;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 8px 8px 18px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--purple);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.05);
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            background: transparent;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            min-height: 24px;
+        }
+
+        .input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .input-actions .btn-icon {
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--dim);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .input-actions .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .input-actions .btn-icon input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .input-actions .btn-send {
+            padding: 8px 20px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .input-actions .btn-send:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .input-actions .btn-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .input-actions .btn-voice {
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--dim);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-actions .btn-voice:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .input-actions .btn-voice.recording {
+            color: var(--red);
+            animation: pulseRecording 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseRecording {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -717,46 +686,45 @@
         .toast.error { border-color: var(--red); }
         .toast.info { border-color: var(--blue); }
 
-        @media (min-width: 600px) {
-            .main-content { padding: 20px 24px 80px 24px; }
-            .topbar { padding: 16px 24px; }
-        }
-
+        /* Responsive */
         @media (min-width: 1024px) {
             .sidebar {
                 transform: translateX(0);
                 position: sticky;
                 top: 0;
                 height: 100vh;
-                width: 260px;
                 border-radius: 0;
                 z-index: 50;
             }
             .sidebar-overlay { display: none !important; }
             .sidebar-close.mobile-show { display: none !important; }
             body { display: flex; gap: 0; }
-            .main-content {
-                padding: 24px 32px 80px 32px;
-                flex: 1;
-                max-width: 100%;
-            }
-            .topbar { display: none; }
             .menu-toggle { display: none !important; }
         }
 
-        @media (max-width: 768px) {
-            .chat-input-area { flex-direction: column; }
-            .chat-input-area .input-wrapper { width: 100%; }
-            .chat-input-area .btn-send { width: 100%; }
-            .file-upload-buttons { width: 100%; justify-content: center; }
-            .chat-header { flex-wrap: wrap; gap: 8px; }
+        @media (max-width: 1024px) {
+            .menu-toggle { display: flex; }
+            .sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .topbar { padding: 12px 16px; }
+            .chat-container { padding: 12px 16px 0 16px; }
         }
 
-        @media (max-width: 480px) {
-            .hero-terminal h2 { font-size: 20px; }
-            .hero-terminal { padding: 20px; }
-            .chat-section { padding: 16px; }
-            .message .bubble { max-width: 90%; }
+        @media (max-width: 600px) {
+            .topbar-left .ai-subtitle { display: none; }
+            .topbar-left .ai-title { font-size: 16px; }
+            .topbar-right .btn-action span { display: none; }
+            .welcome-message h2 { font-size: 18px; }
+            .message .content .bubble { font-size: 13px; padding: 10px 14px; }
+            .input-wrapper { padding: 6px 6px 6px 14px; }
+            .input-actions .btn-send { padding: 6px 16px; font-size: 13px; }
+            .quick-prompts { gap: 6px; }
+            .quick-prompt { font-size: 11px; padding: 4px 12px; }
+        }
+
+        @media (max-width: 400px) {
+            .input-actions .btn-icon { display: none; }
+            .topbar-avatar { width: 30px; height: 30px; font-size: 12px; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -775,6 +743,7 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
+    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -814,99 +783,67 @@
         </div>
     </aside>
 
+    <!-- Main Content -->
     <div class="main-content">
 
+        <!-- Top Bar -->
         <div class="topbar">
-            <button class="menu-toggle" onclick="openSidebar()">☰</button>
-            <div class="topbar-user">
-                <span class="topbar-name" id="topbarName">
-                    User
-                    <small id="topbarEmail">user@email.com</small>
-                </span>
-                <div class="topbar-avatar" id="topbarAvatar">U</div>
+            <div class="topbar-left">
+                <button class="menu-toggle" onclick="openSidebar()">☰</button>
+                <span class="ai-icon">🤖</span>
+                <div>
+                    <span class="ai-title">AI Assistant</span>
+                    <span class="ai-subtitle">Powered by Google Search</span>
+                </div>
             </div>
-            <button class="btn-action btn-logout" onclick="logout()">Logout</button>
+            <div class="topbar-right">
+                <span class="topbar-avatar" id="topbarAvatar">U</span>
+                <button class="btn-action btn-logout" onclick="logout()">Logout</button>
+            </div>
         </div>
 
-        <section class="hero-terminal">
-            <div class="env-tag">[ >_ AI ASSISTANT ]</div>
-            <h2>🤖 AI Assistant</h2>
-            <p>Your intelligent study companion. Ask questions, upload files, search the web, and get instant answers.</p>
-        </section>
+        <!-- Chat Container -->
+        <div class="chat-container">
 
-        <div class="ai-container">
-
-            <div class="chat-section">
-                <div class="chat-header">
-                    <div>
-                        <h3 style="font-size: 16px; font-weight: 600;">💬 Chat</h3>
-                        <span style="font-size: 11px; color: var(--dim);">Ask anything about Computer Science</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="ai-status">
-                            <span class="dot"></span>
-                            <span>Online</span>
-                        </div>
-                        <div class="chat-actions">
-                            <button onclick="clearChat()">🗑️ Clear</button>
-                        </div>
-                    </div>
+            <!-- Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="welcome-message">
+                    <div class="welcome-icon">🤖</div>
+                    <h2>How can I help you?</h2>
+                    <p>Ask me anything about Computer Science, programming, or search the web.</p>
                 </div>
 
+                <!-- Quick Prompts -->
                 <div class="quick-prompts">
-                    <span class="quick-prompt" onclick="sendQuickPrompt('Explain Object-Oriented Programming')">💡 OOP</span>
+                    <span class="quick-prompt" onclick="sendQuickPrompt('Explain OOP')">💡 OOP</span>
                     <span class="quick-prompt" onclick="sendQuickPrompt('What are data structures?')">📊 Data Structures</span>
                     <span class="quick-prompt" onclick="sendQuickPrompt('Search: Python tutorials for beginners')">🔍 Search Web</span>
                     <span class="quick-prompt" onclick="sendQuickPrompt('Explain recursion with example')">🔄 Recursion</span>
                     <span class="quick-prompt" onclick="sendQuickPrompt('Help me with CSC1110')">📚 CSC1110</span>
                 </div>
 
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message ai">
-                        <div class="avatar ai">🤖</div>
-                        <div>
-                            <div class="bubble">
-                                👋 Hello! I'm your AI learning assistant. I can help you with:<br>
-                                • Programming concepts (OOP, Data Structures, Algorithms)<br>
-                                • Unit explanations (CSC1110, CSC222, CSC310, etc.)<br>
-                                • Lab assistance and debugging<br>
-                                • Study tips and resources<br>
-                                • Web search (type "Search: ...")<br>
-                                • File uploads (📷 photos, 🎬 videos, 📄 documents)<br><br>
-                                What would you like to learn about today?
-                            </div>
-                            <span class="timestamp">Just now</span>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- Typing Indicator -->
                 <div class="typing-indicator" id="typingIndicator">
                     <span></span><span></span><span></span>
                 </div>
+            </div>
 
-                <div class="chat-input-area">
-                    <div class="input-wrapper">
-                        <input type="text" id="chatInput" placeholder="Type your question... or type 'Search: ...'" onkeypress="if(event.key==='Enter') sendMessage()">
-                        <button class="btn-send" id="sendBtn" onclick="sendMessage()">Send</button>
-                    </div>
-                    <div class="file-upload-buttons">
-                        <label class="btn-file" title="Upload Photo/Image">
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Message AI Assistant..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <div class="input-actions">
+                        <button class="btn-icon" title="Upload Image" style="font-size:16px;">
                             📷
                             <input type="file" accept="image/*" onchange="uploadFile(this, 'image')">
-                        </label>
-                        <label class="btn-file" title="Upload Video">
-                            🎬
-                            <input type="file" accept="video/*" onchange="uploadFile(this, 'video')">
-                        </label>
-                        <label class="btn-file" title="Upload PDF/Document">
-                            📄
-                            <input type="file" accept=".pdf,.doc,.docx,.txt" onchange="uploadFile(this, 'document')">
-                        </label>
-                        <label class="btn-file" title="Upload Any File">
+                        </button>
+                        <button class="btn-icon" title="Upload File" style="font-size:16px;">
                             📎
                             <input type="file" onchange="uploadFile(this, 'file')">
-                        </label>
+                        </button>
                         <button class="btn-voice" id="voiceBtn" title="Voice Input" onclick="toggleVoice()">🎤</button>
+                        <button class="btn-send" id="sendBtn" onclick="sendMessage()">Send</button>
                     </div>
                 </div>
             </div>
@@ -917,6 +854,7 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -927,6 +865,9 @@
     </script>
 
     <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -941,9 +882,43 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
+        // ============================================================
+        // GOOGLE API KEYS - YOUR REAL KEYS
+        // ============================================================
+        const API_KEY = "AIzaSyBgkUv6cuI5Tyu7w11-tjFyFbM6ufZM3KM"; // ✅ Your API Key
+        const SEARCH_ENGINE_ID = "c4e694a88ccd4496d"; // ✅ Your Search Engine ID (CX)
+
+        // ============================================================
+        // STATE
+        // ============================================================
         let conversationHistory = [];
         let isRecording = false;
         let recognition = null;
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarAvatar').textContent = initial;
+            document.getElementById('userRole').textContent = 'Student';
+        });
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        }
 
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
@@ -957,84 +932,92 @@
             document.body.style.overflow = '';
         }
 
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "login.html";
-                return;
-            }
-
-            const displayName = user.displayName || user.email.split('@')[0] || 'User';
-            const email = user.email || 'user@email.com';
-            const initial = displayName.charAt(0).toUpperCase();
-
-            document.getElementById('userName').textContent = displayName;
-            document.getElementById('userAvatar').textContent = initial;
-            document.getElementById('topbarName').textContent = displayName;
-            document.getElementById('topbarEmail').textContent = email;
-            document.getElementById('userRole').textContent = 'Student';
-        });
-
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = "login.html";
-            });
-        }
-
+        // ============================================================
+        // WEB SEARCH WITH REAL GOOGLE API
+        // ============================================================
         async function searchWeb(query) {
-            return `🔍 **Search Results for: "${query}"**\n\n` +
-                   `1. **${query} - Wikipedia**\n` +
-                   `   Found information about ${query} on Wikipedia.\n` +
-                   `   🔗 https://en.wikipedia.org/wiki/${query.replace(/\s+/g, '_')}\n\n` +
-                   `2. **${query} - GeeksforGeeks**\n` +
-                   `   Computer Science portal for geeks.\n` +
-                   `   🔗 https://www.geeksforgeeks.org/${query.toLowerCase().replace(/\s+/g, '-')}\n\n` +
-                   `3. **${query} - TutorialsPoint**\n` +
-                   `   Learn ${query} with tutorials and examples.\n` +
-                   `   🔗 https://www.tutorialspoint.com/${query.toLowerCase().replace(/\s+/g, '_')}\n\n` +
-                   `4. **${query} - Stack Overflow**\n` +
-                   `   Developer Q&A community.\n` +
-                   `   🔗 https://stackoverflow.com/search?q=${query.replace(/\s+/g, '+')}\n\n` +
-                   `💡 For more results, try a more specific search query.`;
+            try {
+                const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.error) {
+                    return `❌ Search error: ${data.error.message}\n\nPlease check:\n• Your API key is correct\n• Custom Search API is enabled\n• You've set up the search engine correctly`;
+                }
+
+                if (data.items && data.items.length > 0) {
+                    let results = `🔍 **Search Results for: "${query}"**\n\n`;
+                    data.items.slice(0, 5).forEach((item, i) => {
+                        results += `${i+1}. **${item.title}**\n`;
+                        results += `   ${item.snippet || 'No description'}\n`;
+                        results += `   🔗 <a href="${item.link}" target="_blank">${item.link}</a>\n\n`;
+                    });
+                    return results;
+                } else {
+                    return `🔍 No results found for "${query}". Please try a different search term.`;
+                }
+            } catch (error) {
+                return `❌ Search error: ${error.message}\n\nPlease check your internet connection and try again.`;
+            }
         }
 
-        function getAIResponse(question, history) {
+        // ============================================================
+        // AI RESPONSES
+        // ============================================================
+        function getAIResponse(question) {
             const q = question.toLowerCase();
-            
+
+            // Check if it's a search query
             if (q.startsWith('search:')) {
-                return searchWeb(q.substring(7).trim());
+                const searchQuery = q.substring(7).trim();
+                if (searchQuery) {
+                    return searchWeb(searchQuery);
+                }
+                return "🔍 Please specify what you'd like to search for. Example: `Search: Python tutorials`";
             }
 
-            if (q.includes('csc1110') || q.includes('programming') && q.includes('help')) {
-                return `📚 **CSC1110 - Programming**\n\nThis unit covers the fundamentals of programming. Key topics:\n\n• Introduction to programming concepts\n• Variables, data types, and operators\n• Control structures (if, else, loops)\n• Functions and modular programming\n• Arrays and strings\n• File I/O\n\n**💡 Study Tips:**\n1. Practice coding daily\n2. Start with simple programs\n3. Understand concepts before coding\n4. Use online resources like W3Schools, Codecademy\n\nNeed help with a specific topic? Just ask!`;
+            // Check for CSC1110
+            if (q.includes('csc1110') || (q.includes('programming') && q.includes('help'))) {
+                return `📚 **CSC1110 - Programming**\n\nThis unit covers the fundamentals of programming. Key topics:\n\n• Introduction to programming concepts\n• Variables, data types, and operators\n• Control structures (if, else, loops)\n• Functions and modular programming\n• Arrays and strings\n• File I/O\n\n**💡 Study Tips:**\n1. Practice coding daily\n2. Start with simple programs\n3. Understand concepts before coding\n4. Use online resources\n\nNeed help with a specific topic? Just ask!`;
             }
 
+            // Check for CSC222
             if (q.includes('csc222') || q.includes('systems analysis')) {
                 return `📚 **CSC222 - Systems Analysis and Design**\n\nThis unit covers the software development lifecycle:\n\n• System development methodologies (Waterfall, Agile, Scrum)\n• Requirements gathering and analysis\n• System design and modeling (UML diagrams)\n• Implementation and testing strategies\n• System maintenance and evolution\n\n**💡 Key Tools:**\n• UML: Class, Use Case, Sequence diagrams\n• Project management: Gantt charts, PERT charts\n• Documentation: SRS, SDD\n\nNeed help with a specific topic? Just ask!`;
             }
 
+            // Check for CSC310
             if (q.includes('csc310') || q.includes('database')) {
-                return `📚 **CSC310 - Database Systems**\n\nThis unit covers database fundamentals:\n\n• Database concepts and architecture\n• Relational database design (ER diagrams)\n• SQL (Structured Query Language)\n• Normalization (1NF, 2NF, 3NF, BCNF)\n• Transaction management (ACID)\n• Database security\n\n**💡 Common Database Commands:**\n• SELECT * FROM table;\n• INSERT INTO table VALUES (...);\n• UPDATE table SET column = value WHERE condition;\n• DELETE FROM table WHERE condition;\n\nNeed help with a specific topic? Just ask!`;
+                return `📚 **CSC310 - Database Systems**\n\nThis unit covers database fundamentals:\n\n• Database concepts and architecture\n• Relational database design (ER diagrams)\n• SQL (Structured Query Language)\n• Normalization (1NF, 2NF, 3NF, BCNF)\n• Transaction management (ACID)\n• Database security\n\n**💡 Common SQL Commands:**\n• SELECT * FROM table;\n• INSERT INTO table VALUES (...);\n• UPDATE table SET column = value WHERE condition;\n• DELETE FROM table WHERE condition;\n\nNeed help with a specific topic? Just ask!`;
             }
 
+            // Check for CSC410
             if (q.includes('csc410') || q.includes('operations research')) {
                 return `📚 **CSC410 - Operations Research**\n\nThis unit covers optimization and decision-making:\n\n• Linear programming and simplex method\n• Optimization techniques (maximization, minimization)\n• Decision analysis and game theory\n• Simulation and modeling\n• Network models (shortest path, max flow)\n• Project management (PERT/CPM)\n\n**💡 Key Concepts:**\n• Objective function and constraints\n• Feasible region and optimal solution\n• Sensitivity analysis\n• Integer programming\n\nNeed help with a specific topic? Just ask!`;
             }
 
-            if (q.includes('oop') || q.includes('object-oriented')) {
+            // OOP
+            if (q.includes('oop') || q.includes('object-oriented') || q.includes('object oriented')) {
                 return `🔷 **Object-Oriented Programming (OOP)**\n\n**The Four Pillars of OOP:**\n\n1. **Encapsulation** 📦\n   • Bundling data and methods\n   • Hiding internal state\n   • Using private/public access modifiers\n\n2. **Inheritance** 👪\n   • Creating child classes from parent classes\n   • Code reusability\n   • extends keyword (Java), inheritance (Python)\n\n3. **Polymorphism** 🔄\n   • Many forms\n   • Method overloading (compile-time)\n   • Method overriding (runtime)\n\n4. **Abstraction** 🎭\n   • Hiding complex implementation\n   • Abstract classes and interfaces\n   • Showing only essential features\n\n**Example Languages:** Java, Python, C++, C#, JavaScript\n\n**💡 Code Example (Python):**\n\`\`\`python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        return f"{self.name} says Woof!"\n\ndog = Dog("Rex")\nprint(dog.speak())\n\`\`\``;
             }
 
-            if (q.includes('data structures')) {
+            // Data Structures
+            if (q.includes('data structures') || q.includes('data structure')) {
                 return `📊 **Data Structures**\n\n**Common Data Structures:**\n\n1. **Arrays** 📋\n   • Fixed-size, indexed collection\n   • O(1) random access\n   • O(n) insertion/deletion\n\n2. **Linked Lists** ⛓️\n   • Dynamic size\n   • O(1) insertion/deletion at beginning\n   • O(n) search\n\n3. **Stacks** 📚\n   • LIFO (Last In, First Out)\n   • push(), pop(), peek()\n   • Used in function calls, undo/redo\n\n4. **Queues** 🚶\n   • FIFO (First In, First Out)\n   • enqueue(), dequeue()\n   • Used in scheduling, BFS\n\n5. **Trees** 🌳\n   • Hierarchical structure\n   • Binary Trees, BST, AVL Trees\n   • Used in file systems, HTML DOM\n\n6. **Graphs** 🌐\n   • Network of connected nodes\n   • Directed/Undirected, Weighted/Unweighted\n   • Used in social networks, maps\n\n7. **Hash Tables** 🔑\n   • Key-value pairs\n   • O(1) average access\n   • Used in dictionaries, caches`;
             }
 
+            // Recursion
             if (q.includes('recursion')) {
                 return `🔄 **Recursion**\n\nA programming technique where a function calls itself.\n\n**Key Components:**\n1. **Base Case**: The stopping condition\n2. **Recursive Case**: The function calls itself\n\n**Example (Factorial):**\n\`\`\`python\ndef factorial(n):\n    if n <= 1:  # Base case\n        return 1\n    return n * factorial(n - 1)  # Recursive case\n\nprint(factorial(5))  # 120\n\`\`\`\n\n**When to Use Recursion:**\n• Tree traversal (directory structures, DOM)\n• Divide and conquer algorithms (merge sort, quick sort)\n• Backtracking problems (maze solving, N-Queens)\n• Graph traversal (DFS)\n\n**⚠️ Warning:**\n• Can cause stack overflow if not implemented carefully\n• Usually slower than iterative solutions\n• Use for problems with repeated sub-problems`;
             }
 
-            return `🤔 That's a great question!\n\nHere's what I know about this topic:\n\n**Key Points:**\n1. This is an important concept in Computer Science\n2. It has many applications in software development\n3. Understanding this will help you become a better programmer\n\n**💡 Suggestions:**\n• Try typing "Search: your question" to search the web\n• Upload a file for me to analyze\n• Ask for a specific unit (e.g., CSC1110, CSC222)\n• Request an OOP or Data Structures explanation\n\nWhat specific aspect would you like to learn more about?`;
+            // Default response
+            return `🤔 That's a great question!\n\nHere's what I know about this topic:\n\n**Key Points:**\n1. This is an important concept in Computer Science\n2. It has many applications in software development\n3. Understanding this will help you become a better programmer\n\n**💡 Suggestions:**\n• Try typing "Search: your question" to search the web\n• Upload a file for me to analyze\n• Ask for a specific unit (e.g., CSC1110, CSC222, CSC310, CSC410)\n• Request an OOP or Data Structures explanation\n\nWhat specific aspect would you like to learn more about?`;
         }
 
+        // ============================================================
+        // SEND MESSAGE
+        // ============================================================
         async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -1045,13 +1028,13 @@
             addMessage('user', message);
             showTyping();
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 hideTyping();
-                const response = getAIResponse(message, conversationHistory);
+                const response = await getAIResponse(message);
                 addMessage('ai', response);
                 conversationHistory.push({ role: 'user', content: message });
                 conversationHistory.push({ role: 'assistant', content: response });
-            }, 600 + Math.random() * 400);
+            }, 400 + Math.random() * 300);
         }
 
         function sendQuickPrompt(prompt) {
@@ -1059,8 +1042,20 @@
             sendMessage();
         }
 
+        // ============================================================
+        // ADD MESSAGE
+        // ============================================================
         function addMessage(type, content) {
             const container = document.getElementById('chatMessages');
+            
+            // Remove welcome message if it exists and this is a user message
+            if (type === 'user') {
+                const welcome = container.querySelector('.welcome-message');
+                if (welcome) welcome.remove();
+                const prompts = container.querySelector('.quick-prompts');
+                if (prompts) prompts.remove();
+            }
+
             const div = document.createElement('div');
             div.className = `message ${type}`;
             
@@ -1070,6 +1065,7 @@
 
             let displayContent = content.replace(/\n/g, '<br>');
             
+            // Code blocks
             const codeMatch = displayContent.match(/```([\s\S]*?)```/);
             if (codeMatch) {
                 const codeBlock = codeMatch[1];
@@ -1079,6 +1075,7 @@
                 );
             }
 
+            // Links
             if (displayContent.includes('🔗 http')) {
                 displayContent = displayContent.replace(
                     /(🔗\s*)(https?:\/\/[^\s]+)/g,
@@ -1088,7 +1085,7 @@
 
             div.innerHTML = `
                 <div class="avatar ${avatarClass}">${avatar}</div>
-                <div>
+                <div class="content">
                     <div class="bubble">${displayContent}</div>
                     <span class="timestamp">${timestamp}</span>
                 </div>
@@ -1098,6 +1095,9 @@
             container.scrollTop = container.scrollHeight;
         }
 
+        // ============================================================
+        // FILE UPLOAD
+        // ============================================================
         function uploadFile(input, type) {
             const file = input.files[0];
             if (!file) return;
@@ -1146,6 +1146,13 @@
 
         function addFileMessage(fileInfo) {
             const container = document.getElementById('chatMessages');
+            
+            // Remove welcome message if it exists
+            const welcome = container.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
+            const prompts = container.querySelector('.quick-prompts');
+            if (prompts) prompts.remove();
+
             const div = document.createElement('div');
             div.className = 'message user';
             
@@ -1162,7 +1169,7 @@
 
             div.innerHTML = `
                 <div class="avatar user">👤</div>
-                <div>
+                <div class="content">
                     <div class="bubble">
                         📎 Uploaded: <strong>${fileInfo.name}</strong>
                         <div class="file-preview">
@@ -1180,6 +1187,9 @@
             container.scrollTop = container.scrollHeight;
         }
 
+        // ============================================================
+        // VOICE INPUT
+        // ============================================================
         function toggleVoice() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 showToast('❌ Voice input not supported in this browser', 'error');
@@ -1245,23 +1255,9 @@
             isRecording = false;
         }
 
-        function clearChat() {
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = `
-                <div class="message ai">
-                    <div class="avatar ai">🤖</div>
-                    <div>
-                        <div class="bubble">
-                            👋 Chat cleared! I'm your AI learning assistant. What would you like to learn about today?
-                        </div>
-                        <span class="timestamp">Just now</span>
-                    </div>
-                </div>
-            `;
-            conversationHistory = [];
-            showToast('🗑️ Chat cleared', 'info');
-        }
-
+        // ============================================================
+        // TYPING INDICATOR
+        // ============================================================
         function showTyping() {
             document.getElementById('typingIndicator').classList.add('show');
         }
@@ -1270,6 +1266,9 @@
             document.getElementById('typingIndicator').classList.remove('show');
         }
 
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1283,6 +1282,8 @@
         }
 
         console.log('✅ AI Assistant loaded!');
+        console.log('🔑 API Key:', API_KEY ? '✅ Set' : '❌ Missing');
+        console.log('🔍 Search Engine ID:', SEARCH_ENGINE_ID ? '✅ Set' : '❌ Missing');
     </script>
 
 </body>
