@@ -401,8 +401,7 @@
             flex-wrap: wrap;
         }
 
-        .message .content .bubble .file-preview img,
-        .message .content .bubble .file-preview video {
+        .message .content .bubble .file-preview img {
             max-width: 180px;
             max-height: 180px;
             border-radius: 8px;
@@ -817,9 +816,9 @@
         const storage = firebase.storage();
 
         // ============================================================
-        // GEMINI API KEY - YOUR REAL KEY
+        // GEMINI API KEY - YOUR KEY (BOUND TO SERVICE ACCOUNT)
         // ============================================================
-        const GEMINI_API_KEY = "AQ.Ab8RN6JuS5zC7MzMXWzPfdAEE7G0bCYdy3Vv3Ivnb3YI6-hVYw";
+        const GEMINI_API_KEY = "AQ.Ab8RN6JmqabQDubyv7pQ60uK1FR6xO9W755CsEAKPy26_q2XNA";
 
         // ============================================================
         // STATE
@@ -885,8 +884,19 @@
                 addMessage('ai', response);
             } catch (error) {
                 hideTyping();
-                addMessage('ai', `❌ Error: ${error.message}`);
                 console.error('Gemini Error:', error);
+                
+                let errorMessage = `❌ Error: ${error.message || 'Something went wrong'}`;
+                
+                if (error.message && error.message.includes('API_KEY')) {
+                    errorMessage = `❌ API Key error. Please check your Gemini API key.`;
+                } else if (error.message && error.message.includes('PERMISSION_DENIED')) {
+                    errorMessage = `❌ Permission denied. Make sure your API key is valid and has the Gemini API enabled.`;
+                } else if (error.message && error.message.includes('429')) {
+                    errorMessage = `⏳ Rate limit exceeded. Please wait a moment and try again.`;
+                }
+                
+                addMessage('ai', errorMessage);
             }
         }
 
