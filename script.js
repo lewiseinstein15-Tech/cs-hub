@@ -1,8 +1,24 @@
+// ============================================================
+// CS HUB - Main Script
+// ============================================================
+
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector(".menu-toggle");
     const moreToggle = document.getElementById("moreToggle");
     const sidebar = document.querySelector(".sidebar");
     const mainContent = document.querySelector(".main-content");
+
+    // ============================================================
+    // ADMIN EMAILS - Add ALL admin emails here!
+    // ============================================================
+    const ADMIN_EMAILS = [
+        "lewiseinstein15@gmail.com",
+        "unscriptedusa@gmail.com"
+    ];
+
+    function isAdmin(email) {
+        return ADMIN_EMAILS.includes(email.toLowerCase());
+    }
 
     function toggleSidebar() {
         if (!sidebar) return;
@@ -30,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ============================================================
+    // ACTIVITY LOGS
+    // ============================================================
     const ACTIVITY_KEY = "csHubActivities";
 
     function loadActivities() {
@@ -90,6 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setInterval(renderActivities, 60000);
     }
 
+    // ============================================================
+    // QUICK ACTIONS
+    // ============================================================
     const quickActionMap = {
         addNote: { title: "New note added", dot: "updated", tag: "ADDED" },
         editNote: { title: "Note edited", dot: "modified", tag: "EDITED" },
@@ -109,6 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // ============================================================
+    // TYPING WELCOME MESSAGE
+    // ============================================================
     const welcomeMessageElement = document.getElementById("welcome-message");
     const text = "Welcome back, Admin Lewis";
     let i = 0;
@@ -130,4 +155,13 @@ document.addEventListener("DOMContentLoaded", () => {
         welcomeMessageElement.innerHTML = '<span class="cursor">|</span>';
         setTimeout(typeWriter, 1000);
     }
+
+    // ============================================================
+    // CHECK IF CURRENT USER IS ADMIN (Can be called from other scripts)
+    // ============================================================
+    window.isAdmin = isAdmin;
+    window.ADMIN_EMAILS = ADMIN_EMAILS;
+
+    console.log('✅ CS HUB Script loaded!');
+    console.log('🔑 Admin emails:', ADMIN_EMAILS);
 });
