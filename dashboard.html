@@ -33,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
@@ -52,9 +51,7 @@
             justify-content: space-between;
         }
 
-        .sidebar.open {
-            transform: translateX(0);
-        }
+        .sidebar.open { transform: translateX(0); }
 
         .sidebar-overlay {
             position: fixed;
@@ -68,14 +65,9 @@
             display: none;
         }
 
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
-        .sidebar-brand {
-            margin-bottom: 30px;
-        }
-
+        .sidebar-brand { margin-bottom: 30px; }
         .sidebar-brand h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 20px;
@@ -85,7 +77,6 @@
             -webkit-background-clip: text;
             color: transparent;
         }
-
         .sidebar-brand span {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
@@ -106,10 +97,7 @@
             right: 20px;
             display: none;
         }
-
-        .sidebar-close.mobile-show {
-            display: block;
-        }
+        .sidebar-close.mobile-show { display: block; }
 
         .nav-menu {
             list-style: none;
@@ -142,8 +130,7 @@
             border: 1px solid transparent;
         }
 
-        .nav-item a:hover,
-        .nav-item.active a {
+        .nav-item a:hover, .nav-item.active a {
             color: var(--white);
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.2);
@@ -162,7 +149,6 @@
             margin-top: 10px;
         }
 
-        /* Main Content */
         .main-content {
             padding: 16px 16px 80px 16px;
             max-width: 1200px;
@@ -170,7 +156,6 @@
             flex: 1;
         }
 
-        /* Top Bar */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -222,7 +207,6 @@
             font-size: 13px;
             font-weight: 600;
         }
-
         .topbar-name small {
             display: block;
             font-size: 10px;
@@ -230,7 +214,6 @@
             color: var(--dim);
         }
 
-        /* Welcome Section */
         .welcome-section {
             padding: 20px 0 10px 0;
         }
@@ -252,7 +235,6 @@
             width: 3px;
             height: 28px;
             background: var(--cyan);
-            margin-left: 2px;
             animation: blink 0.8s step-end infinite;
             vertical-align: text-bottom;
         }
@@ -308,7 +290,6 @@
             font-style: italic;
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -329,7 +310,6 @@
             font-size: 24px;
             font-weight: 700;
         }
-
         .stat-card .stat-number.blue { color: var(--blue); }
         .stat-card .stat-number.green { color: var(--green); }
         .stat-card .stat-number.purple { color: var(--purple); }
@@ -343,7 +323,6 @@
             margin-top: 2px;
         }
 
-        /* Section Headers */
         .section-header {
             font-family: 'Orbitron', sans-serif;
             font-size: 11px;
@@ -353,7 +332,6 @@
             margin: 24px 0 14px 0;
         }
 
-        /* Learn Cards */
         .learn-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -412,7 +390,6 @@
             font-size: 16px;
         }
 
-        /* Resources Grid - REMOVED Notes button */
         .resources-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -451,7 +428,6 @@
             margin-top: 2px;
         }
 
-        /* Account Section */
         .account-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -556,10 +532,8 @@
 </head>
 <body>
 
-    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -579,7 +553,6 @@
                 <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
                 
                 <li class="nav-section-title">EXPLORE</li>
-                <!-- REMOVED: Notes button -->
                 <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
                 <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
                 <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
@@ -593,10 +566,8 @@
         <div class="sidebar-footer">© 2026 CS Hub</div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- TOP BAR (mobile only) -->
         <div class="topbar">
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
@@ -608,7 +579,6 @@
             </div>
         </div>
 
-        <!-- WELCOME -->
         <section class="welcome-section">
             <h1>
                 Welcome back, <span class="highlight-name" id="welcomeName">User</span>
@@ -621,7 +591,6 @@
             </div>
         </section>
 
-        <!-- STATS -->
         <section class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number blue" id="statNotes">0</div>
@@ -641,7 +610,6 @@
             </div>
         </section>
 
-        <!-- LEARN & STUDY -->
         <h3 class="section-header">📖 Learn &amp; Study</h3>
         <section class="learn-grid">
             <a href="foundation.html" class="learn-card">
@@ -686,10 +654,8 @@
             </a>
         </section>
 
-        <!-- RESOURCES & TOOLS - REMOVED Notes button -->
         <h3 class="section-header">🛠️ Resources &amp; Tools</h3>
         <section class="resources-grid">
-            <!-- REMOVED: Notes card -->
             <a href="projects.html" class="resource-card">
                 <span class="icon">💻</span>
                 <h4>Projects</h4>
@@ -712,7 +678,6 @@
             </a>
         </section>
 
-        <!-- ACCOUNT -->
         <h3 class="section-header">👤 Account</h3>
         <section class="account-grid">
             <a href="profile.html" class="account-card">
@@ -727,7 +692,6 @@
 
     </div>
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -751,6 +715,18 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // ============================================================
+        // ADMIN EMAILS - Add ALL admin emails here!
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
 
         // ============================================================
         // SIDEBAR FUNCTIONS
@@ -815,13 +791,15 @@
 
             typeWelcome(displayName);
             loadStats(user);
+
+            // ✅ CHECK IF USER IS ADMIN - SHOW ADMIN BUTTON IN SIDEBAR?
+            // (This will be handled by the admin-dashboard redirect)
         });
 
         // ============================================================
         // LOAD STATS
         // ============================================================
         function loadStats(user) {
-            // Count notes (published only)
             db.collection('notes')
                 .where('status', '==', 'Published')
                 .get()
@@ -832,7 +810,6 @@
                     document.getElementById('statNotes').textContent = '0';
                 });
 
-            // Projects
             db.collection('projects')
                 .where('userId', '==', user.uid)
                 .get()
@@ -843,7 +820,6 @@
                     document.getElementById('statProjects').textContent = '0';
                 });
 
-            // Labs
             db.collection('users')
                 .doc(user.uid)
                 .collection('completedLabs')
@@ -855,7 +831,6 @@
                     document.getElementById('statLabs').textContent = '0';
                 });
 
-            // Days active
             document.getElementById('statDays').textContent = '7';
         }
 
