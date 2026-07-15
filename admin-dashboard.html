@@ -65,7 +65,6 @@
             z-index: 999;
             display: none;
         }
-
         .sidebar-overlay.active { display: block; }
 
         .sidebar-brand { margin-bottom: 30px; }
@@ -816,9 +815,9 @@
         </div>
         <div>
             <div class="sidebar-profile">
-                <div class="profile-avatar">AL</div>
-                <div class="profile-name">Admin Lewis</div>
-                <div class="profile-role">Super Admin</div>
+                <div class="profile-avatar" id="profileAvatar">AL</div>
+                <div class="profile-name" id="profileName">Admin Lewis</div>
+                <div class="profile-role" id="profileRole">Super Admin</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub</div>
         </div>
@@ -831,11 +830,11 @@
         <div class="topbar">
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
-                <span class="topbar-name">
+                <span class="topbar-name" id="topbarName">
                     Admin Lewis
-                    <small>lewiseinstein15@gmail.com</small>
+                    <small id="topbarEmail">lewiseinstein15@gmail.com</small>
                 </span>
-                <div class="topbar-avatar">AL</div>
+                <div class="topbar-avatar" id="topbarAvatar">AL</div>
             </div>
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
@@ -1031,6 +1030,38 @@
         }
 
         // ============================================================
+        // GET USER DISPLAY NAME - FIXED!
+        // ============================================================
+        async function getUserDisplayName(user) {
+            // Try Firebase Auth display name first
+            if (user.displayName && user.displayName.trim() !== '') {
+                return user.displayName;
+            }
+
+            // Try Firestore 'Users' collection
+            try {
+                const snapshot = await db.collection('Users')
+                    .where('email', '==', user.email)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const userData = snapshot.docs[0].data();
+                    if (userData.name && userData.name.trim() !== '') {
+                        return userData.name;
+                    }
+                    if (userData.displayName && userData.displayName.trim() !== '') {
+                        return userData.displayName;
+                    }
+                }
+            } catch (error) {
+                console.log('⚠️ Firestore lookup failed:', error);
+            }
+
+            // Fallback: use email prefix
+            return user.email.split('@')[0];
+        }
+
+        // ============================================================
         // TYPING ANIMATION - FULL MATRIX LOADING SEQUENCE
         // ============================================================
         function typeWriterFull(text, elementId, speed = 40, callback) {
@@ -1067,7 +1098,7 @@
             type();
         }
 
-        function startMatrixLoading() {
+        function startMatrixLoading(adminName) {
             // Matrix lines
             const lines = [
                 { id: 'matrixLine1', text: '⟳ Initializing CS HUB kernel...', color: 'dim' },
@@ -1104,7 +1135,7 @@
                             // Start welcome message
                             setTimeout(() => {
                                 typeWriterWithCursor('Welcome back, ', 'typedPrefix', 30, () => {
-                                    typeWriterWithCursor('Admin Lewis', 'typedName', 50, () => {
+                                    typeWriterWithCursor(adminName, 'typedName', 50, () => {
                                         document.getElementById('typingCursor').style.display = 'inline-block';
                                         // Start quote after welcome
                                         setTimeout(() => {
@@ -1135,16 +1166,13 @@
             const authorEl = document.getElementById('quoteAuthor');
             const cursorEl = document.getElementById('quoteCursor');
             
-            // Hide cursor initially
             cursorEl.style.display = 'none';
             
-            // Type the quote with HTML tags
             let i = 0;
             el.innerHTML = '';
             
             function typeQuoteChar() {
                 if (i < quoteText.length) {
-                    // Handle HTML tags properly
                     if (quoteText.substring(i).startsWith('&lt;')) {
                         el.innerHTML += '&lt;';
                         i += 4;
@@ -1152,7 +1180,6 @@
                         el.innerHTML += '&gt;';
                         i += 4;
                     } else if (quoteText.substring(i).startsWith('<span')) {
-                        // Find the full span tag
                         let endIdx = quoteText.indexOf('</span>', i) + 7;
                         el.innerHTML += quoteText.substring(i, endIdx);
                         i = endIdx;
@@ -1165,7 +1192,6 @@
                     }
                     setTimeout(typeQuoteChar, 30 + Math.random() * 20);
                 } else {
-                    // Show author after quote
                     cursorEl.style.display = 'none';
                     setTimeout(() => {
                         typeWriterWithCursor('— Lewis Einstein, CS HUB Founder', 'quoteAuthor', 30);
@@ -1177,16 +1203,33 @@
         }
 
         // ============================================================
-        // AUTH CHECK - Now supports multiple admins
+        // AUTH CHECK - Now supports multiple admins with dynamic names
         // ============================================================
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (!user || !isAdmin(user.email)) {
                 window.location.href = "index.html";
                 return;
             }
             
-            // Start the full matrix loading sequence
-            startMatrixLoading();
+            // Get user display name
+            const displayName = await getUserDisplayName(user);
+            const initial = displayName.charAt(0).toUpperCase();
+            const email = user.email || 'admin@cshub.com';
+
+            // Update sidebar profile
+            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('profileAvatar').textContent = initial;
+            document.getElementById('profileRole').textContent = 'Super Admin';
+
+            // Update topbar
+            document.getElementById('topbarName').innerHTML = `
+                ${displayName}
+                <small>${email}</small>
+            `;
+            document.getElementById('topbarAvatar').textContent = initial;
+
+            // Start the full matrix loading sequence with the admin's name
+            startMatrixLoading(displayName);
             
             loadStats();
             loadActivityFeed();
@@ -1333,6 +1376,7 @@
         }
 
         console.log('✅ Admin Dashboard loaded successfully!');
+        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
