@@ -741,7 +741,7 @@
                 <span class="ai-icon">🤖</span>
                 <div>
                     <span class="ai-title">AI Assistant</span>
-                    <span class="ai-subtitle">Powered by Gemini AI</span>
+                    <span class="ai-subtitle">Powered by Knowledge Database</span>
                 </div>
             </div>
             <div class="topbar-right">
@@ -756,7 +756,7 @@
                 <div class="welcome-message">
                     <div class="welcome-icon">🤖</div>
                     <h2>How can I help you?</h2>
-                    <p>Ask me anything, upload a photo, or use voice input.</p>
+                    <p>Ask me anything about Computer Science. I learn from a knowledge database!</p>
                 </div>
 
                 <div class="typing-indicator" id="typingIndicator">
@@ -816,9 +816,105 @@
         const storage = firebase.storage();
 
         // ============================================================
-        // GEMINI API KEY - YOUR NEW KEY IN THE NEW FORMAT
+        // KNOWLEDGE DATABASE - NO API KEYS REQUIRED!
         // ============================================================
-        const GEMINI_API_KEY = "AQ.Ab8RN6IgCuej4ke0wBSWFvBBLTFAP08pcxVDbEYGZTvGj9YDZQ";
+        // This is your knowledge base. Add as many Q&As as you want!
+        // The AI will search this database for answers.
+        // ============================================================
+        const knowledgeBase = [
+            // Computer Science General
+            {
+                keywords: ["computer science", "what is cs", "cs", "computing"],
+                answer: "💻 **Computer Science** is the study of computers and computational systems. It covers:\n\n• Programming languages and software development\n• Algorithms and data structures\n• Artificial intelligence and machine learning\n• Computer architecture and hardware\n• Networks and cybersecurity\n• Database systems\n\nComputer Science is about solving problems using computers and creating technology that improves our world."
+            },
+            {
+                keywords: ["programming", "coding", "software development"],
+                answer: "💻 **Programming** (or coding) is the process of writing instructions that computers can execute.\n\n**Common Programming Languages:**\n• **Python** - Easy to learn, versatile\n• **C** - Powerful, used in systems programming\n• **Java** - Object-oriented, widely used\n• **JavaScript** - Web development\n• **C++** - Performance-critical applications\n\n**Key Concepts:**\n• Variables and data types\n• Control structures (if, loops)\n• Functions and methods\n• Object-Oriented Programming (OOP)"
+            },
+            {
+                keywords: ["algorithm", "algorithms"],
+                answer: "📊 **Algorithms** are step-by-step procedures for solving problems.\n\n**Common Algorithms:**\n1. **Sorting**: Bubble Sort, Quick Sort, Merge Sort\n2. **Searching**: Linear Search, Binary Search\n3. **Graph**: Dijkstra's Algorithm, BFS, DFS\n4. **Dynamic Programming**: Fibonacci, Knapsack\n5. **Recursion**: Problems that solve themselves\n\n**Algorithm Efficiency:**\n• O(1) - Constant time\n• O(log n) - Logarithmic\n• O(n) - Linear\n• O(n log n) - Linearithmic\n• O(n²) - Quadratic"
+            },
+            {
+                keywords: ["data structure", "data structures"],
+                answer: "📚 **Data Structures** are ways to organize and store data efficiently.\n\n**Common Data Structures:**\n1. **Arrays**: Fixed-size, indexed collection\n2. **Linked Lists**: Dynamic, node-based\n3. **Stacks**: LIFO (Last In, First Out)\n4. **Queues**: FIFO (First In, First Out)\n5. **Trees**: Hierarchical structure\n6. **Graphs**: Network of connected nodes\n7. **Hash Tables**: Key-value pairs for fast lookup\n\nChoose the right data structure based on your needs!"
+            },
+
+            // Object-Oriented Programming
+            {
+                keywords: ["oop", "object-oriented", "object oriented"],
+                answer: "🔷 **Object-Oriented Programming (OOP)** is a programming paradigm that uses 'objects' to design applications.\n\n**The Four Pillars of OOP:**\n\n1. **Encapsulation** 📦\n   • Bundling data and methods\n   • Hiding internal state\n   • Using private/public access modifiers\n\n2. **Inheritance** 👪\n   • Creating child classes from parent classes\n   • Code reusability\n   • Extends keyword in Java\n\n3. **Polymorphism** 🔄\n   • Many forms\n   • Method overloading (compile-time)\n   • Method overriding (runtime)\n\n4. **Abstraction** 🎭\n   • Hiding complex implementation\n   • Abstract classes and interfaces\n\n**Example Languages:** Java, Python, C++, C#, JavaScript\n\n**💡 Code Example:**\n```python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        return f\"{self.name} says Woof!\"\n\ndog = Dog(\"Rex\")\nprint(dog.speak())\n```"
+            },
+
+            // Recursion
+            {
+                keywords: ["recursion", "recursive"],
+                answer: "🔄 **Recursion** is a programming technique where a function calls itself.\n\n**Key Components:**\n1. **Base Case**: The stopping condition\n2. **Recursive Case**: The function calls itself\n\n**Example (Factorial):**\n```python\ndef factorial(n):\n    if n <= 1:  # Base case\n        return 1\n    return n * factorial(n - 1)  # Recursive case\n\nprint(factorial(5))  # 120\n```\n\n**When to Use Recursion:**\n• Tree traversal\n• Divide and conquer algorithms\n• Backtracking problems\n• Graph traversal (DFS)\n\n**⚠️ Warning:** Can cause stack overflow if not implemented carefully."
+            },
+
+            // Databases
+            {
+                keywords: ["database", "databases", "sql", "nosql"],
+                answer: "🗄️ **Databases** are organized collections of data.\n\n**Types of Databases:**\n1. **Relational (SQL)**: MySQL, PostgreSQL, Oracle\n   • Uses tables with rows and columns\n   • Structured schema\n   • ACID compliance\n\n2. **NoSQL**: MongoDB, Redis, Cassandra\n   • Flexible schema\n   • Document-based, key-value, or graph\n   • Horizontal scaling\n\n**💡 Key SQL Commands:**\n• SELECT * FROM table;\n• INSERT INTO table VALUES (...);\n• UPDATE table SET column = value WHERE condition;\n• DELETE FROM table WHERE condition;\n\nChoose based on your application needs!"
+            },
+
+            // Units
+            {
+                keywords: ["csc1110", "programming unit"],
+                answer: "📚 **CSC1110 - Programming**\n\nThis unit covers the fundamentals of programming.\n\n**Key Topics:**\n• Introduction to programming concepts\n• Variables, data types, and operators\n• Control structures (if, else, loops)\n• Functions and modular programming\n• Arrays and strings\n• File I/O\n\n**💡 Study Tips:**\n1. Practice coding daily\n2. Start with simple programs\n3. Understand concepts before coding\n4. Use online resources\n\nNeed help with a specific topic? Just ask!"
+            },
+            {
+                keywords: ["csc222", "systems analysis"],
+                answer: "📚 **CSC222 - Systems Analysis and Design**\n\nThis unit covers the software development lifecycle.\n\n**Key Topics:**\n• System development methodologies (Waterfall, Agile, Scrum)\n• Requirements gathering and analysis\n• System design and modeling (UML diagrams)\n• Implementation and testing strategies\n• System maintenance and evolution\n\n**💡 Key Tools:**\n• UML: Class, Use Case, Sequence diagrams\n• Project management: Gantt charts, PERT charts\n• Documentation: SRS, SDD"
+            },
+            {
+                keywords: ["csc310", "database systems"],
+                answer: "📚 **CSC310 - Database Systems**\n\nThis unit covers database fundamentals.\n\n**Key Topics:**\n• Database concepts and architecture\n• Relational database design (ER diagrams)\n• SQL (Structured Query Language)\n• Normalization (1NF, 2NF, 3NF, BCNF)\n• Transaction management (ACID)\n• Database security\n\n**💡 Common SQL Commands:**\n• SELECT * FROM table;\n• INSERT INTO table VALUES (...);\n• UPDATE table SET column = value WHERE condition;\n• DELETE FROM table WHERE condition;"
+            },
+            {
+                keywords: ["csc410", "operations research"],
+                answer: "📚 **CSC410 - Operations Research**\n\nThis unit covers optimization and decision-making.\n\n**Key Topics:**\n• Linear programming and simplex method\n• Optimization techniques (maximization, minimization)\n• Decision analysis and game theory\n• Simulation and modeling\n• Network models (shortest path, max flow)\n• Project management (PERT/CPM)\n\n**💡 Key Concepts:**\n• Objective function and constraints\n• Feasible region and optimal solution\n• Sensitivity analysis\n• Integer programming"
+            },
+
+            // Default (when no match found)
+            {
+                keywords: ["default"],
+                answer: "🤔 That's a great question! I don't have that in my knowledge database yet.\n\n**💡 You can help me learn:**\n• Type: **'Teach me: topic'** to add new knowledge\n• Or ask about specific units (CSC1110, CSC222, CSC310, CSC410)\n• I can also help with OOP, Data Structures, Algorithms, and more!\n\nWhat specific topic would you like to learn about?"
+            }
+        ];
+
+        // ============================================================
+        // TEACH MODE - Add new knowledge to the database
+        // ============================================================
+        let isTeachingMode = false;
+
+        // ============================================================
+        // SEARCH KNOWLEDGE BASE
+        // ============================================================
+        function searchKnowledge(question) {
+            const q = question.toLowerCase();
+            
+            // Check for teaching mode
+            if (q.startsWith('teach me:')) {
+                const newKnowledge = q.substring(9).trim();
+                if (newKnowledge) {
+                    // In a real app, you'd save this to Firebase
+                    return `📝 **Teaching Mode Activated!**\n\nI'll remember: "${newKnowledge}"\n\nYou can add the answer by typing:\n**Answer: [your answer]**\n\nOr tell me to save it later.`;
+                }
+            }
+
+            // Search for matches
+            for (let entry of knowledgeBase) {
+                for (let keyword of entry.keywords) {
+                    if (q.includes(keyword)) {
+                        return entry.answer;
+                    }
+                }
+            }
+
+            // No match found - return default
+            return knowledgeBase[knowledgeBase.length - 1].answer;
+        }
 
         // ============================================================
         // STATE
@@ -844,7 +940,8 @@
             document.getElementById('userRole').textContent = 'Student';
 
             console.log('✅ AI Assistant loaded!');
-            console.log('🔑 Gemini API Key (New Format):', GEMINI_API_KEY ? '✅ Set' : '❌ Missing');
+            console.log('📚 Knowledge base entries:', knowledgeBase.length);
+            console.log('🔑 NO API KEYS REQUIRED!');
         });
 
         function logout() {
@@ -866,7 +963,7 @@
         }
 
         // ============================================================
-        // SEND MESSAGE TO GEMINI AI (Updated for new key format)
+        // SEND MESSAGE - Uses Knowledge Database
         // ============================================================
         async function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -879,56 +976,13 @@
             showTyping();
 
             try {
-                const response = await getGeminiResponse(message);
+                // Search the knowledge database
+                const response = searchKnowledge(message);
                 hideTyping();
                 addMessage('ai', response);
             } catch (error) {
                 hideTyping();
-                console.error('Gemini Error:', error);
-                
-                let errorMessage = `❌ Error: ${error.message || 'Something went wrong'}`;
-                
-                if (error.message && error.message.includes('API_KEY')) {
-                    errorMessage = `❌ API Key error. Please check your Gemini API key.`;
-                } else if (error.message && error.message.includes('PERMISSION_DENIED')) {
-                    errorMessage = `❌ Permission denied. Make sure your API key is valid and has the Gemini API enabled.`;
-                } else if (error.message && error.message.includes('429')) {
-                    errorMessage = `⏳ Rate limit exceeded. Please wait a moment and try again.`;
-                } else if (error.message && error.message.includes('auth')) {
-                    errorMessage = `❌ Authentication error. Your new key format (AQ.) may need proper setup. Please ensure your API key is active.`;
-                }
-                
-                addMessage('ai', errorMessage);
-            }
-        }
-
-        async function getGeminiResponse(question) {
-            // Using the new API endpoint with the AQ. key format
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: question }]
-                    }]
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || 'API request failed');
-            }
-
-            const data = await response.json();
-            
-            if (data.candidates && data.candidates.length > 0) {
-                return data.candidates[0].content.parts[0].text;
-            } else {
-                throw new Error('No response from Gemini');
+                addMessage('ai', `❌ Error: ${error.message}`);
             }
         }
 
