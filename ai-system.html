@@ -816,9 +816,9 @@
         const storage = firebase.storage();
 
         // ============================================================
-        // GEMINI API KEY - YOUR KEY (BOUND TO SERVICE ACCOUNT)
+        // GEMINI API KEY - YOUR NEW KEY IN THE NEW FORMAT
         // ============================================================
-        const GEMINI_API_KEY = "AQ.Ab8RN6JmqabQDubyv7pQ60uK1FR6xO9W755CsEAKPy26_q2XNA";
+        const GEMINI_API_KEY = "AQ.Ab8RN6IgCuej4ke0wBSWFvBBLTFAP08pcxVDbEYGZTvGj9YDZQ";
 
         // ============================================================
         // STATE
@@ -844,7 +844,7 @@
             document.getElementById('userRole').textContent = 'Student';
 
             console.log('✅ AI Assistant loaded!');
-            console.log('🔑 Gemini API Key:', GEMINI_API_KEY ? '✅ Set' : '❌ Missing');
+            console.log('🔑 Gemini API Key (New Format):', GEMINI_API_KEY ? '✅ Set' : '❌ Missing');
         });
 
         function logout() {
@@ -866,7 +866,7 @@
         }
 
         // ============================================================
-        // SEND MESSAGE TO GEMINI AI
+        // SEND MESSAGE TO GEMINI AI (Updated for new key format)
         // ============================================================
         async function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -894,6 +894,8 @@
                     errorMessage = `❌ Permission denied. Make sure your API key is valid and has the Gemini API enabled.`;
                 } else if (error.message && error.message.includes('429')) {
                     errorMessage = `⏳ Rate limit exceeded. Please wait a moment and try again.`;
+                } else if (error.message && error.message.includes('auth')) {
+                    errorMessage = `❌ Authentication error. Your new key format (AQ.) may need proper setup. Please ensure your API key is active.`;
                 }
                 
                 addMessage('ai', errorMessage);
@@ -901,6 +903,7 @@
         }
 
         async function getGeminiResponse(question) {
+            // Using the new API endpoint with the AQ. key format
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
             const response = await fetch(url, {
