@@ -2,20 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Labs</title>
-    <!-- [Keep your existing links and styles exactly as they were] -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ... [Insert your original CSS here] ... */
-        /* Ensure the visibility classes are not fighting your existing styles */
-        .admin-controls { display: flex !important; }
-        .add-lab-form.visible { display: block !important; }
-        .btn-toggle-form.visible { display: inline-block !important; }
+        body { background-color: #030611; color: white; font-family: sans-serif; padding: 20px; }
+        .hidden { display: none !important; }
+        .visible { display: block !important; }
+        .labs-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        .lab-card { background: rgba(10, 15, 36, 0.7); padding: 20px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; }
+        .admin-controls { display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <!-- ... [Insert your original HTML body structure here] ... -->
+
+    <div class="main-content">
+        <h1>🧪 Labs</h1>
+        <button id="toggleFormBtn" class="hidden" onclick="toggleAddForm()">➕ Add New Lab</button>
+
+        <div id="addLabForm" class="hidden" style="border: 1px solid white; padding: 10px; margin: 10px 0;">
+            <input type="text" id="labTitle" placeholder="Lab Title">
+            <input type="text" id="labUnit" placeholder="Unit Code">
+            <button onclick="addLab()">Submit Lab</button>
+        </div>
+
+        <div id="labsGrid" class="labs-grid"></div>
+    </div>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -23,72 +34,65 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-            authDomain: "cs-hub-7c97b.firebaseapp.com",
-            projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.firebasestorage.app",
-            messagingSenderId: "76338162904",
-            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+                authDomain: "cs-hub-7c97b.firebaseapp.com",
+                projectId: "cs-hub-7c97b",
+                storageBucket: "cs-hub-7c97b.firebasestorage.app",
+                messagingSenderId: "76338162904",
+                appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+            };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        
-        // ADMIN CONFIGURATION
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
-        let isAdminUser = false;
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
 
-        auth.onAuthStateChanged((user) => {
-            if (!user) { window.location.href = "login.html"; return; }
+            auth.onAuthStateChanged((user) => {
+                if (!user) { window.location.href = "login.html"; return; }
 
-            // Forced lowercase check to prevent login/email mismatch
-            const userEmail = user.email ? user.email.toLowerCase().trim() : '';
-            isAdminUser = (userEmail === ADMIN_EMAIL.toLowerCase().trim());
+                const isAdmin = (user.email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim());
+                
+                if (isAdmin) {
+                    document.getElementById('toggleFormBtn').classList.remove('hidden');
+                    document.getElementById('toggleFormBtn').classList.add('visible');
+                }
 
-            console.log('Logged in as:', userEmail);
-            console.log('Is Admin:', isAdminUser);
-
-            // Force visibility of Admin elements if user is admin
-            if (isAdminUser) {
-                document.getElementById('toggleFormBtn').classList.add('visible');
-                document.getElementById('userRole').textContent = '🔑 Admin';
-            }
-
-            loadLabs();
-        });
-
-        // Toggle function
-        function toggleAddForm() {
-            const form = document.getElementById('addLabForm');
-            form.classList.toggle('visible');
-        }
-
-        // Load Labs logic
-        function loadLabs() {
-            db.collection('labs').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-                const grid = document.getElementById('labsGrid');
-                grid.innerHTML = '';
-                snapshot.forEach((doc) => {
-                    const lab = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'lab-card';
-                    card.innerHTML = `
-                        <h3>${lab.title}</h3>
-                        <p>${lab.unit}</p>
-                        ${isAdminUser ? `<button onclick="deleteLab('${doc.id}')">Delete</button>` : ''}
-                    `;
-                    grid.appendChild(card);
-                });
+                loadLabs(isAdmin);
             });
-        }
 
-        function deleteLab(id) {
-            if (confirm('Delete this lab?')) {
-                db.collection('labs').doc(id).delete();
+            window.toggleAddForm = () => {
+                document.getElementById('addLabForm').classList.toggle('hidden');
+            };
+
+            window.addLab = () => {
+                const title = document.getElementById('labTitle').value;
+                const unit = document.getElementById('labUnit').value;
+                db.collection('labs').add({ title, unit, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+                  .then(() => alert('Added!'));
+            };
+
+            function loadLabs(isAdmin) {
+                db.collection('labs').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+                    const grid = document.getElementById('labsGrid');
+                    grid.innerHTML = '';
+                    snapshot.forEach((doc) => {
+                        const lab = doc.data();
+                        const card = document.createElement('div');
+                        card.className = 'lab-card';
+                        card.innerHTML = `<h3>${lab.title}</h3><p>Unit: ${lab.unit}</p>`;
+                        if (isAdmin) {
+                            const delBtn = document.createElement('button');
+                            delBtn.textContent = 'Delete';
+                            delBtn.onclick = () => db.collection('labs').doc(doc.id).delete();
+                            card.appendChild(delBtn);
+                        }
+                        grid.appendChild(card);
+                    });
+                });
             }
-        }
+        });
     </script>
 </body>
 </html>
