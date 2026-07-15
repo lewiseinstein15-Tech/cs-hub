@@ -420,7 +420,17 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+/* ============================================================
+   ADMIN EMAILS - ADD ALL ADMIN EMAILS HERE!
+   ============================================================ */
+const ADMIN_EMAILS = [
+  "lewiseinstein15@gmail.com",
+  "unscriptedusa@gmail.com"
+];
+
+function isAdmin(email) {
+  return ADMIN_EMAILS.includes(email.toLowerCase());
+}
 
 /* ---------- Panel switching ---------- */
 function showRegister(){
@@ -461,11 +471,13 @@ async function createAccount(){
 
   try{
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const isAdminUser = isAdmin(email);
+    const role = isAdminUser ? "Admin" : "student";
 
     await db.collection("Users").doc(userCredential.user.uid).set({
       name: name,
       email: email,
-      role: "student"
+      role: role
     });
 
     alert("Account created successfully");
@@ -491,9 +503,10 @@ async function loginUser(){
     const user = result.user;
     const username = user.email.split("@")[0];
 
-    if(user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
+    // CHECK ADMIN STATUS
+    if (isAdmin(user.email)) {
       localStorage.setItem("role", "admin");
-      localStorage.setItem("name", "Lewis");
+      localStorage.setItem("name", "Newton");
       window.location.href = "admin-dashboard.html";
     } else {
       localStorage.setItem("role", "student");
