@@ -405,6 +405,26 @@ function isAdmin(email) {
   return ADMIN_EMAILS.includes(email.toLowerCase());
 }
 
+/* ============================================================
+   CHECK IF USER IS ADMIN IN FIRESTORE
+   ============================================================ */
+async function checkAdminInFirestore(email) {
+  try {
+    const snapshot = await db.collection("Users")
+      .where("email", "==", email)
+      .get();
+    
+    if (!snapshot.empty) {
+      const userData = snapshot.docs[0].data();
+      return userData.role === "Admin" || userData.role === "admin";
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking Firestore:", error);
+    return false;
+  }
+}
+
 /* ---------- Panel switching ---------- */
 const loginPanel = document.getElementById('loginPanel');
 const signupPanel = document.getElementById('signupPanel');
@@ -464,30 +484,34 @@ form.addEventListener('submit', async function(e){
     const result = await auth.signInWithEmailAndPassword(email, password);
     const user = result.user;
 
-    // Check if user is admin
-    if (isAdmin(user.email)) {
-      window.location.href = "admin-dashboard.html";
-      return;
+    // ----- CHECK ADMIN STATUS -----
+    // Method 1: Check hardcoded admin emails
+    let isAdminUser = isAdmin(user.email);
+
+    // Method 2: Check Firestore (if not already admin)
+    if (!isAdminUser) {
+      isAdminUser = await checkAdminInFirestore(user.email);
     }
 
-    // Check Firestore for role (fallback)
-    let role = "student";
-    try {
-      const userDoc = await db.collection("Users")
-        .where("email", "==", user.email)
-        .get();
-
-      if(!userDoc.empty){
-        role = userDoc.docs[0].data().role || "student";
-      }
-    } catch (err) {
-      // Firestore error - default to student
-      role = "student";
+    // Method 3: Also check if the email exists in Users collection with role Admin
+    if (!isAdminUser) {
+      try {
+        const snapshot = await db.collection("Users")
+          .where("email", "==", user.email)
+          .where("role", "==", "Admin")
+          .get();
+        if (!snapshot.empty) {
+          isAdminUser = true;
+        }
+      } catch (err) {}
     }
 
-    if(role === "admin"){
+    // ----- REDIRECT -----
+    if (isAdminUser) {
+      console.log("🔑 Admin detected:", user.email);
       window.location.href = "admin-dashboard.html";
     } else {
+      console.log("👤 Student detected:", user.email);
       window.location.href = "dashboard.html";
     }
 
@@ -514,23 +538,25 @@ signupForm.addEventListener('submit', async function(e){
   }
 
   try {
-    await auth.createUserWithEmailAndPassword(email, password);
+    const result = await auth.createUserWithEmailAndPassword(email, password);
+    
+    // Check if this is an admin email
+    const isAdminUser = isAdmin(email);
 
-    // Check if new user is admin (should only happen if admin email is used)
-    // But since they're signing up, they won't have admin role yet unless they use the admin email
-    // Admin emails are pre-defined, so if they sign up with an admin email, they're admin
-    if (isAdmin(email)) {
-      // Save as admin in Firestore
-      await db.collection("Users").add({
-        email: email,
-        role: "admin"
-      });
+    // Save to Firestore
+    await db.collection("Users").add({
+      email: email,
+      role: isAdminUser ? "Admin" : "Student",
+      name: email.split('@')[0] || "User",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Redirect based on role
+    if (isAdminUser) {
+      console.log("🔑 New admin account created:", email);
       window.location.href = "admin-dashboard.html";
     } else {
-      await db.collection("Users").add({
-        email: email,
-        role: "student"
-      });
+      console.log("👤 New student account created:", email);
       window.location.href = "dashboard.html";
     }
 
