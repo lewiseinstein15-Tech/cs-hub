@@ -1003,7 +1003,17 @@
         const db = firebase.firestore();
         const rtdb = firebase.database();
 
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        // ============================================================
+        // ADMIN EMAILS - Add all admin emails here
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
 
         // ============================================================
         // SIDEBAR FUNCTIONS
@@ -1167,10 +1177,10 @@
         }
 
         // ============================================================
-        // AUTH CHECK
+        // AUTH CHECK - Now supports multiple admins
         // ============================================================
         auth.onAuthStateChanged((user) => {
-            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+            if (!user || !isAdmin(user.email)) {
                 window.location.href = "index.html";
                 return;
             }
