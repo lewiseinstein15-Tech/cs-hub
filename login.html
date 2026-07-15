@@ -399,8 +399,11 @@ const ADMIN_EMAILS = [
 ];
 
 function isAdmin(email) {
-  const result = ADMIN_EMAILS.includes(email.toLowerCase());
-  console.log("🔍 Checking admin:", email, "→", result);
+  // Check if email is in the admin list (case insensitive)
+  const result = ADMIN_EMAILS.some(adminEmail => 
+    adminEmail.toLowerCase() === email.toLowerCase()
+  );
+  console.log("🔍 Admin check for:", email, "→", result);
   return result;
 }
 
@@ -465,11 +468,11 @@ form.addEventListener('submit', async function(e){
 
     console.log("✅ Login successful for:", user.email);
 
-    // Check if this is an admin email
+    // CHECK ADMIN STATUS
     const isAdminUser = isAdmin(user.email);
 
     if (isAdminUser) {
-      console.log("🔑 Admin detected! Redirecting to admin dashboard...");
+      console.log("🔑 ADMIN DETECTED! Redirecting to admin dashboard...");
       window.location.href = "admin-dashboard.html";
     } else {
       console.log("👤 Student detected. Redirecting to student dashboard...");
@@ -503,7 +506,6 @@ signupForm.addEventListener('submit', async function(e){
     const result = await auth.createUserWithEmailAndPassword(email, password);
     console.log("✅ Account created for:", email);
 
-    // Check if this is an admin email
     const isAdminUser = isAdmin(email);
     const role = isAdminUser ? "Admin" : "Student";
 
@@ -517,14 +519,14 @@ signupForm.addEventListener('submit', async function(e){
       });
       console.log("✅ User saved to Firestore with role:", role);
     } catch (err) {
-      console.warn("⚠️ Firestore save failed, but login will still work:", err);
+      console.warn("⚠️ Firestore save failed:", err);
     }
 
     if (isAdminUser) {
-      console.log("🔑 Admin account created! Redirecting to admin dashboard...");
+      console.log("🔑 ADMIN ACCOUNT CREATED! Redirecting to admin dashboard...");
       window.location.href = "admin-dashboard.html";
     } else {
-      console.log("👤 Student account created! Redirecting to student dashboard...");
+      console.log("👤 Student account created. Redirecting to student dashboard...");
       window.location.href = "dashboard.html";
     }
 
