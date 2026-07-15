@@ -2,92 +2,168 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS AI System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CS HUB - AI System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { height: 100vh; margin: 0; background: #0a0a0a; }
-        .chat-container { height: calc(100vh - 190px); }
-        .user-bubble { background: #1e40af; color: white; border-bottom-right-radius: 4px; }
-        .ai-bubble { background: #1f2937; border-bottom-left-radius: 4px; }
+        :root {
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --blue: #3B82F6;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --green: #22C55E;
+            --yellow: #F59E0B;
+            --red: #EF4444;
+            --white: #ffffff;
+            --dim: rgba(255, 255, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; overflow-x: hidden; }
+
+        .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 25px 20px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 1000; overflow-y: auto; display: flex; flex-direction: column; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 999; display: none; }
+        .sidebar-overlay.active { display: block; }
+
+        .main-content { padding: 20px; max-width: 1200px; margin: 0 auto; flex: 1; width: 100%; }
+        .hero-terminal { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+        .ai-container { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+        .chat-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; min-height: 500px; }
+        .chat-messages { flex: 1; overflow-y: auto; max-height: 400px; padding: 10px 0; }
+        .bubble { background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 12px; border: 1px solid var(--border); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+        .chat-input-area { display: flex; gap: 10px; border-top: 1px solid var(--border); padding-top: 14px; }
+        .chat-input-area input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: white; }
+        .btn-send { padding: 10px 20px; border-radius: 10px; border: none; background: var(--purple); color: white; cursor: pointer; }
+        
+        .admin-controls, .website-management { display: none; }
+        .visible { display: block; }
+        
+        @media (max-width: 768px) { .ai-container { grid-template-columns: 1fr; } }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); position: sticky; height: 100vh; } }
     </style>
 </head>
-<body class="text-gray-200 flex flex-col">
-    <div class="bg-black border-b border-gray-800 p-4">
-        <h1 class="text-xl font-bold flex items-center gap-3">
-            <span class="text-3xl">🧠</span> CS AI System
-        </h1>
-    </div>
+<body>
 
-    <div id="chat" class="chat-container p-4 overflow-y-auto flex-1 space-y-6 bg-[#0a0a0a]">
-        <div class="ai-bubble max-w-[80%] p-4 rounded-3xl rounded-bl-none">
-            Hello, I am CS AI System. How can I help you today?
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand"><h1>CS HUB</h1><span>STUDENT PORTAL</span></div>
+        <ul class="nav-menu" style="list-style:none; flex-grow:1; margin-top:20px;">
+            <li class="nav-item"><a href="dashboard.html" style="color:var(--dim); text-decoration:none;">📊 Dashboard</a></li>
+            <li class="nav-item active"><a href="ai-system.html" style="color:var(--white);">🤖 AI System</a></li>
+        </ul>
+        <div class="sidebar-profile">
+            <div class="profile-name" id="userName">User</div>
+            <div class="profile-role" id="userRole">Student</div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <section class="hero-terminal">
+            <h2>🤖 AI Learning Assistant</h2>
+            <p>Ask questions, search the web, and manage your studies.</p>
+        </section>
+
+        <div class="ai-container">
+            <div class="chat-section">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai"><div class="bubble">Hello! I am ready to help. Type "Search: [query]" to find info online.</div></div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button class="btn-send" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
+            <div class="suggestions-panel">
+                <div class="admin-controls" id="adminControls">
+                    <h4>⚙️ Admin</h4>
+                    <input type="text" id="aiApiKey" placeholder="API Key">
+                    <button onclick="saveAIConfig()">Save</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="bg-black border-t border-gray-800 p-4">
-        <div class="flex gap-3">
-            <input id="userInput" type="text" 
-                   class="flex-1 bg-gray-900 border border-gray-700 focus:border-blue-500 rounded-3xl px-5 py-4 outline-none text-base"
-                   placeholder="Type your message...">
-            <button onclick="sendMessage()" 
-                    class="bg-blue-600 hover:bg-blue-700 w-12 h-12 rounded-3xl flex items-center justify-center">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-        
-        <label class="mt-4 cursor-pointer flex items-center justify-center gap-2 text-sm border border-dashed border-gray-700 hover:border-gray-500 rounded-3xl p-4">
-            <i class="fas fa-upload"></i>
-            <span>Upload file for analysis</span>
-            <input type="file" id="fileUpload" class="hidden">
-        </label>
-    </div>
+    <!-- Google Search Init -->
+    <script async src="https://cse.google.com/cse.js?cx=67ff96fc83dc54b62"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
-        const chat = document.getElementById('chat');
-        const userInput = document.getElementById('userInput');
-
-        const knowledge = {
-            "hello": "Hello! How can I assist you with Computer Science today?",
-            "big o": "Big O notation describes the worst-case time complexity of an algorithm.",
-            "recursion": "Recursion is when a function calls itself to solve smaller instances of the same problem.",
-            "default": "That's an interesting Computer Science question. Can you tell me more?"
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
 
-        function addMessage(text, isUser = false) {
-            const div = document.createElement('div');
-            div.className = `max-w-[80%] p-4 rounded-3xl ${isUser ? 'ml-auto user-bubble' : 'ai-bubble'}`;
-            div.textContent = text;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-        }
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        function sendMessage() {
-            const text = userInput.value.trim().toLowerCase();
-            if (!text) return;
-
-            addMessage(userInput.value, true);
-            userInput.value = "";
-
-            setTimeout(() => {
-                let reply = knowledge["default"];
-                if (text.includes("hello") || text.includes("hi")) reply = knowledge["hello"];
-                else if (text.includes("big o") || text.includes("complexity")) reply = knowledge["big o"];
-                else if (text.includes("recursion")) reply = knowledge["recursion"];
-                
-                addMessage(reply);
-            }, 600);
-        }
-
-        userInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
-
-        document.getElementById('fileUpload').addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                addMessage(`📁 Uploaded: ${e.target.files[0].name}`, true);
-                setTimeout(() => addMessage("File received. What would you like me to analyze?"), 800);
+        auth.onAuthStateChanged((user) => {
+            if (!user) { window.location.href = "login.html"; return; }
+            
+            const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+            if (user.email.toLowerCase().trim() === ADMIN_EMAIL) {
+                document.getElementById('adminControls').classList.add('visible');
+                document.getElementById('userRole').textContent = '🔑 Admin';
             }
+            document.getElementById('userName').textContent = user.displayName || 'Student';
         });
+
+        async function searchWeb(query) {
+            const apiKey = document.getElementById('aiApiKey').value.trim();
+            const cx = '67ff96fc83dc54b62'; // Your valid ID
+            
+            if (!apiKey) return "❌ Please enter a Google API key in Admin settings to use Search.";
+            
+            try {
+                const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&q=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.items) {
+                    return data.items.slice(0, 3).map(item => `**${item.title}**\n${item.link}`).join('\n\n');
+                }
+                return "No results found.";
+            } catch (e) { return "Search failed: " + e.message; }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage('user', message);
+            input.value = '';
+
+            if (message.toLowerCase().startsWith('search:')) {
+                const result = await searchWeb(message.substring(7));
+                addMessage('ai', result);
+            } else {
+                addMessage('ai', "I am an AI assistant. Try typing 'Search: [your question]' to find answers!");
+            }
+        }
+
+        function addMessage(type, content) {
+            const container = document.getElementById('chatMessages');
+            container.innerHTML += `<div class="message ${type}"><div class="bubble">${content}</div></div>`;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
     </script>
 </body>
 </html>
