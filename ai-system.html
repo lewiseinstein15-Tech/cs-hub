@@ -35,7 +35,6 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
@@ -184,7 +183,6 @@
             border-radius: 6px;
         }
 
-        /* Main Content */
         .main-content {
             padding: 0;
             max-width: 100%;
@@ -196,7 +194,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
         .topbar {
             padding: 16px 30px;
             border-bottom: 1px solid var(--border);
@@ -295,7 +292,6 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        /* Chat Container */
         .chat-container {
             flex: 1;
             display: flex;
@@ -307,7 +303,6 @@
             overflow: hidden;
         }
 
-        /* Chat Messages */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -394,23 +389,6 @@
             white-space: pre-wrap;
         }
 
-        .message .content .bubble .search-result {
-            background: rgba(59, 130, 246, 0.05);
-            padding: 8px 12px;
-            border-radius: 6px;
-            border-left: 3px solid var(--blue);
-            margin-top: 6px;
-            font-size: 13px;
-        }
-
-        .message .content .bubble .search-result a {
-            color: var(--cyan);
-            text-decoration: none;
-        }
-        .message .content .bubble .search-result a:hover {
-            text-decoration: underline;
-        }
-
         .message .content .bubble .file-preview {
             margin-top: 10px;
             padding: 10px 14px;
@@ -437,6 +415,14 @@
         .message .content .bubble .file-preview .file-name {
             font-size: 13px;
             color: var(--dim);
+        }
+
+        .message .content .bubble a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+        .message .content .bubble a:hover {
+            text-decoration: underline;
         }
 
         .message .content .timestamp {
@@ -473,33 +459,6 @@
             max-width: 500px;
             margin: 8px auto 0 auto;
             line-height: 1.6;
-        }
-
-        /* Quick Prompts */
-        .quick-prompts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0 20px 0;
-            justify-content: center;
-        }
-
-        .quick-prompt {
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--dim);
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .quick-prompt:hover {
-            border-color: var(--purple);
-            color: var(--white);
-            background: rgba(139, 92, 246, 0.08);
-            transform: translateY(-2px);
         }
 
         /* Typing Indicator */
@@ -718,8 +677,6 @@
             .message .content .bubble { font-size: 13px; padding: 10px 14px; }
             .input-wrapper { padding: 6px 6px 6px 14px; }
             .input-actions .btn-send { padding: 6px 16px; font-size: 13px; }
-            .quick-prompts { gap: 6px; }
-            .quick-prompt { font-size: 11px; padding: 4px 12px; }
         }
 
         @media (max-width: 400px) {
@@ -811,16 +768,7 @@
                 <div class="welcome-message">
                     <div class="welcome-icon">🤖</div>
                     <h2>How can I help you?</h2>
-                    <p>Ask me anything about Computer Science, programming, or search the web.</p>
-                </div>
-
-                <!-- Quick Prompts -->
-                <div class="quick-prompts">
-                    <span class="quick-prompt" onclick="sendQuickPrompt('Explain OOP')">💡 OOP</span>
-                    <span class="quick-prompt" onclick="sendQuickPrompt('What are data structures?')">📊 Data Structures</span>
-                    <span class="quick-prompt" onclick="sendQuickPrompt('Search: Python tutorials for beginners')">🔍 Search Web</span>
-                    <span class="quick-prompt" onclick="sendQuickPrompt('Explain recursion with example')">🔄 Recursion</span>
-                    <span class="quick-prompt" onclick="sendQuickPrompt('Help me with CSC1110')">📚 CSC1110</span>
+                    <p>Ask me anything, upload a photo, or search the web.</p>
                 </div>
 
                 <!-- Typing Indicator -->
@@ -832,13 +780,13 @@
             <!-- Input Area -->
             <div class="input-area">
                 <div class="input-wrapper">
-                    <input type="text" id="chatInput" placeholder="Message AI Assistant..." onkeypress="if(event.key==='Enter') sendMessage()">
+                    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
                     <div class="input-actions">
-                        <button class="btn-icon" title="Upload Image" style="font-size:16px;">
+                        <button class="btn-icon" title="Take Photo / Upload Image">
                             📷
-                            <input type="file" accept="image/*" onchange="uploadFile(this, 'image')">
+                            <input type="file" accept="image/*" capture="environment" onchange="uploadFile(this, 'image')">
                         </button>
-                        <button class="btn-icon" title="Upload File" style="font-size:16px;">
+                        <button class="btn-icon" title="Upload File">
                             📎
                             <input type="file" onchange="uploadFile(this, 'file')">
                         </button>
@@ -885,13 +833,12 @@
         // ============================================================
         // GOOGLE API KEYS - YOUR REAL KEYS
         // ============================================================
-        const API_KEY = "AIzaSyBgkUv6cuI5Tyu7w11-tjFyFbM6ufZM3KM"; // ✅ Your API Key
-        const SEARCH_ENGINE_ID = "c4e694a88ccd4496d"; // ✅ Your Search Engine ID (CX)
+        const API_KEY = "AIzaSyBgkUv6cuI5Tyu7w11-tjFyFbM6ufZM3KM";
+        const SEARCH_ENGINE_ID = "c4e694a88ccd4496d";
 
         // ============================================================
         // STATE
         // ============================================================
-        let conversationHistory = [];
         let isRecording = false;
         let recognition = null;
 
@@ -905,7 +852,6 @@
             }
 
             const displayName = user.displayName || user.email.split('@')[0] || 'User';
-            const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
             document.getElementById('userName').textContent = displayName;
@@ -933,7 +879,7 @@
         }
 
         // ============================================================
-        // WEB SEARCH WITH REAL GOOGLE API
+        // SEARCH THE WEB USING GOOGLE API
         // ============================================================
         async function searchWeb(query) {
             try {
@@ -942,7 +888,7 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    return `❌ Search error: ${data.error.message}\n\nPlease check:\n• Your API key is correct\n• Custom Search API is enabled\n• You've set up the search engine correctly`;
+                    return `❌ Search error: ${data.error.message}`;
                 }
 
                 if (data.items && data.items.length > 0) {
@@ -957,66 +903,12 @@
                     return `🔍 No results found for "${query}". Please try a different search term.`;
                 }
             } catch (error) {
-                return `❌ Search error: ${error.message}\n\nPlease check your internet connection and try again.`;
+                return `❌ Search error: ${error.message}`;
             }
         }
 
         // ============================================================
-        // AI RESPONSES
-        // ============================================================
-        function getAIResponse(question) {
-            const q = question.toLowerCase();
-
-            // Check if it's a search query
-            if (q.startsWith('search:')) {
-                const searchQuery = q.substring(7).trim();
-                if (searchQuery) {
-                    return searchWeb(searchQuery);
-                }
-                return "🔍 Please specify what you'd like to search for. Example: `Search: Python tutorials`";
-            }
-
-            // Check for CSC1110
-            if (q.includes('csc1110') || (q.includes('programming') && q.includes('help'))) {
-                return `📚 **CSC1110 - Programming**\n\nThis unit covers the fundamentals of programming. Key topics:\n\n• Introduction to programming concepts\n• Variables, data types, and operators\n• Control structures (if, else, loops)\n• Functions and modular programming\n• Arrays and strings\n• File I/O\n\n**💡 Study Tips:**\n1. Practice coding daily\n2. Start with simple programs\n3. Understand concepts before coding\n4. Use online resources\n\nNeed help with a specific topic? Just ask!`;
-            }
-
-            // Check for CSC222
-            if (q.includes('csc222') || q.includes('systems analysis')) {
-                return `📚 **CSC222 - Systems Analysis and Design**\n\nThis unit covers the software development lifecycle:\n\n• System development methodologies (Waterfall, Agile, Scrum)\n• Requirements gathering and analysis\n• System design and modeling (UML diagrams)\n• Implementation and testing strategies\n• System maintenance and evolution\n\n**💡 Key Tools:**\n• UML: Class, Use Case, Sequence diagrams\n• Project management: Gantt charts, PERT charts\n• Documentation: SRS, SDD\n\nNeed help with a specific topic? Just ask!`;
-            }
-
-            // Check for CSC310
-            if (q.includes('csc310') || q.includes('database')) {
-                return `📚 **CSC310 - Database Systems**\n\nThis unit covers database fundamentals:\n\n• Database concepts and architecture\n• Relational database design (ER diagrams)\n• SQL (Structured Query Language)\n• Normalization (1NF, 2NF, 3NF, BCNF)\n• Transaction management (ACID)\n• Database security\n\n**💡 Common SQL Commands:**\n• SELECT * FROM table;\n• INSERT INTO table VALUES (...);\n• UPDATE table SET column = value WHERE condition;\n• DELETE FROM table WHERE condition;\n\nNeed help with a specific topic? Just ask!`;
-            }
-
-            // Check for CSC410
-            if (q.includes('csc410') || q.includes('operations research')) {
-                return `📚 **CSC410 - Operations Research**\n\nThis unit covers optimization and decision-making:\n\n• Linear programming and simplex method\n• Optimization techniques (maximization, minimization)\n• Decision analysis and game theory\n• Simulation and modeling\n• Network models (shortest path, max flow)\n• Project management (PERT/CPM)\n\n**💡 Key Concepts:**\n• Objective function and constraints\n• Feasible region and optimal solution\n• Sensitivity analysis\n• Integer programming\n\nNeed help with a specific topic? Just ask!`;
-            }
-
-            // OOP
-            if (q.includes('oop') || q.includes('object-oriented') || q.includes('object oriented')) {
-                return `🔷 **Object-Oriented Programming (OOP)**\n\n**The Four Pillars of OOP:**\n\n1. **Encapsulation** 📦\n   • Bundling data and methods\n   • Hiding internal state\n   • Using private/public access modifiers\n\n2. **Inheritance** 👪\n   • Creating child classes from parent classes\n   • Code reusability\n   • extends keyword (Java), inheritance (Python)\n\n3. **Polymorphism** 🔄\n   • Many forms\n   • Method overloading (compile-time)\n   • Method overriding (runtime)\n\n4. **Abstraction** 🎭\n   • Hiding complex implementation\n   • Abstract classes and interfaces\n   • Showing only essential features\n\n**Example Languages:** Java, Python, C++, C#, JavaScript\n\n**💡 Code Example (Python):**\n\`\`\`python\nclass Animal:\n    def __init__(self, name):\n        self.name = name\n    \n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        return f"{self.name} says Woof!"\n\ndog = Dog("Rex")\nprint(dog.speak())\n\`\`\``;
-            }
-
-            // Data Structures
-            if (q.includes('data structures') || q.includes('data structure')) {
-                return `📊 **Data Structures**\n\n**Common Data Structures:**\n\n1. **Arrays** 📋\n   • Fixed-size, indexed collection\n   • O(1) random access\n   • O(n) insertion/deletion\n\n2. **Linked Lists** ⛓️\n   • Dynamic size\n   • O(1) insertion/deletion at beginning\n   • O(n) search\n\n3. **Stacks** 📚\n   • LIFO (Last In, First Out)\n   • push(), pop(), peek()\n   • Used in function calls, undo/redo\n\n4. **Queues** 🚶\n   • FIFO (First In, First Out)\n   • enqueue(), dequeue()\n   • Used in scheduling, BFS\n\n5. **Trees** 🌳\n   • Hierarchical structure\n   • Binary Trees, BST, AVL Trees\n   • Used in file systems, HTML DOM\n\n6. **Graphs** 🌐\n   • Network of connected nodes\n   • Directed/Undirected, Weighted/Unweighted\n   • Used in social networks, maps\n\n7. **Hash Tables** 🔑\n   • Key-value pairs\n   • O(1) average access\n   • Used in dictionaries, caches`;
-            }
-
-            // Recursion
-            if (q.includes('recursion')) {
-                return `🔄 **Recursion**\n\nA programming technique where a function calls itself.\n\n**Key Components:**\n1. **Base Case**: The stopping condition\n2. **Recursive Case**: The function calls itself\n\n**Example (Factorial):**\n\`\`\`python\ndef factorial(n):\n    if n <= 1:  # Base case\n        return 1\n    return n * factorial(n - 1)  # Recursive case\n\nprint(factorial(5))  # 120\n\`\`\`\n\n**When to Use Recursion:**\n• Tree traversal (directory structures, DOM)\n• Divide and conquer algorithms (merge sort, quick sort)\n• Backtracking problems (maze solving, N-Queens)\n• Graph traversal (DFS)\n\n**⚠️ Warning:**\n• Can cause stack overflow if not implemented carefully\n• Usually slower than iterative solutions\n• Use for problems with repeated sub-problems`;
-            }
-
-            // Default response
-            return `🤔 That's a great question!\n\nHere's what I know about this topic:\n\n**Key Points:**\n1. This is an important concept in Computer Science\n2. It has many applications in software development\n3. Understanding this will help you become a better programmer\n\n**💡 Suggestions:**\n• Try typing "Search: your question" to search the web\n• Upload a file for me to analyze\n• Ask for a specific unit (e.g., CSC1110, CSC222, CSC310, CSC410)\n• Request an OOP or Data Structures explanation\n\nWhat specific aspect would you like to learn more about?`;
-        }
-
-        // ============================================================
-        // SEND MESSAGE
+        // SEND MESSAGE - ALWAYS SEARCHES THE WEB
         // ============================================================
         async function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -1028,18 +920,14 @@
             addMessage('user', message);
             showTyping();
 
-            setTimeout(async () => {
+            try {
+                const response = await searchWeb(message);
                 hideTyping();
-                const response = await getAIResponse(message);
                 addMessage('ai', response);
-                conversationHistory.push({ role: 'user', content: message });
-                conversationHistory.push({ role: 'assistant', content: response });
-            }, 400 + Math.random() * 300);
-        }
-
-        function sendQuickPrompt(prompt) {
-            document.getElementById('chatInput').value = prompt;
-            sendMessage();
+            } catch (error) {
+                hideTyping();
+                addMessage('ai', `❌ Error: ${error.message}`);
+            }
         }
 
         // ============================================================
@@ -1048,13 +936,9 @@
         function addMessage(type, content) {
             const container = document.getElementById('chatMessages');
             
-            // Remove welcome message if it exists and this is a user message
-            if (type === 'user') {
-                const welcome = container.querySelector('.welcome-message');
-                if (welcome) welcome.remove();
-                const prompts = container.querySelector('.quick-prompts');
-                if (prompts) prompts.remove();
-            }
+            // Remove welcome message
+            const welcome = container.querySelector('.welcome-message');
+            if (welcome) welcome.remove();
 
             const div = document.createElement('div');
             div.className = `message ${type}`;
@@ -1096,7 +980,7 @@
         }
 
         // ============================================================
-        // FILE UPLOAD
+        // FILE UPLOAD - CAMERA & PHOTOS
         // ============================================================
         function uploadFile(input, type) {
             const file = input.files[0];
@@ -1133,8 +1017,7 @@
                         const fileInfo = {
                             name: file.name,
                             type: type,
-                            url: downloadURL,
-                            size: file.size
+                            url: downloadURL
                         };
                         addFileMessage(fileInfo);
                         showToast('✅ File uploaded successfully!', 'success');
@@ -1147,24 +1030,19 @@
         function addFileMessage(fileInfo) {
             const container = document.getElementById('chatMessages');
             
-            // Remove welcome message if it exists
             const welcome = container.querySelector('.welcome-message');
             if (welcome) welcome.remove();
-            const prompts = container.querySelector('.quick-prompts');
-            if (prompts) prompts.remove();
 
             const div = document.createElement('div');
             div.className = 'message user';
             
-            const iconMap = { 'image': '📷', 'video': '🎬', 'document': '📄', 'file': '📎' };
+            const iconMap = { 'image': '📷', 'file': '📎' };
             const icon = iconMap[fileInfo.type] || '📎';
             const timestamp = new Date().toLocaleTimeString();
 
             let previewHTML = '';
             if (fileInfo.type === 'image') {
                 previewHTML = `<img src="${fileInfo.url}" alt="${fileInfo.name}">`;
-            } else if (fileInfo.type === 'video') {
-                previewHTML = `<video controls><source src="${fileInfo.url}"></video>`;
             }
 
             div.innerHTML = `
@@ -1177,7 +1055,7 @@
                             <span class="file-name">${fileInfo.name}</span>
                             ${previewHTML ? `<div>${previewHTML}</div>` : ''}
                         </div>
-                        <a href="${fileInfo.url}" target="_blank" style="color: var(--cyan); font-size: 12px;">🔗 Open File</a>
+                        <a href="${fileInfo.url}" target="_blank">🔗 Open File</a>
                     </div>
                     <span class="timestamp">${timestamp}</span>
                 </div>
@@ -1220,8 +1098,6 @@
                     for (let i = event.resultIndex; i < event.results.length; i++) {
                         if (event.results[i].isFinal) {
                             transcript = event.results[i][0].transcript;
-                        } else {
-                            transcript += event.results[i][0].transcript;
                         }
                     }
                     if (transcript) {
@@ -1281,7 +1157,7 @@
             }, 3000);
         }
 
-        console.log('✅ AI Assistant loaded!');
+        console.log('✅ AI Assistant loaded with API keys!');
         console.log('🔑 API Key:', API_KEY ? '✅ Set' : '❌ Missing');
         console.log('🔍 Search Engine ID:', SEARCH_ENGINE_ID ? '✅ Set' : '❌ Missing');
     </script>
