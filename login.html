@@ -78,7 +78,6 @@
     .stage{grid-template-columns:1fr 420px;align-items:start;}
   }
 
-  /* Console panel */
   .console{
     background:var(--panel);
     border:1px solid var(--panel-border);
@@ -118,7 +117,6 @@
   }
   @keyframes blink{50%{opacity:0;}}
 
-  /* Login card */
   .card{
     background:var(--panel);
     border:1px solid var(--panel-border);
@@ -216,7 +214,6 @@
 
   .hidden-panel{display:none;}
 
-  /* Stats footer */
   .stats{
     margin-top:26px;
     display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
@@ -394,7 +391,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 /* ============================================================
-   ADMIN EMAILS - Same as admin-dashboard.html
+   ADMIN EMAILS - Add ALL admin emails here!
    ============================================================ */
 const ADMIN_EMAILS = [
   "lewiseinstein15@gmail.com",
@@ -402,27 +399,9 @@ const ADMIN_EMAILS = [
 ];
 
 function isAdmin(email) {
-  return ADMIN_EMAILS.includes(email.toLowerCase());
-}
-
-/* ============================================================
-   CHECK IF USER IS ADMIN IN FIRESTORE
-   ============================================================ */
-async function checkAdminInFirestore(email) {
-  try {
-    const snapshot = await db.collection("Users")
-      .where("email", "==", email)
-      .get();
-    
-    if (!snapshot.empty) {
-      const userData = snapshot.docs[0].data();
-      return userData.role === "Admin" || userData.role === "admin";
-    }
-    return false;
-  } catch (error) {
-    console.error("Error checking Firestore:", error);
-    return false;
-  }
+  const result = ADMIN_EMAILS.includes(email.toLowerCase());
+  console.log("🔍 Checking admin:", email, "→", result);
+  return result;
 }
 
 /* ---------- Panel switching ---------- */
@@ -484,39 +463,22 @@ form.addEventListener('submit', async function(e){
     const result = await auth.signInWithEmailAndPassword(email, password);
     const user = result.user;
 
-    // ----- CHECK ADMIN STATUS -----
-    // Method 1: Check hardcoded admin emails
-    let isAdminUser = isAdmin(user.email);
+    console.log("✅ Login successful for:", user.email);
 
-    // Method 2: Check Firestore (if not already admin)
-    if (!isAdminUser) {
-      isAdminUser = await checkAdminInFirestore(user.email);
-    }
+    // Check if this is an admin email
+    const isAdminUser = isAdmin(user.email);
 
-    // Method 3: Also check if the email exists in Users collection with role Admin
-    if (!isAdminUser) {
-      try {
-        const snapshot = await db.collection("Users")
-          .where("email", "==", user.email)
-          .where("role", "==", "Admin")
-          .get();
-        if (!snapshot.empty) {
-          isAdminUser = true;
-        }
-      } catch (err) {}
-    }
-
-    // ----- REDIRECT -----
     if (isAdminUser) {
-      console.log("🔑 Admin detected:", user.email);
+      console.log("🔑 Admin detected! Redirecting to admin dashboard...");
       window.location.href = "admin-dashboard.html";
     } else {
-      console.log("👤 Student detected:", user.email);
+      console.log("👤 Student detected. Redirecting to student dashboard...");
       window.location.href = "dashboard.html";
     }
 
   } catch(error){
-    showError(errMsg, error.message);
+    console.error("❌ Login error:", error);
+    showError(errMsg, "Login failed: " + error.message);
   }
 });
 
@@ -539,29 +501,36 @@ signupForm.addEventListener('submit', async function(e){
 
   try {
     const result = await auth.createUserWithEmailAndPassword(email, password);
-    
+    console.log("✅ Account created for:", email);
+
     // Check if this is an admin email
     const isAdminUser = isAdmin(email);
+    const role = isAdminUser ? "Admin" : "Student";
 
     // Save to Firestore
-    await db.collection("Users").add({
-      email: email,
-      role: isAdminUser ? "Admin" : "Student",
-      name: email.split('@')[0] || "User",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    try {
+      await db.collection("Users").add({
+        email: email,
+        role: role,
+        name: email.split('@')[0] || "User",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("✅ User saved to Firestore with role:", role);
+    } catch (err) {
+      console.warn("⚠️ Firestore save failed, but login will still work:", err);
+    }
 
-    // Redirect based on role
     if (isAdminUser) {
-      console.log("🔑 New admin account created:", email);
+      console.log("🔑 Admin account created! Redirecting to admin dashboard...");
       window.location.href = "admin-dashboard.html";
     } else {
-      console.log("👤 New student account created:", email);
+      console.log("👤 Student account created! Redirecting to student dashboard...");
       window.location.href = "dashboard.html";
     }
 
   } catch(error){
-    showError(signupErrMsg, error.message);
+    console.error("❌ Signup error:", error);
+    showError(signupErrMsg, "Signup failed: " + error.message);
   }
 });
 </script>
