@@ -675,17 +675,29 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        // ============================================================
+        // ADMIN EMAILS - Add ALL admin emails here!
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
+
         let editingUnitId = null;
 
         // ============================================================
-        // AUTH
+        // AUTH - Now supports multiple admins
         // ============================================================
         auth.onAuthStateChanged((user) => {
-            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+            if (!user || !isAdmin(user.email)) {
                 window.location.href = "index.html";
                 return;
             }
+            console.log('✅ Admin authenticated:', user.email);
             loadUnits();
         });
 
@@ -903,6 +915,7 @@
         });
 
         console.log('✅ Units Control Panel loaded!');
+        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
