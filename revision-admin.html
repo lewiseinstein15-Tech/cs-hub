@@ -691,7 +691,17 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        // ============================================================
+        // ADMIN EMAILS - Add ALL admin emails here!
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
 
         // ============================================================
         // STATE
@@ -715,14 +725,14 @@
         const toast = document.getElementById('toast');
 
         // ============================================================
-        // AUTH CHECK
+        // AUTH CHECK - Now supports multiple admins
         // ============================================================
         auth.onAuthStateChanged((user) => {
-            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+            if (!user || !isAdmin(user.email)) {
                 window.location.href = 'revision-material.html';
                 return;
             }
-            console.log('✅ Admin authenticated');
+            console.log('✅ Admin authenticated:', user.email);
             loadCounts();
             loadItems(currentCategory);
         });
@@ -957,6 +967,7 @@
         });
 
         console.log('✅ Revision Admin Panel loaded!');
+        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
