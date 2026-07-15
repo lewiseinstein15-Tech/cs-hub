@@ -433,7 +433,6 @@
             opacity: 0.6;
         }
 
-        /* Welcome Message */
         .welcome-message {
             text-align: center;
             padding: 30px 0 10px 0;
@@ -461,7 +460,6 @@
             line-height: 1.6;
         }
 
-        /* Typing Indicator */
         .typing-indicator {
             display: none;
             gap: 4px;
@@ -494,7 +492,6 @@
             30% { transform: translateY(-8px); }
         }
 
-        /* Input Area */
         .input-area {
             padding: 16px 0 24px 0;
             border-top: 1px solid var(--border);
@@ -620,7 +617,6 @@
             50% { opacity: 0.4; }
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -645,7 +641,6 @@
         .toast.error { border-color: var(--red); }
         .toast.info { border-color: var(--blue); }
 
-        /* Responsive */
         @media (min-width: 1024px) {
             .sidebar {
                 transform: translateX(0);
@@ -700,7 +695,6 @@
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -740,17 +734,15 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <div class="main-content">
 
-        <!-- Top Bar -->
         <div class="topbar">
             <div class="topbar-left">
                 <button class="menu-toggle" onclick="openSidebar()">☰</button>
                 <span class="ai-icon">🤖</span>
                 <div>
                     <span class="ai-title">AI Assistant</span>
-                    <span class="ai-subtitle">Powered by Google Search</span>
+                    <span class="ai-subtitle">Powered by Gemini AI</span>
                 </div>
             </div>
             <div class="topbar-right">
@@ -759,25 +751,20 @@
             </div>
         </div>
 
-        <!-- Chat Container -->
         <div class="chat-container">
 
-            <!-- Messages -->
             <div class="chat-messages" id="chatMessages">
-                <!-- Welcome Message -->
                 <div class="welcome-message">
                     <div class="welcome-icon">🤖</div>
                     <h2>How can I help you?</h2>
-                    <p>Ask me anything, upload a photo, or search the web.</p>
+                    <p>Ask me anything, upload a photo, or use voice input.</p>
                 </div>
 
-                <!-- Typing Indicator -->
                 <div class="typing-indicator" id="typingIndicator">
                     <span></span><span></span><span></span>
                 </div>
             </div>
 
-            <!-- Input Area -->
             <div class="input-area">
                 <div class="input-wrapper">
                     <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMessage()">
@@ -802,7 +789,6 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -831,10 +817,9 @@
         const storage = firebase.storage();
 
         // ============================================================
-        // GOOGLE API KEYS - YOUR REAL KEYS
+        // GEMINI API KEY - YOUR REAL KEY
         // ============================================================
-        const API_KEY = "AIzaSyBgkUv6cuI5Tyu7w11-tjFyFbM6ufZM3KM";
-        const SEARCH_ENGINE_ID = "c4e694a88ccd4496d";
+        const GEMINI_API_KEY = "AQ.Ab8RN6JuS5zC7MzMXWzPfdAEE7G0bCYdy3Vv3Ivnb3YI6-hVYw";
 
         // ============================================================
         // STATE
@@ -858,6 +843,9 @@
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarAvatar').textContent = initial;
             document.getElementById('userRole').textContent = 'Student';
+
+            console.log('✅ AI Assistant loaded!');
+            console.log('🔑 Gemini API Key:', GEMINI_API_KEY ? '✅ Set' : '❌ Missing');
         });
 
         function logout() {
@@ -879,36 +867,7 @@
         }
 
         // ============================================================
-        // SEARCH THE WEB USING GOOGLE API
-        // ============================================================
-        async function searchWeb(query) {
-            try {
-                const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${encodeURIComponent(query)}`;
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.error) {
-                    return `❌ Search error: ${data.error.message}`;
-                }
-
-                if (data.items && data.items.length > 0) {
-                    let results = `🔍 **Search Results for: "${query}"**\n\n`;
-                    data.items.slice(0, 5).forEach((item, i) => {
-                        results += `${i+1}. **${item.title}**\n`;
-                        results += `   ${item.snippet || 'No description'}\n`;
-                        results += `   🔗 <a href="${item.link}" target="_blank">${item.link}</a>\n\n`;
-                    });
-                    return results;
-                } else {
-                    return `🔍 No results found for "${query}". Please try a different search term.`;
-                }
-            } catch (error) {
-                return `❌ Search error: ${error.message}`;
-            }
-        }
-
-        // ============================================================
-        // SEND MESSAGE - ALWAYS SEARCHES THE WEB
+        // SEND MESSAGE TO GEMINI AI
         // ============================================================
         async function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -921,12 +880,42 @@
             showTyping();
 
             try {
-                const response = await searchWeb(message);
+                const response = await getGeminiResponse(message);
                 hideTyping();
                 addMessage('ai', response);
             } catch (error) {
                 hideTyping();
                 addMessage('ai', `❌ Error: ${error.message}`);
+                console.error('Gemini Error:', error);
+            }
+        }
+
+        async function getGeminiResponse(question) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: question }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'API request failed');
+            }
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates.length > 0) {
+                return data.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error('No response from Gemini');
             }
         }
 
@@ -936,7 +925,6 @@
         function addMessage(type, content) {
             const container = document.getElementById('chatMessages');
             
-            // Remove welcome message
             const welcome = container.querySelector('.welcome-message');
             if (welcome) welcome.remove();
 
@@ -949,7 +937,6 @@
 
             let displayContent = content.replace(/\n/g, '<br>');
             
-            // Code blocks
             const codeMatch = displayContent.match(/```([\s\S]*?)```/);
             if (codeMatch) {
                 const codeBlock = codeMatch[1];
@@ -959,11 +946,10 @@
                 );
             }
 
-            // Links
-            if (displayContent.includes('🔗 http')) {
+            if (displayContent.includes('http')) {
                 displayContent = displayContent.replace(
-                    /(🔗\s*)(https?:\/\/[^\s]+)/g,
-                    '$1<a href="$2" target="_blank">$2</a>'
+                    /(https?:\/\/[^\s]+)/g,
+                    '<a href="$1" target="_blank">$1</a>'
                 );
             }
 
@@ -1156,10 +1142,6 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        console.log('✅ AI Assistant loaded with API keys!');
-        console.log('🔑 API Key:', API_KEY ? '✅ Set' : '❌ Missing');
-        console.log('🔍 Search Engine ID:', SEARCH_ENGINE_ID ? '✅ Set' : '❌ Missing');
     </script>
 
 </body>
