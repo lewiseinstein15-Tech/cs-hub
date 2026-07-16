@@ -805,7 +805,7 @@
             <div class="env-tag" id="envTag">[ >_ ADMIN ENVIRONMENT ]</div>
             
             <h1 id="welcomeText">
-                <span id="typedPrefix">Welcome back, </span>
+                <span id="typedPrefix"></span>
                 <span class="highlight-name" id="typedName"></span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
@@ -1047,18 +1047,46 @@
             document.getElementById('envTag').textContent = '[ >_ ADMIN ENVIRONMENT ]';
             
             const prefixEl = document.getElementById('typedPrefix');
-            prefixEl.textContent = '';
+            const nameEl = document.getElementById('typedName');
             
-            typeWriterWithCursor(adminName, 'typedName', 50, () => {
-                document.getElementById('typingCursor').style.display = 'inline-block';
-                setTimeout(() => {
-                    typeQuote();
-                }, 400);
-            });
+            // Clear both
+            prefixEl.textContent = '';
+            nameEl.textContent = '';
+            
+            // Type "Welcome back, " first
+            let prefixText = 'Welcome back, ';
+            let i = 0;
+            
+            function typePrefix() {
+                if (i < prefixText.length) {
+                    prefixEl.textContent += prefixText.charAt(i);
+                    i++;
+                    setTimeout(typePrefix, 40 + Math.random() * 15);
+                } else {
+                    // Then type the name
+                    let j = 0;
+                    function typeName() {
+                        if (j < adminName.length) {
+                            nameEl.textContent += adminName.charAt(j);
+                            j++;
+                            setTimeout(typeName, 50 + Math.random() * 20);
+                        } else {
+                            // Show cursor blinking
+                            document.getElementById('typingCursor').style.display = 'inline-block';
+                            setTimeout(() => {
+                                typeQuote();
+                            }, 500);
+                        }
+                    }
+                    typeName();
+                }
+            }
+            
+            typePrefix();
         }
 
         function typeQuote() {
-            // Updated quote with both founders
+            // Updated quote with both founders - properly escaped for HTML
             const quoteText = 
                 '<span class="code-keyword">const</span> <span class="code-string">csHub</span> = <span class="code-function">build</span>({<br>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">founders</span>: [<span class="code-string">"Lewis Einstein"</span>, <span class="code-string">"Newton"</span>],<br>' +
@@ -1070,36 +1098,53 @@
             const authorEl = document.getElementById('quoteAuthor');
             const cursorEl = document.getElementById('quoteCursor');
             
-            cursorEl.style.display = 'none';
+            cursorEl.style.display = 'inline-block';
+            el.innerHTML = '';
+            authorEl.textContent = '';
             
             let i = 0;
-            el.innerHTML = '';
             
             function typeQuoteChar() {
                 if (i < quoteText.length) {
-                    if (quoteText.substring(i).startsWith('&lt;')) {
-                        el.innerHTML += '&lt;';
-                        i += 4;
-                    } else if (quoteText.substring(i).startsWith('&gt;')) {
+                    // Handle HTML entities properly
+                    let char = quoteText.charAt(i);
+                    
+                    if (char === '<') {
+                        // Check if it's a span tag or br
+                        if (quoteText.substring(i, i + 5) === '<span') {
+                            let endIdx = quoteText.indexOf('</span>', i) + 7;
+                            el.innerHTML += quoteText.substring(i, endIdx);
+                            i = endIdx;
+                        } else if (quoteText.substring(i, i + 4) === '<br>') {
+                            el.innerHTML += '<br>';
+                            i += 4;
+                        } else {
+                            el.innerHTML += '&lt;';
+                            i++;
+                        }
+                    } else if (char === '>') {
                         el.innerHTML += '&gt;';
-                        i += 4;
-                    } else if (quoteText.substring(i).startsWith('<span')) {
-                        let endIdx = quoteText.indexOf('</span>', i) + 7;
-                        el.innerHTML += quoteText.substring(i, endIdx);
-                        i = endIdx;
-                    } else if (quoteText.substring(i).startsWith('<br>')) {
-                        el.innerHTML += '<br>';
-                        i += 4;
+                        i++;
                     } else {
-                        el.innerHTML += quoteText.charAt(i);
+                        el.innerHTML += char;
                         i++;
                     }
-                    setTimeout(typeQuoteChar, 30 + Math.random() * 20);
+                    setTimeout(typeQuoteChar, 25 + Math.random() * 15);
                 } else {
                     cursorEl.style.display = 'none';
                     setTimeout(() => {
-                        typeWriterWithCursor('— Lewis Einstein & Newton, CS HUB Founders', 'quoteAuthor', 30);
-                    }, 400);
+                        const authorText = '— Lewis Einstein & Newton, CS HUB Founders';
+                        let j = 0;
+                        authorEl.textContent = '';
+                        function typeAuthor() {
+                            if (j < authorText.length) {
+                                authorEl.textContent += authorText.charAt(j);
+                                j++;
+                                setTimeout(typeAuthor, 20 + Math.random() * 10);
+                            }
+                        }
+                        typeAuthor();
+                    }, 300);
                 }
             }
             
