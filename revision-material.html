@@ -563,6 +563,8 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
     </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
     </script>
 
@@ -582,18 +584,58 @@
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.database();
+        const db = firebase.firestore();
 
         // ============================================================
-        // ADMIN EMAILS - Add ALL admin emails here!
+        // ADMIN EMAILS - Hardcoded list
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
             "unscriptedusa@gmail.com"
         ];
 
-        function isAdmin(email) {
-            return ADMIN_EMAILS.includes(email.toLowerCase());
+        // ============================================================
+        // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
+        // ============================================================
+        async function isAdmin(email) {
+            if (!email) return false;
+            
+            // Check hardcoded list first
+            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
+                console.log("✅ Admin found in hardcoded list:", email);
+                return true;
+            }
+            
+            // Check Firestore Users collection
+            try {
+                const snapshot = await db.collection("Users")
+                    .where("email", "==", email)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const userData = snapshot.docs[0].data();
+                    if (userData.role && userData.role.toLowerCase() === "admin") {
+                        console.log("✅ Admin found in Firestore:", email);
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ Firestore check failed:", error);
+            }
+            
+            console.log("👤 Not admin:", email);
+            return false;
+        }
+
+        // ============================================================
+        // GET ADMIN NAME
+        // ============================================================
+        function getAdminName(email) {
+            const names = {
+                "lewiseinstein15@gmail.com": "Admin Lewis",
+                "unscriptedusa@gmail.com": "Admin Newton"
+            };
+            return names[email.toLowerCase()] || email.split('@')[0];
         }
 
         // ============================================================
@@ -616,8 +658,10 @@
         // ============================================================
         function loadCounts() {
             const categories = ['books', 'youtube', 'lectures', 'exams'];
+            const rtdb = firebase.database();
+            
             categories.forEach((cat) => {
-                const ref = db.ref('materials/' + cat);
+                const ref = rtdb.ref('materials/' + cat);
                 ref.on('value', (snapshot) => {
                     const data = snapshot.val();
                     let count = 0;
@@ -628,9 +672,9 @@
         }
 
         // ============================================================
-        // AUTH CHECK - SHOW ADMIN BUTTON FOR BOTH ADMINS
+        // AUTH CHECK - Check both hardcoded and Firestore
         // ============================================================
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = "login.html";
                 return;
@@ -645,11 +689,11 @@
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            // ============================================================
-            // SHOW ADMIN PANEL BUTTON FOR BOTH ADMINS
-            // ============================================================
+            // CHECK ADMIN - Wait for Firestore check
+            const adminStatus = await isAdmin(email);
             const adminBtn = document.getElementById('adminPanelBtn');
-            if (isAdmin(email)) {
+
+            if (adminStatus) {
                 adminBtn.classList.add('visible');
                 document.getElementById('userRole').textContent = '🔑 Admin';
                 console.log('✅ Admin detected:', email);
@@ -687,7 +731,6 @@
         }
 
         console.log('✅ Revision Materials page loaded!');
-        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
