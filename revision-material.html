@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Materials</title>
+    <title>CS HUB - Revision Materials</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -35,7 +35,6 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
@@ -184,7 +183,6 @@
             border-radius: 6px;
         }
 
-        /* Main Content */
         .main-content {
             padding: 16px 16px 80px 16px;
             max-width: 1200px;
@@ -192,7 +190,6 @@
             flex: 1;
         }
 
-        /* Top Bar */
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -280,7 +277,6 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        /* Hero */
         .hero-terminal {
             background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
@@ -291,7 +287,7 @@
 
         .env-tag {
             font-family: 'JetBrains Mono', monospace;
-            color: var(--cyan);
+            color: var(--blue);
             font-size: 12px;
             font-weight: bold;
             margin-bottom: 12px;
@@ -309,7 +305,6 @@
             font-size: 14px;
         }
 
-        /* Admin Button - Visible to admins */
         .admin-panel-btn {
             display: none;
             padding: 10px 24px;
@@ -317,14 +312,16 @@
             background: linear-gradient(135deg, var(--pink), var(--purple));
             color: var(--white);
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             text-decoration: none;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             width: fit-content;
+            align-items: center;
+            gap: 8px;
         }
 
         .admin-panel-btn:hover {
@@ -333,52 +330,88 @@
         }
 
         .admin-panel-btn.visible {
-            display: inline-block;
+            display: inline-flex;
         }
 
-        /* Categories Grid */
-        .categories-grid {
+        .revision-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
         }
 
-        .category-card {
+        .revision-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 24px;
-            text-align: center;
             text-decoration: none;
             color: var(--white);
             transition: all 0.3s ease;
-            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .category-card:hover {
+        .revision-card:hover {
             transform: translateY(-4px);
             border-color: rgba(59, 130, 246, 0.2);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .category-card .icon {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 10px;
+        .revision-card .card-glow {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.04), transparent 70%);
+            pointer-events: none;
+            transition: all 0.6s ease;
+            opacity: 0;
         }
 
-        .category-card .name {
+        .revision-card:hover .card-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .revision-card .card-icon {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .revision-card h3 {
             font-size: 16px;
             font-weight: 600;
+            position: relative;
+            z-index: 1;
         }
 
-        .category-card .count {
+        .revision-card .item-count {
             font-size: 12px;
             color: var(--dim);
             margin-top: 4px;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Toast */
+        .revision-card .item-count strong {
+            color: var(--cyan);
+            font-size: 18px;
+        }
+
+        .revision-card .arrow-link {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--blue);
+            position: relative;
+            z-index: 1;
+        }
+
         .toast {
             position: fixed;
             bottom: 30px;
@@ -403,11 +436,10 @@
         .toast.error { border-color: var(--red); }
         .toast.info { border-color: var(--blue); }
 
-        /* Responsive */
         @media (min-width: 600px) {
             .main-content { padding: 20px 24px 80px 24px; }
             .topbar { padding: 16px 24px; }
-            .categories-grid { grid-template-columns: repeat(4, 1fr); }
+            .revision-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (min-width: 1024px) {
@@ -430,20 +462,14 @@
             }
             .topbar { display: none; }
             .menu-toggle { display: none !important; }
+            .revision-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (max-width: 600px) {
             .hero-terminal h2 { font-size: 20px; }
             .hero-terminal { padding: 20px; }
-            .categories-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .category-card { padding: 16px; }
-            .category-card .icon { font-size: 32px; }
             .topbar .btn-action span { display: none; }
-        }
-
-        @media (max-width: 400px) {
-            .categories-grid { grid-template-columns: 1fr; }
-            .admin-panel-btn { width: 100%; text-align: center; }
+            .revision-grid { grid-template-columns: 1fr; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -460,10 +486,8 @@
 </head>
 <body>
 
-    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -503,10 +527,8 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- TOP BAR (mobile only) -->
         <div class="topbar">
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
@@ -519,46 +541,56 @@
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <!-- HERO -->
         <section class="hero-terminal">
             <div class="env-tag">[ >_ REVISION MATERIALS ]</div>
             <h2>📚 Revision Materials</h2>
             <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
         </section>
 
-        <!-- ADMIN PANEL BUTTON -->
         <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
 
-        <!-- CATEGORIES -->
-        <div class="categories-grid">
-            <a href="revision-books.html" class="category-card">
-                <span class="icon">📚</span>
-                <span class="name">Books &amp; Guides</span>
-                <span class="count" id="booksCount">0 items</span>
+        <div class="revision-grid" id="revisionGrid">
+            <!-- Books -->
+            <a href="revision-books.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📚</span>
+                <h3>Books &amp; Guides</h3>
+                <div class="item-count"><strong id="bookCount">0</strong> items</div>
+                <span class="arrow-link">Browse Books →</span>
             </a>
-            <a href="revision-youtube.html" class="category-card">
-                <span class="icon">📺</span>
-                <span class="name">YouTube Tutorials</span>
-                <span class="count" id="youtubeCount">0 items</span>
+
+            <!-- YouTube -->
+            <a href="revision-youtube.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📺</span>
+                <h3>YouTube Tutorials</h3>
+                <div class="item-count"><strong id="youtubeCount">0</strong> items</div>
+                <span class="arrow-link">Watch Videos →</span>
             </a>
-            <a href="revision-lectures.html" class="category-card">
-                <span class="icon">🎥</span>
-                <span class="name">Lecture Videos</span>
-                <span class="count" id="lecturesCount">0 items</span>
+
+            <!-- Lectures -->
+            <a href="revision-lectures.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">🎥</span>
+                <h3>Lecture Videos</h3>
+                <div class="item-count"><strong id="lectureCount">0</strong> items</div>
+                <span class="arrow-link">View Lectures →</span>
             </a>
-            <a href="revision-exams.html" class="category-card">
-                <span class="icon">📝</span>
-                <span class="name">Exams &amp; CATs</span>
-                <span class="count" id="examsCount">0 items</span>
+
+            <!-- Exams -->
+            <a href="revision-exams.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📝</span>
+                <h3>Exams &amp; CATs</h3>
+                <div class="item-count"><strong id="examCount">0</strong> items</div>
+                <span class="arrow-link">View Exams →</span>
             </a>
         </div>
 
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -569,9 +601,6 @@
     </script>
 
     <script>
-        // ============================================================
-        // FIREBASE CONFIG
-        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -585,14 +614,17 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const rtdb = firebase.database();
 
         // ============================================================
-        // ADMIN EMAILS - Hardcoded list
+        // ADMIN EMAILS - Add ALL admin emails here!
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
             "unscriptedusa@gmail.com"
         ];
+
+        const CATEGORIES = ['books', 'youtube', 'lectures', 'exams'];
 
         // ============================================================
         // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
@@ -600,13 +632,11 @@
         async function isAdmin(email) {
             if (!email) return false;
             
-            // Check hardcoded list first
             if (ADMIN_EMAILS.includes(email.toLowerCase())) {
                 console.log("✅ Admin found in hardcoded list:", email);
                 return true;
             }
             
-            // Check Firestore Users collection
             try {
                 const snapshot = await db.collection("Users")
                     .where("email", "==", email)
@@ -627,20 +657,6 @@
             return false;
         }
 
-        // ============================================================
-        // GET ADMIN NAME
-        // ============================================================
-        function getAdminName(email) {
-            const names = {
-                "lewiseinstein15@gmail.com": "Admin Lewis",
-                "unscriptedusa@gmail.com": "Admin Newton"
-            };
-            return names[email.toLowerCase()] || email.split('@')[0];
-        }
-
-        // ============================================================
-        // SIDEBAR FUNCTIONS
-        // ============================================================
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('sidebarOverlay').classList.add('active');
@@ -653,27 +669,22 @@
             document.body.style.overflow = '';
         }
 
-        // ============================================================
-        // LOAD COUNTS
-        // ============================================================
         function loadCounts() {
-            const categories = ['books', 'youtube', 'lectures', 'exams'];
-            const rtdb = firebase.database();
-            
-            categories.forEach((cat) => {
-                const ref = rtdb.ref('materials/' + cat);
+            CATEGORIES.forEach((category) => {
+                const ref = rtdb.ref('materials/' + category);
+                const countId = category.charAt(0).toUpperCase() + category.slice(1) + 'Count';
+                
                 ref.on('value', (snapshot) => {
                     const data = snapshot.val();
-                    let count = 0;
-                    if (data) count = Object.keys(data).length;
-                    document.getElementById(cat + 'Count').textContent = count + ' items';
+                    const count = data ? Object.keys(data).length : 0;
+                    const el = document.getElementById(countId);
+                    if (el) {
+                        el.textContent = count;
+                    }
                 });
             });
         }
 
-        // ============================================================
-        // AUTH CHECK - Check both hardcoded and Firestore
-        // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = "login.html";
@@ -689,7 +700,6 @@
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            // CHECK ADMIN - Wait for Firestore check
             const adminStatus = await isAdmin(email);
             const adminBtn = document.getElementById('adminPanelBtn');
 
@@ -706,18 +716,12 @@
             loadCounts();
         });
 
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         function logout() {
             auth.signOut().then(() => {
                 window.location.href = "login.html";
             });
         }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
