@@ -35,57 +35,95 @@
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border);
+            padding: 25px 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 25px 20px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            flex-shrink: 0;
         }
 
-        .sidebar-brand {
-            margin-bottom: 35px;
-        }
+        .sidebar.open { transform: translateX(0); }
 
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        .sidebar-brand { margin-bottom: 30px; }
         .sidebar-brand h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: 2px;
             background: linear-gradient(90deg, var(--blue), var(--cyan));
             -webkit-background-clip: text;
             color: transparent;
         }
-
         .sidebar-brand span {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 3px;
             color: var(--blue);
             display: block;
             margin-top: 2px;
         }
 
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--dim);
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none;
+        }
+        .sidebar-close.mobile-show { display: block; }
+
         .nav-menu {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
             flex-grow: 1;
+        }
+
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dim);
+            padding: 12px 16px 6px 16px;
+            font-weight: 600;
         }
 
         .nav-item a {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 16px;
+            padding: 10px 16px;
             color: var(--dim);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             border-radius: 10px;
             transition: all 0.2s ease;
@@ -98,8 +136,13 @@
             border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        .nav-item.active a {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+        .sidebar-footer {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
         }
 
         .sidebar-profile {
@@ -125,12 +168,7 @@
             box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
         }
 
-        .profile-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--white);
-        }
-
+        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
         .profile-role {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
@@ -144,86 +182,78 @@
             border-radius: 6px;
         }
 
-        .sidebar-footer {
-            text-align: center;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.2);
-            margin-top: 20px;
+        /* Main Content */
+        .main-content {
+            padding: 16px 16px 80px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
         }
 
-        /* Workspace */
-        .workspace {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            height: 100vh;
-        }
-
+        /* Top Bar */
         .topbar {
-            height: 75px;
-            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
-            background-color: rgba(6, 9, 25, 0.3);
-            backdrop-filter: blur(15px);
-            flex-shrink: 0;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .menu-toggle {
             background: none;
             border: none;
             color: var(--white);
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-        }
-
-        .topbar-right {
             display: flex;
             align-items: center;
-            gap: 20px;
-            width: 100%;
-            justify-content: flex-end;
+            justify-content: center;
         }
 
-        .admin-meta {
+        .topbar-user {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .shield-icon {
-            font-size: 18px;
-            background: rgba(59, 130, 246, 0.1);
-            padding: 6px;
-            border-radius: 8px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
         }
 
-        .admin-details h4 {
+        .topbar-name {
             font-size: 13px;
-            color: var(--white);
+            font-weight: 600;
         }
-
-        .admin-details span {
-            font-size: 11px;
+        .topbar-name small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
             color: var(--dim);
         }
 
         .btn-action {
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 6px 14px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -231,38 +261,25 @@
             transition: all 0.2s ease;
             border: 1px solid transparent;
             text-decoration: none;
-        }
-
-        .btn-back {
             background: rgba(255, 255, 255, 0.05);
             border-color: var(--border);
             color: var(--white);
         }
-
-        .btn-back:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
 
         .btn-logout {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.2);
             color: var(--red);
         }
-
         .btn-logout:hover {
             background: var(--red);
             color: var(--white);
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        .content-area {
-            padding: 30px;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-
-        /* Settings Hero */
-        .settings-hero {
+        /* Hero */
+        .hero-terminal {
             background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
@@ -270,7 +287,7 @@
             margin-bottom: 30px;
         }
 
-        .settings-hero .badge {
+        .env-tag {
             font-family: 'JetBrains Mono', monospace;
             color: var(--cyan);
             font-size: 12px;
@@ -279,14 +296,13 @@
             letter-spacing: 1px;
         }
 
-        .settings-hero h2 {
+        .hero-terminal h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 10px;
         }
-
-        .settings-hero p {
+        .hero-terminal p {
             color: var(--dim);
             font-size: 14px;
         }
@@ -376,7 +392,6 @@
             margin-left: auto;
         }
 
-        /* Custom Toggle */
         .switch {
             position: relative;
             display: inline-block;
@@ -511,11 +526,7 @@
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .toast.success { border-color: var(--green); }
         .toast.error { border-color: var(--red); }
         .toast.info { border-color: var(--blue); }
@@ -531,19 +542,36 @@
         }
 
         @media (max-width: 600px) {
-            .settings-hero h2 { font-size: 20px; }
             .settings-card { padding: 20px; }
             .toggle-group { flex-wrap: wrap; }
             .toggle-group .toggle-desc { margin-left: 0; width: 100%; }
             .topbar { padding: 0 16px; }
+            .hero-terminal h2 { font-size: 20px; }
+            .hero-terminal { padding: 20px; }
+            .content-area { padding: 12px; }
+            .topbar-right .btn-action span { display: none; }
         }
 
         @media (max-width: 400px) {
             .topbar-actions .btn-back span { display: none; }
         }
+
+        .sidebar::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
@@ -552,7 +580,8 @@
                 <h1>CS HUB</h1>
                 <span>ADMIN SYSTEM</span>
             </div>
-            
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
+
             <ul class="nav-menu">
                 <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
                 <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
@@ -565,9 +594,9 @@
 
         <div>
             <div class="sidebar-profile">
-                <div class="profile-avatar">AL</div>
-                <div class="profile-name">Admin Lewis</div>
-                <div class="profile-role">Super Admin</div>
+                <div class="profile-avatar" id="profileAvatar">AL</div>
+                <div class="profile-name" id="profileName">Admin</div>
+                <div class="profile-role" id="profileRole">Super Admin</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub<br>All rights reserved.</div>
         </div>
@@ -581,25 +610,25 @@
                 <div class="admin-meta">
                     <span class="shield-icon">🛡️</span>
                     <div class="admin-details">
-                        <h4>Admin Lewis</h4>
-                        <span>lewiseinstein15@gmail.com</span>
+                        <h4 id="topbarName">Admin</h4>
+                        <span id="topbarEmail">admin@cshub.com</span>
                     </div>
                 </div>
-                <a href="admin-dashboard.html" class="btn-action btn-back">← Back</a>
+                <a href="admin-dashboard.html" class="btn-action" style="background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--white);">← Back</a>
                 <button class="btn-action btn-logout" onclick="logout()">Logout &rarr;</button>
             </div>
         </header>
 
         <div class="content-area">
             
-            <!-- Hero -->
-            <section class="settings-hero">
-                <div class="badge">[ >_ ADMIN SETTINGS ]</div>
+            <!-- HERO -->
+            <section class="hero-terminal">
+                <div class="env-tag">[ >_ ADMIN SETTINGS ]</div>
                 <h2>⚙️ System Settings</h2>
                 <p>Configure site-wide settings, generate sync code, and manage system preferences.</p>
             </section>
 
-            <!-- Settings Card -->
+            <!-- SETTINGS CARD -->
             <div class="settings-card">
                 <div class="section-title">🔧 Configuration</div>
 
@@ -661,9 +690,12 @@
     <div class="toast" id="toast"></div>
 
     <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
 
     <script>
         // ============================================================
@@ -682,33 +714,65 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        // ============================================================
+        // ADMIN EMAILS - Add ALL admin emails here!
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
+
+        function getAdminName(email) {
+            const names = {
+                "lewiseinstein15@gmail.com": "Admin Lewis",
+                "unscriptedusa@gmail.com": "Admin Newton"
+            };
+            return names[email.toLowerCase()] || "Admin";
+        }
 
         // ============================================================
-        // AUTH CHECK
-        // ============================================================
-        auth.onAuthStateChanged((user) => {
-            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
-                window.location.href = "index.html";
-                return;
-            }
-            console.log('✅ Admin authenticated - Settings page');
-            loadSettings();
-        });
-
-        // ============================================================
-        // SIDEBAR
+        // SIDEBAR FUNCTIONS
         // ============================================================
         function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("open");
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
         document.addEventListener('click', function(e) {
-            const sidebar = document.getElementById("sidebar");
-            const toggleBtn = document.querySelector(".menu-toggle");
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.menu-toggle');
             if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-                sidebar.classList.remove("open");
+                sidebar.classList.remove('open');
             }
+        });
+
+        // ============================================================
+        // AUTH CHECK - Now supports multiple admins
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user || !isAdmin(user.email)) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            const adminName = getAdminName(user.email);
+            const initial = adminName.charAt(0).toUpperCase();
+            const email = user.email || 'admin@cshub.com';
+
+            // Update sidebar
+            document.getElementById('profileName').textContent = adminName;
+            document.getElementById('profileAvatar').textContent = initial;
+            document.getElementById('profileRole').textContent = 'Super Admin';
+
+            // Update topbar
+            document.getElementById('topbarName').textContent = adminName;
+            document.getElementById('topbarEmail').textContent = email;
+
+            console.log('✅ Admin authenticated:', email);
+            loadSettings();
         });
 
         // ============================================================
@@ -768,12 +832,10 @@
                 defaultTheme: defaultTheme
             };
 
-            // Generate the config.js code
             const code = `// ============================================================\n// CS HUB - Site Configuration\n// Generated on: ${new Date().toLocaleString()}\n// ============================================================\n\nconst siteConfig = ${JSON.stringify(config, null, 2)};\n\n// Export for use in other files\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = siteConfig;\n}\n`;
 
             document.getElementById('syncOutput').value = code;
 
-            // Save to Firestore
             db.collection("settings").doc("siteConfig").set({
                 maintenanceMode: maintenanceMode,
                 adminEmail: adminEmail,
@@ -789,13 +851,11 @@
                 showToast('⚠️ Settings saved locally but not to Firestore: ' + err.message, 'error');
             });
 
-            // Copy to clipboard
             try {
                 navigator.clipboard.writeText(code).then(() => {
                     showToast('📋 Code copied to clipboard!', 'info');
                 });
             } catch (_) {
-                // Fallback: select the text
                 const textarea = document.getElementById('syncOutput');
                 textarea.select();
                 document.execCommand('copy');
@@ -828,6 +888,7 @@
         });
 
         console.log('✅ Settings page loaded!');
+        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
