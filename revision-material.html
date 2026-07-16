@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Manage Materials</title>
+    <title>CS HUB - Revision Materials</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -305,158 +305,57 @@
             font-size: 14px;
         }
 
-        .manage-controls {
+        .manage-btn {
+            display: inline-flex;
+            padding: 10px 24px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+        }
+
+        .manage-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.4);
+        }
+
+        .revision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .revision-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .manage-controls h4 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            letter-spacing: 1px;
-            color: var(--dim);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .manage-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .manage-form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
-        .manage-form input, .manage-form select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 14px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .manage-form input:focus, .manage-form select:focus {
-            border-color: var(--blue);
-            background: rgba(59, 130, 246, 0.05);
-        }
-
-        .manage-form input::placeholder {
-            color: var(--dim);
-        }
-
-        .manage-form select option {
-            background: var(--bg);
-            color: var(--white);
-        }
-
-        .manage-form .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .manage-form .btn-submit {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            background: linear-gradient(135deg, var(--green), var(--cyan));
-            color: var(--white);
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .manage-form .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
-        }
-
-        .manage-form .btn-cancel {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--dim);
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .manage-form .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--white);
-        }
-
-        .category-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .category-tab {
-            padding: 8px 18px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--dim);
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .category-tab:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--white);
-        }
-
-        .category-tab.active {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: var(--blue);
-            color: var(--blue);
-        }
-
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
-        }
-
-        .item-card {
-            display: block;
+            border-radius: 16px;
+            padding: 24px;
             text-decoration: none;
             color: var(--white);
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px 22px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .item-card:hover {
+        .revision-card:hover {
             transform: translateY(-4px);
             border-color: rgba(59, 130, 246, 0.2);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .item-card .card-glow {
+        .revision-card .card-glow {
             position: absolute;
             top: -50%;
             right: -50%;
@@ -468,113 +367,46 @@
             opacity: 0;
         }
 
-        .item-card:hover .card-glow {
+        .revision-card:hover .card-glow {
             opacity: 1;
             transform: scale(1.2);
         }
 
-        .item-card .item-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .item-card .item-url {
-            font-size: 12px;
-            color: var(--dim);
-            word-break: break-all;
-            font-family: 'JetBrains Mono', monospace;
-            position: relative;
-            z-index: 1;
-        }
-
-        .item-card .item-actions {
-            margin-top: 12px;
-            display: flex;
-            gap: 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .item-card .item-actions button {
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: none;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .item-card .item-actions .btn-edit {
-            background: rgba(59, 130, 246, 0.15);
-            color: var(--blue);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .item-card .item-actions .btn-edit:hover {
-            background: rgba(59, 130, 246, 0.25);
-        }
-
-        .item-card .item-actions .btn-delete {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--red);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .item-card .item-actions .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.25);
-        }
-
-        .item-card .item-open {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--blue);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .item-card .item-open .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .item-card:hover .item-open .arrow {
-            transform: translateX(4px);
-        }
-
-        .item-card .category-badge {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 9px;
-            font-weight: 600;
-            text-transform: uppercase;
-            background: rgba(59, 130, 246, 0.12);
-            color: var(--blue);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            position: relative;
-            z-index: 1;
-        }
-
-        .empty-items {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--dim);
-            font-size: 14px;
-            grid-column: 1 / -1;
-        }
-
-        .empty-items .empty-icon {
-            font-size: 48px;
+        .revision-card .card-icon {
+            font-size: 36px;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .revision-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .revision-card .item-count {
+            font-size: 12px;
+            color: var(--dim);
+            margin-top: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .revision-card .item-count strong {
+            color: var(--cyan);
+            font-size: 18px;
+        }
+
+        .revision-card .arrow-link {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--blue);
+            position: relative;
+            z-index: 1;
         }
 
         .toast {
@@ -604,7 +436,7 @@
         @media (min-width: 600px) {
             .main-content { padding: 20px 24px 80px 24px; }
             .topbar { padding: 16px 24px; }
-            .items-grid { grid-template-columns: repeat(2, 1fr); }
+            .revision-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (min-width: 1024px) {
@@ -627,17 +459,15 @@
             }
             .topbar { display: none; }
             .menu-toggle { display: none !important; }
-            .items-grid { grid-template-columns: repeat(3, 1fr); }
+            .revision-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (max-width: 600px) {
-            .items-grid { grid-template-columns: 1fr; }
             .hero-terminal h2 { font-size: 20px; }
             .hero-terminal { padding: 20px; }
             .topbar .btn-action span { display: none; }
-            .manage-form-row { grid-template-columns: 1fr; }
-            .category-tabs { gap: 6px; }
-            .category-tab { font-size: 11px; padding: 6px 12px; }
+            .revision-grid { grid-template-columns: 1fr; }
+            .manage-btn { width: 100%; justify-content: center; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -660,7 +490,7 @@
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>MANAGE MATERIALS</span>
+                <span>STUDENT PORTAL</span>
             </div>
             <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
 
@@ -689,7 +519,7 @@
             <div class="sidebar-profile">
                 <div class="profile-avatar" id="userAvatar">U</div>
                 <div class="profile-name" id="userName">User</div>
-                <div class="profile-role" id="userRole">Editor</div>
+                <div class="profile-role" id="userRole">Student</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub</div>
         </div>
@@ -710,47 +540,50 @@
         </div>
 
         <section class="hero-terminal">
-            <div class="env-tag">[ >_ MANAGE REVISION MATERIALS ]</div>
-            <h2>⚙️ Manage Materials</h2>
-            <p>Add, edit, or delete books, YouTube tutorials, lecture videos, and exam papers.</p>
+            <div class="env-tag">[ >_ REVISION MATERIALS ]</div>
+            <h2>📚 Revision Materials</h2>
+            <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
         </section>
 
-        <!-- Manage Controls -->
-        <div class="manage-controls">
-            <h4>📝 Add / Edit Item</h4>
-            <form class="manage-form" id="itemForm">
-                <div class="manage-form-row">
-                    <input type="text" id="itemTitle" placeholder="Title *" required>
-                    <input type="url" id="itemUrl" placeholder="URL *" required>
-                    <select id="itemCategory" required>
-                        <option value="">Select Category *</option>
-                        <option value="books">📚 Books & Guides</option>
-                        <option value="youtube">📺 YouTube Tutorials</option>
-                        <option value="lectures">🎥 Lecture Videos</option>
-                        <option value="exams">📝 Exams & CATs</option>
-                    </select>
-                </div>
-                <input type="hidden" id="editKey" value="">
-                <div class="btn-group">
-                    <button type="submit" class="btn-submit" id="submitBtn">➕ Add Item</button>
-                    <button type="button" class="btn-cancel" id="cancelBtn" onclick="cancelEdit()" style="display:none;">Cancel</button>
-                </div>
-            </form>
-        </div>
+        <!-- Everyone can see this button -->
+        <a href="revision-admin.html" class="manage-btn">⚙️ Manage Materials</a>
 
-        <!-- Category Tabs -->
-        <div class="category-tabs" id="categoryTabs">
-            <button class="category-tab active" data-category="books">📚 Books</button>
-            <button class="category-tab" data-category="youtube">📺 YouTube</button>
-            <button class="category-tab" data-category="lectures">🎥 Lectures</button>
-            <button class="category-tab" data-category="exams">📝 Exams</button>
-        </div>
+        <div class="revision-grid" id="revisionGrid">
+            <!-- Books -->
+            <a href="revision-books.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📚</span>
+                <h3>Books &amp; Guides</h3>
+                <div class="item-count"><strong id="bookCount">0</strong> items</div>
+                <span class="arrow-link">Browse Books →</span>
+            </a>
 
-        <div class="items-grid" id="itemsGrid">
-            <div class="empty-items">
-                <span class="empty-icon">📭</span>
-                <p>No items in this category. Add one above!</p>
-            </div>
+            <!-- YouTube -->
+            <a href="revision-youtube.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📺</span>
+                <h3>YouTube Tutorials</h3>
+                <div class="item-count"><strong id="youtubeCount">0</strong> items</div>
+                <span class="arrow-link">Watch Videos →</span>
+            </a>
+
+            <!-- Lectures -->
+            <a href="revision-lectures.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">🎥</span>
+                <h3>Lecture Videos</h3>
+                <div class="item-count"><strong id="lectureCount">0</strong> items</div>
+                <span class="arrow-link">View Lectures →</span>
+            </a>
+
+            <!-- Exams -->
+            <a href="revision-exams.html" class="revision-card">
+                <div class="card-glow"></div>
+                <span class="card-icon">📝</span>
+                <h3>Exams &amp; CATs</h3>
+                <div class="item-count"><strong id="examCount">0</strong> items</div>
+                <span class="arrow-link">View Exams →</span>
+            </a>
         </div>
 
     </div>
@@ -767,6 +600,9 @@
     </script>
 
     <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -782,21 +618,7 @@
         const db = firebase.firestore();
         const rtdb = firebase.database();
 
-        let currentCategory = 'books';
-
-        const CATEGORY_ICONS = {
-            'books': '📚',
-            'youtube': '📺',
-            'lectures': '🎥',
-            'exams': '📝'
-        };
-
-        const CATEGORY_LABELS = {
-            'books': 'Book',
-            'youtube': 'YouTube',
-            'lectures': 'Lecture',
-            'exams': 'Exam'
-        };
+        const CATEGORIES = ['books', 'youtube', 'lectures', 'exams'];
 
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
@@ -810,163 +632,32 @@
             document.body.style.overflow = '';
         }
 
-        function cancelEdit() {
-            document.getElementById('itemTitle').value = '';
-            document.getElementById('itemUrl').value = '';
-            document.getElementById('itemCategory').value = '';
-            document.getElementById('editKey').value = '';
-            document.getElementById('submitBtn').textContent = '➕ Add Item';
-            document.getElementById('cancelBtn').style.display = 'none';
-        }
-
-        function editItem(key, category, title, url) {
-            document.getElementById('itemTitle').value = title;
-            document.getElementById('itemUrl').value = url;
-            document.getElementById('itemCategory').value = category;
-            document.getElementById('editKey').value = key;
-            document.getElementById('submitBtn').textContent = '💾 Update Item';
-            document.getElementById('cancelBtn').style.display = 'inline-block';
-            document.getElementById('itemTitle').focus();
-            
-            // Switch to the correct category tab
-            switchCategory(category);
-        }
-
-        function deleteItem(key, category, title) {
-            if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
-            
-            const ref = rtdb.ref('materials/' + category + '/' + key);
-            ref.remove()
-                .then(() => {
-                    showToast('✅ Item deleted successfully!', 'success');
-                })
-                .catch((error) => {
-                    showToast('❌ Error deleting item: ' + error.message, 'error');
-                });
-        }
-
-        function loadItems(category) {
-            const grid = document.getElementById('itemsGrid');
-            const ref = rtdb.ref('materials/' + category);
-
-            // Remove old listener if exists
-            if (window._itemsListener) {
-                window._itemsListener.off();
-            }
-
-            window._itemsListener = ref;
-
-            ref.on('value', (snapshot) => {
-                const data = snapshot.val();
-                const items = grid.querySelectorAll('.item-card');
-                items.forEach(el => el.remove());
-
-                const empty = grid.querySelector('.empty-items');
+        function loadCounts() {
+            CATEGORIES.forEach((category) => {
+                const ref = rtdb.ref('materials/' + category);
+                const countId = category.charAt(0).toUpperCase() + category.slice(1) + 'Count';
                 
-                if (!data) {
-                    if (empty) empty.style.display = 'block';
-                    return;
-                }
-
-                if (empty) empty.style.display = 'none';
-
-                const keys = Object.keys(data);
-                console.log(`📚 Loaded ${keys.length} items in ${category}`);
-                
-                keys.forEach((key) => {
-                    const item = data[key];
-                    const card = document.createElement('div');
-                    card.className = 'item-card';
-                    
-                    card.innerHTML = `
-                        <div class="card-glow"></div>
-                        <div class="item-title">${item.title || 'Untitled'}</div>
-                        <div class="item-url">${item.url || 'No URL'}</div>
-                        <span class="category-badge">${CATEGORY_ICONS[category] || '📚'} ${CATEGORY_LABELS[category] || 'Item'}</span>
-                        <a href="${item.url || '#'}" target="_blank" class="item-open">Open <span class="arrow">→</span></a>
-                        <div class="item-actions">
-                            <button class="btn-edit" onclick="editItem('${key}', '${category}', '${item.title || ''}', '${item.url || ''}')">✏️ Edit</button>
-                            <button class="btn-delete" onclick="deleteItem('${key}', '${category}', '${item.title || ''}')">🗑️ Delete</button>
-                        </div>
-                    `;
-                    grid.appendChild(card);
+                ref.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    const count = data ? Object.keys(data).length : 0;
+                    const el = document.getElementById(countId);
+                    if (el) {
+                        el.textContent = count;
+                    }
+                }, (error) => {
+                    console.error('❌ Error loading count for', category, ':', error);
                 });
-            }, (error) => {
-                console.error('❌ Error loading items:', error);
-                showToast('❌ Error loading items: ' + error.message, 'error');
             });
         }
-
-        function switchCategory(category) {
-            currentCategory = category;
-            
-            // Update tabs
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.category === category);
-            });
-            
-            // Load items for this category
-            loadItems(category);
-            
-            // Update form category dropdown
-            document.getElementById('itemCategory').value = category;
-        }
-
-        // Handle form submission
-        document.getElementById('itemForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const title = document.getElementById('itemTitle').value.trim();
-            const url = document.getElementById('itemUrl').value.trim();
-            const category = document.getElementById('itemCategory').value;
-            const editKey = document.getElementById('editKey').value;
-            
-            if (!title || !url || !category) {
-                showToast('❌ Please fill in all fields.', 'error');
-                return;
-            }
-            
-            console.log(`📝 Adding/Updating item:`, { title, url, category, editKey });
-            
-            try {
-                if (editKey) {
-                    // Update existing                    await rtdb.ref('materials/' + category + '/' + editKey).update({
-                        title: title,
-                        url: url
-                    });
-                    console.log('✅ Item updated successfully!');
-                    showToast('✅ Item updated successfully!', 'success');
-                    cancelEdit();
-                } else {
-                    // Add new
-                    const newRef = rtdb.ref('materials/' + category).push();
-                    await newRef.set({
-                        title: title,
-                        url: url
-                    });
-                    console.log('✅ Item added successfully! Key:', newRef.key);
-                    showToast('✅ Item added successfully!', 'success');
-                    document.getElementById('itemTitle').value = '';
-                    document.getElementById('itemUrl').value = '';
-                }
-            } catch (error) {
-                console.error('❌ Error:', error);
-                showToast('❌ Error: ' + error.message, 'error');
-            }
-        });
-
-        // Category tab clicks
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                switchCategory(this.dataset.category);
-            });
-        });
 
         // ============================================================
         // AUTH STATE - EVERYONE CAN ACCESS
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
+            console.log('🔐 Auth state changed');
+            
             if (!user) {
+                console.log('❌ No user, redirecting to login...');
                 window.location.href = "login.html";
                 return;
             }
@@ -975,18 +666,16 @@
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
+            console.log('👤 User:', displayName);
+            console.log('📧 User email:', email);
+
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
-            document.getElementById('userRole').textContent = '📝 Editor';
+            document.getElementById('userRole').textContent = 'Student';
 
-            console.log('👤 User logged in:', displayName);
-            console.log('📧 Email:', email);
-            console.log('✅ Everyone can manage materials!');
-
-            // Load default category
-            switchCategory('books');
+            loadCounts();
         });
 
         function logout() {
@@ -1007,8 +696,8 @@
             }, 3000);
         }
 
-        console.log('✅ Manage Materials page loaded!');
-        console.log('🔓 Everyone can add, edit, and delete materials');
+        console.log('✅ Revision Materials page loaded!');
+        console.log('🔓 Everyone can manage materials');
     </script>
 
 </body>
