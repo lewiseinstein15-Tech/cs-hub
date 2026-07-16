@@ -1028,6 +1028,11 @@
         // ============================================================
         function typeWriterWithCursor(text, elementId, speed = 50, callback) {
             const el = document.getElementById(elementId);
+            if (!el) {
+                console.error('Element not found:', elementId);
+                if (callback) callback();
+                return;
+            }
             let i = 0;
             el.textContent = '';
             
@@ -1044,14 +1049,25 @@
         }
 
         function startWelcomeAnimation(adminName) {
-            document.getElementById('envTag').textContent = '[ >_ ADMIN ENVIRONMENT ]';
+            console.log('Starting welcome animation for:', adminName);
             
+            const envTag = document.getElementById('envTag');
             const prefixEl = document.getElementById('typedPrefix');
             const nameEl = document.getElementById('typedName');
+            const cursorEl = document.getElementById('typingCursor');
             
-            // Clear both
+            if (!envTag || !prefixEl || !nameEl || !cursorEl) {
+                console.error('Required elements not found!');
+                return;
+            }
+            
+            // Set environment tag
+            envTag.textContent = '[ >_ ADMIN ENVIRONMENT ]';
+            
+            // Clear elements
             prefixEl.textContent = '';
             nameEl.textContent = '';
+            cursorEl.style.display = 'inline-block';
             
             // Type "Welcome back, " first
             let prefixText = 'Welcome back, ';
@@ -1071,8 +1087,8 @@
                             j++;
                             setTimeout(typeName, 50 + Math.random() * 20);
                         } else {
-                            // Show cursor blinking
-                            document.getElementById('typingCursor').style.display = 'inline-block';
+                            // Keep cursor blinking
+                            cursorEl.style.display = 'inline-block';
                             setTimeout(() => {
                                 typeQuote();
                             }, 500);
@@ -1086,17 +1102,24 @@
         }
 
         function typeQuote() {
-            // Updated quote with both founders - properly escaped for HTML
+            console.log('Starting quote animation');
+            
+            const el = document.getElementById('quoteText');
+            const authorEl = document.getElementById('quoteAuthor');
+            const cursorEl = document.getElementById('quoteCursor');
+            
+            if (!el || !authorEl || !cursorEl) {
+                console.error('Quote elements not found!');
+                return;
+            }
+            
+            // Quote with both founders
             const quoteText = 
                 '<span class="code-keyword">const</span> <span class="code-string">csHub</span> = <span class="code-function">build</span>({<br>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">founders</span>: [<span class="code-string">"Lewis Einstein"</span>, <span class="code-string">"Newton"</span>],<br>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">mission</span>: <span class="code-string">"Empower CS students"</span><br>' +
                 '});<br>' +
                 '<span class="code-keyword">return</span> csHub.<span class="code-function">learn</span>();';
-            
-            const el = document.getElementById('quoteText');
-            const authorEl = document.getElementById('quoteAuthor');
-            const cursorEl = document.getElementById('quoteCursor');
             
             cursorEl.style.display = 'inline-block';
             el.innerHTML = '';
@@ -1106,7 +1129,7 @@
             
             function typeQuoteChar() {
                 if (i < quoteText.length) {
-                    // Handle HTML entities properly
+                    // Handle HTML tags properly
                     let char = quoteText.charAt(i);
                     
                     if (char === '<') {
@@ -1155,7 +1178,10 @@
         // AUTH CHECK - Supports multiple admins with dynamic names
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
+            console.log('Auth state changed:', user ? user.email : 'No user');
+            
             if (!user || !(await isAdmin(user.email))) {
+                console.log('Not admin, redirecting...');
                 window.location.href = "index.html";
                 return;
             }
@@ -1176,8 +1202,10 @@
             document.getElementById('topbarEmail').textContent = email;
             document.getElementById('topbarAvatar').textContent = initial;
 
-            // Start the typing animation with the admin's name
-            startWelcomeAnimation(adminName);
+            // Wait a moment for DOM to be ready, then start animation
+            setTimeout(() => {
+                startWelcomeAnimation(adminName);
+            }, 100);
             
             loadStats();
             loadActivityFeed();
@@ -1326,6 +1354,15 @@
         console.log('✅ Admin Dashboard loaded successfully!');
         console.log('🔑 Admin emails:', ADMIN_EMAILS);
         console.log('👤 Admin names:', ADMIN_NAMES);
+        
+        // Check if elements exist
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking elements...');
+            console.log('typedPrefix:', document.getElementById('typedPrefix'));
+            console.log('typedName:', document.getElementById('typedName'));
+            console.log('typingCursor:', document.getElementById('typingCursor'));
+            console.log('quoteText:', document.getElementById('quoteText'));
+        });
     </script>
 
 </body>
