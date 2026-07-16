@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Revision Admin</title>
+    <title>CS HUB - Manage Materials</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -305,7 +305,7 @@
             font-size: 14px;
         }
 
-        .admin-controls {
+        .manage-controls {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 14px;
@@ -313,7 +313,7 @@
             margin-bottom: 20px;
         }
 
-        .admin-controls h4 {
+        .manage-controls h4 {
             font-family: 'Orbitron', sans-serif;
             font-size: 12px;
             letter-spacing: 1px;
@@ -322,19 +322,19 @@
             margin-bottom: 12px;
         }
 
-        .admin-form {
+        .manage-form {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .admin-form-row {
+        .manage-form-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
         }
 
-        .admin-form input, .admin-form select {
+        .manage-form input, .manage-form select {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 8px;
@@ -346,27 +346,27 @@
             transition: all 0.2s ease;
         }
 
-        .admin-form input:focus, .admin-form select:focus {
+        .manage-form input:focus, .manage-form select:focus {
             border-color: var(--blue);
             background: rgba(59, 130, 246, 0.05);
         }
 
-        .admin-form input::placeholder {
+        .manage-form input::placeholder {
             color: var(--dim);
         }
 
-        .admin-form select option {
+        .manage-form select option {
             background: var(--bg);
             color: var(--white);
         }
 
-        .admin-form .btn-group {
+        .manage-form .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 4px;
         }
 
-        .admin-form .btn-submit {
+        .manage-form .btn-submit {
             padding: 10px 20px;
             border-radius: 8px;
             border: none;
@@ -378,12 +378,12 @@
             transition: all 0.3s ease;
         }
 
-        .admin-form .btn-submit:hover {
+        .manage-form .btn-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
         }
 
-        .admin-form .btn-cancel {
+        .manage-form .btn-cancel {
             padding: 10px 20px;
             border-radius: 8px;
             border: 1px solid var(--border);
@@ -395,7 +395,7 @@
             transition: all 0.3s ease;
         }
 
-        .admin-form .btn-cancel:hover {
+        .manage-form .btn-cancel:hover {
             background: rgba(255, 255, 255, 0.05);
             color: var(--white);
         }
@@ -577,29 +577,6 @@
             margin-bottom: 12px;
         }
 
-        /* Access Denied */
-        .access-denied {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .access-denied .denied-icon {
-            font-size: 64px;
-            display: block;
-            margin-bottom: 16px;
-        }
-
-        .access-denied h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .access-denied p {
-            color: var(--dim);
-            font-size: 14px;
-        }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -658,7 +635,7 @@
             .hero-terminal h2 { font-size: 20px; }
             .hero-terminal { padding: 20px; }
             .topbar .btn-action span { display: none; }
-            .admin-form-row { grid-template-columns: 1fr; }
+            .manage-form-row { grid-template-columns: 1fr; }
             .category-tabs { gap: 6px; }
             .category-tab { font-size: 11px; padding: 6px 12px; }
         }
@@ -683,12 +660,12 @@
         <div>
             <div class="sidebar-brand">
                 <h1>CS HUB</h1>
-                <span>ADMIN PANEL</span>
+                <span>MANAGE MATERIALS</span>
             </div>
             <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
 
             <ul class="nav-menu">
-                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
                 
                 <li class="nav-section-title">LEARN</li>
                 <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
@@ -700,7 +677,7 @@
                 <li class="nav-section-title">EXPLORE</li>
                 <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
                 <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
-                <li class="nav-item active"><a href="revision-admin.html">📚 Revision Admin</a></li>
+                <li class="nav-item active"><a href="revision-material.html">📚 Revision Material</a></li>
                 <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
                 
                 <li class="nav-section-title">ACCOUNT</li>
@@ -710,9 +687,9 @@
         </div>
         <div>
             <div class="sidebar-profile">
-                <div class="profile-avatar" id="userAvatar">A</div>
-                <div class="profile-name" id="userName">Admin</div>
-                <div class="profile-role" id="userRole">Administrator</div>
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Editor</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub</div>
         </div>
@@ -724,70 +701,55 @@
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
                 <span class="topbar-name" id="topbarName">
-                    Admin
-                    <small id="topbarEmail">admin@cshub.com</small>
+                    User
+                    <small id="topbarEmail">user@email.com</small>
                 </span>
-                <div class="topbar-avatar" id="topbarAvatar">A</div>
+                <div class="topbar-avatar" id="topbarAvatar">U</div>
             </div>
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <!-- Admin Content -->
-        <div id="adminContent">
-            <section class="hero-terminal">
-                <div class="env-tag">[ >_ REVISION ADMIN PANEL ]</div>
-                <h2>⚙️ Manage Revision Materials</h2>
-                <p>Add, edit, or delete books, YouTube tutorials, lecture videos, and exam papers.</p>
-            </section>
+        <section class="hero-terminal">
+            <div class="env-tag">[ >_ MANAGE REVISION MATERIALS ]</div>
+            <h2>⚙️ Manage Materials</h2>
+            <p>Add, edit, or delete books, YouTube tutorials, lecture videos, and exam papers.</p>
+        </section>
 
-            <!-- Admin Controls -->
-            <div class="admin-controls">
-                <h4>📝 Add / Edit Item</h4>
-                <form class="admin-form" id="itemForm">
-                    <div class="admin-form-row">
-                        <input type="text" id="itemTitle" placeholder="Title *" required>
-                        <input type="url" id="itemUrl" placeholder="URL *" required>
-                        <select id="itemCategory" required>
-                            <option value="">Select Category *</option>
-                            <option value="books">📚 Books & Guides</option>
-                            <option value="youtube">📺 YouTube Tutorials</option>
-                            <option value="lectures">🎥 Lecture Videos</option>
-                            <option value="exams">📝 Exams & CATs</option>
-                        </select>
-                    </div>
-                    <input type="hidden" id="editKey" value="">
-                    <div class="btn-group">
-                        <button type="submit" class="btn-submit" id="submitBtn">➕ Add Item</button>
-                        <button type="button" class="btn-cancel" id="cancelBtn" onclick="cancelEdit()" style="display:none;">Cancel</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Category Tabs -->
-            <div class="category-tabs" id="categoryTabs">
-                <button class="category-tab active" data-category="books">📚 Books</button>
-                <button class="category-tab" data-category="youtube">📺 YouTube</button>
-                <button class="category-tab" data-category="lectures">🎥 Lectures</button>
-                <button class="category-tab" data-category="exams">📝 Exams</button>
-            </div>
-
-            <div class="items-grid" id="itemsGrid">
-                <div class="empty-items">
-                    <span class="empty-icon">📭</span>
-                    <p>No items in this category. Add one above!</p>
+        <!-- Manage Controls -->
+        <div class="manage-controls">
+            <h4>📝 Add / Edit Item</h4>
+            <form class="manage-form" id="itemForm">
+                <div class="manage-form-row">
+                    <input type="text" id="itemTitle" placeholder="Title *" required>
+                    <input type="url" id="itemUrl" placeholder="URL *" required>
+                    <select id="itemCategory" required>
+                        <option value="">Select Category *</option>
+                        <option value="books">📚 Books & Guides</option>
+                        <option value="youtube">📺 YouTube Tutorials</option>
+                        <option value="lectures">🎥 Lecture Videos</option>
+                        <option value="exams">📝 Exams & CATs</option>
+                    </select>
                 </div>
-            </div>
+                <input type="hidden" id="editKey" value="">
+                <div class="btn-group">
+                    <button type="submit" class="btn-submit" id="submitBtn">➕ Add Item</button>
+                    <button type="button" class="btn-cancel" id="cancelBtn" onclick="cancelEdit()" style="display:none;">Cancel</button>
+                </div>
+            </form>
         </div>
 
-        <!-- Access Denied -->
-        <div id="accessDenied" style="display:none;">
-            <div class="access-denied">
-                <span class="denied-icon">🚫</span>
-                <h2>Access Denied</h2>
-                <p>You do not have permission to access this page.</p>
-                <p style="margin-top: 10px; font-size: 12px; color: var(--red);">This area is restricted to administrators only.</p>
-                <br>
-                <a href="dashboard.html" class="btn-action" style="display:inline-flex;">← Return to Dashboard</a>
+        <!-- Category Tabs -->
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="books">📚 Books</button>
+            <button class="category-tab" data-category="youtube">📺 YouTube</button>
+            <button class="category-tab" data-category="lectures">🎥 Lectures</button>
+            <button class="category-tab" data-category="exams">📝 Exams</button>
+        </div>
+
+        <div class="items-grid" id="itemsGrid">
+            <div class="empty-items">
+                <span class="empty-icon">📭</span>
+                <p>No items in this category. Add one above!</p>
             </div>
         </div>
 
@@ -820,16 +782,7 @@
         const db = firebase.firestore();
         const rtdb = firebase.database();
 
-        // ============================================================
-        // ADMIN EMAILS - Add ALL admin emails here!
-        // ============================================================
-        const ADMIN_EMAILS = [
-            "lewiseinstein15@gmail.com",
-            "unscriptedusa@gmail.com"
-        ];
-
         let currentCategory = 'books';
-        let isAdminUser = false;
 
         const CATEGORY_ICONS = {
             'books': '📚',
@@ -844,39 +797,6 @@
             'lectures': 'Lecture',
             'exams': 'Exam'
         };
-
-        // ============================================================
-        // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
-        // ============================================================
-        async function checkIsAdmin(email) {
-            if (!email) return false;
-            
-            // Check hardcoded list first
-            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
-                console.log("✅ Admin found in hardcoded list:", email);
-                return true;
-            }
-            
-            // Then check Firestore
-            try {
-                const snapshot = await db.collection("Users")
-                    .where("email", "==", email)
-                    .get();
-                
-                if (!snapshot.empty) {
-                    const userData = snapshot.docs[0].data();
-                    if (userData.role && userData.role.toLowerCase() === "admin") {
-                        console.log("✅ Admin found in Firestore:", email);
-                        return true;
-                    }
-                }
-            } catch (error) {
-                console.log("⚠️ Firestore check failed:", error);
-            }
-            
-            console.log("👤 Not admin:", email);
-            return false;
-        }
 
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
@@ -991,11 +911,6 @@
         document.getElementById('itemForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!isAdminUser) {
-                showToast('❌ You do not have permission to manage items.', 'error');
-                return;
-            }
-            
             const title = document.getElementById('itemTitle').value.trim();
             const url = document.getElementById('itemUrl').value.trim();
             const category = document.getElementById('itemCategory').value;
@@ -1039,46 +954,27 @@
         });
 
         // ============================================================
-        // AUTH STATE - WITH PROPER ADMIN CHECK
+        // AUTH STATE - EVERYONE CAN ACCESS
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
-            const adminContent = document.getElementById('adminContent');
-            const accessDenied = document.getElementById('accessDenied');
-            
             if (!user) {
                 window.location.href = "login.html";
                 return;
             }
 
-            const displayName = user.displayName || user.email.split('@')[0] || 'Admin';
-            const email = user.email || 'admin@cshub.com';
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
+            document.getElementById('userRole').textContent = '📝 Editor';
 
-            // CHECK IF USER IS ADMIN - This is the key check!
-            isAdminUser = await checkIsAdmin(email);
-            
-            console.log('🔍 Admin check result:', isAdminUser);
-            console.log('📧 User email:', email);
-
-            if (!isAdminUser) {
-                // Show access denied
-                adminContent.style.display = 'none';
-                accessDenied.style.display = 'block';
-                document.getElementById('userRole').textContent = '❌ Access Denied';
-                showToast('❌ Access Denied. Admins only.', 'error');
-                return;
-            }
-
-            // Show admin content
-            adminContent.style.display = 'block';
-            accessDenied.style.display = 'none';
-            document.getElementById('userRole').textContent = '🔑 Administrator';
-            console.log('✅ Admin access granted for:', email);
+            console.log('👤 User logged in:', displayName);
+            console.log('📧 Email:', email);
+            console.log('✅ Everyone can manage materials!');
 
             // Load default category
             switchCategory('books');
@@ -1102,7 +998,8 @@
             }, 3000);
         }
 
-        console.log('✅ Revision Admin page loaded!');
+        console.log('✅ Manage Materials page loaded!');
+        console.log('🔓 Everyone can add, edit, and delete materials');
     </script>
 
 </body>
