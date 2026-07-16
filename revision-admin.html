@@ -871,6 +871,8 @@
                 if (empty) empty.style.display = 'none';
 
                 const keys = Object.keys(data);
+                console.log(`📚 Loaded ${keys.length} items in ${category}`);
+                
                 keys.forEach((key) => {
                     const item = data[key];
                     const card = document.createElement('div');
@@ -889,6 +891,9 @@
                     `;
                     grid.appendChild(card);
                 });
+            }, (error) => {
+                console.error('❌ Error loading items:', error);
+                showToast('❌ Error loading items: ' + error.message, 'error');
             });
         }
 
@@ -921,13 +926,15 @@
                 return;
             }
             
+            console.log(`📝 Adding/Updating item:`, { title, url, category, editKey });
+            
             try {
                 if (editKey) {
-                    // Update existing
-                    await rtdb.ref('materials/' + category + '/' + editKey).update({
+                    // Update existing                    await rtdb.ref('materials/' + category + '/' + editKey).update({
                         title: title,
                         url: url
                     });
+                    console.log('✅ Item updated successfully!');
                     showToast('✅ Item updated successfully!', 'success');
                     cancelEdit();
                 } else {
@@ -937,11 +944,13 @@
                         title: title,
                         url: url
                     });
+                    console.log('✅ Item added successfully! Key:', newRef.key);
                     showToast('✅ Item added successfully!', 'success');
                     document.getElementById('itemTitle').value = '';
                     document.getElementById('itemUrl').value = '';
                 }
             } catch (error) {
+                console.error('❌ Error:', error);
                 showToast('❌ Error: ' + error.message, 'error');
             }
         });
