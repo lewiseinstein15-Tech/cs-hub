@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Revision Materials</title>
+    <title>CS HUB - Materials</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-
+    
     <style>
-        /* ============================================================ */
-        /* ROOT VARIABLES */
-        /* ============================================================ */
         :root {
-            --bg-primary: #050816;
-            --bg-secondary: #08122c;
-            --bg-card: rgba(10, 15, 36, 0.75);
-            --border: rgba(255, 255, 255, 0.06);
+            --bg: #030611;
+            --sidebar-bg: #060919;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
             --blue: #3B82F6;
             --cyan: #06B6D4;
             --purple: #8B5CF6;
@@ -25,266 +22,321 @@
             --red: #EF4444;
             --white: #ffffff;
             --dim: rgba(255, 255, 255, 0.5);
-            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            min-height: 100vh;
+            background-color: var(--bg);
             color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
             overflow-x: hidden;
         }
 
-        /* ============================================================ */
-        /* ANIMATED BACKGROUND */
-        /* ============================================================ */
-        .bg-effects {
+        /* Sidebar */
+        .sidebar {
             position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .bg-effects .glow-1 {
-            position: absolute;
-            top: -20%;
-            left: -10%;
-            width: 60%;
-            height: 60%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 70%);
-            animation: floatGlow 12s ease-in-out infinite alternate;
-        }
-
-        .bg-effects .glow-2 {
-            position: absolute;
-            bottom: -20%;
-            right: -10%;
-            width: 50%;
-            height: 50%;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.10), transparent 70%);
-            animation: floatGlow 15s ease-in-out infinite alternate-reverse;
-        }
-
-        .bg-effects .glow-3 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 80%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.04), transparent 60%);
-            animation: pulseGlow 8s ease-in-out infinite alternate;
-        }
-
-        .bg-effects .grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.3;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, -30px) scale(1.1); }
-        }
-
-        @keyframes pulseGlow {
-            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
-        }
-
-        /* ============================================================ */
-        /* TOPBAR */
-        /* ============================================================ */
-        .topbar {
-            position: sticky;
             top: 0;
-            z-index: 100;
-            padding: 16px 30px;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            padding: 25px 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            background: rgba(5, 8, 22, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
         }
 
-        .topbar .logo {
+        .sidebar.open { transform: translateX(0); }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        .sidebar-brand { margin-bottom: 30px; }
+        .sidebar-brand h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: 2px;
-            text-decoration: none;
+        }
+        .sidebar-brand span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--blue);
+            display: block;
+            margin-top: 2px;
         }
 
-        .topbar .logo span {
-            font-size: 11px;
-            font-weight: 400;
-            color: var(--dim);
-            font-family: 'Inter', sans-serif;
+        .sidebar-close {
             background: none;
-            -webkit-background-clip: unset;
+            border: none;
             color: var(--dim);
-            letter-spacing: 1px;
-            margin-left: 6px;
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none;
+        }
+        .sidebar-close.mobile-show { display: block; }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
         }
 
-        .topbar-actions {
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--dim);
+            padding: 12px 16px 6px 16px;
+            font-weight: 600;
+        }
+
+        .nav-item a {
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-
-        .topbar-actions .btn-back {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 10px;
-            color: var(--white);
+            padding: 10px 16px;
+            color: var(--dim);
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
 
-        .topbar-actions .btn-back:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: var(--blue);
-            transform: translateX(-3px);
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--white);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
-        .topbar-actions .btn-back .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .topbar-actions .btn-back:hover .arrow {
-            transform: translateX(-4px);
-        }
-
-        /* Admin badge in topbar */
-        .admin-badge {
+        .sidebar-footer {
+            text-align: center;
             font-size: 10px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: rgba(236, 72, 153, 0.12);
-            color: var(--pink);
-            border: 1px solid rgba(236, 72, 153, 0.15);
-            display: none;
-            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
         }
 
-        .admin-badge.visible {
+        .sidebar-profile {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            margin: 0 auto 10px auto;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
+        .profile-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
             display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
         }
 
-        .btn-admin-panel {
+        /* Main Content */
+        .main-content {
+            padding: 16px 16px 80px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        /* Top Bar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(6, 9, 25, 0.6);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .topbar-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .topbar-name small {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--dim);
+        }
+
+        .btn-action {
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 16px;
-            border-radius: 10px;
-            color: var(--white);
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            background: rgba(236, 72, 153, 0.08);
-            border: 1px solid rgba(236, 72, 153, 0.15);
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border);
+            color: var(--white);
+        }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--red);
+        }
+        .btn-logout:hover {
+            background: var(--red);
+            color: var(--white);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        .btn-admin-panel:hover {
-            background: rgba(236, 72, 153, 0.15);
-            border-color: var(--pink);
+        /* Hero */
+        .hero-terminal {
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
         }
 
-        .btn-admin-panel.hidden {
-            display: none;
-        }
-
-        /* ============================================================ */
-        /* HERO */
-        /* ============================================================ */
-        .hero {
-            position: relative;
-            z-index: 1;
-            padding: 40px 30px 20px 30px;
-            text-align: center;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .hero .badge {
-            display: inline-block;
-            padding: 6px 18px;
-            border-radius: 30px;
+        .env-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: rgba(6, 182, 212, 0.10);
-            border: 1px solid rgba(6, 182, 212, 0.15);
             color: var(--cyan);
+            font-size: 12px;
+            font-weight: bold;
             margin-bottom: 12px;
+            letter-spacing: 1px;
         }
 
-        .hero h1 {
+        .hero-terminal h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(32px, 5vw, 50px);
-            font-weight: 900;
-            line-height: 1.1;
+            font-size: 26px;
+            font-weight: 700;
             margin-bottom: 10px;
         }
-
-        .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple));
-            -webkit-background-clip: text;
-            color: transparent;
-            background-size: 200% 200%;
-            animation: gradientMove 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        .hero p {
+        .hero-terminal p {
             color: var(--dim);
-            font-size: 15px;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 14px;
         }
 
-        /* ============================================================ */
-        /* CATEGORY GRID */
-        /* ============================================================ */
-        .categories-section {
-            position: relative;
-            z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 30px 40px 30px;
+        /* Admin Button */
+        .admin-panel-btn {
+            display: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
         }
 
+        .admin-panel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
+        }
+
+        .admin-panel-btn.visible {
+            display: inline-block;
+        }
+
+        /* Category Grid */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -292,359 +344,196 @@
         }
 
         .category-card {
-            display: block;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
             text-decoration: none;
             color: var(--white);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 28px 22px;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
             cursor: pointer;
-            text-align: center;
-        }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 18px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(59, 130, 246, 0.05));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .category-card:hover::before {
-            opacity: 1;
         }
 
         .category-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(6, 182, 212, 0.2);
-            box-shadow: 0 12px 40px rgba(6, 182, 212, 0.06);
-            background: rgba(10, 15, 36, 0.9);
-        }
-
-        .category-card .card-glow {
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.04), transparent 70%);
-            pointer-events: none;
-            transition: all 0.6s ease;
-            opacity: 0;
-        }
-
-        .category-card:hover .card-glow {
-            opacity: 1;
-            transform: scale(1.2);
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
         .category-card .icon {
-            font-size: 42px;
+            font-size: 40px;
             display: block;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 10px;
         }
 
         .category-card .name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            position: relative;
-            z-index: 1;
         }
 
         .category-card .count {
             font-size: 12px;
             color: var(--dim);
-            margin-top: 6px;
-            position: relative;
-            z-index: 1;
+            margin-top: 4px;
         }
 
-        .category-card .arrow-link {
-            color: var(--dim);
-            font-size: 14px;
-            transition: all 0.3s ease;
-            opacity: 0.3;
-            display: inline-block;
-            margin-top: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .category-card:hover .arrow-link {
-            opacity: 1;
-            color: var(--cyan);
-            transform: translateX(4px);
-        }
-
-        /* Category card color variants */
-        .category-card.books {
-            border-color: rgba(59, 130, 246, 0.1);
-        }
-        .category-card.books::before {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
-        }
-        .category-card.books .name { color: var(--blue); }
-
-        .category-card.youtube {
-            border-color: rgba(239, 68, 68, 0.1);
-        }
-        .category-card.youtube::before {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
-        }
-        .category-card.youtube .name { color: var(--red); }
-
-        .category-card.lectures {
-            border-color: rgba(139, 92, 246, 0.1);
-        }
-        .category-card.lectures::before {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05));
-        }
-        .category-card.lectures .name { color: var(--purple); }
-
-        .category-card.exams {
-            border-color: rgba(245, 158, 11, 0.1);
-        }
-        .category-card.exams::before {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
-        }
-        .category-card.exams .name { color: var(--yellow); }
-
-        /* ============================================================ */
-        /* ADMIN TOGGLE - Floating Admin Button */
-        /* ============================================================ */
-        .admin-float-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            padding: 14px 22px;
-            border-radius: 50px;
-            background: linear-gradient(135deg, var(--pink), var(--purple));
-            color: var(--white);
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
-            transition: all 0.3s ease;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .admin-float-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(236, 72, 153, 0.4);
-        }
-
-        .admin-float-btn.visible {
-            display: flex;
-        }
-
-        /* ============================================================ */
-        /* RESPONSIVE */
-        /* ============================================================ */
-        @media (max-width: 768px) {
-            .topbar {
-                padding: 12px 16px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .topbar .logo {
-                font-size: 18px;
-            }
-
-            .topbar .logo span {
-                font-size: 9px;
-            }
-
-            .topbar-actions {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .topbar-actions .btn-back {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
-            .btn-admin-panel {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
-            .hero {
-                padding: 30px 16px 10px 16px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .categories-section {
-                padding: 10px 16px 30px 16px;
-            }
-
-            .categories-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 14px;
-            }
-
-            .category-card {
-                padding: 20px 16px;
-            }
-
-            .category-card .icon {
-                font-size: 32px;
-            }
-
-            .category-card .name {
-                font-size: 15px;
-            }
-
-            .admin-float-btn {
-                bottom: 20px;
-                right: 20px;
-                padding: 12px 18px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .categories-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .topbar-actions .btn-back span {
-                display: none;
-            }
-
-            .btn-admin-panel span {
-                display: none;
-            }
+        /* Responsive */
+        @media (min-width: 600px) {
+            .main-content { padding: 20px 24px 80px 24px; }
+            .topbar { padding: 16px 24px; }
+            .categories-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (min-width: 1024px) {
-            .categories-grid {
-                grid-template-columns: repeat(4, 1fr);
+            .sidebar {
+                transform: translateX(0);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                width: 260px;
+                border-radius: 0;
+                z-index: 50;
             }
+            .sidebar-overlay { display: none !important; }
+            .sidebar-close.mobile-show { display: none !important; }
+            body { display: flex; gap: 0; }
+            .main-content {
+                padding: 24px 32px 80px 32px;
+                flex: 1;
+                max-width: 100%;
+            }
+            .topbar { display: none; }
+            .menu-toggle { display: none !important; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-terminal h2 { font-size: 20px; }
+            .hero-terminal { padding: 20px; }
+            .categories-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .category-card { padding: 16px; }
+            .category-card .icon { font-size: 32px; }
+            .topbar .btn-action span { display: none; }
+        }
+
+        @media (max-width: 400px) {
+            .categories-grid { grid-template-columns: 1fr; }
+            .admin-panel-btn { width: 100%; text-align: center; }
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- BACKGROUND EFFECTS -->
-    <!-- ============================================================ -->
-    <div class="bg-effects">
-        <div class="glow-1"></div>
-        <div class="glow-2"></div>
-        <div class="glow-3"></div>
-        <div class="grid-overlay"></div>
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h1>CS HUB</h1>
+                <span>STUDENT PORTAL</span>
+            </div>
+            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">📊 Dashboard</a></li>
+                
+                <li class="nav-section-title">LEARN</li>
+                <li class="nav-item"><a href="foundation.html">📐 Foundation</a></li>
+                <li class="nav-item"><a href="year1.html">📘 Year 1</a></li>
+                <li class="nav-item"><a href="year2.html">📗 Year 2</a></li>
+                <li class="nav-item"><a href="year3.html">📕 Year 3</a></li>
+                <li class="nav-item"><a href="year4.html">📙 Year 4</a></li>
+                
+                <li class="nav-section-title">EXPLORE</li>
+                <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
+                <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
+                <li class="nav-item active"><a href="revision-material.html">📚 Revision Material</a></li>
+                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
+                
+                <li class="nav-section-title">ACCOUNT</li>
+                <li class="nav-item"><a href="profile.html">👤 Profile</a></li>
+                <li class="nav-item"><a href="#" onclick="logout()">🚪 Logout</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="sidebar-profile">
+                <div class="profile-avatar" id="userAvatar">U</div>
+                <div class="profile-name" id="userName">User</div>
+                <div class="profile-role" id="userRole">Student</div>
+            </div>
+            <div class="sidebar-footer">© 2026 CS Hub</div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- TOP BAR (mobile only) -->
+        <div class="topbar">
+            <button class="menu-toggle" onclick="openSidebar()">☰</button>
+            <div class="topbar-user">
+                <span class="topbar-name" id="topbarName">
+                    User
+                    <small id="topbarEmail">user@email.com</small>
+                </span>
+                <div class="topbar-avatar" id="topbarAvatar">U</div>
+            </div>
+            <button class="btn-action btn-logout" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- HERO -->
+        <section class="hero-terminal">
+            <div class="env-tag">[ >_ REVISION MATERIALS ]</div>
+            <h2>📚 Revision Materials</h2>
+            <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
+        </section>
+
+        <!-- ADMIN PANEL BUTTON - Shows for both admins -->
+        <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
+
+        <!-- CATEGORIES -->
+        <div class="categories-grid">
+            <a href="revision-books.html" class="category-card">
+                <span class="icon">📚</span>
+                <span class="name">Books &amp; Guides</span>
+                <span class="count" id="booksCount">0 items</span>
+            </a>
+            <a href="revision-youtube.html" class="category-card">
+                <span class="icon">📺</span>
+                <span class="name">YouTube Tutorials</span>
+                <span class="count" id="youtubeCount">0 items</span>
+            </a>
+            <a href="revision-lectures.html" class="category-card">
+                <span class="icon">🎥</span>
+                <span class="name">Lecture Videos</span>
+                <span class="count" id="lecturesCount">0 items</span>
+            </a>
+            <a href="revision-exams.html" class="category-card">
+                <span class="icon">📝</span>
+                <span class="name">Exams &amp; CATs</span>
+                <span class="count" id="examsCount">0 items</span>
+            </a>
+        </div>
+
     </div>
 
-    <!-- ============================================================ -->
-    <!-- TOPBAR -->
-    <!-- ============================================================ -->
-    <header class="topbar">
-        <a href="dashboard.html" class="logo">
-            CS HUB
-            <span>Revision</span>
-        </a>
-        <div class="topbar-actions">
-            <a href="dashboard.html" class="btn-back">
-                <span class="arrow">←</span>
-                <span>Dashboard</span>
-            </a>
-            <span class="admin-badge" id="adminBadge">🔑 Admin</span>
-            <a href="revision-admin.html" class="btn-admin-panel hidden" id="adminPanelBtn">
-                ⚙️ <span>Manage</span>
-            </a>
-        </div>
-    </header>
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
 
-    <!-- ============================================================ -->
-    <!-- HERO -->
-    <!-- ============================================================ -->
-    <section class="hero">
-        <div class="badge">📚 Learning Resources</div>
-        <h1>
-            <span class="gradient-text">Revision Materials</span>
-        </h1>
-        <p>Access books, YouTube tutorials, lecture videos, and past exams to boost your learning.</p>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- CATEGORIES GRID -->
-    <!-- ============================================================ -->
-    <section class="categories-section">
-        <div class="categories-grid">
-
-            <!-- Books -->
-            <a href="revision-books.html" class="category-card books">
-                <div class="card-glow"></div>
-                <span class="icon">📚</span>
-                <div class="name">Books &amp; Guides</div>
-                <div class="count" id="booksCount">0 items</div>
-                <span class="arrow-link">Browse →</span>
-            </a>
-
-            <!-- YouTube -->
-            <a href="revision-youtube.html" class="category-card youtube">
-                <div class="card-glow"></div>
-                <span class="icon">📺</span>
-                <div class="name">YouTube Tutorials</div>
-                <div class="count" id="youtubeCount">0 items</div>
-                <span class="arrow-link">Browse →</span>
-            </a>
-
-            <!-- Lectures -->
-            <a href="revision-lectures.html" class="category-card lectures">
-                <div class="card-glow"></div>
-                <span class="icon">🎥</span>
-                <div class="name">Lecture Videos</div>
-                <div class="count" id="lecturesCount">0 items</div>
-                <span class="arrow-link">Browse →</span>
-            </a>
-
-            <!-- Exams -->
-            <a href="revision-exams.html" class="category-card exams">
-                <div class="card-glow"></div>
-                <span class="icon">📝</span>
-                <div class="name">Exams &amp; CATs</div>
-                <div class="count" id="examsCount">0 items</div>
-                <span class="arrow-link">Browse →</span>
-            </a>
-
-        </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- FLOATING ADMIN BUTTON -->
-    <!-- ============================================================ -->
-    <a href="revision-admin.html" class="admin-float-btn" id="adminFloatBtn">
-        ⚙️ Admin Panel
-    </a>
-
-    <!-- ============================================================ -->
     <!-- FIREBASE -->
-    <!-- ============================================================ -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
@@ -661,7 +550,7 @@
             authDomain: "cs-hub-7c97b.firebaseapp.com",
             databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
             projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.appspot.com",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
             messagingSenderId: "76338162904",
             appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
@@ -670,56 +559,110 @@
         const auth = firebase.auth();
         const db = firebase.database();
 
-        const ADMIN_EMAIL = "lewiseinstein15@gmail.com";
+        // ============================================================
+        // ADMIN EMAILS - Add ALL admin emails here!
+        // ============================================================
+        const ADMIN_EMAILS = [
+            "lewiseinstein15@gmail.com",
+            "unscriptedusa@gmail.com"
+        ];
+
+        function isAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
 
         // ============================================================
-        // AUTH CHECK - Show/Hide Admin Elements
+        // SIDEBAR FUNCTIONS
         // ============================================================
-        auth.onAuthStateChanged((user) => {
-            const isAdmin = user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-            const adminBadge = document.getElementById('adminBadge');
-            const adminPanelBtn = document.getElementById('adminPanelBtn');
-            const adminFloatBtn = document.getElementById('adminFloatBtn');
-
-            if (isAdmin) {
-                adminBadge.classList.add('visible');
-                adminPanelBtn.classList.remove('hidden');
-                adminFloatBtn.classList.add('visible');
-                console.log('🔑 Admin detected - Revision management enabled');
-            } else {
-                adminBadge.classList.remove('visible');
-                adminPanelBtn.classList.add('hidden');
-                adminFloatBtn.classList.remove('visible');
-                console.log('👤 User mode - View only');
-            }
-
-            // Load counts regardless of auth
-            loadCounts();
-        });
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
         // ============================================================
-        // LOAD ITEM COUNTS
+        // LOAD COUNTS
         // ============================================================
         function loadCounts() {
             const categories = ['books', 'youtube', 'lectures', 'exams'];
-
             categories.forEach((cat) => {
-                const countEl = document.getElementById(cat + 'Count');
                 const ref = db.ref('materials/' + cat);
-
                 ref.on('value', (snapshot) => {
                     const data = snapshot.val();
                     let count = 0;
-                    if (data) {
-                        count = Object.keys(data).length;
-                    }
-                    countEl.textContent = count + ' item' + (count !== 1 ? 's' : '');
+                    if (data) count = Object.keys(data).length;
+                    document.getElementById(cat + 'Count').textContent = count + ' items';
                 });
             });
         }
 
+        // ============================================================
+        // AUTH CHECK - Show admin button for both admins
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const displayName = user.displayName || user.email.split('@')[0] || 'User';
+            const email = user.email || 'user@email.com';
+            const initial = displayName.charAt(0).toUpperCase();
+
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('topbarName').textContent = displayName;
+            document.getElementById('topbarEmail').textContent = email;
+
+            // ============================================================
+            // SHOW ADMIN PANEL BUTTON FOR BOTH ADMINS
+            // ============================================================
+            const adminBtn = document.getElementById('adminPanelBtn');
+            if (isAdmin(email)) {
+                adminBtn.classList.add('visible');
+                document.getElementById('userRole').textContent = '🔑 Admin';
+                console.log('🔑 Admin detected:', email);
+            } else {
+                adminBtn.classList.remove('visible');
+                document.getElementById('userRole').textContent = 'Student';
+                console.log('👤 Student detected:', email);
+            }
+
+            loadCounts();
+        });
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html";
+            });
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
         console.log('✅ Revision Materials page loaded!');
+        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
