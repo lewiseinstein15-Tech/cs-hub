@@ -278,7 +278,7 @@
         }
 
         .hero-terminal {
-            background: radial-gradient(circle at top left, rgba(245, 158, 11, 0.06), transparent), var(--card-bg);
+            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 30px;
@@ -287,7 +287,7 @@
 
         .env-tag {
             font-family: 'JetBrains Mono', monospace;
-            color: var(--yellow);
+            color: var(--blue);
             font-size: 12px;
             font-weight: bold;
             margin-bottom: 12px;
@@ -305,14 +305,14 @@
             font-size: 14px;
         }
 
-        .admin-panel-btn {
-            display: none;
-            padding: 8px 18px;
-            border-radius: 8px;
+        .manage-btn {
+            display: inline-flex;
+            padding: 10px 24px;
+            border-radius: 10px;
             background: linear-gradient(135deg, var(--pink), var(--purple));
             color: var(--white);
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             margin-bottom: 16px;
@@ -320,15 +320,14 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: fit-content;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
         }
 
-        .admin-panel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
-        }
-
-        .admin-panel-btn.visible {
-            display: inline-block;
+        .manage-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.4);
         }
 
         .items-grid {
@@ -352,7 +351,7 @@
 
         .item-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(245, 158, 11, 0.2);
+            border-color: rgba(59, 130, 246, 0.2);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
@@ -362,7 +361,7 @@
             right: -50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.04), transparent 70%);
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.04), transparent 70%);
             pointer-events: none;
             transition: all 0.6s ease;
             opacity: 0;
@@ -393,7 +392,7 @@
         .item-card .item-open {
             margin-top: 10px;
             font-size: 12px;
-            color: var(--yellow);
+            color: var(--blue);
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -417,9 +416,9 @@
             font-size: 9px;
             font-weight: 600;
             text-transform: uppercase;
-            background: rgba(245, 158, 11, 0.12);
-            color: var(--yellow);
-            border: 1px solid rgba(245, 158, 11, 0.1);
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.1);
             position: relative;
             z-index: 1;
         }
@@ -498,10 +497,6 @@
             .topbar .btn-action span { display: none; }
         }
 
-        @media (max-width: 400px) {
-            .admin-panel-btn { width: 100%; text-align: center; }
-        }
-
         .sidebar::-webkit-scrollbar {
             width: 3px;
         }
@@ -539,11 +534,7 @@
                 <li class="nav-section-title">EXPLORE</li>
                 <li class="nav-item"><a href="projects.html">💻 Projects</a></li>
                 <li class="nav-item"><a href="labs.html">🧪 Labs</a></li>
-                <li class="nav-item"><a href="revision-books.html">📚 Books</a></li>
-                <li class="nav-item"><a href="revision-youtube.html">📺 YouTube</a></li>
-                <li class="nav-item"><a href="revision-lectures.html">🎥 Lectures</a></li>
-                <li class="nav-item active"><a href="revision-exams.html">📝 Exams</a></li>
-                <li class="nav-item"><a href="revision-material.html">📚 Revision Material</a></li>
+                <li class="nav-item active"><a href="revision-material.html">📚 Revision Material</a></li>
                 <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
                 
                 <li class="nav-section-title">ACCOUNT</li>
@@ -576,17 +567,17 @@
         </div>
 
         <section class="hero-terminal">
-            <div class="env-tag">[ >_ EXAMS & CATs ]</div>
+            <div class="env-tag">[ >_ EXAMS & CATS ]</div>
             <h2>📝 Exams &amp; CATs</h2>
-            <p>Past examination papers, CATs, and assessment materials for your courses.</p>
+            <p>Past exam papers and continuous assessment tests for practice.</p>
         </section>
 
-        <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
+        <a href="revision-admin.html" class="manage-btn">⚙️ Manage Materials</a>
 
         <div class="items-grid" id="itemsGrid">
             <div class="empty-items">
                 <span class="empty-icon">📭</span>
-                <p>No exams or CATs added yet. Check back later!</p>
+                <p>No exams added yet. Check back later!</p>
             </div>
         </div>
 
@@ -619,40 +610,7 @@
         const db = firebase.firestore();
         const rtdb = firebase.database();
 
-        const ADMIN_EMAILS = [
-            "lewiseinstein15@gmail.com",
-            "unscriptedusa@gmail.com"
-        ];
-
         const CATEGORY = 'exams';
-
-        async function isAdmin(email) {
-            if (!email) return false;
-            
-            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
-                console.log("✅ Admin found in hardcoded list:", email);
-                return true;
-            }
-            
-            try {
-                const snapshot = await db.collection("Users")
-                    .where("email", "==", email)
-                    .get();
-                
-                if (!snapshot.empty) {
-                    const userData = snapshot.docs[0].data();
-                    if (userData.role && userData.role.toLowerCase() === "admin") {
-                        console.log("✅ Admin found in Firestore:", email);
-                        return true;
-                    }
-                }
-            } catch (error) {
-                console.log("⚠️ Firestore check failed:", error);
-            }
-            
-            console.log("👤 Not admin:", email);
-            return false;
-        }
 
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
@@ -675,13 +633,13 @@
                 const items = grid.querySelectorAll('.item-card');
                 items.forEach(el => el.remove());
 
+                const empty = grid.querySelector('.empty-items');
+                
                 if (!data) {
-                    const empty = grid.querySelector('.empty-items');
                     if (empty) empty.style.display = 'block';
                     return;
                 }
 
-                const empty = grid.querySelector('.empty-items');
                 if (empty) empty.style.display = 'none';
 
                 const keys = Object.keys(data);
@@ -700,6 +658,9 @@
                     `;
                     grid.appendChild(card);
                 });
+            }, (error) => {
+                console.error('❌ Error loading exams:', error);
+                showToast('❌ Error loading exams: ' + error.message, 'error');
             });
         }
 
@@ -717,19 +678,7 @@
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
-
-            const adminStatus = await isAdmin(email);
-            const adminBtn = document.getElementById('adminPanelBtn');
-
-            if (adminStatus) {
-                adminBtn.classList.add('visible');
-                document.getElementById('userRole').textContent = '🔑 Admin';
-                console.log('✅ Admin detected:', email);
-            } else {
-                adminBtn.classList.remove('visible');
-                document.getElementById('userRole').textContent = 'Student';
-                console.log('👤 Student detected:', email);
-            }
+            document.getElementById('userRole').textContent = 'Student';
 
             loadItems();
         });
