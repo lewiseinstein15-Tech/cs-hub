@@ -1,74 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CS HUB - Admin Dashboard</title>
-    <!-- Keep your existing styles and fonts here -->
-</head>
-<body>
-    <!-- SIDEBAR AND MAIN CONTENT REMAIN UNCHANGED -->
-    
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+    // FIREBASE CONFIG
+    const firebaseConfig = {
+        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+        authDomain: "cs-hub-7c97b.firebaseapp.com",
+        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+        projectId: "cs-hub-7c97b",
+        storageBucket: "cs-hub-7c97b.firebasestorage.app",
+        messagingSenderId: "76338162904",
+        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+    };
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-            authDomain: "cs-hub-7c97b.firebaseapp.com",
-            databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
-            projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.firebasestorage.app",
-            messagingSenderId: "76338162904",
-            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const ADMIN_EMAILS = ["lewiseinstein15@gmail.com", "unscriptedusa@gmail.com"];
+    const ADMIN_NAMES = { "lewiseinstein15@gmail.com": "Lewis Einstein", "unscriptedusa@gmail.com": "Newton" };
+
+    // SECURE ADMIN CHECK
+    async function isAdmin(email) {
+        if (!email) return false;
+        try {
+            const snapshot = await db.collection("Users").where("email", "==", email.toLowerCase()).get();
+            if (!snapshot.empty) {
+                const userData = snapshot.docs[0].data();
+                if (userData.role === "admin") return true;
+            }
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        } catch (e) { return false; }
+    }
+
+    // AUTH STATE LISTENER
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+            console.log("No user logged in.");
+            return;
+        }
+
+        const authorized = await isAdmin(user.email);
+        if (!authorized) {
+            console.log("Access restricted.");
+            return;
+        }
+
+        // UPDATE UI SAFELY
+        const adminName = ADMIN_NAMES[user.email.toLowerCase()] || "Admin";
+        
+        const selectors = {
+            'profileName': adminName,
+            'topbarName': adminName,
+            'profileAvatar': adminName.charAt(0).toUpperCase(),
+            'topbarAvatar': adminName.charAt(0).toUpperCase()
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        const ADMIN_EMAILS = ["lewiseinstein15@gmail.com", "unscriptedusa@gmail.com"];
-        const ADMIN_NAMES = { "lewiseinstein15@gmail.com": "Lewis Einstein", "unscriptedusa@gmail.com": "Newton" };
-
-        async function isAdmin(email) {
-            if (!email) return false;
-            const normalizedEmail = email.toLowerCase();
-            try {
-                const snapshot = await db.collection("Users").where("email", "==", normalizedEmail).get();
-                if (!snapshot.empty) {
-                    const userData = snapshot.docs[0].data();
-                    if (userData.role === "admin") return true;
-                }
-                return ADMIN_EMAILS.includes(normalizedEmail);
-            } catch (e) { return false; }
+        for (const [id, value] of Object.entries(selectors)) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
         }
 
-        auth.onAuthStateChanged(async (user) => {
-            if (!user || !(await isAdmin(user.email))) {
-                window.location.href = "index.html";
-                return;
-            }
+        // START FEATURES
+        if (typeof startWelcomeAnimation === 'function') startWelcomeAnimation(adminName);
+        if (typeof loadStats === 'function') loadStats();
+        if (typeof loadActivityFeed === 'function') loadActivityFeed();
+    });
 
-            const adminName = ADMIN_NAMES[user.email.toLowerCase()] || "Admin";
-            
-            // DOM Elements
-            document.getElementById('profileName').textContent = adminName;
-            document.getElementById('topbarName').textContent = adminName;
-            
-            // Initialization
-            startWelcomeAnimation(adminName);
-            loadStats();
-            loadActivityFeed();
-        });
-
-        // KEEP YOUR EXISTING ANIMATION AND DATA LOADING FUNCTIONS BELOW
-        // ... (startWelcomeAnimation, typeQuote, loadStats, loadActivityFeed) ...
-
-        function logout() {
-            auth.signOut().then(() => window.location.href = "index.html");
-        }
-    </script>
-</body>
-</html>
+    function logout() {
+        auth.signOut().then(() => window.location.href = "index.html");
+    }
+</script>
