@@ -958,21 +958,50 @@
         const rtdb = firebase.database();
 
         // ============================================================
-        // ADMIN EMAILS & NAMES
+        // ADMIN EMAILS - Add ALL admin emails here!
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
             "unscriptedusa@gmail.com"
         ];
 
-        // Map emails to display names
+        // ============================================================
+        // ADMIN NAMES - Core Founders
+        // ============================================================
         const ADMIN_NAMES = {
-            "lewiseinstein15@gmail.com": "Admin Lewis",
-            "unscriptedusa@gmail.com": "Admin Newton"
+            "lewiseinstein15@gmail.com": "Lewis Einstein",
+            "unscriptedusa@gmail.com": "Newton"
         };
 
-        function isAdmin(email) {
-            return ADMIN_EMAILS.includes(email.toLowerCase());
+        // ============================================================
+        // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
+        // ============================================================
+        async function isAdmin(email) {
+            if (!email) return false;
+            
+            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
+                console.log("✅ Admin found in hardcoded list:", email);
+                return true;
+            }
+            
+            try {
+                const snapshot = await db.collection("Users")
+                    .where("email", "==", email)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const userData = snapshot.docs[0].data();
+                    if (userData.role && userData.role.toLowerCase() === "admin") {
+                        console.log("✅ Admin found in Firestore:", email);
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ Firestore check failed:", error);
+            }
+            
+            console.log("👤 Not admin:", email);
+            return false;
         }
 
         function getAdminName(email) {
@@ -1015,17 +1044,13 @@
         }
 
         function startWelcomeAnimation(adminName) {
-            // Set the env tag
             document.getElementById('envTag').textContent = '[ >_ ADMIN ENVIRONMENT ]';
             
-            // Type "Welcome back, "
             const prefixEl = document.getElementById('typedPrefix');
             prefixEl.textContent = '';
             
-            // Type the admin name
             typeWriterWithCursor(adminName, 'typedName', 50, () => {
                 document.getElementById('typingCursor').style.display = 'inline-block';
-                // Start quote after welcome
                 setTimeout(() => {
                     typeQuote();
                 }, 400);
@@ -1033,11 +1058,13 @@
         }
 
         function typeQuote() {
+            // Updated quote with both founders
             const quoteText = 
-                '<span class="code-keyword">function</span> <span class="code-function">learn</span>() {<br>' +
-                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">const</span> <span class="code-string">knowledge</span> = <span class="code-function">build</span>();<br>' +
-                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> knowledge.<span class="code-function">apply</span>();<br>' +
-                '}';
+                '<span class="code-keyword">const</span> <span class="code-string">csHub</span> = <span class="code-function">build</span>({<br>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">founders</span>: [<span class="code-string">"Lewis Einstein"</span>, <span class="code-string">"Newton"</span>],<br>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">mission</span>: <span class="code-string">"Empower CS students"</span><br>' +
+                '});<br>' +
+                '<span class="code-keyword">return</span> csHub.<span class="code-function">learn</span>();';
             
             const el = document.getElementById('quoteText');
             const authorEl = document.getElementById('quoteAuthor');
@@ -1071,7 +1098,7 @@
                 } else {
                     cursorEl.style.display = 'none';
                     setTimeout(() => {
-                        typeWriterWithCursor('— Lewis Einstein, CS HUB Founder', 'quoteAuthor', 30);
+                        typeWriterWithCursor('— Lewis Einstein & Newton, CS HUB Founders', 'quoteAuthor', 30);
                     }, 400);
                 }
             }
@@ -1080,15 +1107,14 @@
         }
 
         // ============================================================
-        // AUTH CHECK - CORRECTED WITH DYNAMIC NAMES
+        // AUTH CHECK - Supports multiple admins with dynamic names
         // ============================================================
-        auth.onAuthStateChanged((user) => {
-            if (!user || !isAdmin(user.email)) {
+        auth.onAuthStateChanged(async (user) => {
+            if (!user || !(await isAdmin(user.email))) {
                 window.location.href = "index.html";
                 return;
             }
             
-            // Get the admin's display name
             const adminName = getAdminName(user.email);
             const initial = adminName.charAt(0).toUpperCase();
             const email = user.email || 'admin@cshub.com';
@@ -1098,13 +1124,11 @@
             // Update sidebar profile
             document.getElementById('profileName').textContent = adminName;
             document.getElementById('profileAvatar').textContent = initial;
-            document.getElementById('profileRole').textContent = 'Super Admin';
+            document.getElementById('profileRole').textContent = 'Core Founder';
 
             // Update topbar
-            document.getElementById('topbarName').innerHTML = `
-                ${adminName}
-                <small>${email}</small>
-            `;
+            document.getElementById('topbarName').textContent = adminName;
+            document.getElementById('topbarEmail').textContent = email;
             document.getElementById('topbarAvatar').textContent = initial;
 
             // Start the typing animation with the admin's name
