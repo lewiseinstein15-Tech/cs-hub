@@ -342,21 +342,6 @@
             margin-top: 2px;
         }
 
-        /* Admin Badge */
-        .admin-badge {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 12px;
-            font-size: 9px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: rgba(236, 72, 153, 0.12);
-            color: var(--pink);
-            border: 1px solid rgba(236, 72, 153, 0.15);
-            margin-left: 8px;
-        }
-
         /* Filter Bar */
         .filter-bar {
             display: flex;
@@ -1026,13 +1011,6 @@
             "unscriptedusa@gmail.com"
         ];
 
-        function isAdmin(email) {
-            return ADMIN_EMAILS.includes(email.toLowerCase());
-        }
-
-        let isAdminUser = false;
-        let allLabs = [];
-
         // ============================================================
         // SIDEBAR FUNCTIONS
         // ============================================================
@@ -1049,6 +1027,13 @@
         }
 
         // ============================================================
+        // CHECK IF USER IS ADMIN
+        // ============================================================
+        function checkIsAdmin(email) {
+            return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
+
+        // ============================================================
         // AUTH CHECK
         // ============================================================
         auth.onAuthStateChanged((user) => {
@@ -1062,24 +1047,31 @@
             const initial = displayName.charAt(0).toUpperCase();
 
             // CHECK ADMIN STATUS
-            isAdminUser = isAdmin(email);
+            const isAdminUser = checkIsAdmin(email);
+
+            console.log('📧 User email:', email);
+            console.log('🔑 Is admin?', isAdminUser);
 
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
+            // SHOW ADMIN CONTROLS
+            const toggleBtn = document.getElementById('toggleFormBtn');
             if (isAdminUser) {
                 document.getElementById('userRole').textContent = '🔑 Admin';
-                document.getElementById('toggleFormBtn').classList.add('visible');
-                console.log('🔑 Admin mode ACTIVATED - showing admin controls');
+                toggleBtn.classList.add('visible');
+                toggleBtn.style.display = 'inline-block';
+                console.log('✅ Admin controls ENABLED');
             } else {
                 document.getElementById('userRole').textContent = 'Student';
-                document.getElementById('toggleFormBtn').classList.remove('visible');
-                console.log('👤 Student mode - admin controls hidden');
+                toggleBtn.classList.remove('visible');
+                toggleBtn.style.display = 'none';
+                console.log('👤 Admin controls DISABLED');
             }
 
-            loadLabs();
+            loadLabs(isAdminUser);
         });
 
         // ============================================================
@@ -1108,7 +1100,8 @@
         // ADD LAB (Admin Only)
         // ============================================================
         function addLab() {
-            if (!isAdminUser) {
+            const email = auth.currentUser?.email;
+            if (!checkIsAdmin(email)) {
                 showToast('❌ Admin access required', 'error');
                 return;
             }
@@ -1132,7 +1125,7 @@
                 year: year,
                 difficulty: difficulty,
                 description: description || 'No description provided.',
-                labNumber: labNumber || 'Lab ' + (allLabs.length + 1),
+                labNumber: labNumber || 'Lab ' + (Date.now() % 1000),
                 dueDate: dueDate || 'No deadline',
                 status: 'Not Started',
                 progress: 0,
@@ -1190,7 +1183,8 @@
         // DELETE LAB (Admin Only)
         // ============================================================
         function deleteLab(id, title) {
-            if (!isAdminUser) {
+            const email = auth.currentUser?.email;
+            if (!checkIsAdmin(email)) {
                 showToast('❌ Admin access required', 'error');
                 return;
             }
@@ -1212,14 +1206,14 @@
         // ============================================================
         // LOAD LABS
         // ============================================================
-        function loadLabs() {
+        function loadLabs(isAdminUser) {
             const grid = document.getElementById('labsGrid');
 
             db.collection('labs')
                 .orderBy('createdAt', 'desc')
                 .onSnapshot((snapshot) => {
                     grid.innerHTML = '';
-                    allLabs = [];
+                    let allLabs = [];
 
                     if (snapshot.empty) {
                         grid.innerHTML = `
@@ -1253,6 +1247,7 @@
                         const card = document.createElement('div');
                         card.className = 'lab-card';
 
+                        // ADMIN CONTROLS - Only show if user is admin
                         let adminControlsHTML = '';
                         if (isAdminUser) {
                             adminControlsHTML = `
@@ -1343,11 +1338,18 @@
         // UPDATE STATS
         // ============================================================
         function updateStats(total) {
-            const completed = allLabs.filter(l => l.status === 'Completed').length;
-            const inProgress = allLabs.filter(l => l.status === 'In Progress').length;
-            const notStarted = allLabs.filter(l => l.status === 'Not Started' || !l.status).length;
+            // Recalculate stats from DOM since allLabs is not accessible here
+            const cards = document.querySelectorAll('.lab-card');
+            let completed = 0, inProgress = 0, notStarted = 0;
+            
+            cards.forEach((card) => {
+                const status = card.querySelector('.lab-status')?.textContent?.toLowerCase() || '';
+                if (status.includes('completed')) completed++;
+                else if (status.includes('in progress')) inProgress++;
+                else if (status.includes('not started')) notStarted++;
+            });
 
-            document.getElementById('totalLabs').textContent = total || allLabs.length;
+            document.getElementById('totalLabs').textContent = total || cards.length;
             document.getElementById('completedLabs').textContent = completed;
             document.getElementById('inProgressLabs').textContent = inProgress;
             document.getElementById('notStartedLabs').textContent = notStarted;
