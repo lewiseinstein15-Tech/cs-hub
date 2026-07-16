@@ -322,15 +322,16 @@
             width: fit-content;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
         }
 
         .admin-panel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.3);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.4);
         }
 
         .admin-panel-btn.visible {
-            display: inline-flex;
+            display: inline-flex !important;
         }
 
         .revision-grid {
@@ -470,6 +471,7 @@
             .hero-terminal { padding: 20px; }
             .topbar .btn-action span { display: none; }
             .revision-grid { grid-template-columns: 1fr; }
+            .admin-panel-btn { width: 100%; justify-content: center; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -621,7 +623,7 @@
         const rtdb = firebase.database();
 
         // ============================================================
-        // ADMIN EMAILS - Add ALL admin emails here!
+        // ADMIN EMAILS - Both admins!
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
@@ -631,35 +633,29 @@
         const CATEGORIES = ['books', 'youtube', 'lectures', 'exams'];
 
         // ============================================================
-        // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
+        // CHECK ADMIN - BOTH ADMINS!
         // ============================================================
-        async function checkIsAdmin(email) {
-            if (!email) return false;
+        function checkIsAdmin(email) {
+            if (!email) {
+                console.log('❌ No email provided to check');
+                return false;
+            }
             
-            // Check hardcoded list first
-            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
-                console.log("✅ Admin found in hardcoded list:", email);
+            console.log('🔍 Checking if user is admin:', email);
+            console.log('📧 Email to check:', email.toLowerCase());
+            console.log('📋 Admin list:', ADMIN_EMAILS);
+            
+            // Check against hardcoded list (case insensitive)
+            const isAdmin = ADMIN_EMAILS.some(adminEmail => 
+                adminEmail.toLowerCase() === email.toLowerCase()
+            );
+            
+            if (isAdmin) {
+                console.log('✅ Admin found in hardcoded list:', email);
                 return true;
             }
             
-            // Then check Firestore
-            try {
-                const snapshot = await db.collection("Users")
-                    .where("email", "==", email)
-                    .get();
-                
-                if (!snapshot.empty) {
-                    const userData = snapshot.docs[0].data();
-                    if (userData.role && userData.role.toLowerCase() === "admin") {
-                        console.log("✅ Admin found in Firestore:", email);
-                        return true;
-                    }
-                }
-            } catch (error) {
-                console.log("⚠️ Firestore check failed:", error);
-            }
-            
-            console.log("👤 Not admin:", email);
+            console.log('❌ Not admin:', email);
             return false;
         }
 
@@ -692,10 +688,13 @@
         }
 
         // ============================================================
-        // AUTH STATE - WITH PROPER ADMIN CHECK
+        // AUTH STATE - Check for BOTH admins!
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
+            console.log('🔐 Auth state changed');
+            
             if (!user) {
+                console.log('❌ No user, redirecting to login...');
                 window.location.href = "login.html";
                 return;
             }
@@ -704,23 +703,29 @@
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
 
+            console.log('👤 User:', displayName);
+            console.log('📧 User email:', email);
+
             document.getElementById('userName').textContent = displayName;
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            // CHECK IF USER IS ADMIN
-            const adminStatus = await checkIsAdmin(email);
+            // CHECK IF USER IS ADMIN - SIMPLE CHECK!
+            const isAdminUser = checkIsAdmin(email);
             const adminBtn = document.getElementById('adminPanelBtn');
 
-            if (adminStatus) {
+            console.log('🎯 Is user admin?', isAdminUser);
+
+            if (isAdminUser) {
                 adminBtn.classList.add('visible');
                 document.getElementById('userRole').textContent = '🔑 Admin';
-                console.log('✅ Admin detected:', email);
+                console.log('✅ Admin detected - showing admin panel button');
+                console.log('👑 Welcome Admin:', displayName);
             } else {
                 adminBtn.classList.remove('visible');
                 document.getElementById('userRole').textContent = 'Student';
-                console.log('👤 Student detected:', email);
+                console.log('👤 Student detected - hiding admin panel button');
             }
 
             loadCounts();
@@ -745,6 +750,8 @@
         }
 
         console.log('✅ Revision Materials page loaded!');
+        console.log('👑 Admin emails:', ADMIN_EMAILS);
+        console.log('📝 Admin count:', ADMIN_EMAILS.length);
     </script>
 
 </body>
