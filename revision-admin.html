@@ -670,6 +670,8 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
     </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js">
     </script>
 
@@ -682,25 +684,55 @@
             authDomain: "cs-hub-7c97b.firebaseapp.com",
             databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
             projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.appspot.com",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
             messagingSenderId: "76338162904",
             appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.database();
+        const db = firebase.firestore();
+        const rtdb = firebase.database();
 
         // ============================================================
-        // ADMIN EMAILS - Add ALL admin emails here!
+        // ADMIN EMAILS - Hardcoded list
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
             "unscriptedusa@gmail.com"
         ];
 
-        function isAdmin(email) {
-            return ADMIN_EMAILS.includes(email.toLowerCase());
+        // ============================================================
+        // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
+        // ============================================================
+        async function isAdmin(email) {
+            if (!email) return false;
+            
+            // Check hardcoded list first
+            if (ADMIN_EMAILS.includes(email.toLowerCase())) {
+                console.log("✅ Admin found in hardcoded list:", email);
+                return true;
+            }
+            
+            // Check Firestore Users collection
+            try {
+                const snapshot = await db.collection("Users")
+                    .where("email", "==", email)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const userData = snapshot.docs[0].data();
+                    if (userData.role && userData.role.toLowerCase() === "admin") {
+                        console.log("✅ Admin found in Firestore:", email);
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log("⚠️ Firestore check failed:", error);
+            }
+            
+            console.log("👤 Not admin:", email);
+            return false;
         }
 
         // ============================================================
@@ -725,13 +757,21 @@
         const toast = document.getElementById('toast');
 
         // ============================================================
-        // AUTH CHECK - Now supports multiple admins
+        // AUTH CHECK - Check both hardcoded and Firestore
         // ============================================================
-        auth.onAuthStateChanged((user) => {
-            if (!user || !isAdmin(user.email)) {
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
                 window.location.href = 'revision-material.html';
                 return;
             }
+            
+            const isAdminUser = await isAdmin(user.email);
+            
+            if (!isAdminUser) {
+                window.location.href = 'revision-material.html';
+                return;
+            }
+            
             console.log('✅ Admin authenticated:', user.email);
             loadCounts();
             loadItems(currentCategory);
@@ -773,7 +813,7 @@
         function loadCounts() {
             const categories = ['books', 'youtube', 'lectures', 'exams'];
             categories.forEach((cat) => {
-                const ref = db.ref('materials/' + cat);
+                const ref = rtdb.ref('materials/' + cat);
                 ref.on('value', (snapshot) => {
                     const data = snapshot.val();
                     let count = 0;
@@ -787,7 +827,7 @@
         // LOAD ITEMS
         // ============================================================
         function loadItems(category) {
-            const ref = db.ref('materials/' + category);
+            const ref = rtdb.ref('materials/' + category);
 
             ref.on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -851,7 +891,7 @@
                 return;
             }
 
-            const ref = db.ref('materials/' + category);
+            const ref = rtdb.ref('materials/' + category);
 
             if (key) {
                 // Update existing
@@ -885,7 +925,7 @@
         // EDIT ITEM
         // ============================================================
         function editItem(category, key) {
-            const ref = db.ref('materials/' + category + '/' + key);
+            const ref = rtdb.ref('materials/' + category + '/' + key);
             ref.once('value', (snapshot) => {
                 const item = snapshot.val();
                 if (item) {
@@ -905,7 +945,7 @@
         // DELETE ITEM
         // ============================================================
         function deleteItem(category, key) {
-            const ref = db.ref('materials/' + category + '/' + key);
+            const ref = rtdb.ref('materials/' + category + '/' + key);
             // Get title for confirmation
             ref.once('value', (snapshot) => {
                 const item = snapshot.val();
@@ -967,7 +1007,6 @@
         });
 
         console.log('✅ Revision Admin Panel loaded!');
-        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
 
 </body>
