@@ -309,10 +309,10 @@
             font-size: 14px;
         }
 
-        /* Admin Button */
+        /* Admin Button - Visible to admins */
         .admin-panel-btn {
             display: none;
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 10px;
             background: linear-gradient(135deg, var(--pink), var(--purple));
             color: var(--white);
@@ -336,7 +336,7 @@
             display: inline-block;
         }
 
-        /* Category Grid */
+        /* Categories Grid */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -377,6 +377,31 @@
             color: var(--dim);
             margin-top: 4px;
         }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 14px 28px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.info { border-color: var(--blue); }
 
         /* Responsive */
         @media (min-width: 600px) {
@@ -501,7 +526,7 @@
             <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
         </section>
 
-        <!-- ADMIN PANEL BUTTON - Shows for both admins -->
+        <!-- ADMIN PANEL BUTTON -->
         <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
 
         <!-- CATEGORIES -->
@@ -603,7 +628,7 @@
         }
 
         // ============================================================
-        // AUTH CHECK - Show admin button for both admins
+        // AUTH CHECK - SHOW ADMIN BUTTON FOR BOTH ADMINS
         // ============================================================
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -627,7 +652,7 @@
             if (isAdmin(email)) {
                 adminBtn.classList.add('visible');
                 document.getElementById('userRole').textContent = '🔑 Admin';
-                console.log('🔑 Admin detected:', email);
+                console.log('✅ Admin detected:', email);
             } else {
                 adminBtn.classList.remove('visible');
                 document.getElementById('userRole').textContent = 'Student';
