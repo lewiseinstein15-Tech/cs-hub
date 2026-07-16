@@ -805,8 +805,6 @@
             <div class="env-tag" id="envTag">[ >_ ADMIN ENVIRONMENT ]</div>
             
             <h1 id="welcomeText">
-                <span id="typedPrefix"></span>
-                <span class="highlight-name" id="typedName"></span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
             
@@ -1024,81 +1022,58 @@
         }
 
         // ============================================================
-        // TYPING ANIMATION FUNCTIONS
+        // TYPING ANIMATION FUNCTIONS - FIXED
         // ============================================================
-        function typeWriterWithCursor(text, elementId, speed = 50, callback) {
-            const el = document.getElementById(elementId);
-            if (!el) {
-                console.error('Element not found:', elementId);
-                if (callback) callback();
-                return;
-            }
-            let i = 0;
-            el.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    el.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed + Math.random() * 20);
-                } else {
-                    if (callback) callback();
-                }
-            }
-            type();
-        }
-
         function startWelcomeAnimation(adminName) {
             console.log('Starting welcome animation for:', adminName);
             
             const envTag = document.getElementById('envTag');
-            const prefixEl = document.getElementById('typedPrefix');
-            const nameEl = document.getElementById('typedName');
+            const welcomeText = document.getElementById('welcomeText');
             const cursorEl = document.getElementById('typingCursor');
             
-            if (!envTag || !prefixEl || !nameEl || !cursorEl) {
+            if (!welcomeText || !cursorEl) {
                 console.error('Required elements not found!');
                 return;
             }
             
             // Set environment tag
-            envTag.textContent = '[ >_ ADMIN ENVIRONMENT ]';
+            if (envTag) {
+                envTag.textContent = '[ >_ ADMIN ENVIRONMENT ]';
+            }
             
-            // Clear elements
-            prefixEl.textContent = '';
-            nameEl.textContent = '';
+            // Clear the welcome text and show cursor
+            welcomeText.innerHTML = '';
             cursorEl.style.display = 'inline-block';
             
-            // Type "Welcome back, " first
-            let prefixText = 'Welcome back, ';
+            // Build the full text: "Welcome back, [Name]"
+            const fullText = `Welcome back, ${adminName}`;
             let i = 0;
             
-            function typePrefix() {
-                if (i < prefixText.length) {
-                    prefixEl.textContent += prefixText.charAt(i);
+            function typeWelcome() {
+                if (i < fullText.length) {
+                    // Add the character
+                    welcomeText.innerHTML = fullText.substring(0, i + 1);
                     i++;
-                    setTimeout(typePrefix, 40 + Math.random() * 15);
+                    setTimeout(typeWelcome, 40 + Math.random() * 20);
                 } else {
-                    // Then type the name
-                    let j = 0;
-                    function typeName() {
-                        if (j < adminName.length) {
-                            nameEl.textContent += adminName.charAt(j);
-                            j++;
-                            setTimeout(typeName, 50 + Math.random() * 20);
-                        } else {
-                            // Keep cursor blinking
-                            cursorEl.style.display = 'inline-block';
-                            setTimeout(() => {
-                                typeQuote();
-                            }, 500);
-                        }
-                    }
-                    typeName();
+                    // Wrap the name in highlight span
+                    const highlighted = fullText.replace(
+                        adminName, 
+                        `<span class="highlight-name">${adminName}</span>`
+                    );
+                    welcomeText.innerHTML = highlighted;
+                    
+                    // Keep cursor blinking
+                    cursorEl.style.display = 'inline-block';
+                    
+                    // Start quote after a delay
+                    setTimeout(() => {
+                        typeQuote();
+                    }, 600);
                 }
             }
             
-            typePrefix();
+            typeWelcome();
         }
 
         function typeQuote() {
@@ -1129,11 +1104,9 @@
             
             function typeQuoteChar() {
                 if (i < quoteText.length) {
-                    // Handle HTML tags properly
                     let char = quoteText.charAt(i);
                     
                     if (char === '<') {
-                        // Check if it's a span tag or br
                         if (quoteText.substring(i, i + 5) === '<span') {
                             let endIdx = quoteText.indexOf('</span>', i) + 7;
                             el.innerHTML += quoteText.substring(i, endIdx);
@@ -1152,7 +1125,7 @@
                         el.innerHTML += char;
                         i++;
                     }
-                    setTimeout(typeQuoteChar, 25 + Math.random() * 15);
+                    setTimeout(typeQuoteChar, 20 + Math.random() * 15);
                 } else {
                     cursorEl.style.display = 'none';
                     setTimeout(() => {
@@ -1358,8 +1331,7 @@
         // Check if elements exist
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, checking elements...');
-            console.log('typedPrefix:', document.getElementById('typedPrefix'));
-            console.log('typedName:', document.getElementById('typedName'));
+            console.log('welcomeText:', document.getElementById('welcomeText'));
             console.log('typingCursor:', document.getElementById('typingCursor'));
             console.log('quoteText:', document.getElementById('quoteText'));
         });
