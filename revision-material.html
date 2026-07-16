@@ -305,8 +305,8 @@
             font-size: 14px;
         }
 
-        .admin-panel-btn {
-            display: none;
+        .manage-btn {
+            display: inline-flex;
             padding: 10px 24px;
             border-radius: 10px;
             background: linear-gradient(135deg, var(--pink), var(--purple));
@@ -325,13 +325,9 @@
             box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
         }
 
-        .admin-panel-btn:hover {
+        .manage-btn:hover {
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px rgba(236, 72, 153, 0.4);
-        }
-
-        .admin-panel-btn.visible {
-            display: inline-flex !important;
         }
 
         .revision-grid {
@@ -471,7 +467,7 @@
             .hero-terminal { padding: 20px; }
             .topbar .btn-action span { display: none; }
             .revision-grid { grid-template-columns: 1fr; }
-            .admin-panel-btn { width: 100%; justify-content: center; }
+            .manage-btn { width: 100%; justify-content: center; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -549,8 +545,8 @@
             <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
         </section>
 
-        <!-- Admin Panel Button - Only visible to admins -->
-        <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
+        <!-- Everyone can see this button -->
+        <a href="revision-admin.html" class="manage-btn">⚙️ Manage Materials</a>
 
         <div class="revision-grid" id="revisionGrid">
             <!-- Books -->
@@ -622,42 +618,7 @@
         const db = firebase.firestore();
         const rtdb = firebase.database();
 
-        // ============================================================
-        // ADMIN EMAILS - Both admins!
-        // ============================================================
-        const ADMIN_EMAILS = [
-            "lewiseinstein15@gmail.com",
-            "unscriptedusa@gmail.com"
-        ];
-
         const CATEGORIES = ['books', 'youtube', 'lectures', 'exams'];
-
-        // ============================================================
-        // CHECK ADMIN - BOTH ADMINS!
-        // ============================================================
-        function checkIsAdmin(email) {
-            if (!email) {
-                console.log('❌ No email provided to check');
-                return false;
-            }
-            
-            console.log('🔍 Checking if user is admin:', email);
-            console.log('📧 Email to check:', email.toLowerCase());
-            console.log('📋 Admin list:', ADMIN_EMAILS);
-            
-            // Check against hardcoded list (case insensitive)
-            const isAdmin = ADMIN_EMAILS.some(adminEmail => 
-                adminEmail.toLowerCase() === email.toLowerCase()
-            );
-            
-            if (isAdmin) {
-                console.log('✅ Admin found in hardcoded list:', email);
-                return true;
-            }
-            
-            console.log('❌ Not admin:', email);
-            return false;
-        }
 
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
@@ -688,7 +649,7 @@
         }
 
         // ============================================================
-        // AUTH STATE - Check for BOTH admins!
+        // AUTH STATE
         // ============================================================
         auth.onAuthStateChanged(async (user) => {
             console.log('🔐 Auth state changed');
@@ -710,23 +671,7 @@
             document.getElementById('userAvatar').textContent = initial;
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
-
-            // CHECK IF USER IS ADMIN - SIMPLE CHECK!
-            const isAdminUser = checkIsAdmin(email);
-            const adminBtn = document.getElementById('adminPanelBtn');
-
-            console.log('🎯 Is user admin?', isAdminUser);
-
-            if (isAdminUser) {
-                adminBtn.classList.add('visible');
-                document.getElementById('userRole').textContent = '🔑 Admin';
-                console.log('✅ Admin detected - showing admin panel button');
-                console.log('👑 Welcome Admin:', displayName);
-            } else {
-                adminBtn.classList.remove('visible');
-                document.getElementById('userRole').textContent = 'Student';
-                console.log('👤 Student detected - hiding admin panel button');
-            }
+            document.getElementById('userRole').textContent = 'Student';
 
             loadCounts();
         });
@@ -750,8 +695,7 @@
         }
 
         console.log('✅ Revision Materials page loaded!');
-        console.log('👑 Admin emails:', ADMIN_EMAILS);
-        console.log('📝 Admin count:', ADMIN_EMAILS.length);
+        console.log('🔓 Everyone can manage materials');
     </script>
 
 </body>
