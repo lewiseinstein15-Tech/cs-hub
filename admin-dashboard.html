@@ -278,31 +278,9 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
-        /* Welcome with Matrix Loading Typing Animation */
+        /* Welcome with Typing Animation */
         .welcome-section {
             padding: 20px 0 10px 0;
-        }
-
-        .welcome-section .matrix-line {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--dim);
-            font-size: 11px;
-            letter-spacing: 1px;
-            opacity: 0.6;
-            margin-bottom: 4px;
-            min-height: 18px;
-        }
-
-        .welcome-section .matrix-line .highlight {
-            color: var(--cyan);
-        }
-
-        .welcome-section .matrix-line .green-text {
-            color: var(--green);
-        }
-
-        .welcome-section .matrix-line .purple-text {
-            color: var(--purple);
         }
 
         .welcome-section .env-tag {
@@ -360,7 +338,6 @@
             border-radius: 2px;
         }
 
-        /* Code Quote Box - Written in Code Handwriting */
         .welcome-section .quote-box {
             margin-top: 14px;
             padding: 18px 22px;
@@ -383,29 +360,16 @@
             font-family: 'Georgia', serif;
         }
 
-        .welcome-section .quote-box .code-comment {
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 11px;
-        }
-
         .welcome-section .quote-box .code-keyword {
             color: var(--purple);
-        }
-
-        .welcome-section .quote-box .code-string {
-            color: var(--green);
         }
 
         .welcome-section .quote-box .code-function {
             color: var(--cyan);
         }
 
-        .welcome-section .quote-box .code-number {
-            color: var(--yellow);
-        }
-
-        .welcome-section .quote-box .code-operator {
-            color: var(--red);
+        .welcome-section .quote-box .code-string {
+            color: var(--green);
         }
 
         .welcome-section .quote-box .quote-author {
@@ -712,7 +676,6 @@
             .topbar { padding: 16px 24px; }
             .welcome-section h1 { font-size: 26px; min-height: 70px; }
             .welcome-section h1 .typing-cursor { height: 32px; }
-            .welcome-section .matrix-line { font-size: 12px; }
         }
 
         @media (min-width: 1024px) {
@@ -740,7 +703,6 @@
             .stat-card .stat-number { font-size: 28px; }
             .welcome-section h1 { font-size: 32px; min-height: 80px; }
             .welcome-section h1 .typing-cursor { height: 38px; }
-            .welcome-section .matrix-line { font-size: 13px; }
         }
 
         @media (max-width: 600px) {
@@ -756,7 +718,6 @@
             .welcome-section h1 { font-size: 18px; min-height: 50px; }
             .welcome-section h1 .typing-cursor { height: 22px; }
             .welcome-section .quote-box { font-size: 11px; padding: 12px 14px; }
-            .welcome-section .matrix-line { font-size: 9px; }
         }
 
         @media (max-width: 400px) {
@@ -816,7 +777,7 @@
         <div>
             <div class="sidebar-profile">
                 <div class="profile-avatar" id="profileAvatar">AL</div>
-                <div class="profile-name" id="profileName">Admin Lewis</div>
+                <div class="profile-name" id="profileName">Admin</div>
                 <div class="profile-role" id="profileRole">Super Admin</div>
             </div>
             <div class="sidebar-footer">© 2026 CS Hub</div>
@@ -831,26 +792,20 @@
             <button class="menu-toggle" onclick="openSidebar()">☰</button>
             <div class="topbar-user">
                 <span class="topbar-name" id="topbarName">
-                    Admin Lewis
-                    <small id="topbarEmail">lewiseinstein15@gmail.com</small>
+                    Admin
+                    <small id="topbarEmail">admin@cshub.com</small>
                 </span>
-                <div class="topbar-avatar" id="topbarAvatar">AL</div>
+                <div class="topbar-avatar" id="topbarAvatar">A</div>
             </div>
             <button class="btn-action btn-logout" onclick="logout()">Logout</button>
         </div>
 
-        <!-- WELCOME WITH MATRIX LOADING TYPING ANIMATION -->
+        <!-- WELCOME WITH TYPING ANIMATION -->
         <section class="welcome-section">
-            <div id="matrixContainer">
-                <div class="matrix-line" id="matrixLine1"></div>
-                <div class="matrix-line" id="matrixLine2"></div>
-                <div class="matrix-line" id="matrixLine3"></div>
-            </div>
-            
-            <div class="env-tag" id="envTag"></div>
+            <div class="env-tag" id="envTag">[ >_ ADMIN ENVIRONMENT ]</div>
             
             <h1 id="welcomeText">
-                <span id="typedPrefix"></span>
+                <span id="typedPrefix">Welcome back, </span>
                 <span class="highlight-name" id="typedName"></span>
                 <span class="typing-cursor" id="typingCursor"></span>
             </h1>
@@ -1003,15 +958,25 @@
         const rtdb = firebase.database();
 
         // ============================================================
-        // ADMIN EMAILS - Add all admin emails here
+        // ADMIN EMAILS & NAMES
         // ============================================================
         const ADMIN_EMAILS = [
             "lewiseinstein15@gmail.com",
             "unscriptedusa@gmail.com"
         ];
 
+        // Map emails to display names
+        const ADMIN_NAMES = {
+            "lewiseinstein15@gmail.com": "Admin Lewis",
+            "unscriptedusa@gmail.com": "Admin Newton"
+        };
+
         function isAdmin(email) {
             return ADMIN_EMAILS.includes(email.toLowerCase());
+        }
+
+        function getAdminName(email) {
+            return ADMIN_NAMES[email.toLowerCase()] || email.split('@')[0];
         }
 
         // ============================================================
@@ -1030,57 +995,8 @@
         }
 
         // ============================================================
-        // GET USER DISPLAY NAME - FIXED!
+        // TYPING ANIMATION FUNCTIONS
         // ============================================================
-        async function getUserDisplayName(user) {
-            // Try Firebase Auth display name first
-            if (user.displayName && user.displayName.trim() !== '') {
-                return user.displayName;
-            }
-
-            // Try Firestore 'Users' collection
-            try {
-                const snapshot = await db.collection('Users')
-                    .where('email', '==', user.email)
-                    .get();
-                
-                if (!snapshot.empty) {
-                    const userData = snapshot.docs[0].data();
-                    if (userData.name && userData.name.trim() !== '') {
-                        return userData.name;
-                    }
-                    if (userData.displayName && userData.displayName.trim() !== '') {
-                        return userData.displayName;
-                    }
-                }
-            } catch (error) {
-                console.log('⚠️ Firestore lookup failed:', error);
-            }
-
-            // Fallback: use email prefix
-            return user.email.split('@')[0];
-        }
-
-        // ============================================================
-        // TYPING ANIMATION - FULL MATRIX LOADING SEQUENCE
-        // ============================================================
-        function typeWriterFull(text, elementId, speed = 40, callback) {
-            const el = document.getElementById(elementId);
-            let i = 0;
-            el.textContent = '';
-            
-            function type() {
-                if (i < text.length) {
-                    el.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed + Math.random() * 20);
-                } else {
-                    if (callback) callback();
-                }
-            }
-            type();
-        }
-
         function typeWriterWithCursor(text, elementId, speed = 50, callback) {
             const el = document.getElementById(elementId);
             let i = 0;
@@ -1098,63 +1014,24 @@
             type();
         }
 
-        function startMatrixLoading(adminName) {
-            // Matrix lines
-            const lines = [
-                { id: 'matrixLine1', text: '⟳ Initializing CS HUB kernel...', color: 'dim' },
-                { id: 'matrixLine2', text: '⟳ Loading system modules...', color: 'dim' },
-                { id: 'matrixLine3', text: '⟳ Synchronizing with Firebase...', color: 'dim' }
-            ];
-
-            let lineIndex = 0;
+        function startWelcomeAnimation(adminName) {
+            // Set the env tag
+            document.getElementById('envTag').textContent = '[ >_ ADMIN ENVIRONMENT ]';
             
-            function typeNextLine() {
-                if (lineIndex < lines.length) {
-                    const line = lines[lineIndex];
-                    const el = document.getElementById(line.id);
-                    el.textContent = '';
-                    let i = 0;
-                    
-                    function typeChar() {
-                        if (i < line.text.length) {
-                            el.textContent += line.text.charAt(i);
-                            i++;
-                            setTimeout(typeChar, 30 + Math.random() * 20);
-                        } else {
-                            // Change color to green when done
-                            el.style.color = 'var(--green)';
-                            lineIndex++;
-                            setTimeout(typeNextLine, 300);
-                        }
-                    }
-                    typeChar();
-                } else {
-                    // All lines done, start env tag
-                    setTimeout(() => {
-                        typeWriterWithCursor('[ >_ ADMIN ENVIRONMENT ]', 'envTag', 40, () => {
-                            // Start welcome message
-                            setTimeout(() => {
-                                typeWriterWithCursor('Welcome back, ', 'typedPrefix', 30, () => {
-                                    typeWriterWithCursor(adminName, 'typedName', 50, () => {
-                                        document.getElementById('typingCursor').style.display = 'inline-block';
-                                        // Start quote after welcome
-                                        setTimeout(() => {
-                                            typeQuote();
-                                        }, 400);
-                                    });
-                                });
-                            }, 300);
-                        });
-                    }, 400);
-                }
-            }
-
-            typeNextLine();
+            // Type "Welcome back, "
+            const prefixEl = document.getElementById('typedPrefix');
+            prefixEl.textContent = '';
+            
+            // Type the admin name
+            typeWriterWithCursor(adminName, 'typedName', 50, () => {
+                document.getElementById('typingCursor').style.display = 'inline-block';
+                // Start quote after welcome
+                setTimeout(() => {
+                    typeQuote();
+                }, 400);
+            });
         }
 
-        // ============================================================
-        // CODE QUOTE TYPING
-        // ============================================================
         function typeQuote() {
             const quoteText = 
                 '<span class="code-keyword">function</span> <span class="code-function">learn</span>() {<br>' +
@@ -1203,33 +1080,35 @@
         }
 
         // ============================================================
-        // AUTH CHECK - Now supports multiple admins with dynamic names
+        // AUTH CHECK - CORRECTED WITH DYNAMIC NAMES
         // ============================================================
-        auth.onAuthStateChanged(async (user) => {
+        auth.onAuthStateChanged((user) => {
             if (!user || !isAdmin(user.email)) {
                 window.location.href = "index.html";
                 return;
             }
             
-            // Get user display name
-            const displayName = await getUserDisplayName(user);
-            const initial = displayName.charAt(0).toUpperCase();
+            // Get the admin's display name
+            const adminName = getAdminName(user.email);
+            const initial = adminName.charAt(0).toUpperCase();
             const email = user.email || 'admin@cshub.com';
 
+            console.log(`🔑 Admin logged in: ${adminName} (${email})`);
+
             // Update sidebar profile
-            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('profileName').textContent = adminName;
             document.getElementById('profileAvatar').textContent = initial;
             document.getElementById('profileRole').textContent = 'Super Admin';
 
             // Update topbar
             document.getElementById('topbarName').innerHTML = `
-                ${displayName}
+                ${adminName}
                 <small>${email}</small>
             `;
             document.getElementById('topbarAvatar').textContent = initial;
 
-            // Start the full matrix loading sequence with the admin's name
-            startMatrixLoading(displayName);
+            // Start the typing animation with the admin's name
+            startWelcomeAnimation(adminName);
             
             loadStats();
             loadActivityFeed();
@@ -1377,6 +1256,7 @@
 
         console.log('✅ Admin Dashboard loaded successfully!');
         console.log('🔑 Admin emails:', ADMIN_EMAILS);
+        console.log('👤 Admin names:', ADMIN_NAMES);
     </script>
 
 </body>
