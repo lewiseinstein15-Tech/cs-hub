@@ -307,12 +307,12 @@
 
         .admin-panel-btn {
             display: none;
-            padding: 8px 18px;
-            border-radius: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
             background: linear-gradient(135deg, var(--pink), var(--purple));
             color: var(--white);
             font-family: 'Inter', sans-serif;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             margin-bottom: 16px;
@@ -320,6 +320,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: fit-content;
+            align-items: center;
+            gap: 8px;
         }
 
         .admin-panel-btn:hover {
@@ -328,7 +330,115 @@
         }
 
         .admin-panel-btn.visible {
-            display: inline-block;
+            display: inline-flex;
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-controls.visible {
+            display: block;
+        }
+
+        .admin-controls h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .admin-form input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .admin-form input:focus {
+            border-color: var(--blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .admin-form input::placeholder {
+            color: var(--dim);
+        }
+
+        .admin-form .btn-submit {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, var(--green), var(--cyan));
+            color: var(--white);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .admin-form .btn-danger {
+            background: linear-gradient(135deg, var(--red), var(--orange));
+        }
+
+        .admin-form .btn-danger:hover {
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .admin-form .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .admin-form .btn-group .btn-submit {
+            flex: 1;
+        }
+
+        .admin-form .btn-cancel {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--dim);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
         }
 
         .items-grid {
@@ -388,6 +498,45 @@
             font-family: 'JetBrains Mono', monospace;
             position: relative;
             z-index: 1;
+        }
+
+        .item-card .item-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .item-card .item-actions button {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .item-card .item-actions .btn-edit {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--blue);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .item-card .item-actions .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        .item-card .item-actions .btn-delete {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .item-card .item-actions .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
         }
 
         .item-card .item-open {
@@ -496,10 +645,11 @@
             .hero-terminal h2 { font-size: 20px; }
             .hero-terminal { padding: 20px; }
             .topbar .btn-action span { display: none; }
+            .admin-form-row { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 400px) {
-            .admin-panel-btn { width: 100%; text-align: center; }
+            .admin-panel-btn { width: 100%; text-align: center; justify-content: center; }
         }
 
         .sidebar::-webkit-scrollbar {
@@ -581,7 +731,23 @@
             <p>Recommended textbooks and reference materials for your courses.</p>
         </section>
 
-        <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
+        <a href="#" class="admin-panel-btn" id="adminPanelBtn" onclick="toggleAdminControls()">⚙️ Admin Panel</a>
+
+        <!-- Admin Controls -->
+        <div class="admin-controls" id="adminControls">
+            <h4>📝 Manage Books</h4>
+            <form class="admin-form" id="bookForm">
+                <div class="admin-form-row">
+                    <input type="text" id="bookTitle" placeholder="Book Title *" required>
+                    <input type="url" id="bookUrl" placeholder="Book URL *" required>
+                </div>
+                <input type="hidden" id="editKey" value="">
+                <div class="btn-group">
+                    <button type="submit" class="btn-submit" id="submitBtn">➕ Add Book</button>
+                    <button type="button" class="btn-cancel" id="cancelBtn" onclick="cancelEdit()" style="display:none;">Cancel</button>
+                </div>
+            </form>
+        </div>
 
         <div class="items-grid" id="itemsGrid">
             <div class="empty-items">
@@ -660,6 +826,9 @@
             return false;
         }
 
+        let currentUser = null;
+        let isAdminUser = false;
+
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('sidebarOverlay').classList.add('active');
@@ -672,6 +841,42 @@
             document.body.style.overflow = '';
         }
 
+        function toggleAdminControls() {
+            const controls = document.getElementById('adminControls');
+            controls.classList.toggle('visible');
+        }
+
+        function cancelEdit() {
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookUrl').value = '';
+            document.getElementById('editKey').value = '';
+            document.getElementById('submitBtn').textContent = '➕ Add Book';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        function editBook(key, title, url) {
+            document.getElementById('bookTitle').value = title;
+            document.getElementById('bookUrl').value = url;
+            document.getElementById('editKey').value = key;
+            document.getElementById('submitBtn').textContent = '💾 Update Book';
+            document.getElementById('cancelBtn').style.display = 'inline-block';
+            document.getElementById('adminControls').classList.add('visible');
+            document.getElementById('bookTitle').focus();
+        }
+
+        function deleteBook(key) {
+            if (!confirm('Are you sure you want to delete this book?')) return;
+            
+            const ref = rtdb.ref('materials/' + CATEGORY + '/' + key);
+            ref.remove()
+                .then(() => {
+                    showToast('✅ Book deleted successfully!', 'success');
+                })
+                .catch((error) => {
+                    showToast('❌ Error deleting book: ' + error.message, 'error');
+                });
+        }
+
         function loadItems() {
             const grid = document.getElementById('itemsGrid');
             const ref = rtdb.ref('materials/' + CATEGORY);
@@ -681,33 +886,86 @@
                 const items = grid.querySelectorAll('.item-card');
                 items.forEach(el => el.remove());
 
+                const empty = grid.querySelector('.empty-items');
+                
                 if (!data) {
-                    const empty = grid.querySelector('.empty-items');
                     if (empty) empty.style.display = 'block';
                     return;
                 }
 
-                const empty = grid.querySelector('.empty-items');
                 if (empty) empty.style.display = 'none';
 
                 const keys = Object.keys(data);
                 keys.forEach((key) => {
                     const item = data[key];
-                    const card = document.createElement('a');
+                    const card = document.createElement('div');
                     card.className = 'item-card';
-                    card.href = item.url || '#';
-                    card.target = '_blank';
+                    
+                    let actionsHTML = '';
+                    if (isAdminUser) {
+                        actionsHTML = `
+                            <div class="item-actions">
+                                <button class="btn-edit" onclick="editBook('${key}', '${item.title || ''}', '${item.url || ''}')">✏️ Edit</button>
+                                <button class="btn-delete" onclick="deleteBook('${key}')">🗑️ Delete</button>
+                            </div>
+                        `;
+                    }
+                    
                     card.innerHTML = `
                         <div class="card-glow"></div>
                         <div class="item-title">${item.title || 'Untitled'}</div>
                         <div class="item-url">${item.url || 'No URL'}</div>
                         <span class="category-badge">📚 Book</span>
-                        <div class="item-open">Open <span class="arrow">→</span></div>
+                        <a href="${item.url || '#'}" target="_blank" class="item-open">Open <span class="arrow">→</span></a>
+                        ${actionsHTML}
                     `;
                     grid.appendChild(card);
                 });
             });
         }
+
+        // Handle form submission
+        document.getElementById('bookForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!isAdminUser) {
+                showToast('❌ You do not have permission to add books.', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('bookTitle').value.trim();
+            const url = document.getElementById('bookUrl').value.trim();
+            const editKey = document.getElementById('editKey').value;
+            
+            if (!title || !url) {
+                showToast('❌ Please fill in all fields.', 'error');
+                return;
+            }
+            
+            try {
+                if (editKey) {
+                    // Update existing
+                    await rtdb.ref('materials/' + CATEGORY + '/' + editKey).update({
+                        title: title,
+                        url: url
+                    });
+                    showToast('✅ Book updated successfully!', 'success');
+                    cancelEdit();
+                } else {
+                    // Add new
+                    const newRef = rtdb.ref('materials/' + CATEGORY).push();
+                    await newRef.set({
+                        title: title,
+                        url: url
+                    });
+                    showToast('✅ Book added successfully!', 'success');
+                    document.getElementById('bookTitle').value = '';
+                    document.getElementById('bookUrl').value = '';
+                }
+            } catch (error) {
+                showToast('❌ Error: ' + error.message, 'error');
+            }
+        });
 
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
@@ -715,6 +973,7 @@
                 return;
             }
 
+            currentUser = user;
             const displayName = user.displayName || user.email.split('@')[0] || 'User';
             const email = user.email || 'user@email.com';
             const initial = displayName.charAt(0).toUpperCase();
@@ -724,10 +983,10 @@
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            const adminStatus = await isAdmin(email);
+            isAdminUser = await isAdmin(email);
             const adminBtn = document.getElementById('adminPanelBtn');
 
-            if (adminStatus) {
+            if (isAdminUser) {
                 adminBtn.classList.add('visible');
                 document.getElementById('userRole').textContent = '🔑 Admin';
                 console.log('✅ Admin detected:', email);
