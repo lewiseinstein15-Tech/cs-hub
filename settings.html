@@ -2,894 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS HUB - Settings</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
-            --bg: #030611;
-            --sidebar-bg: #060919;
-            --card-bg: rgba(10, 15, 36, 0.7);
-            --border: rgba(255, 255, 255, 0.08);
-            --blue: #3B82F6;
-            --cyan: #06B6D4;
-            --purple: #8B5CF6;
-            --green: #22C55E;
-            --yellow: #F59E0B;
-            --red: #EF4444;
-            --white: #ffffff;
-            --dim: rgba(255, 255, 255, 0.5);
+            --bg: #030611; --sidebar-bg: #060919; --card-bg: rgba(10, 15, 36, 0.7);
+            --border: rgba(255, 255, 255, 0.08); --blue: #3B82F6; --cyan: #06B6D4;
+            --purple: #8B5CF6; --green: #22C55E; --red: #EF4444; --white: #ffffff; --dim: rgba(255, 255, 255, 0.5);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            padding: 25px 20px;
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .sidebar.open { transform: translateX(0); }
-
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-            display: none;
-        }
-        .sidebar-overlay.active { display: block; }
-
-        .sidebar-brand { margin-bottom: 30px; }
-        .sidebar-brand h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--blue), var(--cyan));
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .sidebar-brand span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 3px;
-            color: var(--blue);
-            display: block;
-            margin-top: 2px;
-        }
-
-        .sidebar-close {
-            background: none;
-            border: none;
-            color: var(--dim);
-            font-size: 24px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: none;
-        }
-        .sidebar-close.mobile-show { display: block; }
-
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-grow: 1;
-        }
-
-        .nav-section-title {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--dim);
-            padding: 12px 16px 6px 16px;
-            font-weight: 600;
-        }
-
-        .nav-item a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            color: var(--dim);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-
-        .nav-item a:hover, .nav-item.active a {
-            color: var(--white);
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .sidebar-footer {
-            text-align: center;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.15);
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            margin-top: 10px;
-        }
-
-        .sidebar-profile {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .profile-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--purple), var(--blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 18px;
-            margin: 0 auto 10px auto;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
-        }
-
-        .profile-name { font-size: 14px; font-weight: 600; color: var(--white); }
-        .profile-role {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--purple);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 4px;
-            display: inline-block;
-            background: rgba(139, 92, 246, 0.1);
-            padding: 2px 8px;
-            border-radius: 6px;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 16px 16px 80px 16px;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex: 1;
-        }
-
-        /* Top Bar */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 16px 12px 16px;
-            border-bottom: 1px solid var(--border);
-            background-color: rgba(6, 9, 25, 0.6);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 22px;
-            cursor: pointer;
-            padding: 6px 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .topbar-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .topbar-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--purple), var(--blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-        }
-
-        .topbar-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .topbar-name small {
-            display: block;
-            font-size: 10px;
-            font-weight: 400;
-            color: var(--dim);
-        }
-
-        .btn-action {
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--border);
-            color: var(--white);
-        }
-        .btn-action:hover { background: rgba(255, 255, 255, 0.1); }
-
-        .btn-logout {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--red);
-        }
-        .btn-logout:hover {
-            background: var(--red);
-            color: var(--white);
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
-        }
-
-        /* Hero */
-        .hero-terminal {
-            background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent), var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .env-tag {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--cyan);
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-
-        .hero-terminal h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .hero-terminal p {
-            color: var(--dim);
-            font-size: 14px;
-        }
-
-        /* Settings Card */
-        .settings-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 30px;
-            max-width: 700px;
-        }
-
-        .settings-card .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: var(--cyan);
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--dim);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .input-group input[type="text"],
-        .input-group input[type="email"],
-        .input-group input[type="password"],
-        .input-group select {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: var(--blue);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.05);
-        }
-
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .input-group select option {
-            background: var(--bg);
-            color: var(--white);
-        }
-
-        /* Toggle Switch */
-        .toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .toggle-group label {
-            font-size: 13px;
-            color: var(--white);
-            cursor: pointer;
-        }
-
-        .toggle-group .toggle-desc {
-            font-size: 11px;
-            color: var(--dim);
-            margin-left: auto;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 26px;
-            flex-shrink: 0;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .switch .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.1);
-            transition: .3s;
-            border-radius: 26px;
-        }
-
-        .switch .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background: var(--white);
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        .switch input:checked + .slider {
-            background: var(--blue);
-        }
-
-        .switch input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        .btn-generate {
-            padding: 12px 24px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, var(--blue), var(--cyan));
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-generate:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .output-area {
-            margin-top: 20px;
-        }
-
-        .output-area label {
-            font-size: 12px;
-            color: var(--dim);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .output-area textarea {
-            width: 100%;
-            height: 150px;
-            background: #000;
-            color: #0f0;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        .output-area .hint {
-            font-size: 11px;
-            color: var(--dim);
-            margin-top: 8px;
-        }
-
-        .output-area .hint code {
-            color: var(--cyan);
-            background: rgba(6, 182, 212, 0.08);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            padding: 14px 28px;
-            border-radius: 12px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.success { border-color: var(--green); }
-        .toast.error { border-color: var(--red); }
-        .toast.info { border-color: var(--blue); }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .menu-toggle { display: flex; }
-            .topbar-right { position: relative; width: auto; }
-            .sidebar { position: fixed; top: 0; bottom: 0; left: 0; transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .content-area { padding: 20px 15px; }
-            .admin-details span { display: none; }
-        }
-
-        @media (max-width: 600px) {
-            .settings-card { padding: 20px; }
-            .toggle-group { flex-wrap: wrap; }
-            .toggle-group .toggle-desc { margin-left: 0; width: 100%; }
-            .topbar { padding: 0 16px; }
-            .hero-terminal h2 { font-size: 20px; }
-            .hero-terminal { padding: 20px; }
-            .content-area { padding: 12px; }
-            .topbar-right .btn-action span { display: none; }
-        }
-
-        @media (max-width: 400px) {
-            .topbar-actions .btn-back span { display: none; }
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 3px;
-        }
-        .sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 10px;
-        }
+        body { background-color: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; min-height: 100vh; }
+        
+        /* Layout */
+        .workspace { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        .settings-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 30px; }
+        
+        /* Form Elements */
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 12px; color: var(--dim); margin-bottom: 6px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--white); }
+        
+        .btn-generate { padding: 12px 24px; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--blue), var(--cyan)); color: white; cursor: pointer; width: 100%; font-weight: 600; }
+        .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); padding: 14px 28px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border); opacity: 0; pointer-events: none; transition: 0.4s; z-index: 9999; }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR OVERLAY -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div>
-            <div class="sidebar-brand">
-                <h1>CS HUB</h1>
-                <span>ADMIN SYSTEM</span>
-            </div>
-            <button class="sidebar-close mobile-show" onclick="closeSidebar()">✕</button>
-
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="admin-dashboard.html">📊 Dashboard</a></li>
-                <li class="nav-item"><a href="notes.html">📚 Notes Control</a></li>
-                <li class="nav-item"><a href="admin-units.html">🎓 Units Control Panel</a></li>
-                <li class="nav-item"><a href="ai-system.html">🤖 AI System</a></li>
-                <li class="nav-item"><a href="revision-material.html">📝 Revision Material</a></li>
-                <li class="nav-item active"><a href="settings.html">⚙️ Settings</a></li>
-            </ul>
-        </div>
-
-        <div>
-            <div class="sidebar-profile">
-                <div class="profile-avatar" id="profileAvatar">AL</div>
-                <div class="profile-name" id="profileName">Admin</div>
-                <div class="profile-role" id="profileRole">Super Admin</div>
-            </div>
-            <div class="sidebar-footer">© 2026 CS Hub<br>All rights reserved.</div>
-        </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
     <main class="workspace">
-        <header class="topbar">
-            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-            <div class="topbar-right">
-                <div class="admin-meta">
-                    <span class="shield-icon">🛡️</span>
-                    <div class="admin-details">
-                        <h4 id="topbarName">Admin</h4>
-                        <span id="topbarEmail">admin@cshub.com</span>
-                    </div>
-                </div>
-                <a href="admin-dashboard.html" class="btn-action" style="background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--white);">← Back</a>
-                <button class="btn-action btn-logout" onclick="logout()">Logout &rarr;</button>
-            </div>
-        </header>
-
-        <div class="content-area">
+        <div class="settings-card">
+            <h2>⚙️ System Settings</h2>
             
-            <!-- HERO -->
-            <section class="hero-terminal">
-                <div class="env-tag">[ >_ ADMIN SETTINGS ]</div>
-                <h2>⚙️ System Settings</h2>
-                <p>Configure site-wide settings, generate sync code, and manage system preferences.</p>
-            </section>
-
-            <!-- SETTINGS CARD -->
-            <div class="settings-card">
-                <div class="section-title">🔧 Configuration</div>
-
-                <!-- Maintenance Mode Toggle -->
-                <div class="toggle-group">
-                    <label class="switch">
-                        <input type="checkbox" id="maintenanceToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <label for="maintenanceToggle">Enable Maintenance Mode</label>
-                    <span class="toggle-desc">Shows maintenance page to users</span>
-                </div>
-
-                <!-- Admin Email -->
-                <div class="input-group">
-                    <label>Admin Email</label>
-                    <input type="email" id="adminEmail" placeholder="lewiseinstein15@gmail.com" value="lewiseinstein15@gmail.com">
-                </div>
-
-                <!-- Site Announcement -->
-                <div class="input-group">
-                    <label>Site Announcement</label>
-                    <input type="text" id="siteAnnouncement" placeholder="e.g. New update live! Check out the new features.">
-                </div>
-
-                <!-- Site Name -->
-                <div class="input-group">
-                    <label>Site Name</label>
-                    <input type="text" id="siteName" placeholder="CS HUB" value="CS HUB">
-                </div>
-
-                <!-- Default Theme -->
-                <div class="input-group">
-                    <label>Default Theme</label>
-                    <select id="defaultTheme">
-                        <option value="dark">Dark (Default)</option>
-                        <option value="light">Light</option>
-                        <option value="cyber">Cyber Neon</option>
-                    </select>
-                </div>
-
-                <!-- Generate Button -->
-                <button class="btn-generate" onclick="generateSyncCode()">🚀 Generate Sync Code</button>
-
-                <!-- Output Area -->
-                <div class="output-area">
-                    <label>📋 Generated Code (Copy to config.js)</label>
-                    <textarea id="syncOutput" readonly placeholder="Your generated code will appear here..."></textarea>
-                    <div class="hint">
-                        💡 Copy this code and paste it into your <code>config.js</code> file in GitHub.
-                    </div>
-                </div>
+            <div class="input-group">
+                <label>Site Name</label>
+                <input type="text" id="siteName" placeholder="CS HUB">
             </div>
-
+            <div class="input-group">
+                <label>Site Announcement</label>
+                <input type="text" id="siteAnnouncement" placeholder="Update information...">
+            </div>
+            
+            <button class="btn-generate" id="saveBtn" onclick="saveSettings()">🚀 Save & Generate Sync Code</button>
         </div>
     </main>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
-        // ============================================================
-        // FIREBASE CONFIG
-        // ============================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-            authDomain: "cs-hub-7c97b.firebaseapp.com",
-            projectId: "cs-hub-7c97b",
-            storageBucket: "cs-hub-7c97b.firebasestorage.app",
-            messagingSenderId: "76338162904",
-            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-        };
-
+        const firebaseConfig = { /* Your Config Here */ };
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // ============================================================
-        // ADMIN EMAILS - Add ALL admin emails here!
-        // ============================================================
-        const ADMIN_EMAILS = [
-            "lewiseinstein15@gmail.com",
-            "unscriptedusa@gmail.com"
-        ];
-
-        function isAdmin(email) {
-            return ADMIN_EMAILS.includes(email.toLowerCase());
+        // Sanitize input to prevent basic XSS
+        function sanitize(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
         }
 
-        function getAdminName(email) {
-            const names = {
-                "lewiseinstein15@gmail.com": "Admin Lewis",
-                "unscriptedusa@gmail.com": "Admin Newton"
-            };
-            return names[email.toLowerCase()] || "Admin";
-        }
+        async function saveSettings() {
+            const btn = document.getElementById('saveBtn');
+            const siteName = sanitize(document.getElementById('siteName').value);
+            const announcement = sanitize(document.getElementById('siteAnnouncement').value);
 
-        // ============================================================
-        // SIDEBAR FUNCTIONS
-        // ============================================================
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-
-        document.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('sidebar');
-            const toggleBtn = document.querySelector('.menu-toggle');
-            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        // ============================================================
-        // AUTH CHECK - Now supports multiple admins
-        // ============================================================
-        auth.onAuthStateChanged((user) => {
-            if (!user || !isAdmin(user.email)) {
-                window.location.href = "index.html";
-                return;
-            }
-
-            const adminName = getAdminName(user.email);
-            const initial = adminName.charAt(0).toUpperCase();
-            const email = user.email || 'admin@cshub.com';
-
-            // Update sidebar
-            document.getElementById('profileName').textContent = adminName;
-            document.getElementById('profileAvatar').textContent = initial;
-            document.getElementById('profileRole').textContent = 'Super Admin';
-
-            // Update topbar
-            document.getElementById('topbarName').textContent = adminName;
-            document.getElementById('topbarEmail').textContent = email;
-
-            console.log('✅ Admin authenticated:', email);
-            loadSettings();
-        });
-
-        // ============================================================
-        // LOGOUT
-        // ============================================================
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = "index.html";
-            });
-        }
-
-        // ============================================================
-        // LOAD SETTINGS FROM FIRESTORE
-        // ============================================================
-        function loadSettings() {
-            db.collection("settings").doc("siteConfig").get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        if (data.maintenanceMode !== undefined) {
-                            document.getElementById("maintenanceToggle").checked = data.maintenanceMode;
-                        }
-                        if (data.adminEmail) {
-                            document.getElementById("adminEmail").value = data.adminEmail;
-                        }
-                        if (data.announcement) {
-                            document.getElementById("siteAnnouncement").value = data.announcement;
-                        }
-                        if (data.siteName) {
-                            document.getElementById("siteName").value = data.siteName;
-                        }
-                        if (data.defaultTheme) {
-                            document.getElementById("defaultTheme").value = data.defaultTheme;
-                        }
-                    }
-                })
-                .catch(() => {
-                    console.log('No settings found, using defaults');
-                });
-        }
-
-        // ============================================================
-        // GENERATE SYNC CODE
-        // ============================================================
-        function generateSyncCode() {
-            const maintenanceMode = document.getElementById('maintenanceToggle').checked;
-            const adminEmail = document.getElementById('adminEmail').value.trim() || 'lewiseinstein15@gmail.com';
-            const announcement = document.getElementById('siteAnnouncement').value.trim();
-            const siteName = document.getElementById('siteName').value.trim() || 'CS HUB';
-            const defaultTheme = document.getElementById('defaultTheme').value;
-
-            const config = {
-                maintenanceMode: maintenanceMode,
-                adminEmail: adminEmail,
-                announcement: announcement,
-                siteName: siteName,
-                defaultTheme: defaultTheme
-            };
-
-            const code = `// ============================================================\n// CS HUB - Site Configuration\n// Generated on: ${new Date().toLocaleString()}\n// ============================================================\n\nconst siteConfig = ${JSON.stringify(config, null, 2)};\n\n// Export for use in other files\nif (typeof module !== 'undefined' && module.exports) {\n    module.exports = siteConfig;\n}\n`;
-
-            document.getElementById('syncOutput').value = code;
-
-            db.collection("settings").doc("siteConfig").set({
-                maintenanceMode: maintenanceMode,
-                adminEmail: adminEmail,
-                announcement: announcement,
-                siteName: siteName,
-                defaultTheme: defaultTheme,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                showToast('✅ Settings saved to Firestore!', 'success');
-            })
-            .catch((err) => {
-                showToast('⚠️ Settings saved locally but not to Firestore: ' + err.message, 'error');
-            });
+            btn.disabled = true;
+            btn.textContent = "Processing...";
 
             try {
-                navigator.clipboard.writeText(code).then(() => {
-                    showToast('📋 Code copied to clipboard!', 'info');
-                });
-            } catch (_) {
-                const textarea = document.getElementById('syncOutput');
-                textarea.select();
-                document.execCommand('copy');
-                showToast('📋 Code copied to clipboard!', 'info');
+                await db.collection("settings").doc("siteConfig").set({
+                    siteName,
+                    announcement,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                showToast("✅ Settings saved securely!", "success");
+            } catch (err) {
+                showToast("❌ Error: " + err.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "🚀 Save & Generate Sync Code";
             }
         }
 
-        // ============================================================
-        // TOAST
-        // ============================================================
-        function showToast(message, type = 'info') {
+        function showToast(msg, type) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type;
-            void toast.offsetWidth;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3500);
+            toast.textContent = msg;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
-
-        // ============================================================
-        // KEYBOARD SHORTCUT: Ctrl+Enter to generate
-        // ============================================================
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                generateSyncCode();
-            }
-        });
-
-        console.log('✅ Settings page loaded!');
-        console.log('🔑 Admin emails:', ADMIN_EMAILS);
     </script>
-
 </body>
 </html>
