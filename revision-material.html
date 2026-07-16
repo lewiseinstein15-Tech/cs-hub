@@ -547,6 +547,7 @@
             <p>Access books, YouTube tutorials, lecture videos, and exam papers to boost your learning.</p>
         </section>
 
+        <!-- Admin Panel Button - Only visible to admins -->
         <a href="revision-admin.html" class="admin-panel-btn" id="adminPanelBtn">⚙️ Admin Panel</a>
 
         <div class="revision-grid" id="revisionGrid">
@@ -601,6 +602,9 @@
     </script>
 
     <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
             authDomain: "cs-hub-7c97b.firebaseapp.com",
@@ -629,14 +633,16 @@
         // ============================================================
         // CHECK ADMIN FROM FIRESTORE + HARDCODED LIST
         // ============================================================
-        async function isAdmin(email) {
+        async function checkIsAdmin(email) {
             if (!email) return false;
             
+            // Check hardcoded list first
             if (ADMIN_EMAILS.includes(email.toLowerCase())) {
                 console.log("✅ Admin found in hardcoded list:", email);
                 return true;
             }
             
+            // Then check Firestore
             try {
                 const snapshot = await db.collection("Users")
                     .where("email", "==", email)
@@ -685,6 +691,9 @@
             });
         }
 
+        // ============================================================
+        // AUTH STATE - WITH PROPER ADMIN CHECK
+        // ============================================================
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = "login.html";
@@ -700,7 +709,8 @@
             document.getElementById('topbarName').textContent = displayName;
             document.getElementById('topbarEmail').textContent = email;
 
-            const adminStatus = await isAdmin(email);
+            // CHECK IF USER IS ADMIN
+            const adminStatus = await checkIsAdmin(email);
             const adminBtn = document.getElementById('adminPanelBtn');
 
             if (adminStatus) {
