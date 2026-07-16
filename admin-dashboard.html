@@ -1,70 +1,91 @@
-<script>
-    // FIREBASE CONFIG
-    const firebaseConfig = {
-        apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
-        authDomain: "cs-hub-7c97b.firebaseapp.com",
-        databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
-        projectId: "cs-hub-7c97b",
-        storageBucket: "cs-hub-7c97b.firebasestorage.app",
-        messagingSenderId: "76338162904",
-        appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
-    };
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS HUB - Admin Dashboard</title>
+    <!-- Use your original fonts and styles here -->
+    <style>
+        /* [INSERT YOUR ORIGINAL CSS HERE TO KEEP YOUR DESIGN] */
+        body { background-color: #030611; color: #ffffff; font-family: sans-serif; }
+    </style>
+</head>
+<body>
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    <!-- [INSERT YOUR ORIGINAL HTML BODY CONTENT HERE] -->
+    <div id="app">
+        <h1 id="welcomeText">Dashboard</h1>
+        <div id="profileName">Loading...</div>
+    </div>
 
-    const ADMIN_EMAILS = ["lewiseinstein15@gmail.com", "unscriptedusa@gmail.com"];
-    const ADMIN_NAMES = { "lewiseinstein15@gmail.com": "Lewis Einstein", "unscriptedusa@gmail.com": "Newton" };
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-    // SECURE ADMIN CHECK
-    async function isAdmin(email) {
-        if (!email) return false;
-        try {
-            const snapshot = await db.collection("Users").where("email", "==", email.toLowerCase()).get();
-            if (!snapshot.empty) {
-                const userData = snapshot.docs[0].data();
-                if (userData.role === "admin") return true;
-            }
-            return ADMIN_EMAILS.includes(email.toLowerCase());
-        } catch (e) { return false; }
-    }
-
-    // AUTH STATE LISTENER
-    auth.onAuthStateChanged(async (user) => {
-        if (!user) {
-            console.log("No user logged in.");
-            return;
-        }
-
-        const authorized = await isAdmin(user.email);
-        if (!authorized) {
-            console.log("Access restricted.");
-            return;
-        }
-
-        // UPDATE UI SAFELY
-        const adminName = ADMIN_NAMES[user.email.toLowerCase()] || "Admin";
-        
-        const selectors = {
-            'profileName': adminName,
-            'topbarName': adminName,
-            'profileAvatar': adminName.charAt(0).toUpperCase(),
-            'topbarAvatar': adminName.charAt(0).toUpperCase()
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpG07LjKWOSJYTT1X3S-Y5BUhLXNB3RLw",
+            authDomain: "cs-hub-7c97b.firebaseapp.com",
+            databaseURL: "https://cs-hub-7c97b-default-rtdb.firebaseio.com",
+            projectId: "cs-hub-7c97b",
+            storageBucket: "cs-hub-7c97b.firebasestorage.app",
+            messagingSenderId: "76338162904",
+            appId: "1:76338162904:web:3be60e1952d49c8fb63bad"
         };
 
-        for (const [id, value] of Object.entries(selectors)) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAILS = ["lewiseinstein15@gmail.com", "unscriptedusa@gmail.com"];
+        const ADMIN_NAMES = { "lewiseinstein15@gmail.com": "Lewis Einstein", "unscriptedusa@gmail.com": "Newton" };
+
+        async function isAdmin(email) {
+            if (!email) return false;
+            try {
+                const snapshot = await db.collection("Users").where("email", "==", email.toLowerCase()).get();
+                if (!snapshot.empty && snapshot.docs[0].data().role === "admin") return true;
+                return ADMIN_EMAILS.includes(email.toLowerCase());
+            } catch (e) { return false; }
         }
 
-        // START FEATURES
-        if (typeof startWelcomeAnimation === 'function') startWelcomeAnimation(adminName);
-        if (typeof loadStats === 'function') loadStats();
-        if (typeof loadActivityFeed === 'function') loadActivityFeed();
-    });
+        auth.onAuthStateChanged(async (user) => {
+            // IF NO USER, JUST RETURN (DON'T REDIRECT IMMEDIATELY)
+            if (!user) {
+                console.log("No user session found.");
+                return;
+            }
 
-    function logout() {
-        auth.signOut().then(() => window.location.href = "index.html");
-    }
-</script>
+            const authorized = await isAdmin(user.email);
+            if (!authorized) {
+                console.log("Not an admin.");
+                return;
+            }
+
+            // PAGE IS AUTHORIZED: RENDER DATA
+            const adminName = ADMIN_NAMES[user.email.toLowerCase()] || "Admin";
+            
+            const elements = {
+                'profileName': adminName,
+                'topbarName': adminName
+            };
+
+            for (const [id, value] of Object.entries(elements)) {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            }
+
+            // Call your custom functions if they exist
+            if (typeof startWelcomeAnimation === 'function') startWelcomeAnimation(adminName);
+            if (typeof loadStats === 'function') loadStats();
+            if (typeof loadActivityFeed === 'function') loadActivityFeed();
+        });
+
+        function logout() {
+            auth.signOut().then(() => window.location.href = "index.html");
+        }
+    </script>
+</body>
+</html>
