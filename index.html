@@ -1,115 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>My Awesome Site</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  /* --- Reset & Base Styles --- */
-  *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family: system-ui, sans-serif; line-height: 1.6; color:#333; background:#fafafa; }
+  <meta charset="UTF-8">
+  <title>BrandX – Launch Your Site Fast</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  /* --- Layout Containers --- */
-  header, footer { background:#222; color:#fff; }
-  header { padding: 1rem 2rem; display:flex; justify-content:space-between; align-items:center; }
-  header a { color:#fff; text-decoration:none; margin-left:1rem; }
-  main { padding:2rem; }
-  .section { margin-bottom:4rem; }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  /* --- Hero --- */
-  .hero { display:flex; flex-direction:column; align-items:flex-start; gap:1rem; background:#f0f4f8; padding:4rem 2rem; border-radius:0.5rem; }
-  .hero h1 { font-size:2.5rem; }
-  .hero p { max-width: 600px; }
-  .hero button { padding:0.75rem 1.5rem; background:#0077ff; color:#fff; border:none; border-radius:0.25rem; cursor:pointer; }
-  .hero button:hover { background:#005bb5; }
-
-  /* --- Features Grid --- */
-  .features { display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
-  .feature { background:#fff; padding:2rem; border-radius:0.5rem; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-  .feature img { width:64px; height:64px; margin-bottom:1rem; }
-
-  /* --- CTA --- */
-  .cta { text-align:center; background:#e3f2fd; padding:3rem 2rem; border-radius:0.5rem; }
-  .cta h2 { margin-bottom:1rem; }
-  .cta input[type="email"] { padding:0.75rem; width:60%; max-width:400px; margin-right:0.5rem; border:1px solid #ccc; border-radius:0.25rem; }
-  .cta button { padding:0.75rem 1.5rem; background:#0077ff; color:#fff; border:none; border-radius:0.25rem; cursor:pointer; }
-  .cta button:hover { background:#005bb5; }
-
-  /* --- Footer --- */
-  footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; padding:1rem 2rem; }
-  footer p { flex: 1 1 200px; }
-  footer a { color:#fff; margin-right:1rem; text-decoration:none; }
-  footer a:hover { text-decoration:underline; }
-
-  /* --- Responsiveness --- */
-  @media(max-width:600px){
-    header, footer { flex-direction:column; align-items:flex-start; }
-    header a { margin:0.5rem 0; }
-    footer { flex-direction:column; align-items:flex-start; }
-  }
-</style>
+  <!-- Heroicons CDN (SVG sprites) -->
+  <script src="https://unpkg.com/@heroicons/react@2.0.18/dist/heroicons.min.js"></script>
 </head>
-<body>
+<body class="font-sans leading-normal tracking-wide bg-gray-50">
 
-<header>
-  <div class="logo"><strong>BrandX</strong></div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Features</a>
-    <a href="#">Pricing</a>
-    <a href="#">Contact</a>
-  </nav>
-</header>
+  <!-- ====== Header ====== -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
+        <!-- Logo -->
+        <div class="flex-shrink-0">
+          <a href="#" class="text-2xl font-bold text-indigo-600">BrandX</a>
+        </div>
 
-<main>
-  <!-- Hero Section -->
-  <section class="section hero">
-    <h1>Build Stunning Websites Fast</h1>
-    <p>With our intuitive templates and drag‑and‑drop editor, launch a professional site in minutes—no code required.</p>
-    <button>Get Started</button>
-  </section>
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#" class="text-gray-700 hover:text-indigo-600">Home</a>
+          <a href="#" class="text-gray-700 hover:text-indigo-600">Features</a>
+          <a href="#" class="text-gray-700 hover:text-indigo-600">Pricing</a>
+          <a href="#" class="text-gray-700 hover:text-indigo-600">Contact</a>
+        </nav>
 
-  <!-- Features Section -->
-  <section class="section">
-    <h2 style="text-align:center; margin-bottom:2rem;">Why Choose Us?</h2>
-    <div class="features">
-      <div class="feature">
-        <img src="https://img.icons8.com/ios-filled/50/0077ff/rocket.png" alt="Speed">
-        <h3>Lightning Fast</h3>
-        <p>Optimized assets and CDN delivery guarantee quick load times.</p>
+        <!-- Mobile menu button -->
+        <div class="-mr-2 flex items-center md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-indigo-600 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="feature">
-        <img src="https://img.icons8.com/ios-filled/50/0077ff/secure.png" alt="Security">
-        <h3>Secure</h3>
-        <p>SSL certificates, DDoS protection, and automatic backups.</p>
-      </div>
-      <div class="feature">
-        <img src="https://img.icons8.com/ios-filled/50/0077ff/design.png" alt="Design">
-        <h3>Customizable</h3>
-        <p>Fully editable templates that match your brand identity.</p>
+    </div>
+
+    <!-- Mobile Nav (hidden by default) -->
+    <div id="mobile-menu" class="hidden md:hidden">
+      <nav class="px-2 pt-2 pb-4 space-y-1">
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600">Home</a>
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600">Features</a>
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600">Pricing</a>
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====== Hero ====== -->
+  <section class="bg-indigo-50">
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl font-extrabold text-indigo-900 sm:text-5xl">
+        Build Stunning Sites in Minutes
+      </h1>
+      <p class="mt-4 text-lg text-indigo-700">
+        Drag‑and‑drop editor + pre‑made templates. Launch a professional site with no code.
+      </p>
+      <div class="mt-8 flex justify-center">
+        <a href="#cta"
+           class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700">
+          Get Started Free
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Call‑to‑Action -->
-  <section class="section cta">
-    <h2>Ready to launch?</h2>
-    <p>Sign up with your email and start building your site today.</p>
-    <form onsubmit="return false;">
-      <input type="email" placeholder="you@example.com" required>
-      <button>Start Free Trial</button>
-    </form>
+  <!-- ====== Features ====== -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-8">
+        Key Benefits
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-gray-50 p-6 rounded-lg shadow flex flex-col items-center text-center">
+          <svg class="h-12 w-12 text-indigo-600 mb-4" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3V3z"/>
+          </svg>
+          <h3 class="text-xl font-semibold mb-2">Fast Deployment</h3>
+          <p class="text-gray-600">
+            Templates load instantly via CDN; your site is online in <strong>minutes</strong>.
+          </p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="bg-gray-50 p-6 rounded-lg shadow flex flex-col items-center text-center">
+          <svg class="h-12 w-12 text-indigo-600 mb-4" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7l-4-4-4 4M12 13v8"/>
+          </svg>
+          <h3 class="text-xl font-semibold mb-2">Secure Hosting</h3>
+          <p class="text-gray-600">
+            HTTPS, DDoS protection, and automatic backups keep your site safe.
+          </p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="bg-gray-50 p-6 rounded-lg shadow flex flex-col items-center text-center">
+          <svg class="h-12 w-12 text-indigo-600 mb-4" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
+          </svg>
+          <h3 class="text-xl font-semibold mb-2">Fully Customizable</h3>
+          <p class="text-gray-600">
+            Drag‑and‑drop editor lets you change colors, fonts, and layouts without touching code.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
-</main>
 
-<footer>
-  <p>&copy; 2026 BrandX. All rights reserved.</p>
-  <div>
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-    <a href="#">Help</a>
-  </div>
-</footer>
+  <!-- ====== CTA ====== -->
+  <section id="cta" class="py-12 bg-indigo-600">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <h2 class="text-3xl font-extrabold mb-4">Start Your Free Trial</h2>
+      <p class="mb-8">Enter your email and get instant access to all templates.</p>
+      <form class="flex flex-col sm:flex-row justify-center gap-4 max-w-lg mx-auto" onsubmit="return false;">
+        <input type="email" placeholder="you@example.com" required
+               class="flex-1 px-4 py-2 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-white">
+        <button type="submit"
+                class="bg-white text-indigo-600 font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition">
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </section>
 
-</body>
-</html>
+  <!-- ====== Footer ====== -->
+  <footer class="bg-gray-800 text-gray-300 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- About -->
+      <div>
+        <h3 class="text-white font-semibold mb-3">BrandX</h3>
+        <p>We help creators build fast, beautiful, and secure websites without writing code.</p>
+      </div>
+      <!-- Links -->
+      <div>
+        <h3 class="text-white font-semibold mb-3">Quick Links</h3>
+        <
